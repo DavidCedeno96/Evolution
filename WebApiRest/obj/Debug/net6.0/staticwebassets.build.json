@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "Vh/wi5U0HdWmKZe8uAy5tG33pb8E3gJ/7VeJym7aL9Y=",
+  "Source": "WebApiRest",
+  "BasePath": "_content/WebApiRest",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "WebApiRest\\wwwroot",
+      "Source": "WebApiRest",
+      "ContentRoot": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\",
+      "BasePath": "_content/WebApiRest",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}
