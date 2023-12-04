@@ -41,6 +41,9 @@ select * from Area
 select * from Nivel
 
 -- ---------------------------------------------------------
+Insert into Usuario (nombre, apellido, correo, celular, idRol, pais, ciudad, clave) values
+('Benito','Camelas','benito@gmail.com','0954712456','jug','Puerto Rico', 'Santo Domingo','12345')
+
 Insert Into Rol (idRol, nombre, descripcion) values
 ('sadm', 'Super Administrador', 'Este es para el super administrador')
 
@@ -54,9 +57,21 @@ exec sp_B_Rol
 @id = ''
 
 -- USUARIO --------------------------------------------------------
+exec sp_B_Usuario		
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
 exec sp_B_UsuarioById	
 @idUsuario = 'DFD02F9A-4617-4713-9A9B-19FBC2817258',	
 @estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_UsuarioByCorreo
+@correo = 'mia@gmail.com',
 @error = '',
 @info = '',
 @id = ''
@@ -69,17 +84,19 @@ exec sp_B_UsuarioLogin
 @id = ''
 
 exec sp_C_Usuario
-@nombre varchar(23),
-@apellido varchar(23),
-@correo varchar(60),
-@celular varchar(15),
-@foto varchar(50),
-@idRol varchar(9),
-@pais varchar(30),
-@ciudad varchar(30),
-@empresa varchar(40),
-@idArea uniqueidentifier,
-@clave varchar(30),
+@nombre = 'Mia',
+@apellido = 'Lomeli',
+@correo = 'mia@gmail.com',
+@clave = '',
+@celular = '0998467220',
+@foto = '',
+@idRol = 'jug',
+@pais = 'Mexico',
+@ciudad = 'cdmx',
+@empresa = '',
+@idArea = '',
 @error = '',
 @info = '',
 @id = ''
+
+--delete from Usuario

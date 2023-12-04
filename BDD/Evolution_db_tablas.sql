@@ -33,7 +33,7 @@ create table Usuario(
 	idArea uniqueidentifier references Area(idArea) null,
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate(),
-	clave varchar(30) not null
+	clave varbinary(MAX) not null
 );
 
 create table Nivel(
@@ -290,3 +290,9 @@ WHERE tc.TABLE_NAME = 'Usuario';
 SELECT @@VERSION;
 
 -----------------------------------------------------------------------------------
+
+
+ALTER TABLE Usuario
+ALTER COLUMN clave nvarchar(max) not null
+CONSTRAINT DF_Usuario_Clave DEFAULT (CONVERT(VARBINARY(MAX), '0'));
+

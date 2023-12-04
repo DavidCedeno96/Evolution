@@ -1,4 +1,6 @@
-﻿namespace WebApiRest.Utilities
+﻿using System.Text;
+
+namespace WebApiRest.Utilities
 {
 
     // Esta clase es para Web Constants
@@ -7,6 +9,7 @@
         private static readonly string satisfactorio = "Satisfactorio";
         private static readonly string error = "Ha ocurrido un error";
         private static readonly string archivoExistente = "El archivo ya existe";
+        private static readonly string errorLogin = "Usuario o Contraseña incorrectos";
         private static readonly string errorArchivo = "Tipo de archivo no permitido";
         private static readonly string errorLetrasNumeros = "Solo se permiten letras y números";
         private static readonly string errorLetras = "Solo se permiten letras";
@@ -36,6 +39,25 @@
             }
             return "";
         }
+
+        public static byte[] GetBytes(string texto)
+        {
+            if (!string.IsNullOrEmpty(texto))
+            {
+                return Encoding.UTF8.GetBytes(texto);
+            }
+            return null;
+        }
+
+        public static string GetStringFromBytes(byte[] byteArray)
+        {
+            if (byteArray.Length > 0)
+            {
+                return Encoding.UTF8.GetString(byteArray);
+            }
+            return "";
+        }
+
 
         public static string GetHoraActual(DateTime dateTime)
         {
@@ -92,6 +114,10 @@
         public static string GetError()
         {
             return error;
+        }
+        public static string GetErrorLogin()
+        {
+            return errorLogin;
         }
         public static string GetErrorArchivo()
         {
