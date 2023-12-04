@@ -1,6 +1,6 @@
 USE [Evolution_db]
 GO
-/****** Object:  Table [dbo].[Area]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Area]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -18,7 +18,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CategoriaNoticia]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[CategoriaNoticia]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -36,7 +36,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ComportamientoPregunta]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[ComportamientoPregunta]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -54,7 +54,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Condicion]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Condicion]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -72,7 +72,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Configuracion]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Configuracion]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -93,7 +93,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Medalla]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Medalla]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -113,7 +113,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Nivel]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Nivel]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -133,7 +133,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Noticia]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Noticia]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -155,7 +155,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Opcion]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Opcion]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -174,7 +174,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Pregunta]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Pregunta]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -192,7 +192,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Puzzle]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Puzzle]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -210,7 +210,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Recompensa]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Recompensa]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -231,7 +231,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RedSocial]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[RedSocial]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -250,7 +250,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Reto]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Reto]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -277,7 +277,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Rol]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Rol]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -295,7 +295,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[tipoReto]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[tipoReto]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -313,7 +313,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Usuario]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -340,7 +340,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_Medalla]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Usuario_Medalla]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -352,7 +352,7 @@ CREATE TABLE [dbo].[Usuario_Medalla](
 	[fechaModificacion] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_Nivel]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Usuario_Nivel]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -364,7 +364,7 @@ CREATE TABLE [dbo].[Usuario_Nivel](
 	[fechaModificacion] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_Noticia]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Usuario_Noticia]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -378,7 +378,7 @@ CREATE TABLE [dbo].[Usuario_Noticia](
 	[fechaModificacion] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_Recompensa]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Usuario_Recompensa]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -390,7 +390,7 @@ CREATE TABLE [dbo].[Usuario_Recompensa](
 	[fechaModificacion] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_RedSocial]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Usuario_RedSocial]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -404,7 +404,7 @@ CREATE TABLE [dbo].[Usuario_RedSocial](
 	[fechaModificacion] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_Reto]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Table [dbo].[Usuario_Reto]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -429,7 +429,7 @@ INSERT [dbo].[Usuario] ([idUsuario], [nombre], [apellido], [correo], [celular], 
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Area__72AFBCC6711C7E88]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Index [UQ__Area__72AFBCC685BEF222]    Script Date: 3/12/2023 19:45:01 ******/
 ALTER TABLE [dbo].[Area] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -437,7 +437,7 @@ ALTER TABLE [dbo].[Area] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Categori__72AFBCC681023ED2]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Index [UQ__Categori__72AFBCC665089ED0]    Script Date: 3/12/2023 19:45:01 ******/
 ALTER TABLE [dbo].[CategoriaNoticia] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -445,7 +445,7 @@ ALTER TABLE [dbo].[CategoriaNoticia] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Comporta__72AFBCC63ABFFACC]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Index [UQ__Comporta__72AFBCC691E50709]    Script Date: 3/12/2023 19:45:01 ******/
 ALTER TABLE [dbo].[ComportamientoPregunta] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -453,7 +453,7 @@ ALTER TABLE [dbo].[ComportamientoPregunta] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Condicio__72AFBCC6B80A6D7C]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Index [UQ__Condicio__72AFBCC638613C47]    Script Date: 3/12/2023 19:45:01 ******/
 ALTER TABLE [dbo].[Condicion] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -461,7 +461,7 @@ ALTER TABLE [dbo].[Condicion] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Medalla__72AFBCC66F2EAD63]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Index [UQ__Medalla__72AFBCC6558B9583]    Script Date: 3/12/2023 19:45:01 ******/
 ALTER TABLE [dbo].[Medalla] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -469,7 +469,7 @@ ALTER TABLE [dbo].[Medalla] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Reto__72AFBCC6ABB5C891]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Index [UQ__Reto__72AFBCC6FB11BCD4]    Script Date: 3/12/2023 19:45:01 ******/
 ALTER TABLE [dbo].[Reto] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -477,7 +477,7 @@ ALTER TABLE [dbo].[Reto] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Rol__72AFBCC63A35DC04]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Index [UQ__Rol__72AFBCC6DC7B5CF0]    Script Date: 3/12/2023 19:45:01 ******/
 ALTER TABLE [dbo].[Rol] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -485,7 +485,7 @@ ALTER TABLE [dbo].[Rol] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__tipoReto__72AFBCC6610C5631]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Index [UQ__tipoReto__72AFBCC6446BBC13]    Script Date: 3/12/2023 19:45:01 ******/
 ALTER TABLE [dbo].[tipoReto] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -493,7 +493,7 @@ ALTER TABLE [dbo].[tipoReto] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Usuario__2A586E0BDF3FB4A0]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  Index [UQ__Usuario__2A586E0BBF9E060F]    Script Date: 3/12/2023 19:45:01 ******/
 ALTER TABLE [dbo].[Usuario] ADD UNIQUE NONCLUSTERED 
 (
 	[correo] ASC
@@ -743,7 +743,7 @@ GO
 ALTER TABLE [dbo].[Usuario_Reto]  WITH CHECK ADD FOREIGN KEY([idUsuario])
 REFERENCES [dbo].[Usuario] ([idUsuario])
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Rol]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Rol]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -757,6 +757,8 @@ CREATE procedure [dbo].[sp_B_Rol]
 	@id varchar(max) output
 AS
 BEGIN
+
+	SET NOCOUNT ON;
 
 	if(@estado = -1)
 	begin
@@ -773,7 +775,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_UsuarioById]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_UsuarioById]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -788,6 +790,8 @@ CREATE procedure [dbo].[sp_B_UsuarioById]
 	@id varchar(max) output
 AS
 BEGIN
+
+	SET NOCOUNT ON;
 
 	declare @existeId int = 0
 	Select @existeId = COUNT(*) From Usuario 
@@ -866,7 +870,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_UsuarioLogin]    Script Date: 01/12/2023 17:36:37 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_UsuarioLogin]    Script Date: 3/12/2023 19:45:01 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -881,6 +885,8 @@ CREATE procedure [dbo].[sp_B_UsuarioLogin]
 	@id varchar(max) output
 AS
 BEGIN
+
+	SET NOCOUNT ON;
 
 	declare @existeUsuario int = 0
 	Select @existeUsuario = COUNT(*) From Usuario 
@@ -923,6 +929,82 @@ BEGIN
 		set @info = 'No se encontro el usuario'
 		set @error = 1
 	
+	end	
+
+	print @info
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_C_Usuario]    Script Date: 3/12/2023 19:45:01 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create procedure [dbo].[sp_C_Usuario] 
+
+	@nombre varchar(23),
+	@apellido varchar(23),
+	@correo varchar(60),
+	@celular varchar(15),
+	@foto varchar(50),
+	@idRol varchar(9),
+	@pais varchar(30),
+	@ciudad varchar(30),
+	@empresa varchar(40),
+	@idArea uniqueidentifier,
+	@clave varchar(30),
+
+	@error int output,
+	@info varchar(max) output,	
+	@id varchar(max) output
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	select * from Usuario
+
+	declare @contUsuario int = 0
+	select @contUsuario = COUNT(*) from Usuario where nombre = 'Byron David' and apellido = 'Cedeño Lucero'
+
+
+	if(@contUsuario > 0)
+	begin
+
+		set @info = 'El nombre y apellido ya esta registrado'
+		set @error = 1
+
+	end
+	else
+	begin
+		
+		BEGIN TRY  
+
+			Insert into Usuario (nombre, apellido, correo, celular, foto, idRol, pais, ciudad, empresa, idArea, clave) values
+			(@nombre,
+			@apellido,
+			@correo,
+			NULLIF(@celular, ''),
+			NULLIF(@foto, ''),
+			NULLIF(@idRol, ''),
+			NULLIF(@pais, ''),
+			NULLIF(@ciudad, ''),
+			NULLIF(@empresa, ''),
+			NULLIF(@idArea, ''),
+			@clave
+			)			
+
+			set @info = 'Registro creado satisfactoriamente'
+			set @error = 0
+
+		END TRY
+		BEGIN CATCH	
+
+			set @info = ERROR_MESSAGE()
+			set @error = 1
+
+		END CATCH;			
+
 	end	
 
 	print @info
