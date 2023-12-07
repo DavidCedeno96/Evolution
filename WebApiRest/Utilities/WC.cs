@@ -9,25 +9,26 @@ namespace WebApiRest.Utilities
         private static readonly string satisfactorio = "Satisfactorio";
         private static readonly string error = "Ha ocurrido un error";
         private static readonly string archivoExistente = "El archivo ya existe";
-        private static readonly string errorLogin = "Usuario o Contraseña incorrectos";
+        private static readonly string errorLogin = "Usuario no encontrado";
         private static readonly string errorArchivo = "Tipo de archivo no permitido";
         private static readonly string errorLetrasNumeros = "Solo se permiten letras y números";
         private static readonly string errorLetras = "Solo se permiten letras";
-        private static readonly string errorCedula = "Solo se permiten números";
+        private static readonly string errorNumeros = "Solo se permiten números";
         private static readonly string errorCorreo = "Ingrese un correo válido";
+        private static readonly string errorCelular = "Solo se permiten números y debe ser de 10 dígitos";
         private static readonly string errorClave = "Debe tener al menos 5 caracteres de longitud, contener al menos un número, contener al menos una letra mayúscula, contener al menos una letra minúscula o solo los siguientes caracteres #@_-.";
         private static readonly string invalid = "Tiene cacarteres invalidos";
         private static readonly string max50 = "Máximo 50 caracteres";
 
         public static string GetRutaImagen(IWebHostEnvironment env, string nombreImagen, string nombreCarpeta)
         {
-            string rutaPrincipal = Path.Combine(env.ContentRootPath, "wwwroot", "Images", nombreCarpeta);
+            string rutaPrincipal = Path.Combine(env.ContentRootPath, "wwwroot", "Content", "Images", nombreCarpeta);
             return Path.Combine(rutaPrincipal, nombreImagen.Trim());
         }
 
         public static string GetRutaArchivo(IWebHostEnvironment env, string nombreArchivo, string nombreCarpeta)
         {
-            string rutaPrincipal = Path.Combine(env.ContentRootPath, "wwwroot", "Archivos", nombreCarpeta);
+            string rutaPrincipal = Path.Combine(env.ContentRootPath, "wwwroot", "Content", "Archivos", nombreCarpeta);
             return Path.Combine(rutaPrincipal, nombreArchivo.Trim());
         }
 
@@ -49,7 +50,7 @@ namespace WebApiRest.Utilities
             return null;
         }
 
-        public static string GetStringFromBytes(byte[] byteArray)
+        public static string GetString(byte[] byteArray)
         {
             if (byteArray.Length > 0)
             {
@@ -71,7 +72,7 @@ namespace WebApiRest.Utilities
 
         public static void EliminarArchivosAntiguos(IWebHostEnvironment env, string nombreCarpeta, string infoNombreArchivo)
         {
-            string rutaArchivos = Path.Combine(env.ContentRootPath, "wwwroot", "Archivos", nombreCarpeta);
+            string rutaArchivos = Path.Combine(env.ContentRootPath, "wwwroot", "Content", "Archivos", nombreCarpeta);
             string[] archivos = Directory.GetFiles(rutaArchivos);
             DateTime fechaHoy = DateTime.Now.Date;
 
@@ -139,9 +140,13 @@ namespace WebApiRest.Utilities
         {
             return errorCorreo;
         }
-        public static string GetErrorDpi()
+        public static string GetErrorCelular()
         {
-            return errorCedula;
+            return errorCelular;
+        }
+        public static string GetErrorNumeros()
+        {
+            return errorNumeros;
         }
         public static string GetErrorClave()
         {

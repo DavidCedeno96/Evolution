@@ -1,5 +1,13 @@
 use Evolution_db
 
+create table Constants(	
+	nombre varchar(20) unique not null,
+	descripcion varchar(250),
+	estado int default 1,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+);
+
 create table Rol(
 	idRol varchar(9) primary key,
 	nombre varchar(20) unique not null,

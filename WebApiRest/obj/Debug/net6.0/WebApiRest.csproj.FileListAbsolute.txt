@@ -1,3 +1,4 @@
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Debug\net6.0\wwwroot\Content\Images\Usuario\default.png
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Debug\net6.0\appsettings.json
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Debug\net6.0\WebApiRest.staticwebassets.runtime.json
@@ -18,6 +19,7 @@ C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiR
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Debug\net6.0\Microsoft.IO.RecyclableMemoryStream.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Debug\net6.0\Microsoft.OpenApi.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Debug\net6.0\NPOI.Core.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Debug\net6.0\NPOI.OOXML.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Debug\net6.0\NPOI.OpenXml4Net.dll

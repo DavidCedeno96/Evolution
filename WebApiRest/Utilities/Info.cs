@@ -3,8 +3,7 @@
     public class Settings
     {
         public string Origin { get; set; }
-        public string SecretKey { get; set; }
-        public string HasherKey { get; set; }         
+        public string SecretKey { get; set; }        
         public int TimeExpTokenMin { get; set; }
         public bool Production { get; set; }
         public bool HttpsClient { get; set; }

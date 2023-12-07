@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Vh/wi5U0HdWmKZe8uAy5tG33pb8E3gJ/7VeJym7aL9Y=",
+  "Hash": "RDqJDxZV1KT27dS7lU05TGDenRqjopnBeU4wYfjQjEQ=",
   "Source": "WebApiRest",
   "BasePath": "_content/WebApiRest",
   "Mode": "Default",
@@ -15,5 +15,25 @@
       "Pattern": "**"
     }
   ],
-  "Assets": []
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Usuario\\default.png",
+      "SourceId": "WebApiRest",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\",
+      "BasePath": "_content/WebApiRest",
+      "RelativePath": "Content/Images/Usuario/default.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Always",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Content\\Images\\Usuario\\default.png"
+    }
+  ]
 }

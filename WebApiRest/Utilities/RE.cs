@@ -14,9 +14,10 @@ namespace WebApiRest.Utilities
             Y solo los siguientes caracteres #@_-.
          */
 
-        private static readonly string palabras = "^[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ\\s]+$";
+        private static readonly string palabras = @"^[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ\s]+$";
         private static readonly string palabrasNumeros = @"^[\p{L}\s\d]+$";
-        private static readonly string cedula = @"^\d{13,15}$";
+        private static readonly string celular = @"^\d{10}$";
+        private static readonly string cedula = @"^\d{10,15}$";
         private static readonly string email = @"^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$";
         private static readonly string clave = @"^(?=.*[A-Z]+)(?=.*[a-z]+)(?=.*\d+)[#@_\-\.a-zA-Z\d]{5,}$";
         private static readonly string invalid = @"^[^<>]+$";        
@@ -53,6 +54,11 @@ namespace WebApiRest.Utilities
                 case "cedula":
                     {
                         regex = new Regex(cedula);
+                        break;
+                    }
+                case "celular":
+                    {
+                        regex = new Regex(celular);
                         break;
                     }
                 case "email":
