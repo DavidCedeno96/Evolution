@@ -147,6 +147,9 @@ namespace WebApiRest.Controllers
                     FileStream fileStream = new(rutaArchivo, FileMode.Create);
                     archivo.CopyTo(fileStream);
                 }
+                if (response.Info.Contains("old_image")) {
+                    response.Info = response.Info.Split(',')[0];
+                }
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });

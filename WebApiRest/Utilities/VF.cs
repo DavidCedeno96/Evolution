@@ -114,6 +114,8 @@ namespace WebApiRest.Utilities
                 validForm = false;
             }
 
+            //AQUI VALIDAR PESO MAXIMO
+
             if (validForm)
             {
                 result.Error = 0;

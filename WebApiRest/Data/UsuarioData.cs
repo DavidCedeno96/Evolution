@@ -223,7 +223,7 @@ namespace WebApiRest.Data
             try
             {
                 await sqlConnection.OpenAsync();
-                await cmd.ExecuteNonQueryAsync();
+                await cmd.ExecuteNonQueryAsync();                
 
                 response.Info = cmd.Parameters["@info"].Value.ToString();
                 response.Error = Convert.ToInt16(cmd.Parameters["@error"].Value.ToString());
