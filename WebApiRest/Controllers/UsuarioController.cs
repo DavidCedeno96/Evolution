@@ -75,7 +75,7 @@ namespace WebApiRest.Controllers
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }
+        }        
 
         [HttpPost]
         [Route("create")]
@@ -103,7 +103,8 @@ namespace WebApiRest.Controllers
                 {
                     //Aqui creamos una nueva imagen
                     FileStream fileStream = new(rutaArchivo, FileMode.Create);
-                    archivo.CopyTo(fileStream);
+                    await archivo.CopyToAsync(fileStream);
+                    await fileStream.DisposeAsync();
                 }
             }            
 
@@ -145,7 +146,8 @@ namespace WebApiRest.Controllers
 
                     //Aqui creamos una nueva imagen
                     FileStream fileStream = new(rutaArchivo, FileMode.Create);
-                    archivo.CopyTo(fileStream);
+                    await archivo.CopyToAsync(fileStream);
+                    await fileStream.DisposeAsync();
                 }
                 if (response.Info.Contains("old_image")) {
                     response.Info = response.Info.Split(',')[0];

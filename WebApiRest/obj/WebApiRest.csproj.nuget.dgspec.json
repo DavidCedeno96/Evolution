@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\David\\Documents\\GitHub\\Evolution\\WebApiRest\\WebApiRest.csproj": {}
+    "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\WebApiRest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\David\\Documents\\GitHub\\Evolution\\WebApiRest\\WebApiRest.csproj": {
+    "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\WebApiRest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\David\\Documents\\GitHub\\Evolution\\WebApiRest\\WebApiRest.csproj",
+        "projectUniqueName": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\WebApiRest.csproj",
         "projectName": "WebApiRest",
-        "projectPath": "C:\\Users\\David\\Documents\\GitHub\\Evolution\\WebApiRest\\WebApiRest.csproj",
-        "packagesPath": "C:\\Users\\David\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\David\\Documents\\GitHub\\Evolution\\WebApiRest\\obj\\",
+        "projectPath": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\WebApiRest.csproj",
+        "packagesPath": "C:\\Users\\Alejandro\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\David\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Alejandro\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -84,7 +84,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

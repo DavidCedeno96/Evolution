@@ -5,6 +5,9 @@ EXEC sp_spaceused
 EXEC sp_helpdb 'Evolution_db';
 
 ---
+SELECT SYSDATETIME() AS [Fecha y Hora Actual], CURRENT_TIMEZONE() AS [Zona Horaria Actual];
+
+---
 SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES 
    WHERE ROUTINE_TYPE = 'PROCEDURE'
    ORDER BY ROUTINE_NAME 
@@ -19,7 +22,7 @@ FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
 JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
     ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME
 WHERE 
-    tc.TABLE_NAME = 'Usuario' AND 
+    tc.TABLE_NAME = 'Configuracion' AND 
     tc.CONSTRAINT_TYPE = 'UNIQUE'    
 
 ----
@@ -30,7 +33,7 @@ WHERE TABLE_NAME = 'Usuario' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Usuario';
+WHERE tc.TABLE_NAME = 'Configuracion';
 
 ---
 SELECT @@VERSION;
@@ -85,7 +88,7 @@ exec sp_B_UsuarioById
 @id = ''
 
 exec sp_B_UsuarioByCorreo
-@correo = 'dav@gmail.com',
+@correo = 'marie@gmail.com',
 @error = '',
 @info = '',
 @id = ''
@@ -99,9 +102,7 @@ exec sp_C_Usuario
 @celular = '0998467221',
 @foto = '',
 @idRol = 'jug',
-@pais = 'Mexico',
-@ciudad = 'cdmx',
-@empresa = '',
+@idCiudad = '',
 @idArea = '',
 @error = '',
 @info = '',
@@ -109,18 +110,221 @@ exec sp_C_Usuario
 
 declare @auxClave varbinary(max) = 0x
 exec sp_U_Usuario
-@idUsuario = '7C8613DA-DD4B-4883-BA12-15636828FA3A',
-@nombre = 'Daniela edit',
-@apellido = 'Dias',
-@correo = 'dani@gmail.com',
+@idUsuario = '91331754-1E83-417F-90E7-0E596E996510',
+@nombre = 'Elver',
+@apellido = 'Galarraga',
+@correo = 'elver.ga.larga@gmail.com',
 @clave = @auxClave,
-@celular = '0998467221',
-@foto = 'foto2.png',
+@celular = '1234567891',
+@foto = 'models.png',
 @idRol = 'jug',
-@pais = 'Mexico',
-@ciudad = 'cdmx',
-@empresa = '',
+@idCiudad = '',
 @idArea = '',
+@error = '',
+@info = '',
+@id = ''
+
+-- Area --------------------------------------------------------
+exec sp_B_Area		
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Area		
+@nombre = 'Preuab',
+@descripcion = 'Este es solo para la prueba',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Area		
+@idArea = '1B837374-0533-4885-AF06-A3AF2D6E3B50',
+@nombre = 'preubn edit',
+@descripcion = 'Este es solo para la prueba',
+@error = '',
+@info = '',
+@id = ''
+
+
+-- Nivel --------------------------------------------------------
+exec sp_B_Nivel		
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Nivel
+@nombre = 'nivel 5',
+@descripcion = 'este es para el nivel 5',
+@puntosNecesarios = '',
+@imagen = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Usuario_Nivel
+@idUsuario = '34FA60B2-4FCD-49A8-BEBB-198E7A343CFA',
+@idNivel = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@error = '',
+@info = '',
+@id = ''
+
+-- Medallas --------------------------------------------------------
+select * from Condicion
+
+exec sp_B_Medalla		
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Medalla
+@nombre = 'medalla 3',
+@descripcion = 'desc 1',
+@imagen = '',
+@idCondicion = '2439150E-8525-4582-8203-9D1D2AC93739',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Usuario_Medalla
+@idUsuario = '6D3A6B25-C6C7-4ED4-A5E9-D992B1CC98A7',
+@idMedalla = '26763EAA-657D-4E10-BD82-78D29934C607',
+@error = '',
+@info = '',
+@id = ''
+
+-- Recompensas --------------------------------------------------------
+exec sp_B_Recompensa
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Recompensa
+@nombre = '10 entradas al cine',
+@descripcion = '',
+@imagen = '',
+@cantDisp = 0,	
+@cantCanje = 5,
+@error = '',
+@info = '',
+@id = ''
+
+-- Hay TRIGGER
+exec sp_C_Usuario_Recompensa
+@idUsuario = '015E40DD-58CE-401E-A0A9-075874BC0B68',
+@idRecompensa = '56D57B18-2AFE-46A9-822B-9540EB4F8E6A',
+@error = '',
+@info = '',
+@id = ''
+
+-- Noticias y sus Categorias --------------------------------------------------------
+-- Categorias
+exec sp_B_CategoriaNoticia
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_CategoriaNoticia
+@nombre = 'Culturales',
+@descripcion = 'Cuando se refieren a sucesos de la vida artística, literaria y cultural del país.',
+@error = '',
+@info = '',
+@id = ''
+
+-- Noticias
+exec sp_B_Noticia
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Noticia
+@titular = 'titular 3  de prueba',
+@descripcion = 'descripcion 3  de prueba',
+@url = '',
+@imagen = '',
+@idCategoria = '622FF0AC-4EC0-461F-8EDA-F8A487F80EB3',
+@fechaPublicacion = '2023-12-23',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_Usuario_NoticiaByIdNoticia	
+@idNoticia = 'E1F0D39F-A8F3-4297-9429-9A89DD88EE7D',	
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Usuario_Noticia
+@idUsuario = 'F42329D1-EDAA-4F2C-9AE1-8F026C92C842',
+@idNoticia = 'E1F0D39F-A8F3-4297-9429-9A89DD88EE7D',
+@likes = 0,
+@comentario = 'Buenas tardes',
+@error = '',
+@info = '',
+@id = ''
+
+-- Red Social --------------------------------------------------------
+exec sp_B_RedSocial		
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_RedSocial	
+@descripcion = 'Hola mundo',
+@imagen = '',
+@fechaPublicacion = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_Usuario_RedSocialByIdRed	
+@idRed = 'E7D76E78-CE50-4712-AABF-FBC79EA3CB46',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Usuario_RedSocial
+@idUsuario = '6D3A6B25-C6C7-4ED4-A5E9-D992B1CC98A7',
+@idRed = 'E7D76E78-CE50-4712-AABF-FBC79EA3CB46',
+@likes = 1,
+@comentario = '',
+@error = '',
+@info = '',
+@id = ''
+
+-- Configuracion --------------------------------------------------------
+select * from Configuracion
+
+exec sp_B_Configuracion
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Configuracion
+@tipo = 'color',
+@propiedad = '--ColorBotonSecundario',
+@nombre = 'boton secundario',
+@valor = '#58CD2C',
+@descripcion = '',
+@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Configuracion
+@idConfig = '453657DA-CC12-403D-888F-96D72035A4C0',
+@tipo = 'color',
+@propiedad = '--ColorBotonSecundario',
+@nombre = 'boton secundario',
+@valor = '#4CBB23',
+@descripcion = '',
+@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
 @error = '',
 @info = '',
 @id = ''

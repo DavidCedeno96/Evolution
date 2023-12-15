@@ -17,13 +17,42 @@ create table Rol(
 	fechaModificacion datetime default getdate()
 );
 
+create table Empresa(
+	idEmpresa uniqueidentifier primary key default newid(),
+	nombre varchar(100) unique not null,
+	descripcion varchar(250),
+	estado int default 1,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+);
+
 create table Area(
 	idArea uniqueidentifier primary key default newid(),
 	nombre varchar(65) unique not null,
 	descripcion varchar(250),
 	estado int default 1,
 	fechaCreacion datetime default getdate(),
-	fechaModificacion datetime default getdate()
+	fechaModificacion datetime default getdate(),
+	idEmpresa uniqueidentifier references Empresa(idEmpresa) not null
+);
+
+create table Pais(
+	idPais uniqueidentifier primary key default newid(),
+	nombre varchar(65) unique not null,
+	descripcion varchar(250),
+	estado int default 1,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate(),	
+);
+
+create table Ciudad(
+	idCiudad uniqueidentifier primary key default newid(),
+	nombre varchar(65) unique not null,
+	descripcion varchar(250),
+	idPais uniqueidentifier references Pais(idPais) not null,
+	estado int default 1,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate(),		
 );
 
 create table Usuario(
@@ -41,15 +70,17 @@ create table Usuario(
 	idArea uniqueidentifier references Area(idArea) null,
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate(),
-	clave varbinary(MAX) not null
+	clave varbinary(MAX) not null,
+	idCiudad uniqueidentifier references Ciudad(idCiudad) null
 );
+
 
 create table Nivel(
 	idNivel uniqueidentifier primary key default newid(),
 	nombre varchar(20) not null,
 	descripcion varchar(250),
 	puntosNecesarios int not null,
-	imagen varchar(20),
+	imagen varchar(50),
 	estado int default 1,
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate()
@@ -92,8 +123,8 @@ create table CategoriaNoticia (
 
 create table Noticia(
 	idNoticia uniqueidentifier primary key default newid(),
-	titular varchar(60) not null,
-	descripcion varchar(250),
+	titular varchar(100) not null,
+	descripcion varchar(500),
 	url varchar(250),
 	imagen varchar(50),
 	estado int default 1,
@@ -162,7 +193,7 @@ create table Configuracion(
 	idConfig uniqueidentifier primary key default newid(),
 	tipo varchar(10) not null,
 	propiedad varchar(40),
-	nombre varchar(30) not null,
+	nombre varchar(30) unique not null,
 	valor varchar(50) not null,
 	descripcion varchar(250),
 	idUsuario uniqueidentifier references Usuario(idUsuario) not null,	

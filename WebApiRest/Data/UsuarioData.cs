@@ -45,10 +45,8 @@ namespace WebApiRest.Data
                         Celular = dr["celular"].ToString(),
                         Foto = dr["foto"].ToString(),
                         IdRol = dr["idRol"].ToString(),
-                        Rol = dr["rol"].ToString(),
-                        Pais = dr["pais"].ToString(),
-                        Ciudad = dr["ciudad"].ToString(),
-                        Empresa = dr["empresa"].ToString(),
+                        Rol = dr["rol"].ToString(),                        
+                        Ciudad = dr["ciudad"].ToString(),                        
                         IdArea = dr["idArea"].ToString(),
                         Area = dr["area"].ToString(),
                         Estado = Convert.ToInt16(dr["estado"].ToString()),
@@ -107,10 +105,8 @@ namespace WebApiRest.Data
                         Celular = dr["celular"].ToString(),
                         Foto = dr["foto"].ToString(),
                         IdRol = dr["idRol"].ToString(),
-                        Rol = dr["rol"].ToString(),
-                        Pais = dr["pais"].ToString(),
-                        Ciudad = dr["ciudad"].ToString(),
-                        Empresa = dr["empresa"].ToString(),
+                        Rol = dr["rol"].ToString(),                        
+                        Ciudad = dr["ciudad"].ToString(),                        
                         IdArea = dr["idArea"].ToString(),
                         Area = dr["area"].ToString(),                        
                         Estado = Convert.ToInt16(dr["estado"].ToString()),
@@ -153,9 +149,7 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@celular", WC.GetTrim(usuario.Celular));
             cmd.Parameters.AddWithValue("@foto", WC.GetTrim(usuario.Foto));
             cmd.Parameters.AddWithValue("@idRol", WC.GetTrim(usuario.IdRol));
-            cmd.Parameters.AddWithValue("@pais", WC.GetTrim(usuario.Pais));
-            cmd.Parameters.AddWithValue("@ciudad", WC.GetTrim(usuario.Ciudad));
-            cmd.Parameters.AddWithValue("@empresa", WC.GetTrim(usuario.Empresa));
+            cmd.Parameters.AddWithValue("@idCiudad", WC.GetTrim(usuario.IdCiudad));
             cmd.Parameters.AddWithValue("@idArea", WC.GetTrim(usuario.IdArea));
             cmd.Parameters.AddWithValue("@clave", WC.GetBytes(Hasher.Encrypt(WC.GetTrim(usuario.Contrasena))));
 
@@ -203,9 +197,7 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@celular", WC.GetTrim(usuario.Celular));
             cmd.Parameters.AddWithValue("@foto", WC.GetTrim(usuario.Foto));
             cmd.Parameters.AddWithValue("@idRol", WC.GetTrim(usuario.IdRol));
-            cmd.Parameters.AddWithValue("@pais", WC.GetTrim(usuario.Pais));
-            cmd.Parameters.AddWithValue("@ciudad", WC.GetTrim(usuario.Ciudad));
-            cmd.Parameters.AddWithValue("@empresa", WC.GetTrim(usuario.Empresa));
+            cmd.Parameters.AddWithValue("@idCiudad", WC.GetTrim(usuario.IdCiudad));
             cmd.Parameters.AddWithValue("@idArea", WC.GetTrim(usuario.IdArea));
             if (WC.GetTrim(usuario.Contrasena).Equals(""))
             {

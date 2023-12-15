@@ -11,9 +11,8 @@
         public string Foto { get; set; }
         public string IdRol { get; set; }
         public string Rol { get; set; }
-        public string Pais { get; set; }
+        public string IdCiudad { get; set; }
         public string Ciudad { get; set; }
-        public string Empresa { get; set; }
         public string IdArea{ get; set; }
         public string Area { get; set; }
         public int Estado { get; set; }

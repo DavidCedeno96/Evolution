@@ -44,28 +44,7 @@ namespace WebApiRest.Utilities
                 result.Info = WC.GetErrorCelular();
                 result.Campo = "celular";
                 validForm = false;
-            }
-            if (!RE.ValidRE(usuario.Pais, "palabras"))
-            {
-                result.Error = 1;
-                result.Info = WC.GetErrorLetras();
-                result.Campo = "pais";
-                validForm = false;
-            }
-            if (!RE.ValidRE(usuario.Ciudad, "palabras"))
-            {
-                result.Error = 1;
-                result.Info = WC.GetErrorLetras();
-                result.Campo = "ciudad";
-                validForm = false;
-            }
-            if (!RE.ValidRE(usuario.Empresa, "invalid"))
-            {
-                result.Error = 1;
-                result.Info = WC.GetInvalid();
-                result.Campo = "empresa";
-                validForm = false;
-            }
+            }            
 
             if (validForm)
             {
@@ -114,7 +93,13 @@ namespace WebApiRest.Utilities
                 validForm = false;
             }
 
-            //AQUI VALIDAR PESO MAXIMO
+            if (archivo.Length > 600 * 1024)
+            {
+                result.Error = 1;
+                result.Info = WC.GetErrorTamanoArchivo();
+                result.Campo = "imagen";
+                validForm = false;                
+            }            
 
             if (validForm)
             {
