@@ -33,7 +33,7 @@ namespace WebApiRest.Data
                 if (await dr.ReadAsync())
                 {
                     byte[] binaryDataClave = (byte[])dr.GetValue("clave");
-                    string decryptedText = Hasher.Decrypt(WC.GetString(binaryDataClave));
+                    string decryptedText = await Hasher.Decrypt(WC.GetString(binaryDataClave));
 
                     item.Usuario = new Usuario()
                     {
@@ -151,7 +151,7 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@idRol", WC.GetTrim(usuario.IdRol));
             cmd.Parameters.AddWithValue("@idCiudad", WC.GetTrim(usuario.IdCiudad));
             cmd.Parameters.AddWithValue("@idArea", WC.GetTrim(usuario.IdArea));
-            cmd.Parameters.AddWithValue("@clave", WC.GetBytes(Hasher.Encrypt(WC.GetTrim(usuario.Contrasena))));
+            cmd.Parameters.AddWithValue("@clave", WC.GetBytes(await Hasher.Encrypt(WC.GetTrim(usuario.Contrasena))));
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -205,7 +205,7 @@ namespace WebApiRest.Data
             }
             else
             {
-                cmd.Parameters.AddWithValue("@clave", WC.GetBytes(Hasher.Encrypt(WC.GetTrim(usuario.Contrasena))));
+                cmd.Parameters.AddWithValue("@clave", WC.GetBytes(await Hasher.Encrypt(WC.GetTrim(usuario.Contrasena))));
             }
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;

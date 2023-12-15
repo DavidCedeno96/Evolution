@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using System.Collections;
 using System.IdentityModel.Tokens.Jwt;
-using System.Numerics;
 using System.Security.Claims;
 using System.Text;
 using WebApiRest.Data;
@@ -16,8 +15,7 @@ namespace WebApiRest.Controllers
     public class UsuarioController : ControllerBase
     {
         readonly UsuarioData data = new();
-        readonly Settings settings = new();
-        //readonly Hasher hasher = new();
+        readonly Settings settings = new();        
 
         private readonly IWebHostEnvironment _env;
         private readonly string nombreCarpeta = "Usuario";
@@ -30,6 +28,7 @@ namespace WebApiRest.Controllers
 
         [HttpGet]
         [Route("item/{estado}/{idUsuario}")]
+        [Authorize]
         public async Task<IActionResult> GetUsuarioById([FromRoute] int estado, [FromRoute] Guid idUsuario)
         {
             UsuarioItem response = await data.GetUsuario(estado, idUsuario);
@@ -113,6 +112,7 @@ namespace WebApiRest.Controllers
 
         [HttpPut]
         [Route("update")]
+        [Authorize]
         public async Task<IActionResult> Update([FromForm] IFormFile archivo, [FromForm] Usuario usuario)
         {
             Response response = VF.ValidarUsuario(usuario);

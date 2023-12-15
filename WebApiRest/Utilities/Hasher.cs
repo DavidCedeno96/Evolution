@@ -11,7 +11,7 @@ namespace WebApiRest.Utilities
         private static readonly string secretKey = "K38#vQUjVK%ooTQyEU23A#BC&jBQcm";
 
         // Encriptar
-        public static string Encrypt(string text)
+        public static async Task<string> Encrypt(string text)
         {
             using Aes aesAlg = Aes.Create();
             aesAlg.Key = Encoding.UTF8.GetBytes(secretKey.PadRight(32));
@@ -24,7 +24,7 @@ namespace WebApiRest.Utilities
             using (CryptoStream csEncrypt = new(msEncrypt, encryptor, CryptoStreamMode.Write))
             {
                 using StreamWriter swEncrypt = new(csEncrypt);
-                swEncrypt.Write(text);                
+                await swEncrypt.WriteAsync(text);
             } 
 
             string cipherText = Convert.ToBase64String(msEncrypt.ToArray());
@@ -33,7 +33,7 @@ namespace WebApiRest.Utilities
         }
 
         // Desencriptar
-        public static string Decrypt(string cipherTextConIV)
+        public static async Task<string> Decrypt(string cipherTextConIV)
         {
             dynamic encryptedData = JsonConvert.DeserializeObject(cipherTextConIV);
             string cipherText = encryptedData.CipherText;
@@ -50,7 +50,7 @@ namespace WebApiRest.Utilities
             using MemoryStream msDecrypt = new(encryptedBytes);
             using CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read);
             using StreamReader srDecrypt = new(csDecrypt);
-            string decryptedText = srDecrypt.ReadToEnd();
+            string decryptedText = await srDecrypt.ReadToEndAsync();
             return decryptedText;
         }
 

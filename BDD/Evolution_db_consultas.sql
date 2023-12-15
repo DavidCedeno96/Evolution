@@ -13,6 +13,18 @@ SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES
    ORDER BY ROUTINE_NAME 
 
 ---
+SELECT
+    tr.name AS TriggerName,
+    tr.object_id AS TriggerObjectId,
+	te.type_desc,
+    tr.parent_id AS TableObjectId,
+    OBJECT_NAME(tr.parent_id) AS 'TableName'
+FROM sys.triggers tr 
+INNER JOIN sys.trigger_events te ON tr.object_id = te.object_id
+INNER JOIN sys.objects o ON tr.parent_id = o.object_id
+--WHERE te.type = 1;
+
+---
 SELECT 
 	tc.CONSTRAINT_TYPE,
     tc.CONSTRAINT_NAME,
@@ -33,7 +45,7 @@ WHERE TABLE_NAME = 'Usuario' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Configuracion';
+WHERE tc.TABLE_NAME = 'Ciudad';
 
 ---
 SELECT @@VERSION;
@@ -146,6 +158,73 @@ exec sp_U_Area
 @info = '',
 @id = ''
 
+-- Empresa --------------------------------------------------------
+exec sp_B_Empresa		
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Empresa		
+@nombre = 'Prueba',
+@descripcion = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Empresa		
+@idEmpresa = 'C99EC2BD-7C18-499C-878A-5EE9AB6FE8C7',
+@nombre = 'Prueba ediado',
+@descripcion = 'editado desc',
+@error = '',
+@info = '',
+@id = ''
+
+-- Pais --------------------------------------------------------
+exec sp_B_Pais
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Pais		
+@nombre = 'Prueba',
+@descripcion = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Pais
+@idPais = 'D0A947C1-149A-4747-9A58-272F3EED7480',
+@nombre = 'pais prueba edit',
+@descripcion = 'este es para la prueba',
+@error = '',
+@info = '',
+@id = ''
+
+-- Ciudad --------------------------------------------------------
+exec sp_B_Ciudad
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Ciudad		
+@nombre = 'prueba',
+@descripcion = '',
+@idPais = '1E539FEF-7E19-4248-BD2C-D19B79726B0A',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Ciudad	
+@idCiudad = '679FDC16-B347-4A5B-B7B6-F00E92786C7F',
+@nombre = 'ciudad edit',
+@descripcion = 'edit',
+@idPais = 'D0A947C1-149A-4747-9A58-272F3EED7480',
+@error = '',
+@info = '',
+@id = ''
 
 -- Nivel --------------------------------------------------------
 exec sp_B_Nivel		
@@ -170,9 +249,14 @@ exec sp_C_Usuario_Nivel
 @info = '',
 @id = ''
 
--- Medallas --------------------------------------------------------
-select * from Condicion
+-- Condicion --------------------------------------------------------
+exec sp_B_Condicion		
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
 
+-- Medallas --------------------------------------------------------
 exec sp_B_Medalla		
 @estado = -1,
 @error = '',
@@ -212,7 +296,7 @@ exec sp_C_Recompensa
 @info = '',
 @id = ''
 
--- Hay TRIGGER
+-- HAY TRIGGER
 exec sp_C_Usuario_Recompensa
 @idUsuario = '015E40DD-58CE-401E-A0A9-075874BC0B68',
 @idRecompensa = '56D57B18-2AFE-46A9-822B-9540EB4F8E6A',
@@ -299,8 +383,6 @@ exec sp_C_Usuario_RedSocial
 @id = ''
 
 -- Configuracion --------------------------------------------------------
-select * from Configuracion
-
 exec sp_B_Configuracion
 @error = '',
 @info = '',
@@ -328,3 +410,4 @@ exec sp_U_Configuracion
 @error = '',
 @info = '',
 @id = ''
+
