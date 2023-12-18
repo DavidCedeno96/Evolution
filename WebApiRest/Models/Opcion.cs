@@ -1,19 +1,20 @@
 ﻿namespace WebApiRest.Models
 {
-    public class Pais
+    public class Opcion
     {
-        public Guid IdPais { get; set; }
+        public Guid IdOpcion { get; set; }
         public string Nombre { get; set; }
-        public string Descripcion { get; set; }
-        public int Estado { get; set; }
+        public string Correcta { get; set; }
+        public string  Estado { get; set; }
+        public Guid IdPregunta { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
     }
 
-    public class PaisList
+    public class OpcionList
     {
         public string Info { get; set; }
         public int Error { get; set; }
-        public List<Pais> Lista { get; set; }
-    }    
+        public List<Opcion> Lista { get; set; }
+    }
 }

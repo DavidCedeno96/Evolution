@@ -168,7 +168,7 @@ namespace WebApiRest.Data
             }
             catch (Exception ex)
             {
-                response.Info = ex.Message;
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
                 response.Error = 1;
             }
             finally
@@ -223,7 +223,7 @@ namespace WebApiRest.Data
             }
             catch (Exception ex)
             {
-                response.Info = ex.Message;
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
                 response.Error = 1;
             }
             finally

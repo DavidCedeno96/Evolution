@@ -34,7 +34,7 @@ FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
 JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
     ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME
 WHERE 
-    tc.TABLE_NAME = 'Configuracion' AND 
+    tc.TABLE_NAME = 'Reto' AND 
     tc.CONSTRAINT_TYPE = 'UNIQUE'    
 
 ----
@@ -45,7 +45,7 @@ WHERE TABLE_NAME = 'Usuario' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Ciudad';
+WHERE tc.TABLE_NAME = 'Reto';
 
 ---
 SELECT @@VERSION;
@@ -411,3 +411,135 @@ exec sp_U_Configuracion
 @info = '',
 @id = ''
 
+------------------------------------------------------------------------------------
+-- En esta parte es para los juegos que va a tener la aplicacion -------------------
+------------------------------------------------------------------------------------
+-- Comportamiento de Pregunta ------------------------------------------------------
+exec sp_B_ComporPregu
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+-- Tipo de Reto ------------------------------------------------------------------
+exec sp_B_tipoReto
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+-- Opcion ------------------------------------------------------------------------
+select * from Opcion
+
+exec sp_B_OpcionByIdPregunta		
+@estado = -1,
+@idPregunta = 'EFE6E2F4-091C-4B53-958C-CC1EDC252445',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Opcion		
+@nombre = 'Ambato',
+@correcta = 0,
+@idPregunta = 'EFE6E2F4-091C-4B53-958C-CC1EDC252445',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Opcion	
+@idOpcion = '8EE73190-C353-420B-9453-92C1E9F075E6',
+@nombre = 'Ambato',
+@correcta = '',
+@idPregunta = 'EFE6E2F4-091C-4B53-958C-CC1EDC252445',
+@error = '',
+@info = '',
+@id = ''
+
+-- Pregunta ------------------------------------------------------------------------
+select * from Pregunta
+
+exec sp_B_PreguntaByIdReto		
+@estado = -1,
+@idReto = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Pregunta		
+@nombre = '¿Esta es una pregunta de prueba?',
+@idReto = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Pregunta		
+@idPregunta = '4D060801-0692-4BE7-8559-52756B101CAA',
+@nombre = '¿Esta es una pregunta de prueba editada?',
+@idReto = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
+@error = '',
+@info = '',
+@id = ''
+
+
+-- Reto ------------------------------------------------------------------------
+exec sp_B_Reto
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_RetoById	
+@idReto = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Reto		
+@nombre = 'mi segundo reto',
+@fechaApertura = '2023-12-23',
+@fechaCierre = '2023-12-24',
+@vidas = 3,
+@tiempo = 40000,
+@puntosRecompensa = 11,
+@creditosObtenidos = 16,
+@instrucciones = '',
+@imagen = '',
+@idTipoReto = '63AA060B-CDE4-49C0-9D60-AAF069DF1533',
+@idComportamiento = '1DD28D88-34C7-4394-AB3D-525726001730',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Reto		
+@idReto = '81642C08-9711-469B-B831-18C682B5122A',
+@nombre = 'mi segundo reto editado',
+@fechaApertura = '2023-12-29',
+@fechaCierre = '2023-12-31',
+@vidas = 4,
+@tiempo = 50000,
+@puntosRecompensa = 12,
+@creditosObtenidos = 17,
+@instrucciones = '',
+@imagen = '',
+@idTipoReto = '63AA060B-CDE4-49C0-9D60-AAF069DF1533',
+@idComportamiento = '1DD28D88-34C7-4394-AB3D-525726001730',
+@error = '',
+@info = '',
+@id = ''
+
+------------------------------------------------------------------------------------------------------------------------------------
+--insert into Reto (nombre, fechaApetura, fechaCierre, vidas, tiempo_ms, puntosRecompensa, creditosObtenidos, idTipoReto, idComportamiento) values
+--('Mi primer reto', '2023-12-16', '2023-12-17', 3, 300000, 10, 5, '63AA060B-CDE4-49C0-9D60-AAF069DF1533', '1DD28D88-34C7-4394-AB3D-525726001730')
+
+--insert into Pregunta (nombre, idReto) values
+--('¿Cuantos años tengo?', '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30')
+--('¿Cual es la capital del Ecuador?', '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30')
+
+--insert into Opcion (nombre, correcta, idPregunta) values
+--('Quito', 1, 'EFE6E2F4-091C-4B53-958C-CC1EDC252445'),
+--('Tulcan', 0, 'EFE6E2F4-091C-4B53-958C-CC1EDC252445'),
+--('Cuenca', 0, 'EFE6E2F4-091C-4B53-958C-CC1EDC252445'),
+--('23', 0, '7178DEA1-9A99-475F-9F42-32A77FF81DD0'),
+--('25', 0, '7178DEA1-9A99-475F-9F42-32A77FF81DD0'),
+--('27', 1, '7178DEA1-9A99-475F-9F42-32A77FF81DD0')

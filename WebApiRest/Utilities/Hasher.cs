@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WebApiRest.Utilities
 {
-    // Esta clase sirve para poder encriptar un dato
+    // Esta clase sirve para poder encriptar o desencriptar un dato
     public static class Hasher
     {        
 

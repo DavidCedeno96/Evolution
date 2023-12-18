@@ -5,20 +5,20 @@ using WebApiRest.Utilities;
 
 namespace WebApiRest.Data
 {
-    public class EmpresaData
+    public class CiudadData
     {
         private readonly Conexion conexion = new();
 
-        public async Task<EmpresaList> GetEmpresaList(int estado)
+        public async Task<CiudadList> GetCiudadList(int estado)
         {
-            EmpresaList list = new()
+            CiudadList list = new()
             {
                 Lista = new()
             };
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
-            SqlCommand cmd = new("sp_B_Empresa", sqlConnection)
+            SqlCommand cmd = new("sp_B_Ciudad", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -28,21 +28,22 @@ namespace WebApiRest.Data
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
 
-
             try
             {
                 await sqlConnection.OpenAsync();
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
-                    list.Lista.Add(new Empresa()
+                    list.Lista.Add(new Ciudad()
                     {
-                        IdEmpresa = new Guid(dr["idEmpresa"].ToString()),
-                        Nombre = dr["nombre"].ToString(),                        
-                        Descripcion = dr["descripcion"].ToString(),                        
-                        Estado = Convert.ToInt16(dr["estado"].ToString()),          
+                        IdCiudad = new Guid(dr["idPais"].ToString()),                        
+                        Nombre = dr["nombre"].ToString(),
+                        Descripcion = dr["descripcion"].ToString(),
+                        IdPais = new Guid(dr["idPais"].ToString()),
+                        Pais = dr["pais"].ToString(),
+                        Estado = Convert.ToInt16(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
-                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString()),                        
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     });
                 }
 
@@ -63,18 +64,19 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<Response> CreateEmpresa(Empresa empresa)
+        public async Task<Response> CreateCiudad(Ciudad ciudad)
         {
             Response response = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-            SqlCommand cmd = new("sp_C_Empresa", sqlConnection)
+            SqlCommand cmd = new("sp_C_Ciudad", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(empresa.Nombre));
-            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(empresa.Descripcion));            
+            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(ciudad.Nombre));
+            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(ciudad.Descripcion));
+            cmd.Parameters.AddWithValue("@idPais", ciudad.IdPais);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -102,18 +104,20 @@ namespace WebApiRest.Data
             return response;
         }
 
-        public async Task<Response> UpdateEmpresa(Empresa empresa)
+        public async Task<Response> UpdateCiudad(Ciudad ciudad)
         {
             Response response = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-            SqlCommand cmd = new("sp_U_Empresa", sqlConnection)
+            SqlCommand cmd = new("sp_U_Ciudad", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(empresa.Nombre));
-            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(empresa.Descripcion));
+            cmd.Parameters.AddWithValue("@idCiudad", ciudad.IdCiudad);
+            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(ciudad.Nombre));
+            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(ciudad.Descripcion));
+            cmd.Parameters.AddWithValue("@idPais", ciudad.IdPais);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
