@@ -5,7 +5,7 @@
         public Guid IdRed { get; set; }
         public string Descripcion { get; set; }
         public string Imagen { get; set; }
-        public string Estado { get; set; }
+        public int Estado { get; set; }
         public DateTime FechaPublicacion { get; set; }
         public int TotalLikes { get; set; }
         public int TotalComents { get; set; }
@@ -37,7 +37,7 @@
         public string Comentario { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
-    }
+    }   
 
     public class Usuario_RedSocialList
     {

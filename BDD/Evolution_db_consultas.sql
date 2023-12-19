@@ -144,8 +144,9 @@ exec sp_B_Area
 @id = ''
 
 exec sp_C_Area		
-@nombre = 'Preuab',
-@descripcion = 'Este es solo para la prueba',
+@nombre = 'Preuab1',
+@descripcion = 'Este es solo para la prueba1',
+@idEmpresa = '4E87C6CD-992A-4F14-90C8-CB7BFD4B2DBA',
 @error = '',
 @info = '',
 @id = ''
@@ -154,6 +155,7 @@ exec sp_U_Area
 @idArea = '1B837374-0533-4885-AF06-A3AF2D6E3B50',
 @nombre = 'preubn edit',
 @descripcion = 'Este es solo para la prueba',
+@idEmpresa = '4E87C6CD-992A-4F14-90C8-CB7BFD4B2DBA',
 @error = '',
 @info = '',
 @id = ''

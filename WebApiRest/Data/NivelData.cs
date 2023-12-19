@@ -5,20 +5,20 @@ using WebApiRest.Utilities;
 
 namespace WebApiRest.Data
 {
-    public class CiudadData
+    public class NivelData
     {
         private readonly Conexion conexion = new();
 
-        public async Task<CiudadList> GetCiudadList(int estado)
+        public async Task<NivelList> GetNivelList(int estado)
         {
-            CiudadList list = new()
+            NivelList list = new()
             {
                 Lista = new()
             };
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
-            SqlCommand cmd = new("sp_B_Ciudad", sqlConnection)
+            SqlCommand cmd = new("sp_B_Nivel", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -34,13 +34,14 @@ namespace WebApiRest.Data
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
-                    list.Lista.Add(new Ciudad()
+                    list.Lista.Add(new Nivel()
                     {
-                        IdCiudad = new Guid(dr["idCiudad"].ToString()),                        
+                        IdNivel = new Guid(dr["idNivel"].ToString()),
                         Nombre = dr["nombre"].ToString(),
                         Descripcion = dr["descripcion"].ToString(),
-                        IdPais = new Guid(dr["idPais"].ToString()),
-                        Pais = dr["pais"].ToString(),
+                        PuntosNecesarios = Convert.ToInt16(dr["puntosNecesarios"].ToString()),                        
+                        Imagen = dr["imagen"].ToString(),
+                        TotalUsuarios = Convert.ToInt16(dr["totalUsuarios"].ToString()),
                         Estado = Convert.ToInt16(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
@@ -64,19 +65,20 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<Response> CreateCiudad(Ciudad ciudad)
+        public async Task<Response> CreateNivel(Nivel nivel)
         {
             Response response = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-            SqlCommand cmd = new("sp_C_Ciudad", sqlConnection)
+            SqlCommand cmd = new("sp_C_Nivel", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(ciudad.Nombre));
-            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(ciudad.Descripcion));
-            cmd.Parameters.AddWithValue("@idPais", ciudad.IdPais);
+            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(nivel.Nombre));
+            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(nivel.Descripcion));
+            cmd.Parameters.AddWithValue("@puntosNecesarios", nivel.PuntosNecesarios);
+            cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(nivel.Imagen));
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -104,20 +106,18 @@ namespace WebApiRest.Data
             return response;
         }
 
-        public async Task<Response> UpdateCiudad(Ciudad ciudad)
+        public async Task<Response> CreateUsuario_Nivel(Usuario_Nivel usuario_nivel)
         {
             Response response = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-            SqlCommand cmd = new("sp_U_Ciudad", sqlConnection)
+            SqlCommand cmd = new("sp_C_Usuario_Nivel", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@idCiudad", ciudad.IdCiudad);
-            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(ciudad.Nombre));
-            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(ciudad.Descripcion));
-            cmd.Parameters.AddWithValue("@idPais", ciudad.IdPais);
+            cmd.Parameters.AddWithValue("@idUsuario", usuario_nivel.IdUsuario);
+            cmd.Parameters.AddWithValue("@idNivel", usuario_nivel.IdNivel);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
