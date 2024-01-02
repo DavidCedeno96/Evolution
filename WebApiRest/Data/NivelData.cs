@@ -39,10 +39,10 @@ namespace WebApiRest.Data
                         IdNivel = new Guid(dr["idNivel"].ToString()),
                         Nombre = dr["nombre"].ToString(),
                         Descripcion = dr["descripcion"].ToString(),
-                        PuntosNecesarios = Convert.ToInt16(dr["puntosNecesarios"].ToString()),                        
+                        PuntosNecesarios = Convert.ToInt32(dr["puntosNecesarios"].ToString()),                        
                         Imagen = dr["imagen"].ToString(),
-                        TotalUsuarios = Convert.ToInt16(dr["totalUsuarios"].ToString()),
-                        Estado = Convert.ToInt16(dr["estado"].ToString()),
+                        TotalUsuarios = Convert.ToInt32(dr["totalUsuarios"].ToString()),
+                        Estado = Convert.ToInt32(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     });
@@ -90,7 +90,7 @@ namespace WebApiRest.Data
                 await cmd.ExecuteNonQueryAsync();
 
                 response.Info = cmd.Parameters["@info"].Value.ToString();
-                response.Error = Convert.ToInt16(cmd.Parameters["@error"].Value.ToString());
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
 
             }
             catch (Exception ex)
@@ -129,7 +129,7 @@ namespace WebApiRest.Data
                 await cmd.ExecuteNonQueryAsync();
 
                 response.Info = cmd.Parameters["@info"].Value.ToString();
-                response.Error = Convert.ToInt16(cmd.Parameters["@error"].Value.ToString());
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
 
             }
             catch (Exception ex)

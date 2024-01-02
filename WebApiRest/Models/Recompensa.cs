@@ -20,4 +20,11 @@
         public int Error { get; set; }
         public List<Recompensa> Lista { get; set; }
     }
+
+    // TABLA INTERMEDIA
+    public class Usuario_Recompensa
+    {
+        public Guid IdRecompensa { get; set; }
+        public Guid IdUsuario { get; set; }
+    }
 }

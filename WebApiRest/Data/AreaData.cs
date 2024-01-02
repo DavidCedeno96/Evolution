@@ -41,7 +41,7 @@ namespace WebApiRest.Data
                         Descripcion = dr["descripcion"].ToString(),
                         IdEmpresa = new Guid(dr["idEmpresa"].ToString()),
                         Empresa = dr["empresa"].ToString(),
-                        Estado = Convert.ToInt16(dr["estado"].ToString()),
+                        Estado = Convert.ToInt32(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     });
@@ -88,7 +88,7 @@ namespace WebApiRest.Data
                 await cmd.ExecuteNonQueryAsync();
 
                 response.Info = cmd.Parameters["@info"].Value.ToString();
-                response.Error = Convert.ToInt16(cmd.Parameters["@error"].Value.ToString());
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
 
             }
             catch (Exception ex)
@@ -129,7 +129,7 @@ namespace WebApiRest.Data
                 await cmd.ExecuteNonQueryAsync();
 
                 response.Info = cmd.Parameters["@info"].Value.ToString();
-                response.Error = Convert.ToInt16(cmd.Parameters["@error"].Value.ToString());
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
 
             }
             catch (Exception ex)

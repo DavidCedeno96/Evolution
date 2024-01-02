@@ -5,29 +5,27 @@ using WebApiRest.Utilities;
 
 namespace WebApiRest.Data
 {
-    public class EmpresaData
+    public class ConfiguracionData
     {
         private readonly Conexion conexion = new();
 
-        public async Task<EmpresaList> GetEmpresaList(int estado)
+        public async Task<ConfiguracionList> GetConfiguracionList()
         {
-            EmpresaList list = new()
+            ConfiguracionList list = new()
             {
                 Lista = new()
             };
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
-            SqlCommand cmd = new("sp_B_Empresa", sqlConnection)
+            SqlCommand cmd = new("sp_B_Configuracion", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.AddWithValue("@estado", estado);
+            };            
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
-
 
             try
             {
@@ -35,14 +33,18 @@ namespace WebApiRest.Data
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
-                    list.Lista.Add(new Empresa()
+                    list.Lista.Add(new Configuracion()
                     {
-                        IdEmpresa = new Guid(dr["idEmpresa"].ToString()),
-                        Nombre = dr["nombre"].ToString(),                        
-                        Descripcion = dr["descripcion"].ToString(),                        
-                        Estado = Convert.ToInt32(dr["estado"].ToString()),          
+                        IdConfig = new Guid(dr["idConfig"].ToString()),
+                        Tipo = dr["tipo"].ToString(),
+                        Propiedad = dr["propiedad"].ToString(),
+                        Nombre = dr["nombre"].ToString(),
+                        Valor = dr["valor"].ToString(),
+                        Descripcion = dr["descripcion"].ToString(),
+                        IdUsuario = new Guid(dr["idUsuario"].ToString()),
+                        Usuario = dr["usuario"].ToString(),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
-                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString()),                        
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     });
                 }
 
@@ -63,18 +65,22 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<Response> CreateEmpresa(Empresa empresa)
+        public async Task<Response> CreateConfiguracion(Configuracion configuracion)
         {
             Response response = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-            SqlCommand cmd = new("sp_C_Empresa", sqlConnection)
+            SqlCommand cmd = new("sp_C_Configuracion", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(empresa.Nombre));
-            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(empresa.Descripcion));            
+            cmd.Parameters.AddWithValue("@tipo", WC.GetTrim(configuracion.Tipo));
+            cmd.Parameters.AddWithValue("@propiedad", WC.GetTrim(configuracion.Propiedad));
+            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(configuracion.Nombre));
+            cmd.Parameters.AddWithValue("@valor", WC.GetTrim(configuracion.Valor));
+            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(configuracion.Descripcion));
+            cmd.Parameters.AddWithValue("@idUsuario", configuracion.IdUsuario);            
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -102,18 +108,23 @@ namespace WebApiRest.Data
             return response;
         }
 
-        public async Task<Response> UpdateEmpresa(Empresa empresa)
+        public async Task<Response> UpdateConfiguracion(Configuracion configuracion)
         {
             Response response = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-            SqlCommand cmd = new("sp_U_Empresa", sqlConnection)
+            SqlCommand cmd = new("sp_U_Configuracion", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(empresa.Nombre));
-            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(empresa.Descripcion));
+            cmd.Parameters.AddWithValue("@idConfig", configuracion.IdConfig);
+            cmd.Parameters.AddWithValue("@tipo", WC.GetTrim(configuracion.Tipo));
+            cmd.Parameters.AddWithValue("@propiedad", WC.GetTrim(configuracion.Propiedad));
+            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(configuracion.Nombre));
+            cmd.Parameters.AddWithValue("@valor", WC.GetTrim(configuracion.Valor));
+            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(configuracion.Descripcion));
+            cmd.Parameters.AddWithValue("@idUsuario", configuracion.IdUsuario);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;

@@ -5,20 +5,20 @@ using WebApiRest.Utilities;
 
 namespace WebApiRest.Data
 {
-    public class RedSocialData
+    public class NoticiaData
     {
         private readonly Conexion conexion = new();
 
-        public async Task<RedSocialList> GetRedSocialList(int estado)
+        public async Task<NoticiaList> GetNoticiaList(int estado)
         {
-            RedSocialList list = new()
+            NoticiaList list = new()
             {
                 Lista = new()
             };
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
-            SqlCommand cmd = new("sp_B_RedSocial", sqlConnection)
+            SqlCommand cmd = new("sp_B_Noticia", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -34,11 +34,15 @@ namespace WebApiRest.Data
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
-                    list.Lista.Add(new RedSocial()
+                    list.Lista.Add(new Noticia()
                     {
-                        IdRed = new Guid(dr["idRed"].ToString()),                                                
+                        IdNoticia = new Guid(dr["idNoticia"].ToString()),
+                        Titular = dr["titular"].ToString(),
                         Descripcion = dr["descripcion"].ToString(),
-                        Imagen = dr["imagen"].ToString(),
+                        Url = dr["url"].ToString(),
+                        Imagen = dr["imagen"].ToString(),                        
+                        IdCategoria = new Guid(dr["idCategoria"].ToString()),
+                        Categoria = dr["categoria"].ToString(),
                         FechaPublicacion = Convert.ToDateTime(dr["fechaPublicacion"].ToString()),
                         TotalLikes = Convert.ToInt32(dr["totalLikes"].ToString()),
                         TotalComents = Convert.ToInt32(dr["totalComents"].ToString()),
@@ -65,20 +69,20 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<Usuario_RedSocialList> GetUsuario_RedSocialList(Guid idRedSocial)
+        public async Task<Usuario_NoticiaList> GetUsuario_NoticiaList(Guid idNoticia)
         {
-            Usuario_RedSocialList list = new()
+            Usuario_NoticiaList list = new()
             {
                 Lista = new()
             };
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
-            SqlCommand cmd = new("sp_B_Usuario_RedSocialByIdRed", sqlConnection)
+            SqlCommand cmd = new("sp_B_Usuario_NoticiaByIdNoticia", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
-            cmd.Parameters.AddWithValue("@idRed", idRedSocial);
+            cmd.Parameters.AddWithValue("@idNoticia", idNoticia);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -90,9 +94,9 @@ namespace WebApiRest.Data
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
-                    list.Lista.Add(new Usuario_RedSocial()
+                    list.Lista.Add(new Usuario_Noticia()
                     {
-                        IdRed = new Guid(dr["idRed"].ToString()),
+                        IdNoticia = new Guid(dr["idNoticia"].ToString()),
                         IdUsuario = new Guid(dr["idUsuario"].ToString()),
                         Usuario = dr["usuario"].ToString(),
                         Likes = Convert.ToInt32(dr["likes"].ToString()),
@@ -119,19 +123,22 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<Response> CreateRedSocial(RedSocial redSocial)
+        public async Task<Response> CreateNoticia(Noticia noticia)
         {
             Response response = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-            SqlCommand cmd = new("sp_C_RedSocial", sqlConnection)
+            SqlCommand cmd = new("sp_C_Noticia", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
-            
-            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(redSocial.Descripcion));
-            cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(redSocial.Imagen));
-            cmd.Parameters.AddWithValue("@fechaPublicacion", redSocial.FechaPublicacion.ToString("yyyy-MM-dd"));            
+
+            cmd.Parameters.AddWithValue("@titular", WC.GetTrim(noticia.Titular));
+            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(noticia.Descripcion));
+            cmd.Parameters.AddWithValue("@url", WC.GetTrim(noticia.Url));
+            cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(noticia.Imagen));
+            cmd.Parameters.AddWithValue("@idCategoria", noticia.IdCategoria);
+            cmd.Parameters.AddWithValue("@fechaPublicacion", noticia.FechaPublicacion.ToString("yyyy-MM-dd"));
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -159,20 +166,20 @@ namespace WebApiRest.Data
             return response;
         }
 
-        public async Task<Response> CreateUsuario_RedSocial(Usuario_RedSocial usuario_redSocial)
+        public async Task<Response> CreateUsuario_Noticia(Usuario_Noticia noticia)
         {
             Response response = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-            SqlCommand cmd = new("sp_C_Usuario_RedSocial", sqlConnection)
+            SqlCommand cmd = new("sp_C_Usuario_Noticia", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@idUsuario", usuario_redSocial.IdUsuario);
-            cmd.Parameters.AddWithValue("@idRed", usuario_redSocial.IdRed);
-            cmd.Parameters.AddWithValue("@likes", usuario_redSocial.Likes);
-            cmd.Parameters.AddWithValue("@comentario", WC.GetTrim(usuario_redSocial.Comentario));
+            cmd.Parameters.AddWithValue("@idUsuario", noticia.IdUsuario);
+            cmd.Parameters.AddWithValue("@idNoticia", noticia.IdNoticia);            
+            cmd.Parameters.AddWithValue("@likes", noticia.Likes);
+            cmd.Parameters.AddWithValue("@comentario", WC.GetTrim(noticia.Comentario));
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;

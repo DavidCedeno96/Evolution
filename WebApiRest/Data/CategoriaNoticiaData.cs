@@ -5,20 +5,20 @@ using WebApiRest.Utilities;
 
 namespace WebApiRest.Data
 {
-    public class EmpresaData
+    public class CategoriaNoticiaData
     {
         private readonly Conexion conexion = new();
 
-        public async Task<EmpresaList> GetEmpresaList(int estado)
+        public async Task<CategoriaNoticiaList> GetCategoriaNoticiaList(int estado)
         {
-            EmpresaList list = new()
+            CategoriaNoticiaList list = new()
             {
                 Lista = new()
             };
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
-            SqlCommand cmd = new("sp_B_Empresa", sqlConnection)
+            SqlCommand cmd = new("sp_B_CategoriaNoticia", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -28,21 +28,20 @@ namespace WebApiRest.Data
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
 
-
             try
             {
                 await sqlConnection.OpenAsync();
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
-                    list.Lista.Add(new Empresa()
+                    list.Lista.Add(new CategoriaNoticia()
                     {
-                        IdEmpresa = new Guid(dr["idEmpresa"].ToString()),
+                        IdCategoria = new Guid(dr["idCategoria"].ToString()),
                         Nombre = dr["nombre"].ToString(),                        
-                        Descripcion = dr["descripcion"].ToString(),                        
-                        Estado = Convert.ToInt32(dr["estado"].ToString()),          
+                        Descripcion = dr["descripcion"].ToString(),
+                        Estado = Convert.ToInt32(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
-                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString()),                        
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     });
                 }
 
@@ -63,57 +62,18 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<Response> CreateEmpresa(Empresa empresa)
+        public async Task<Response> CreateCategoriaNoticia(CategoriaNoticia categoriaNoticia)
         {
             Response response = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-            SqlCommand cmd = new("sp_C_Empresa", sqlConnection)
+            SqlCommand cmd = new("sp_C_CategoriaNoticia", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(empresa.Nombre));
-            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(empresa.Descripcion));            
-
-            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
-            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
-            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
-
-            try
-            {
-                await sqlConnection.OpenAsync();
-                await cmd.ExecuteNonQueryAsync();
-
-                response.Info = cmd.Parameters["@info"].Value.ToString();
-                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
-
-            }
-            catch (Exception ex)
-            {
-                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
-                response.Error = 1;
-            }
-            finally
-            {
-                await sqlConnection.CloseAsync();
-            }
-
-            return response;
-        }
-
-        public async Task<Response> UpdateEmpresa(Empresa empresa)
-        {
-            Response response = new();
-
-            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-            SqlCommand cmd = new("sp_U_Empresa", sqlConnection)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-
-            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(empresa.Nombre));
-            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(empresa.Descripcion));
+            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(categoriaNoticia.Nombre));
+            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(categoriaNoticia.Descripcion));
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;

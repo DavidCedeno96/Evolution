@@ -340,7 +340,7 @@ exec sp_C_Noticia
 @id = ''
 
 exec sp_B_Usuario_NoticiaByIdNoticia	
-@idNoticia = 'E1F0D39F-A8F3-4297-9429-9A89DD88EE7D',	
+@idNoticia = '7CF3F854-ABE0-4033-BD63-4A94DC7DAF1A',	
 @error = '',
 @info = '',
 @id = ''
@@ -526,6 +526,16 @@ exec sp_U_Reto
 @imagen = '',
 @idTipoReto = '63AA060B-CDE4-49C0-9D60-AAF069DF1533',
 @idComportamiento = '1DD28D88-34C7-4394-AB3D-525726001730',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Usuario_Reto
+@idUsuario = 'F42329D1-EDAA-4F2C-9AE1-8F026C92C842',
+@idReto = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
+@puntos = 23,
+@tiempo = 50000,
+@vidas = '',
 @error = '',
 @info = '',
 @id = ''

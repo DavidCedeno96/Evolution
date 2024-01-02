@@ -16,7 +16,7 @@
         public Guid IdTipoReto { get; set; }
         public string TipoReto { get; set; }
         public Guid IdComportamiento { get; set; }
-        public string ComportamientoPregunta { get; set; }
+        public string ComportamientoPregunta { get; set; }        
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
     }

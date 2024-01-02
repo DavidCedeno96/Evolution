@@ -5,23 +5,24 @@ using WebApiRest.Utilities;
 
 namespace WebApiRest.Data
 {
-    public class RolData
+    public class ComportPreguntaData
     {
         private readonly Conexion conexion = new();
 
-        public async Task<RolList> GetRolList(int estado)
+        public async Task<ComportPreguntaList> GetComportPreguntaList(int estado)
         {
-            RolList list = new()
+            ComportPreguntaList list = new()
             {
                 Lista = new()
             };
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
-            SqlCommand cmd = new("sp_B_Rol", sqlConnection)
+            SqlCommand cmd = new("sp_B_ComporPregu", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
+
             cmd.Parameters.AddWithValue("@estado", estado);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
@@ -34,10 +35,10 @@ namespace WebApiRest.Data
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
-                    list.Lista.Add(new Rol()
+                    list.Lista.Add(new ComportPregunta()
                     {
-                        IdRol = dr["idRol"].ToString(),
-                        Nombre = dr["nombre"].ToString(),
+                        IdComportamiento = new Guid(dr["idComportamiento"].ToString()),
+                        Nombre = dr["nombre"].ToString(),                        
                         Descripcion = dr["descripcion"].ToString(),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),

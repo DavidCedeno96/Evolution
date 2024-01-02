@@ -5,20 +5,21 @@ using WebApiRest.Utilities;
 
 namespace WebApiRest.Data
 {
-    public class RolData
+    // Esta clase es para la condicion para obtener una medalla
+    public class CondicionData
     {
         private readonly Conexion conexion = new();
 
-        public async Task<RolList> GetRolList(int estado)
+        public async Task<CondicionList> GetCondicionList(int estado)
         {
-            RolList list = new()
+            CondicionList list = new()
             {
                 Lista = new()
             };
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
-            SqlCommand cmd = new("sp_B_Rol", sqlConnection)
+            SqlCommand cmd = new("sp_B_Condicion", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -34,11 +35,11 @@ namespace WebApiRest.Data
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
-                    list.Lista.Add(new Rol()
+                    list.Lista.Add(new Condicion()
                     {
-                        IdRol = dr["idRol"].ToString(),
+                        IdCondicion = new Guid(dr["idCondicion"].ToString()),
                         Nombre = dr["nombre"].ToString(),
-                        Descripcion = dr["descripcion"].ToString(),
+                        Descripcion = dr["descripcion"].ToString(),                        
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())

@@ -5,23 +5,24 @@ using WebApiRest.Utilities;
 
 namespace WebApiRest.Data
 {
-    public class RolData
+    public class TipoRetoData
     {
         private readonly Conexion conexion = new();
 
-        public async Task<RolList> GetRolList(int estado)
+        public async Task<TipoRetoList> GetTipoRetoList(int estado)
         {
-            RolList list = new()
+            TipoRetoList list = new()
             {
                 Lista = new()
             };
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
-            SqlCommand cmd = new("sp_B_Rol", sqlConnection)
+            SqlCommand cmd = new("sp_B_tipoReto", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
+
             cmd.Parameters.AddWithValue("@estado", estado);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
@@ -34,9 +35,9 @@ namespace WebApiRest.Data
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
-                    list.Lista.Add(new Rol()
+                    list.Lista.Add(new TipoReto()
                     {
-                        IdRol = dr["idRol"].ToString(),
+                        IdTipoReto = new Guid(dr["idTipoReto"].ToString()),
                         Nombre = dr["nombre"].ToString(),
                         Descripcion = dr["descripcion"].ToString(),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
