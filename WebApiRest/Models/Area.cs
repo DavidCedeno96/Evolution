@@ -17,12 +17,5 @@
         public string Info { get; set; }
         public int Error { get; set; }
         public List<Area> Lista { get; set; }
-    }
-
-    public class AreaItem
-    {
-        public string Info { get; set; }
-        public int Error { get; set; }
-        public Area Area { get; set; }
-    }
+    }    
 }

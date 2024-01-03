@@ -17,12 +17,5 @@
         public string Info { get; set; }
         public int Error { get; set; }
         public List<Ciudad> Lista { get; set; }
-    }
-
-    public class CiudadItem
-    {
-        public string Info { get; set; }
-        public int Error { get; set; }
-        public Ciudad Ciudad { get; set; }
-    }
+    }    
 }

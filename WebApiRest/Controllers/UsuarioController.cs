@@ -29,7 +29,7 @@ namespace WebApiRest.Controllers
         [HttpGet]
         [Route("item/{estado}/{idUsuario}")]
         [Authorize]
-        public async Task<IActionResult> GetUsuarioById([FromRoute] int estado, [FromRoute] Guid idUsuario)
+        public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idUsuario)
         {
             UsuarioItem response = await data.GetUsuario(estado, idUsuario);
             return StatusCode(StatusCodes.Status200OK, new { response});
@@ -154,6 +154,15 @@ namespace WebApiRest.Controllers
                 }
             }
 
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpPut]
+        [Route("updateEstado")]
+        [Authorize(Roles = "adm")]
+        public async Task<IActionResult> Update([FromBody] Usuario usuario)
+        {
+            Response response = await data.UpdateUsuarioByEstado(usuario);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
     }

@@ -71,8 +71,6 @@ SELECT @@VERSION;
 select * from Constants
 select * from Rol
 select * from Usuario
-select * from Area
-select * from Nivel
 -- ------------------------------------------------------------
 
 -- SPs
@@ -100,7 +98,7 @@ exec sp_B_UsuarioById
 @id = ''
 
 exec sp_B_UsuarioByCorreo
-@correo = 'marie@gmail.com',
+@correo = 'mia@gmail.com',
 @error = '',
 @info = '',
 @id = ''
@@ -132,6 +130,13 @@ exec sp_U_Usuario
 @idRol = 'jug',
 @idCiudad = '',
 @idArea = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_UsuarioByEstado
+@idUsuario = 'F42329D1-EDAA-4F2C-9AE1-8F026C92C842',
+@estado = 1,
 @error = '',
 @info = '',
 @id = ''
@@ -350,6 +355,12 @@ exec sp_C_Usuario_Noticia
 @idNoticia = 'E1F0D39F-A8F3-4297-9429-9A89DD88EE7D',
 @likes = 0,
 @comentario = 'Buenas tardes',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_D_Noticia		
+@idNoticia = 'C42B6A36-67B7-486B-85ED-DBBB4436D1D2',
 @error = '',
 @info = '',
 @id = ''

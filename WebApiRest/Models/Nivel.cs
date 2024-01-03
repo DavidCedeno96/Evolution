@@ -18,14 +18,7 @@
         public string Info { get; set; }
         public int Error { get; set; }
         public List<Nivel> Lista { get; set; }
-    }
-
-    public class NivelItem
-    {
-        public string Info { get; set; }
-        public int Error { get; set; }
-        public Nivel Nivel { get; set; }
-    }
+    }    
 
     // TABLA INTERMEDIA
     public class Usuario_Nivel

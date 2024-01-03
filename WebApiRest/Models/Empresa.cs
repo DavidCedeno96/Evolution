@@ -15,12 +15,5 @@
         public string Info { get; set; }
         public int Error { get; set; }
         public List<Empresa> Lista { get; set; }
-    }
-
-    public class EmpresaItem
-    {
-        public string Info { get; set; }
-        public int Error { get; set; }
-        public Empresa Empresa { get; set; }
-    }
+    }    
 }

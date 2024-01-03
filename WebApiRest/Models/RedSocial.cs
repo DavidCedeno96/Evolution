@@ -18,14 +18,7 @@
         public string Info { get; set; }
         public int Error { get; set; }
         public List<RedSocial> Lista { get; set; }
-    }
-
-    public class RedSocialItem
-    {
-        public string Info { get; set; }
-        public int Error { get; set; }
-        public RedSocial RedSocial { get; set; }
-    }
+    }    
 
     // TABLA INTERMEDIA
     public class Usuario_RedSocial
