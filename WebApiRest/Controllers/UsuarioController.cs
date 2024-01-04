@@ -159,7 +159,7 @@ namespace WebApiRest.Controllers
 
         [HttpPut]
         [Route("updateEstado")]
-        [Authorize(Roles = "adm")]
+        [Authorize(Roles = "adm,sadm")]
         public async Task<IActionResult> Update([FromBody] Usuario usuario)
         {
             Response response = await data.UpdateUsuarioByEstado(usuario);

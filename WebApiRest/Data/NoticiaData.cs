@@ -67,61 +67,7 @@ namespace WebApiRest.Data
             }
 
             return list;
-        }
-
-        public async Task<Usuario_NoticiaList> GetUsuario_NoticiaList(Guid idNoticia)
-        {
-            Usuario_NoticiaList list = new()
-            {
-                Lista = new()
-            };
-
-            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-
-            SqlCommand cmd = new("sp_B_Usuario_NoticiaByIdNoticia", sqlConnection)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.AddWithValue("@idNoticia", idNoticia);
-
-            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
-            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
-            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
-
-            try
-            {
-                await sqlConnection.OpenAsync();
-                SqlDataReader dr = await cmd.ExecuteReaderAsync();
-                while (await dr.ReadAsync())
-                {
-                    list.Lista.Add(new Usuario_Noticia()
-                    {
-                        IdNoticia = new Guid(dr["idNoticia"].ToString()),
-                        IdUsuario = new Guid(dr["idUsuario"].ToString()),
-                        Usuario = dr["usuario"].ToString(),
-                        Likes = Convert.ToInt32(dr["likes"].ToString()),
-                        Comentario = dr["comentario"].ToString(),                        
-                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
-                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
-                    });
-                }
-
-                list.Info = WC.GetSatisfactorio();
-                list.Error = 0;
-            }
-            catch (Exception ex)
-            {
-                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
-                list.Error = 1;
-                list.Lista = null;
-            }
-            finally
-            {
-                await sqlConnection.CloseAsync();
-            }
-
-            return list;
-        }
+        }        
 
         public async Task<Response> CreateNoticia(Noticia noticia)
         {
@@ -166,6 +112,142 @@ namespace WebApiRest.Data
             return response;
         }
 
+        public async Task<Response> UpdateNoticia(Noticia noticia)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_U_Noticia", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idNoticia", noticia.IdNoticia);
+            cmd.Parameters.AddWithValue("@titular", WC.GetTrim(noticia.Titular));
+            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(noticia.Descripcion));
+            cmd.Parameters.AddWithValue("@url", WC.GetTrim(noticia.Url));
+            cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(noticia.Imagen));
+            cmd.Parameters.AddWithValue("@idCategoria", noticia.IdCategoria);
+            cmd.Parameters.AddWithValue("@fechaPublicacion", noticia.FechaPublicacion.ToString("yyyy-MM-dd"));
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+        }
+
+        public async Task<Response> DeleteNoticia(Guid idNoticia)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_D_Noticia", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idNoticia", idNoticia);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+        }
+
+        public async Task<Usuario_NoticiaList> GetUsuario_NoticiaList(Guid idNoticia)
+        {
+            Usuario_NoticiaList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_Usuario_NoticiaByIdNoticia", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.AddWithValue("@idNoticia", idNoticia);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    list.Lista.Add(new Usuario_Noticia()
+                    {
+                        IdNoticia = new Guid(dr["idNoticia"].ToString()),
+                        IdUsuario = new Guid(dr["idUsuario"].ToString()),
+                        Usuario = dr["usuario"].ToString(),
+                        Likes = Convert.ToInt32(dr["likes"].ToString()),
+                        Comentario = dr["comentario"].ToString(),
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                    });
+                }
+
+                list.Info = WC.GetSatisfactorio();
+                list.Error = 0;
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+        }
+
         public async Task<Response> CreateUsuario_Noticia(Usuario_Noticia noticia)
         {
             Response response = new();
@@ -206,5 +288,6 @@ namespace WebApiRest.Data
 
             return response;
         }
+        
     }
 }

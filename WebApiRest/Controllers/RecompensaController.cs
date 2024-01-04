@@ -10,15 +10,15 @@ namespace WebApiRest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NoticiaController : ControllerBase
+    public class RecompensaController : ControllerBase
     {
-        readonly NoticiaData data = new();
+        readonly RecompensaData data = new();
 
         private readonly IWebHostEnvironment _env;
         private readonly string nombreCarpeta = "Noticia";
 
-        public NoticiaController(IWebHostEnvironment env)
-        {            
+        public RecompensaController(IWebHostEnvironment env)
+        {
             _env = env;
         }
 
@@ -27,25 +27,16 @@ namespace WebApiRest.Controllers
         [Authorize]
         public async Task<IActionResult> GetList([FromRoute] int estado)
         {
-            NoticiaList response = await data.GetNoticiaList(estado);
-            return StatusCode(StatusCodes.Status200OK, new { response });
-        }
-
-        [HttpGet]
-        [Route("listById/{estado}")]
-        [Authorize (Roles = "adm,sadm")]
-        public async Task<IActionResult> GetListById([FromRoute] Guid idNoticia)
-        {
-            Usuario_NoticiaList response = await data.GetUsuario_NoticiaList(idNoticia);
+            RecompensaList response = await data.GetRecompensaList(estado);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Create([FromForm] IFormFile archivo, [FromForm] Noticia noticia)
+        public async Task<IActionResult> Create([FromForm] IFormFile archivo, [FromForm] Recompensa recompensa)
         {
-            Response response = VF.ValidarNoticia(noticia);
+            Response response = VF.ValidarRecompensa(recompensa);
             string rutaArchivo = "";
 
             if (archivo != null && response.Error == 0)
@@ -53,16 +44,16 @@ namespace WebApiRest.Controllers
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
                 rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
 
-                noticia.Imagen = archivo.FileName.Trim();
+                recompensa.Imagen = archivo.FileName.Trim();
             }
             else
             {
-                noticia.Imagen = "";
+                recompensa.Imagen = "";
             }
 
             if (response.Error == 0)
             {
-                response = await data.CreateNoticia(noticia);
+                response = await data.CreateRecompensa(recompensa);
                 if (response.Error == 0 && !rutaArchivo.Equals(""))
                 {
                     //Aqui creamos una nueva imagen
@@ -78,9 +69,9 @@ namespace WebApiRest.Controllers
         [HttpPut]
         [Route("update")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Update([FromForm] IFormFile archivo, [FromForm] Noticia noticia)
+        public async Task<IActionResult> Update([FromForm] IFormFile archivo, [FromForm] Recompensa recompensa)
         {
-            Response response = VF.ValidarNoticia(noticia);
+            Response response = VF.ValidarRecompensa(recompensa);
             string rutaArchivo = "";
 
             if (archivo != null && response.Error == 0)
@@ -88,16 +79,16 @@ namespace WebApiRest.Controllers
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
                 rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
 
-                noticia.Imagen = archivo.FileName.Trim();
+                recompensa.Imagen = archivo.FileName.Trim();
             }
             else
             {
-                noticia.Imagen = "";
+                recompensa.Imagen = "";
             }
 
             if (response.Error == 0)
             {
-                response = await data.UpdateNoticia(noticia);
+                response = await data.UpdateRecompensa(recompensa);
                 if (response.Error == 0 && !rutaArchivo.Equals(""))
                 {
                     string imagenAnterior = response.Info.Split(":")[1];
@@ -124,11 +115,11 @@ namespace WebApiRest.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{idNoticia}")]
+        [Route("delete/{idRecompensa}")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Delete([FromRoute] Guid idNoticia)
+        public async Task<IActionResult> Delete([FromRoute] Guid idRecompensa)
         {
-            Response response = await data.DeleteNoticia(idNoticia);
+            Response response = await data.DeleteRecompensa(idRecompensa);
 
             if (response.Error == 0)
             {
@@ -146,32 +137,6 @@ namespace WebApiRest.Controllers
                     response.Info = response.Info.Split(',')[0];
                 }
             }
-
-            return StatusCode(StatusCodes.Status200OK, new { response });
-        }
-
-        
-
-        [HttpGet]
-        [Route("listUsuarioNoticiaByIdNoticia/{idNoticia}")]
-        [Authorize]
-        public async Task<IActionResult> GetListUsuarioNoticiaByIdNoticia([FromRoute] Guid idNoticia)
-        {
-            Usuario_NoticiaList response = await data.GetUsuario_NoticiaList(idNoticia);
-            return StatusCode(StatusCodes.Status200OK, new { response });
-        }
-
-        [HttpPost]
-        [Route("createUsuarioNoticia")]
-        [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> CreateUsuarioNoticia([FromBody] Usuario_Noticia usuarioNoticia)
-        {
-            Response response = VF.ValidarUsuarioNoticia(usuarioNoticia);            
-
-            if (response.Error == 0)
-            {
-                response = await data.CreateUsuario_Noticia(usuarioNoticia);
-            }                       
 
             return StatusCode(StatusCodes.Status200OK, new { response });
         }

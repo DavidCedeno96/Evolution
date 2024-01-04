@@ -34,18 +34,18 @@ FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
 JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
     ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME
 WHERE 
-    tc.TABLE_NAME = 'Reto' AND 
+    tc.TABLE_NAME = 'Noticia' AND 
     tc.CONSTRAINT_TYPE = 'UNIQUE'    
 
 ----
 SELECT *
 FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
-WHERE TABLE_NAME = 'Usuario' AND CONSTRAINT_TYPE = 'CHECK';
+WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
 
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Reto';
+WHERE tc.TABLE_NAME = 'Noticia';
 
 ---
 SELECT @@VERSION;
@@ -243,19 +243,26 @@ exec sp_B_Nivel
 exec sp_C_Nivel
 @nombre = 'nivel 5',
 @descripcion = 'este es para el nivel 5',
-@puntosNecesarios = '',
+@puntosNecesarios = 3,
 @imagen = '',
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_C_Usuario_Nivel
-@idUsuario = '34FA60B2-4FCD-49A8-BEBB-198E7A343CFA',
-@idNivel = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@idNivel = 'D18F415A-CD36-4E84-98FD-04DC30FC1EE1',
 @error = '',
 @info = '',
 @id = ''
 
+exec sp_D_Nivel
+@idNivel = '34FA60B2-4FCD-49A8-BEBB-198E7A343CFA',
+@error = '',
+@info = '',
+@id = ''
+
+select * from Nivel
 -- Condicion --------------------------------------------------------
 exec sp_B_Condicion		
 @estado = -1,
@@ -286,6 +293,12 @@ exec sp_C_Usuario_Medalla
 @info = '',
 @id = ''
 
+exec sp_D_Medalla	
+@idMedalla = '6D3A6B25-C6C7-4ED4-A5E9-D992B1CC98A7',
+@error = '',
+@info = '',
+@id = ''
+
 -- Recompensas --------------------------------------------------------
 exec sp_B_Recompensa
 @estado = -1,
@@ -299,6 +312,23 @@ exec sp_C_Recompensa
 @imagen = '',
 @cantDisp = 0,	
 @cantCanje = 5,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Recompensa
+@idRecompensa = '',
+@nombre = '10 entradas al cine',
+@descripcion = '',
+@imagen = '',
+@cantDisp = 0,	
+@cantCanje = 5,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_D_Recompensa
+@idRecompensa = '015E40DD-58CE-401E-A0A9-075874BC0B68',
 @error = '',
 @info = '',
 @id = ''
@@ -326,6 +356,14 @@ exec sp_C_CategoriaNoticia
 @info = '',
 @id = ''
 
+exec sp_U_CategoriaNoticia
+@idCategoria = '',
+@nombre = 'Culturales',
+@descripcion = 'Cuando se refieren a sucesos de la vida artística, literaria y cultural del país.',
+@error = '',
+@info = '',
+@id = ''
+
 -- Noticias
 exec sp_B_Noticia
 @estado = -1,
@@ -337,9 +375,27 @@ exec sp_C_Noticia
 @titular = 'titular 3  de prueba',
 @descripcion = 'descripcion 3  de prueba',
 @url = '',
+@imagen = 'img1.jpg',
+@idCategoria = '622FF0AC-4EC0-461F-8EDA-F8A487F80EB3',
+@fechaPublicacion = '2023-12-23',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Noticia
+@idNoticia = '',
+@titular = 'titular 3  de prueba',
+@descripcion = 'descripcion 3  de prueba',
+@url = '',
 @imagen = '',
 @idCategoria = '622FF0AC-4EC0-461F-8EDA-F8A487F80EB3',
 @fechaPublicacion = '2023-12-23',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_D_Noticia
+@idNoticia = '03DC6270-512F-4B45-8B35-A4C818C2A6C2',
 @error = '',
 @info = '',
 @id = ''
@@ -355,12 +411,6 @@ exec sp_C_Usuario_Noticia
 @idNoticia = 'E1F0D39F-A8F3-4297-9429-9A89DD88EE7D',
 @likes = 0,
 @comentario = 'Buenas tardes',
-@error = '',
-@info = '',
-@id = ''
-
-exec sp_D_Noticia		
-@idNoticia = 'C42B6A36-67B7-486B-85ED-DBBB4436D1D2',
 @error = '',
 @info = '',
 @id = ''
