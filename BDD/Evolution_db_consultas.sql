@@ -249,9 +249,12 @@ exec sp_C_Nivel
 @info = '',
 @id = ''
 
-exec sp_C_Usuario_Nivel
-@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
-@idNivel = 'D18F415A-CD36-4E84-98FD-04DC30FC1EE1',
+exec sp_U_Nivel
+@idNivel = '',
+@nombre = 'nivel 5',
+@descripcion = 'este es para el nivel 5',
+@puntosNecesarios = 3,
+@imagen = '',
 @error = '',
 @info = '',
 @id = ''
@@ -262,7 +265,13 @@ exec sp_D_Nivel
 @info = '',
 @id = ''
 
-select * from Nivel
+exec sp_C_Usuario_Nivel
+@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@idNivel = 'D18F415A-CD36-4E84-98FD-04DC30FC1EE1',
+@error = '',
+@info = '',
+@id = ''
+
 -- Condicion --------------------------------------------------------
 exec sp_B_Condicion		
 @estado = -1,
@@ -271,7 +280,7 @@ exec sp_B_Condicion
 @id = ''
 
 -- Medallas --------------------------------------------------------
-exec sp_B_Medalla		
+exec sp_B_Medalla
 @estado = -1,
 @error = '',
 @info = '',
@@ -286,15 +295,25 @@ exec sp_C_Medalla
 @info = '',
 @id = ''
 
-exec sp_C_Usuario_Medalla
-@idUsuario = '6D3A6B25-C6C7-4ED4-A5E9-D992B1CC98A7',
-@idMedalla = '26763EAA-657D-4E10-BD82-78D29934C607',
+exec sp_U_Medalla
+@idMedalla = '',
+@nombre = 'medalla 3',
+@descripcion = 'desc 1',
+@imagen = '',
+@idCondicion = '2439150E-8525-4582-8203-9D1D2AC93739',
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_D_Medalla	
 @idMedalla = '6D3A6B25-C6C7-4ED4-A5E9-D992B1CC98A7',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Usuario_Medalla
+@idUsuario = '6D3A6B25-C6C7-4ED4-A5E9-D992B1CC98A7',
+@idMedalla = '26763EAA-657D-4E10-BD82-78D29934C607',
 @error = '',
 @info = '',
 @id = ''

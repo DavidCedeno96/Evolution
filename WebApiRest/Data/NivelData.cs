@@ -106,18 +106,21 @@ namespace WebApiRest.Data
             return response;
         }
 
-        public async Task<Response> CreateUsuario_Nivel(Usuario_Nivel usuario_nivel)
+        public async Task<Response> UpdateNivel(Nivel nivel)
         {
             Response response = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-            SqlCommand cmd = new("sp_C_Usuario_Nivel", sqlConnection)
+            SqlCommand cmd = new("sp_U_Nivel", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@idUsuario", usuario_nivel.IdUsuario);
-            cmd.Parameters.AddWithValue("@idNivel", usuario_nivel.IdNivel);
+            cmd.Parameters.AddWithValue("@idNivel", nivel.IdNivel);
+            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(nivel.Nombre));
+            cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(nivel.Descripcion));
+            cmd.Parameters.AddWithValue("@puntosNecesarios", nivel.PuntosNecesarios);
+            cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(nivel.Imagen));
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -156,6 +159,45 @@ namespace WebApiRest.Data
             };
             
             cmd.Parameters.AddWithValue("@idNivel", idNivel);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+        }
+
+        public async Task<Response> CreateUsuario_Nivel(Usuario_Nivel usuario_nivel)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_C_Usuario_Nivel", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idUsuario", usuario_nivel.IdUsuario);
+            cmd.Parameters.AddWithValue("@idNivel", usuario_nivel.IdNivel);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;

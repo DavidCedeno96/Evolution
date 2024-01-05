@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.POIFS.Crypt.Dsig;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -10,14 +8,14 @@ namespace WebApiRest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RecompensaController : ControllerBase
+    public class NivelController : ControllerBase
     {
-        readonly RecompensaData data = new();
+        readonly NivelData data = new();
 
         private readonly IWebHostEnvironment _env;
-        private readonly string nombreCarpeta = "Recompensa";
+        private readonly string nombreCarpeta = "Nivel";
 
-        public RecompensaController(IWebHostEnvironment env)
+        public NivelController(IWebHostEnvironment env)
         {
             _env = env;
         }
@@ -27,16 +25,16 @@ namespace WebApiRest.Controllers
         [Authorize]
         public async Task<IActionResult> GetList([FromRoute] int estado)
         {
-            RecompensaList response = await data.GetRecompensaList(estado);
+            NivelList response = await data.GetNivelList(estado);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Create([FromForm] IFormFile archivo, [FromForm] Recompensa recompensa)
+        public async Task<IActionResult> Create([FromForm] IFormFile archivo, [FromForm] Nivel nivel)
         {
-            Response response = VF.ValidarRecompensa(recompensa);
+            Response response = VF.ValidarNivel(nivel);
             string rutaArchivo = "";
 
             if (archivo != null && response.Error == 0)
@@ -44,16 +42,16 @@ namespace WebApiRest.Controllers
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
                 rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
 
-                recompensa.Imagen = archivo.FileName.Trim();
+                nivel.Imagen = archivo.FileName.Trim();
             }
             else
             {
-                recompensa.Imagen = "";
+                nivel.Imagen = "";
             }
 
             if (response.Error == 0)
             {
-                response = await data.CreateRecompensa(recompensa);
+                response = await data.CreateNivel(nivel);
                 if (response.Error == 0 && !rutaArchivo.Equals(""))
                 {
                     //Aqui creamos una nueva imagen
@@ -69,9 +67,9 @@ namespace WebApiRest.Controllers
         [HttpPut]
         [Route("update")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Update([FromForm] IFormFile archivo, [FromForm] Recompensa recompensa)
+        public async Task<IActionResult> Update([FromForm] IFormFile archivo, [FromForm] Nivel nivel)
         {
-            Response response = VF.ValidarRecompensa(recompensa);
+            Response response = VF.ValidarNivel(nivel);
             string rutaArchivo = "";
 
             if (archivo != null && response.Error == 0)
@@ -79,16 +77,16 @@ namespace WebApiRest.Controllers
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
                 rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
 
-                recompensa.Imagen = archivo.FileName.Trim();
+                nivel.Imagen = archivo.FileName.Trim();
             }
             else
             {
-                recompensa.Imagen = "";
+                nivel.Imagen = "";
             }
 
             if (response.Error == 0)
             {
-                response = await data.UpdateRecompensa(recompensa);
+                response = await data.UpdateNivel(nivel);
                 if (response.Error == 0 && !rutaArchivo.Equals(""))
                 {
                     string imagenAnterior = response.Info.Split(":")[1];
@@ -115,11 +113,11 @@ namespace WebApiRest.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{idRecompensa}")]
+        [Route("delete/{idNivel}")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Delete([FromRoute] Guid idRecompensa)
+        public async Task<IActionResult> Delete([FromRoute] Guid idNivel)
         {
-            Response response = await data.DeleteRecompensa(idRecompensa);
+            Response response = await data.DeleteNivel(idNivel);
 
             if (response.Error == 0)
             {
@@ -143,13 +141,12 @@ namespace WebApiRest.Controllers
 
 
 
-
         [HttpPost]
-        [Route("createUsuarioRecompensa")]
-        [Authorize]
-        public async Task<IActionResult> CreateUsuarioRecompensa([FromBody] Usuario_Recompensa usuarioRecompensa)
+        [Route("createUsuarioNivel")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> CreateUsuarioNivel([FromBody] Usuario_Nivel usuarioNivel)
         {
-            Response response = await data.CreateUsuarioRecompensa(usuarioRecompensa);
+            Response response = await data.CreateUsuario_Nivel(usuarioNivel);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
     }

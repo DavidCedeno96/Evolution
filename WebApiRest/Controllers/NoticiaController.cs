@@ -29,16 +29,7 @@ namespace WebApiRest.Controllers
         {
             NoticiaList response = await data.GetNoticiaList(estado);
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }
-
-        [HttpGet]
-        [Route("listById/{estado}")]
-        [Authorize (Roles = "adm,sadm")]
-        public async Task<IActionResult> GetListById([FromRoute] Guid idNoticia)
-        {
-            Usuario_NoticiaList response = await data.GetUsuario_NoticiaList(idNoticia);
-            return StatusCode(StatusCodes.Status200OK, new { response });
-        }
+        }        
 
         [HttpPost]
         [Route("create")]
@@ -148,12 +139,13 @@ namespace WebApiRest.Controllers
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }
+        }        
 
-        
+
+
 
         [HttpGet]
-        [Route("listUsuarioNoticiaByIdNoticia/{idNoticia}")]
+        [Route("listUsuNotiByIdNoticia/{idNoticia}")]
         [Authorize]
         public async Task<IActionResult> GetListUsuarioNoticiaByIdNoticia([FromRoute] Guid idNoticia)
         {

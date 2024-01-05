@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.POIFS.Crypt.Dsig;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -10,14 +9,14 @@ namespace WebApiRest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RecompensaController : ControllerBase
+    public class RetoController : ControllerBase
     {
-        readonly RecompensaData data = new();
+        readonly RetoData data = new();
 
         private readonly IWebHostEnvironment _env;
-        private readonly string nombreCarpeta = "Recompensa";
+        private readonly string nombreCarpeta = "Reto";
 
-        public RecompensaController(IWebHostEnvironment env)
+        public RetoController(IWebHostEnvironment env)
         {
             _env = env;
         }
@@ -27,16 +26,25 @@ namespace WebApiRest.Controllers
         [Authorize]
         public async Task<IActionResult> GetList([FromRoute] int estado)
         {
-            RecompensaList response = await data.GetRecompensaList(estado);
+            RetoList response = await data.GetRetoList(estado);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("list/{estado}/{idReto}")]
+        [Authorize]
+        public async Task<IActionResult> GetListById([FromRoute] int estado, [FromRoute] Guid idReto)
+        {
+            RetoList response = await data.GetRetoList(estado, idReto);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Create([FromForm] IFormFile archivo, [FromForm] Recompensa recompensa)
+        public async Task<IActionResult> Create([FromForm] IFormFile archivo, [FromForm] Reto reto)
         {
-            Response response = VF.ValidarRecompensa(recompensa);
+            Response response = VF.ValidarReto(reto);
             string rutaArchivo = "";
 
             if (archivo != null && response.Error == 0)
@@ -44,16 +52,16 @@ namespace WebApiRest.Controllers
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
                 rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
 
-                recompensa.Imagen = archivo.FileName.Trim();
+                reto.Imagen = archivo.FileName.Trim();
             }
             else
             {
-                recompensa.Imagen = "";
+                reto.Imagen = "";
             }
 
             if (response.Error == 0)
             {
-                response = await data.CreateRecompensa(recompensa);
+                response = await data.CreateReto(reto);
                 if (response.Error == 0 && !rutaArchivo.Equals(""))
                 {
                     //Aqui creamos una nueva imagen
@@ -69,9 +77,9 @@ namespace WebApiRest.Controllers
         [HttpPut]
         [Route("update")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Update([FromForm] IFormFile archivo, [FromForm] Recompensa recompensa)
+        public async Task<IActionResult> Update([FromForm] IFormFile archivo, [FromForm] Reto reto)
         {
-            Response response = VF.ValidarRecompensa(recompensa);
+            Response response = VF.ValidarReto(reto);
             string rutaArchivo = "";
 
             if (archivo != null && response.Error == 0)
@@ -79,16 +87,16 @@ namespace WebApiRest.Controllers
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
                 rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
 
-                recompensa.Imagen = archivo.FileName.Trim();
+                reto.Imagen = archivo.FileName.Trim();
             }
             else
             {
-                recompensa.Imagen = "";
+                reto.Imagen = "";
             }
 
             if (response.Error == 0)
             {
-                response = await data.UpdateRecompensa(recompensa);
+                response = await data.UpdateReto(reto);
                 if (response.Error == 0 && !rutaArchivo.Equals(""))
                 {
                     string imagenAnterior = response.Info.Split(":")[1];
@@ -114,42 +122,14 @@ namespace WebApiRest.Controllers
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
-        [HttpDelete]
-        [Route("delete/{idRecompensa}")]
-        [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Delete([FromRoute] Guid idRecompensa)
-        {
-            Response response = await data.DeleteRecompensa(idRecompensa);
-
-            if (response.Error == 0)
-            {
-                string imagen = response.Info.Split(":")[1];
-
-                //Aqui eliminamos el archivo
-                string rutaArchivo = WC.GetRutaImagen(_env, imagen, nombreCarpeta);
-                if (System.IO.File.Exists(rutaArchivo))
-                {
-                    System.IO.File.Delete(rutaArchivo);
-                }
-
-                if (response.Info.Contains("image"))
-                {
-                    response.Info = response.Info.Split(',')[0];
-                }
-            }
-
-            return StatusCode(StatusCodes.Status200OK, new { response });
-        }
-
-
 
 
         [HttpPost]
-        [Route("createUsuarioRecompensa")]
-        [Authorize]
-        public async Task<IActionResult> CreateUsuarioRecompensa([FromBody] Usuario_Recompensa usuarioRecompensa)
+        [Route("createUsuarioReto")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> CreateUsuarioReto([FromBody] Usuario_Reto usuarioReto)
         {
-            Response response = await data.CreateUsuarioRecompensa(usuarioRecompensa);
+            Response response = await data.CreateUsuarioReto(usuarioReto);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
     }

@@ -166,6 +166,251 @@ namespace WebApiRest.Utilities
             return result;
         }
 
+        //Nivel
+        public static Response ValidarNivel(Nivel nivel)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(nivel.Nombre, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "nombre";
+                validForm = false;
+            }
+            if (!RE.ValidRE(nivel.Descripcion, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "descripcion";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
+        //Medalla
+        public static Response ValidarMedalla(Medalla medalla)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(medalla.Nombre, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "nombre";
+                validForm = false;
+            }
+            if (!RE.ValidRE(medalla.Descripcion, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "descripcion";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
+        //Pais
+        public static Response ValidarPais(Pais pais)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(pais.Nombre, "palabras"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetErrorLetras();
+                result.Campo = "nombre";
+                validForm = false;
+            }
+            if (!RE.ValidRE(pais.Descripcion, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "descripcion";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
+        //Ciudad
+        public static Response ValidarCiudad(Ciudad ciudad)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(ciudad.Nombre, "palabras"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetErrorLetras();
+                result.Campo = "nombre";
+                validForm = false;
+            }
+            if (!RE.ValidRE(ciudad.Descripcion, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "descripcion";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
+        //Empresa
+        public static Response ValidarEmpresa(Empresa empresa)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(empresa.Nombre, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "nombre";
+                validForm = false;
+            }
+            if (!RE.ValidRE(empresa.Descripcion, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "descripcion";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
+        //Ciudad
+        public static Response ValidarArea(Area area)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(area.Nombre, "palabras"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetErrorLetras();
+                result.Campo = "nombre";
+                validForm = false;
+            }
+            if (!RE.ValidRE(area.Descripcion, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "descripcion";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
+        //Reto
+        public static Response ValidarReto(Reto reto)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(reto.Nombre, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "nombre";
+                validForm = false;
+            }
+            if (!RE.ValidRE(reto.Instrucciones, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "instrucciones";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
+        //Configuracion
+        public static Response ValidarConfiguracion(Configuracion configuracion)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(configuracion.Tipo, "palabras"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetErrorLetras();
+                result.Campo = "tipo";
+                validForm = false;
+            }
+            if (!RE.ValidRE(configuracion.Propiedad, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "propiedad";
+                validForm = false;
+            }
+            if (!RE.ValidRE(configuracion.Nombre, "palabras"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetErrorLetras();
+                result.Campo = "nombre";
+                validForm = false;
+            }
+            if (!RE.ValidRE(configuracion.Valor, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "valor";
+                validForm = false;
+            }
+            if (!RE.ValidRE(configuracion.Descripcion, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "descripcion";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
         // archivos
         public static Response ValidarArchivo(IWebHostEnvironment _env, IFormFile archivo, string tipos, string nombreCarpeta)
         {

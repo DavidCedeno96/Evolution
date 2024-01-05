@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.POIFS.Crypt.Dsig;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -10,14 +9,14 @@ namespace WebApiRest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RecompensaController : ControllerBase
+    public class MedallaController : ControllerBase
     {
-        readonly RecompensaData data = new();
+        readonly MedallaData data = new();
 
         private readonly IWebHostEnvironment _env;
-        private readonly string nombreCarpeta = "Recompensa";
+        private readonly string nombreCarpeta = "Medalla";
 
-        public RecompensaController(IWebHostEnvironment env)
+        public MedallaController(IWebHostEnvironment env)
         {
             _env = env;
         }
@@ -27,16 +26,16 @@ namespace WebApiRest.Controllers
         [Authorize]
         public async Task<IActionResult> GetList([FromRoute] int estado)
         {
-            RecompensaList response = await data.GetRecompensaList(estado);
+            MedallaList response = await data.GetMedallaList(estado);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Create([FromForm] IFormFile archivo, [FromForm] Recompensa recompensa)
+        public async Task<IActionResult> Create([FromForm] IFormFile archivo, [FromForm] Medalla medalla)
         {
-            Response response = VF.ValidarRecompensa(recompensa);
+            Response response = VF.ValidarMedalla(medalla);
             string rutaArchivo = "";
 
             if (archivo != null && response.Error == 0)
@@ -44,16 +43,16 @@ namespace WebApiRest.Controllers
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
                 rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
 
-                recompensa.Imagen = archivo.FileName.Trim();
+                medalla.Imagen = archivo.FileName.Trim();
             }
             else
             {
-                recompensa.Imagen = "";
+                medalla.Imagen = "";
             }
 
             if (response.Error == 0)
             {
-                response = await data.CreateRecompensa(recompensa);
+                response = await data.CreateMedalla(medalla);
                 if (response.Error == 0 && !rutaArchivo.Equals(""))
                 {
                     //Aqui creamos una nueva imagen
@@ -69,9 +68,9 @@ namespace WebApiRest.Controllers
         [HttpPut]
         [Route("update")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Update([FromForm] IFormFile archivo, [FromForm] Recompensa recompensa)
+        public async Task<IActionResult> Update([FromForm] IFormFile archivo, [FromForm] Medalla medalla)
         {
-            Response response = VF.ValidarRecompensa(recompensa);
+            Response response = VF.ValidarMedalla(medalla);
             string rutaArchivo = "";
 
             if (archivo != null && response.Error == 0)
@@ -79,16 +78,16 @@ namespace WebApiRest.Controllers
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
                 rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
 
-                recompensa.Imagen = archivo.FileName.Trim();
+                medalla.Imagen = archivo.FileName.Trim();
             }
             else
             {
-                recompensa.Imagen = "";
+                medalla.Imagen = "";
             }
 
             if (response.Error == 0)
             {
-                response = await data.UpdateRecompensa(recompensa);
+                response = await data.UpdateMedalla(medalla);
                 if (response.Error == 0 && !rutaArchivo.Equals(""))
                 {
                     string imagenAnterior = response.Info.Split(":")[1];
@@ -115,11 +114,11 @@ namespace WebApiRest.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{idRecompensa}")]
+        [Route("delete/{idMedalla}")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Delete([FromRoute] Guid idRecompensa)
+        public async Task<IActionResult> Delete([FromRoute] Guid idMedalla)
         {
-            Response response = await data.DeleteRecompensa(idRecompensa);
+            Response response = await data.DeleteMedalla(idMedalla);
 
             if (response.Error == 0)
             {
@@ -145,11 +144,11 @@ namespace WebApiRest.Controllers
 
 
         [HttpPost]
-        [Route("createUsuarioRecompensa")]
-        [Authorize]
-        public async Task<IActionResult> CreateUsuarioRecompensa([FromBody] Usuario_Recompensa usuarioRecompensa)
+        [Route("createUsuarioMedalla")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> CreateUsuarioMedalla([FromBody] Usuario_Medalla usuarioMedalla)
         {
-            Response response = await data.CreateUsuarioRecompensa(usuarioRecompensa);
+            Response response = await data.CreateUsuarioMedalla(usuarioMedalla);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
     }

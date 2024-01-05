@@ -26,10 +26,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="wwwroot\Content\Images\Medalla\_default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Content\Images\Nivel\_default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\Content\Images\Noticia\_default.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\Content\Images\Recompensa\_default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Content\Images\Reto\_default.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\Content\Images\Usuario\default.png">
@@ -38,6 +47,12 @@
     <Content Update="wwwroot\Content\Images\Usuario\_default.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Content\Images\Medalla\" />
+    <Folder Include="wwwroot\Content\Images\Reto\" />
+    <Folder Include="wwwroot\Content\Images\Nivel\" />
   </ItemGroup>
 
 </Project>
