@@ -537,6 +537,13 @@ exec sp_U_Opcion
 @info = '',
 @id = ''
 
+exec sp_D_Opcion
+@idOpcion = 'EFE6E2F4-091C-4B53-958C-CC1EDC252445',
+@error = '',
+@info = '',
+@id = ''
+
+
 -- Pregunta ------------------------------------------------------------------------
 select * from Pregunta
 
@@ -562,6 +569,11 @@ exec sp_U_Pregunta
 @info = '',
 @id = ''
 
+exec sp_D_Pregunta
+@idPregunta = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
+@error = '',
+@info = '',
+@id = ''
 
 -- Reto ------------------------------------------------------------------------
 exec sp_B_Reto

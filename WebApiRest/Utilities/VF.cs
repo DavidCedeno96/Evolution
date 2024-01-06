@@ -362,6 +362,48 @@ namespace WebApiRest.Utilities
             return result;
         }
 
+        //Opcion
+        public static Response ValidarOpcion(Opcion opcion)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(opcion.Nombre, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "nombre";
+                validForm = false;
+            }            
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
+        //Pregunta
+        public static Response ValidarPregunta(Pregunta pregunta)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(pregunta.Nombre, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "nombre";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
         //Configuracion
         public static Response ValidarConfiguracion(Configuracion configuracion)
         {
