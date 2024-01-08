@@ -10,46 +10,116 @@ namespace WebApiRest.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class PreguntaController : ControllerBase
-    {
-        readonly PreguntaData data = new();
+    {        
+        readonly PreguntaData dataPregunta = new();
+        readonly OpcionData dataOpcion = new();
 
         [HttpGet]
         [Route("listByIdReto/{estado}/{idReto}")]
         [Authorize]
         public async Task<IActionResult> GetListByIdReto([FromRoute] int estado, [FromRoute] Guid idReto)
         {
-            PreguntaList response = await data.GetPreguntaList(estado, idReto);
+            PreguntaList response = await dataPregunta.GetPreguntaList(estado, idReto);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Create([FromBody] Pregunta pregunta)
+        public async Task<IActionResult> CreateItem([FromBody] Pregunta_OpcionList pregunta_opcionList)
         {
-            Response response = VF.ValidarPregunta(pregunta);
 
-            if (response.Error == 0)
+            Response resultPregunta = VF.ValidarPregunta(pregunta_opcionList.Pregunta);
+            Response resultOpcion = new();
+            Response result = new();
+            foreach (var item in pregunta_opcionList.OpcionList)
             {
-                response = await data.CreatePregunta(pregunta);
+                resultOpcion = VF.ValidarOpcion(item);
+                if (resultOpcion.Error > 0)
+                {
+                    break;
+                }
             }
 
-            return StatusCode(StatusCodes.Status200OK, new { response });
+            if (resultPregunta.Error == 0 && resultOpcion.Error == 0)
+            {
+                result = await dataPregunta.CreatePregunta(pregunta_opcionList.Pregunta);
+                if (result.Error == 0)
+                {
+                    Guid idPregunta = new(result.Id);
+                    foreach (var item in pregunta_opcionList.OpcionList)
+                    {
+                        item.IdPregunta = idPregunta;
+                        result = await dataOpcion.CreateOpcion(item);
+                    }
+                }
+            }
+            else if (resultPregunta.Error > 0)
+            {
+                result.Error = 1;
+                result.Info = resultPregunta.Info;
+                result.Campo = resultPregunta.Campo;
+            }
+            else if (resultOpcion.Error > 0)
+            {
+                result.Error = 1;
+                result.Info = resultOpcion.Info;
+                result.Campo = resultOpcion.Campo;
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { result });
         }
 
         [HttpPut]
         [Route("update")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Update([FromBody] Pregunta pregunta)
+        public async Task<IActionResult> Update([FromBody] Pregunta_OpcionList pregunta_opcionList)
         {
-            Response response = VF.ValidarPregunta(pregunta);
 
-            if (response.Error == 0)
+            Response resultPregunta = VF.ValidarPregunta(pregunta_opcionList.Pregunta);
+            Response resultOpcion = new();
+            Response result = new();
+            foreach (var item in pregunta_opcionList.OpcionList)
             {
-                response = await data.UpdatePregunta(pregunta);
+                resultOpcion = VF.ValidarOpcion(item);
+                if (resultOpcion.Error > 0)
+                {
+                    break;
+                }
             }
 
-            return StatusCode(StatusCodes.Status200OK, new { response });
+            if (resultPregunta.Error == 0 && resultOpcion.Error == 0)
+            {
+                result = await dataPregunta.UpdatePregunta(pregunta_opcionList.Pregunta);
+                if (result.Error == 0)
+                {
+                    foreach (var item in pregunta_opcionList.OpcionList)
+                    {
+                        result = await dataOpcion.UpdateOpcion(item);
+                    }
+                    if (result.Error == 0)
+                    {
+                        //Guid ultimoIdOpcion = new(result.Id);
+                        //Guid idPregunta = pregunta_opcionList.Pregunta.IdPregunta;
+                        ////Aqui elimina los que no pertencen
+                        //result = await dataOpcion.DeleteOpcion(ultimoIdOpcion, idPregunta);
+                    }
+                }
+            }
+            else if (resultPregunta.Error > 0)
+            {
+                result.Error = 1;
+                result.Info = resultPregunta.Info;
+                result.Campo = resultPregunta.Campo;
+            }
+            else if (resultOpcion.Error > 0)
+            {
+                result.Error = 1;
+                result.Info = resultOpcion.Info;
+                result.Campo = resultOpcion.Campo;
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { result });
         }
 
         [HttpDelete]
@@ -57,7 +127,7 @@ namespace WebApiRest.Controllers
         [Authorize(Roles = "adm,sadm")]
         public async Task<IActionResult> Delete([FromRoute] Guid idPregunta)
         {
-            Response response = await data.DeletePregunta(idPregunta);
+            Response response = await dataPregunta.DeletePregunta(idPregunta);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
     }

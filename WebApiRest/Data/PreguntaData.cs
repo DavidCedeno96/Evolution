@@ -89,6 +89,7 @@ namespace WebApiRest.Data
 
                 response.Info = cmd.Parameters["@info"].Value.ToString();
                 response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());                
+                response.Id = cmd.Parameters["@id"].Value.ToString();
             }
             catch (Exception ex)
             {
@@ -127,7 +128,8 @@ namespace WebApiRest.Data
                 await cmd.ExecuteNonQueryAsync();
 
                 response.Info = cmd.Parameters["@info"].Value.ToString();
-                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());                
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+                response.Id = cmd.Parameters["@id"].Value.ToString();
             }
             catch (Exception ex)
             {
