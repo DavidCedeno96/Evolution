@@ -1,0 +1,24 @@
+<!-- NavBar -->
+<nav *ngIf="showNavbarFooter">
+  <h1>este es el nav</h1>
+</nav>
+<!-- End NavBar -->
+
+<div role="main">
+  <router-outlet></router-outlet>
+  <!-- Terminal -->
+  <!-- <div [ngSwitch]="selection.value">
+    <pre *ngSwitchDefault>ng generate component xyz</pre>
+    <pre *ngSwitchCase="'material'">ng add @angular/material</pre>
+    <pre *ngSwitchCase="'pwa'">ng add @angular/pwa</pre>
+    <pre *ngSwitchCase="'dependency'">ng add _____</pre>
+    <pre *ngSwitchCase="'test'">ng test</pre>
+    <pre *ngSwitchCase="'build'">ng build</pre>
+  </div> -->
+</div>
+
+<!-- Footer -->
+<footer *ngIf="showNavbarFooter">
+  <h1>este es el footer</h1>
+</footer>
+<!-- End Footer -->
