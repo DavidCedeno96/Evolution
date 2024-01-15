@@ -74,7 +74,6 @@ create table Usuario(
 	idCiudad uniqueidentifier references Ciudad(idCiudad) null
 );
 
-
 create table Nivel(
 	idNivel uniqueidentifier primary key default newid(),
 	nombre varchar(20) not null,

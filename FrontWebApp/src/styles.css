@@ -2,3 +2,127 @@
 
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
+
+:root {
+  --form-items-border: #7a7a7a;
+  --form-itemsInvalid-border: #f04553;
+}
+
+/****** FORM ******/
+.form-control {
+  border-radius: 13px !important;
+}
+
+.form-control:focus {
+  border-color: var(--form-items-border) !important;
+  box-shadow: none !important;
+}
+
+.form-control.is-invalid {
+  border-color: var(--form-itemsInvalid-border) !important;
+}
+
+.form-select {
+  border-radius: 13px !important;
+}
+
+.form-select:focus {
+  border-color: var(--form-items-border) !important;
+  box-shadow: none !important;
+}
+
+.form-select.is-invalid {
+  border-color: var(--form-itemsInvalid-border) !important;
+}
+
+.form-label {
+  margin-left: 0.5rem;
+}
+
+.form-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/****** BUTTONS ******/
+.btn {
+  border-radius: 20px !important;
+}
+
+.btn.normal {
+  border-radius: 5px !important;
+}
+
+/****** BACKGROUND ******/
+.bg-bsuperior {
+  background-color: var(--BandaSuperior);
+}
+
+.bg-footer {
+  background-color: var(--Footer);
+}
+
+/****** TEXTOS ******/
+.txt.text-primary {
+  color: var(--textoPrimario) !important;
+}
+
+.txt.text-secondary {
+  color: var(--textoSecundario) !important;
+}
+
+/****** OTROS ******/
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 10;
+}
+
+.toggle-password.error {
+  position: absolute;
+  top: 31%;
+  right: 30px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 10;
+}
+
+.hr-text {
+  line-height: 0.01em;
+  position: relative;
+  outline: 0;
+  border: 0;
+  color: black;
+  text-align: center;
+  height: 1.5em;
+  opacity: 0.5;
+  &:before {
+    content: "";
+    background: linear-gradient(to right, transparent, #000000, transparent);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+  }
+  &:after {
+    content: attr(data-content);
+    position: relative;
+    display: inline-block;
+    color: black;
+
+    padding: 0 0.5em;
+    line-height: 1.5em;
+    color: #000000;
+    background-color: #fcfcfa;
+  }
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

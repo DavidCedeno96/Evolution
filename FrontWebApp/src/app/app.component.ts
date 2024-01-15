@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
@@ -7,23 +7,37 @@ import { filter } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
-  title = 'EvolutionApp';
-
+export class AppComponent implements OnInit {
   showNavbarFooter: boolean = false;
+  showSpace: boolean = false;
+  url: string = '';
 
   constructor(private router: Router) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe({
         next: (data: any) => {
-          console.log(data.url);
-          if (data.url.includes('/login')) {
+          this.url = data.url;
+          if (this.url.includes('/login') || this.url.includes('/register')) {
             this.showNavbarFooter = false;
           } else {
             this.showNavbarFooter = true;
           }
+          if (this.url.includes('/login')) {
+            this.showSpace = false;
+          } else {
+            this.showSpace = true;
+          }
         },
       });
+  }
+
+  ngOnInit(): void {}
+
+  itemActive(activeUrl: string): string {
+    if (activeUrl === this.url) {
+      return 'active';
+    }
+    return '';
   }
 }

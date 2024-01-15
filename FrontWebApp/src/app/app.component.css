@@ -1,0 +1,64 @@
+:host {
+  /* mis variables colores*/
+  --BandaSuperior: #f58220;
+  --Footer: #898a8d;
+  --BotonPrimario: #6598d3;
+  --BotonSecundario: #b0b5be;
+  --textoPrimario: #0b2b34;
+  --textoSecundario: #898a8d;
+  --bgMenuItem: #f58220;
+  --bgMenuItem-hover: #898a8d;
+  --txtMenuItem: #0b2b34;
+}
+
+.imgRedonda {
+  width: 90px;
+  height: 90px;
+  border-radius: 160px;
+  border: 2px solid #666;
+}
+
+.logoFooter {
+  width: 50px;
+  background-color: transparent;
+  position: relative;
+  top: -20px;
+  left: 50px;
+}
+
+.offcanvas-user {
+  padding: 0.9rem 2rem 0rem 2rem;
+}
+
+.btn-close {
+  box-shadow: none;
+}
+
+.menu a {
+  display: block;
+  padding: 10px;
+  margin-bottom: 5px;
+  text-decoration: none;
+  color: var(--txtMenuItem);
+}
+
+.menu a.active {
+  background-color: var(--bgMenuItem);
+  color: #fff;
+}
+
+.menu a:hover {
+  background-color: var(--bgMenuItem-hover);
+  color: #fff;
+}
+
+.menu a mat-icon {
+  margin: 0px 18px 0px 50px;
+  font-size: 1px;
+  transform: scale(1);
+}
+
+.icon-text {
+  display: flex;
+  align-items: center;
+}

@@ -1,1 +1,108 @@
-<p>login works!</p>
+<div class="fondoImagen">
+  <div class="form-box">
+    <div class="shadow-lg bg-white p-3 mb-5 rounded col-10 col-md-6 col-lg-2">
+      <div class="text-center my-3">
+        <h5>Iniciar Sesión</h5>
+      </div>
+      <div>
+        <form [formGroup]="formulario" (ngSubmit)="iniciarSesion()">
+          <div class="mb-3">
+            <label for="correo" class="form-label">Correo electrónico</label>
+            <input
+              type="email"
+              class="form-control {{
+                formulario.get('correo')?.errors && verErrorsInputs
+                  ? 'is-invalid'
+                  : ''
+              }}"
+              formControlName="correo"
+              id="correo"
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="formulario.get('correo')?.errors"
+            >
+              <span
+                class="d-block"
+                *ngIf="formulario.get('correo')?.hasError('maxlength')"
+              >
+                Máximo 60 caracteres
+              </span>
+              <span
+                class="d-block"
+                *ngIf="formulario.get('correo')?.hasError('required')"
+              >
+                Campo obligatorio
+              </span>
+              <span
+                class="d-block"
+                *ngIf="formulario.get('correo')?.hasError('email')"
+              >
+                Correo incorrecto
+              </span>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <div class="input-group">
+              <input
+                class="form-control {{
+                  formulario.get('contrasena')?.errors && verErrorsInputs
+                    ? 'is-invalid'
+                    : ''
+                }}"
+                type="{{ verPassword ? 'text' : 'password' }}"
+                formControlName="contrasena"
+                id="password"
+              />
+              <span
+                class="toggle-password {{
+                  formulario.get('contrasena')?.errors && numClicksLogin > 0
+                    ? 'error'
+                    : ''
+                }}"
+                (click)="togglePassword()"
+              >
+                <i class="fas fa-eye" *ngIf="!verPassword"></i>
+                <i class="fas fa-eye-slash" *ngIf="verPassword"></i>
+              </span>
+              <div
+                class="invalid-feedback"
+                *ngIf="formulario.get('contrasena')?.errors"
+              >
+                <span
+                  *ngIf="formulario.get('contrasena')?.hasError('maxlength')"
+                  >Máximo 90 caracteres</span
+                >
+                <span *ngIf="formulario.get('contrasena')?.hasError('required')"
+                  >Campo obligatorio</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="recuerdame"
+              formControlName="recuerdame"
+            />
+            <label class="form-check-label" for="recuerdame">Recuérdame</label>
+          </div>
+          <div class="mb-4 d-grid">
+            <button type="submit" class="btn btn-primary">
+              Ingresar<i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>
+            </button>
+          </div>
+          <hr class="hr-text" data-content="O" />
+          <div class="text-center">
+            <a routerLink="">Olvide la contraseña</a>
+            <p class="mt-3">
+              No tienes una cuenta? <a routerLink="/register">Registrarse</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

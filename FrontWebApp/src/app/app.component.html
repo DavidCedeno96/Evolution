@@ -1,13 +1,166 @@
 <!-- NavBar -->
-<nav *ngIf="showNavbarFooter">
-  <h1>este es el nav</h1>
+<div class="bg-bsuperior" style="height: 9px" *ngIf="showNavbarFooter"></div>
+<nav
+  class="navbar navbar-expand-lg sticky-top bg-body-tertiary"
+  *ngIf="showNavbarFooter"
+>
+  <div class="container">
+    <button
+      class="btn"
+      data-bs-toggle="offcanvas"
+      href="#offcanvasExample"
+      aria-controls="offcanvasExample"
+    >
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <ul class="navbar-nav ms-3 mb-0">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" routerLink=""
+          ><i class="fa-solid fa-bell"></i>
+        </a>
+      </li>
+    </ul>
+    <a class="navbar-nav ms-auto mb-0" routerLink="">
+      <img
+        src="assets/img/logo/logo-dm.png"
+        alt="Logo"
+        width="200"
+        class="img-fluid"
+      />
+    </a>
+  </div>
 </nav>
 <!-- End NavBar -->
 
-<div role="main">
+<!-- Menu -->
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="offcanvasExample"
+  aria-labelledby="offcanvasExampleLabel"
+>
+  <div class="offcanvas-header">
+    <h6 class="offcanvas-title" id="offcanvasExampleLabel">Menú</h6>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-user">
+    <div class="row g-3 d-flex align-items-center">
+      <div class="col-auto">
+        <img src="assets/img/user/user1.jpg" class="imgRedonda" alt="User" />
+      </div>
+      <div class="col-6">
+        <span class="d-block">Danna Nuñez Danna Nuñez Danna Nuñez</span>
+        <a data-bs-dismiss="offcanvas" routerLink=""
+          ><small>Cambiar Foto</small></a
+        >
+      </div>
+      <div class="col-auto">
+        <a class="text-dark" data-bs-dismiss="offcanvas" routerLink=""
+          ><i class="fa-solid fa-chevron-right"></i
+        ></a>
+      </div>
+    </div>
+  </div>
+  <hr class="hr-text" data-content="O" />
+  <div class="menu">
+    <!-- en este poner *ngIf="rol === 'adm' || rol === 'sadm'" -->
+    <a
+      [class]="itemActive('/homeAdmin')"
+      data-bs-dismiss="offcanvas"
+      routerLink=""
+    >
+      <div class="icon-text">
+        <mat-icon svgIcon="casa"></mat-icon><span>Inicio</span>
+      </div>
+    </a>
+    <a
+      [class]="itemActive('/usuario')"
+      data-bs-dismiss="offcanvas"
+      routerLink=""
+    >
+      <div class="icon-text">
+        <mat-icon svgIcon="grupo"></mat-icon><span>Usuarios</span>
+      </div>
+    </a>
+    <a [class]="itemActive('/reto')" data-bs-dismiss="offcanvas" routerLink="">
+      <div class="icon-text">
+        <mat-icon svgIcon="gamepad"></mat-icon><span>Retos</span>
+      </div>
+    </a>
+    <a
+      [class]="itemActive('/noticia')"
+      data-bs-dismiss="offcanvas"
+      routerLink=""
+    >
+      <div class="icon-text">
+        <mat-icon svgIcon="periodico"></mat-icon><span>Noticias</span>
+      </div>
+    </a>
+    <a
+      [class]="itemActive('/recompensa')"
+      data-bs-dismiss="offcanvas"
+      routerLink=""
+    >
+      <div class="icon-text">
+        <mat-icon svgIcon="recompensa"></mat-icon><span>Recompensas</span>
+      </div>
+    </a>
+    <a [class]="itemActive('/nivel')" data-bs-dismiss="offcanvas" routerLink="">
+      <div class="icon-text">
+        <mat-icon svgIcon="podio"></mat-icon><span>Niveles</span>
+      </div>
+    </a>
+    <a
+      [class]="itemActive('/medalla')"
+      data-bs-dismiss="offcanvas"
+      routerLink=""
+    >
+      <div class="icon-text">
+        <mat-icon svgIcon="otorgar"></mat-icon><span>Medallas</span>
+      </div>
+    </a>
+    <a
+      [class]="itemActive('/redSocial')"
+      data-bs-dismiss="offcanvas"
+      routerLink=""
+    >
+      <div class="icon-text">
+        <mat-icon svgIcon="reaccion"></mat-icon><span>Red Social</span>
+      </div>
+    </a>
+    <a
+      [class]="itemActive('/config')"
+      data-bs-dismiss="offcanvas"
+      routerLink=""
+    >
+      <div class="icon-text">
+        <mat-icon svgIcon="rueda-dentada"></mat-icon><span>Configuración</span>
+      </div>
+    </a>
+  </div>
+</div>
+<!-- Fin Menu -->
+
+<!-- Main -->
+<div role="main" [ngClass]="showNavbarFooter == true ? 'container mt-4' : ''">
   <router-outlet></router-outlet>
-  <!-- Terminal -->
-  <!-- <div [ngSwitch]="selection.value">
+  <div style="height: 100px" *ngIf="showSpace"></div>
+</div>
+<!-- End Main -->
+
+<!-- Footer -->
+<footer class="fixed-bottom bg-footer text-white" style="height: 65px">
+  <img src="assets/img/logo/logo-d.png" class="logoFooter" alt="" />
+</footer>
+<!-- End Footer -->
+
+<!-- Este no se que sera -->
+<!-- <div [ngSwitch]="selection.value">
     <pre *ngSwitchDefault>ng generate component xyz</pre>
     <pre *ngSwitchCase="'material'">ng add @angular/material</pre>
     <pre *ngSwitchCase="'pwa'">ng add @angular/pwa</pre>
@@ -15,10 +168,3 @@
     <pre *ngSwitchCase="'test'">ng test</pre>
     <pre *ngSwitchCase="'build'">ng build</pre>
   </div> -->
-</div>
-
-<!-- Footer -->
-<footer *ngIf="showNavbarFooter">
-  <h1>este es el footer</h1>
-</footer>
-<!-- End Footer -->
