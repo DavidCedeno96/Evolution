@@ -8,6 +8,7 @@ export class IconModule {
     private _domZanitizer: DomSanitizer,
     private _matIconRegistry: MatIconRegistry
   ) {
+    /********** MENU **********/
     this._matIconRegistry.addSvgIcon(
       'casa',
       this._domZanitizer.bypassSecurityTrustResourceUrl('assets/icons/casa.svg')
@@ -58,6 +59,26 @@ export class IconModule {
       'rueda-dentada',
       this._domZanitizer.bypassSecurityTrustResourceUrl(
         'assets/icons/rueda-dentada.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
+      'cerrar-sesion',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/cerrar-sesion.svg'
+      )
+    );
+
+    /********** BOTONES **********/
+    this._matIconRegistry.addSvgIcon(
+      'agregar',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/agregar.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
+      'importar',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/importar.svg'
       )
     );
   }

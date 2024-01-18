@@ -1,14 +1,19 @@
 import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Loading } from 'src/app/Utils/Constants';
-import Swal from 'sweetalert2';
+import { timeout } from 'rxjs';
+import {
+  AlertError,
+  Loading,
+  MsgErrorForm,
+  TitleErrorForm,
+} from 'src/app/Utils/Constants';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  selector: 'app-upsert-user',
+  templateUrl: './upsert-user.component.html',
+  styleUrls: ['./upsert-user.component.css'],
 })
-export class RegisterComponent implements OnInit {
+export class UpsertUserComponent implements OnInit {
   verPassword: boolean = false;
   verErrorsInputs: boolean = false;
   numClicksSave: number = 0;
@@ -51,16 +56,7 @@ export class RegisterComponent implements OnInit {
     } else {
       this.verErrorsInputs = true;
 
-      Swal.fire({
-        title: 'Error',
-        text: 'Hay errores en los campos, por favor revisa e intantalo nuevamente.',
-        icon: 'error',
-        confirmButtonText: 'Aceptar',
-        buttonsStyling: false,
-        customClass: {
-          confirmButton: 'btn btn-outline-success normal',
-        },
-      });
+      AlertError(TitleErrorForm, MsgErrorForm);
     }
   }
 

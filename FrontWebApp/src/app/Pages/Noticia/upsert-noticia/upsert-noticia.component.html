@@ -1,0 +1,59 @@
+<div class="my-3 my-md-5">
+  <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+    <h5 class="my-5 text-center txt text-primary text-uppercase">
+      nueva noticia
+    </h5>
+    <form class="mb-3">
+      <div class="row g-3">
+        <div class="col-12 col-md-4">
+          <label for="noti-cat" class="form-label">Categoría*</label>
+          <select class="form-select" id="noti-cat">
+            <option value="">Seleccione...</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="noti-Tit" class="form-label">Titular*</label>
+          <input type="text" class="form-control" id="noti-Tit" />
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="noti-url" class="form-label">Url</label>
+          <input type="text" class="form-control" id="noti-url" />
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="noti-desc" class="form-label">Descripción*</label>
+          <textarea
+            class="form-control"
+            cols="30"
+            rows="6"
+            id="noti-desc"
+          ></textarea>
+        </div>
+        <div class="col-12 col-md-8">
+          <label for="noti-imagen" class="form-label">Imagen</label>
+          <input
+            type="file"
+            class="form-control mb-2"
+            id="noti-imagen"
+            accept=".jpg, .jpeg, .png"
+          />
+          <div class="text-center text-md-start">
+            <img
+              src="assets/img/noticia/default-noticia.jpg"
+              class="img-thumbnail"
+              width="200"
+              alt="noticia"
+            />
+          </div>
+        </div>
+        <div class="col-12 mt-4 text-end d-grid d-md-block">
+          <button type="submit" class="btn btn-success mb-3 mb-md-0 me-md-2">
+            <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
+          </button>
+          <a class="btn btn-secondary" routerLink="/view-noticia">
+            <i class="fa-solid fa-angle-left me-2"></i>Cancelar
+          </a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

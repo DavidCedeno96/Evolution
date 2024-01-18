@@ -1,0 +1,33 @@
+<div class="my-3 my-md-5">
+  <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+    <h5 class="my-5 text-center txt text-primary text-uppercase">
+      nueva categoría de noticia
+    </h5>
+    <form class="mb-3">
+      <div class="row g-3">
+        <div class="col-12">
+          <label for="noti-Tit" class="form-label">Nombre*</label>
+          <input type="text" class="form-control" id="noti-Tit" />
+        </div>
+        <div class="col-12">
+          <label for="noti-desc" class="form-label">Descripción</label>
+          <textarea
+            class="form-control"
+            cols="30"
+            rows="4"
+            id="noti-desc"
+          ></textarea>
+        </div>
+
+        <div class="col-12 mt-4 text-end d-grid d-md-block">
+          <button type="submit" class="btn btn-success mb-3 mb-md-0 me-md-2">
+            <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
+          </button>
+          <a class="btn btn-secondary" routerLink="/view-categoria-noticia">
+            <i class="fa-solid fa-angle-left me-2"></i>Cancelar
+          </a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,126 @@
+<div class="my-3 my-md-5">
+  <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+    <h5 class="my-5 text-center txt text-primary text-uppercase">usuarios</h5>
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-auto d-grid d-md-block">
+        <a class="btn btn-primary icon" routerLink="/upsert-user">
+          <div class="icon-text buton">
+            <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-6 d-grid d-md-block">
+        <button class="btn btn-tertiary icon">
+          <div class="icon-text buton">
+            <mat-icon svgIcon="importar"></mat-icon><span>Importar</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- buscador -->
+    <form class="row g-3 mb-1">
+      <div class="col-12 col-md-8">
+        <div class="input-group">
+          <span class="icon-left">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </span>
+          <input
+            type="text"
+            class="form-control icon"
+            placeholder="buscar..."
+          />
+        </div>
+      </div>
+      <div class="col-12 col-md-3 d-grid d-md-block">
+        <button type="submit" class="btn btn-success">Buscar</button>
+      </div>
+    </form>
+
+    <!-- Usuarios -->
+    <div class="mb-2 mb-md-4">
+      <p-dataView #dv [value]="usuarios" [rows]="2" [paginator]="true">
+        <ng-template let-usuario pTemplate="listItem">
+          <div class="col-12">
+            <div class="p-4 gap-4">
+              <div class="row g-3 text-center text-md-start align-items-center">
+                <div class="col-12 col-md-auto">
+                  <img
+                    class="img-thumbnail"
+                    src="assets/img/user/user1.jpg"
+                    width="100px"
+                    [alt]="usuario.imagen"
+                  />
+                </div>
+                <div class="col-12 col-md-4">
+                  <h5 class="txt text-secondary">
+                    {{ usuario.nombre }} {{ usuario.apellido }}
+                  </h5>
+                  <div class="flex align-items-center gap-3">
+                    <span class="d-block">
+                      {{ usuario.correo }}
+                    </span>
+                    <span class="d-block">
+                      {{ usuario.celular }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-4">
+                  <div class="flex align-items-center gap-3">
+                    <div>
+                      <strong>Pais:</strong>
+                      <span class="">
+                        {{ usuario.pais }}
+                      </span>
+                    </div>
+                    <div>
+                      <strong>Ciudad:</strong>
+                      <span class="">
+                        {{ usuario.ciudad }}
+                      </span>
+                    </div>
+                    <div>
+                      <strong>Empresa:</strong>
+                      <span class="">
+                        {{ usuario.empresa }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-1 col-lg-2 text-md-end">
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-secondary only-icon"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <div class="icon-text buton">
+                        <mat-icon svgIcon="rueda-dentada"></mat-icon>
+                      </div>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a class="dropdown-item" routerLink="/upsert-user"
+                          ><i class="fa-regular fa-pen-to-square me-2"></i
+                          >Editar</a
+                        >
+                      </li>
+                      <li>
+                        <a class="dropdown-item" routerLink=""
+                          ><i class="fa-solid fa-trash-can me-2"></i>Eliminar</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-dataView>
+    </div>
+  </div>
+</div>

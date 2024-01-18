@@ -1,7 +1,7 @@
-<!-- NavBar -->
 <div class="bg-bsuperior" style="height: 9px" *ngIf="showNavbarFooter"></div>
+<!-- NavBar -->
 <nav
-  class="navbar navbar-expand-lg sticky-top bg-body-tertiary"
+  class="navbar navbar-expand-lg sticky-top bg-header"
   *ngIf="showNavbarFooter"
 >
   <div class="container">
@@ -70,53 +70,61 @@
   <div class="menu">
     <!-- en este poner *ngIf="rol === 'adm' || rol === 'sadm'" -->
     <a
-      [class]="itemActive('/homeAdmin')"
+      [class]="menuItemActive('/homeAdmin')"
       data-bs-dismiss="offcanvas"
-      routerLink=""
+      routerLink="/homeAdmin"
     >
       <div class="icon-text">
         <mat-icon svgIcon="casa"></mat-icon><span>Inicio</span>
       </div>
     </a>
     <a
-      [class]="itemActive('/usuario')"
+      [class]="menuItemActive('/view-user')"
       data-bs-dismiss="offcanvas"
-      routerLink=""
+      routerLink="/view-user"
     >
       <div class="icon-text">
         <mat-icon svgIcon="grupo"></mat-icon><span>Usuarios</span>
       </div>
     </a>
-    <a [class]="itemActive('/reto')" data-bs-dismiss="offcanvas" routerLink="">
+    <a
+      [class]="menuItemActive('/reto')"
+      data-bs-dismiss="offcanvas"
+      routerLink=""
+    >
       <div class="icon-text">
         <mat-icon svgIcon="gamepad"></mat-icon><span>Retos</span>
       </div>
     </a>
     <a
-      [class]="itemActive('/noticia')"
+      [class]="menuItemActive('/view-noticia')"
       data-bs-dismiss="offcanvas"
-      routerLink=""
+      routerLink="/view-noticia"
     >
       <div class="icon-text">
         <mat-icon svgIcon="periodico"></mat-icon><span>Noticias</span>
       </div>
     </a>
     <a
-      [class]="itemActive('/recompensa')"
+      [class]="menuItemActive('/view-recompensa')"
       data-bs-dismiss="offcanvas"
-      routerLink=""
+      routerLink="/view-recompensa"
     >
       <div class="icon-text">
         <mat-icon svgIcon="recompensa"></mat-icon><span>Recompensas</span>
       </div>
     </a>
-    <a [class]="itemActive('/nivel')" data-bs-dismiss="offcanvas" routerLink="">
+    <a
+      [class]="menuItemActive('/nivel')"
+      data-bs-dismiss="offcanvas"
+      routerLink=""
+    >
       <div class="icon-text">
         <mat-icon svgIcon="podio"></mat-icon><span>Niveles</span>
       </div>
     </a>
     <a
-      [class]="itemActive('/medalla')"
+      [class]="menuItemActive('/medalla')"
       data-bs-dismiss="offcanvas"
       routerLink=""
     >
@@ -125,7 +133,7 @@
       </div>
     </a>
     <a
-      [class]="itemActive('/redSocial')"
+      [class]="menuItemActive('/redSocial')"
       data-bs-dismiss="offcanvas"
       routerLink=""
     >
@@ -134,12 +142,18 @@
       </div>
     </a>
     <a
-      [class]="itemActive('/config')"
+      [class]="menuItemActive('/config')"
       data-bs-dismiss="offcanvas"
-      routerLink=""
+      routerLink="/config"
     >
       <div class="icon-text">
         <mat-icon svgIcon="rueda-dentada"></mat-icon><span>Configuración</span>
+      </div>
+    </a>
+
+    <a class="pointer" data-bs-dismiss="offcanvas" (click)="cerrarSesion()">
+      <div class="icon-text">
+        <mat-icon svgIcon="cerrar-sesion"></mat-icon><span>Cerrar Sesón</span>
       </div>
     </a>
   </div>
@@ -149,9 +163,13 @@
 <!-- Main -->
 <div role="main" [ngClass]="showNavbarFooter == true ? 'container mt-4' : ''">
   <router-outlet></router-outlet>
-  <div style="height: 100px" *ngIf="showSpace"></div>
+  <div class="blank-space" *ngIf="showSpaceBlank"></div>
 </div>
 <!-- End Main -->
+
+<!-- Loading -->
+<div class="loading-overlay hidden" id="loading"></div>
+<!-- end Loading -->
 
 <!-- Footer -->
 <footer class="fixed-bottom bg-footer text-white" style="height: 65px">

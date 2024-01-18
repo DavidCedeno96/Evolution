@@ -9,7 +9,7 @@ import { filter } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
   showNavbarFooter: boolean = false;
-  showSpace: boolean = false;
+  showSpaceBlank: boolean = false;
   url: string = '';
 
   constructor(private router: Router) {
@@ -18,15 +18,20 @@ export class AppComponent implements OnInit {
       .subscribe({
         next: (data: any) => {
           this.url = data.url;
+
+          if (this.url === '/') {
+            this.router.navigate(['/login']);
+          }
+
           if (this.url.includes('/login') || this.url.includes('/register')) {
             this.showNavbarFooter = false;
           } else {
             this.showNavbarFooter = true;
           }
           if (this.url.includes('/login')) {
-            this.showSpace = false;
+            this.showSpaceBlank = false;
           } else {
-            this.showSpace = true;
+            this.showSpaceBlank = true;
           }
         },
       });
@@ -34,10 +39,15 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  itemActive(activeUrl: string): string {
+  menuItemActive(activeUrl: string): string {
     if (activeUrl === this.url) {
       return 'active';
     }
     return '';
+  }
+
+  cerrarSesion() {
+    console.log('Cerrando session... redirigiendo al login');
+    this.router.navigate(['/']);
   }
 }

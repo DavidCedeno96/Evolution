@@ -1,11 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
-
 :root {
   --form-items-border: #7a7a7a;
   --form-itemsInvalid-border: #f04553;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 /****** FORM ******/
@@ -16,6 +22,10 @@
 .form-control:focus {
   border-color: var(--form-items-border) !important;
   box-shadow: none !important;
+}
+
+.form-control:hover {
+  border-color: var(--form-items-border) !important;
 }
 
 .form-control.is-invalid {
@@ -29,6 +39,10 @@
 .form-select:focus {
   border-color: var(--form-items-border) !important;
   box-shadow: none !important;
+}
+
+.form-select:hover {
+  border-color: var(--form-items-border) !important;
 }
 
 .form-select.is-invalid {
@@ -56,7 +70,48 @@
   border-radius: 5px !important;
 }
 
+.btn-primary {
+  background-color: var(--BotonPrimario) !important;
+  border-color: var(--BotonPrimario) !important;
+}
+
+.btn-secondary {
+  background-color: var(--BotonSecundario) !important;
+  border-color: var(--BotonSecundario) !important;
+}
+
+.btn-tertiary {
+  background-color: var(--BotonTerciario) !important;
+  border-color: var(--BotonTerciario) !important;
+  color: #fff !important;
+}
+
+.btn-success {
+  background-color: var(--BotonGuardado) !important;
+  border-color: var(--BotonGuardado) !important;
+}
+
+.btn-primary:active {
+  filter: brightness(90%) !important;
+}
+
+.btn-secondary:active {
+  filter: brightness(90%) !important;
+}
+
+.btn-tertiary:active {
+  filter: brightness(90%) !important;
+}
+
+.btn-success:active {
+  filter: brightness(90%) !important;
+}
+
 /****** BACKGROUND ******/
+.bg-header {
+  background-color: var(--Header);
+}
+
 .bg-bsuperior {
   background-color: var(--BandaSuperior);
 }
@@ -67,14 +122,15 @@
 
 /****** TEXTOS ******/
 .txt.text-primary {
-  color: var(--textoPrimario) !important;
+  color: var(--TextoPrimario) !important;
 }
 
 .txt.text-secondary {
-  color: var(--textoSecundario) !important;
+  color: var(--TextoSecundario) !important;
 }
 
 /****** OTROS ******/
+/****** OJITO DE LA CONTRASEÑA ******/
 .toggle-password {
   position: absolute;
   top: 50%;
@@ -82,17 +138,54 @@
   transform: translateY(-50%);
   cursor: pointer;
   z-index: 10;
+  color: var(--form-items-border);
 }
 
 .toggle-password.error {
-  position: absolute;
   top: 31%;
   right: 30px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  z-index: 10;
 }
 
+/****** ICONO A AL IZQUIERDA ******/
+.icon-left {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  z-index: 10;
+  color: var(--form-items-border);
+}
+.form-control.icon {
+  padding-left: 2.1rem !important;
+}
+
+/****** ICONOS SVG ******/
+.icon-text {
+  display: flex;
+  align-items: center;
+}
+
+.icon-text.buton {
+  justify-content: center;
+}
+
+.icon-text span {
+  margin-right: 7px;
+}
+
+.icon mat-icon {
+  margin: 0px 8px 0px 0px;
+  font-size: 1px;
+  transform: scale(0.85);
+}
+
+.only-icon mat-icon {
+  margin: 0;
+  font-size: 1px;
+  transform: scale(0.85);
+}
+
+/****** LINEA hr ******/
 .hr-text {
   line-height: 0.01em;
   position: relative;
@@ -124,5 +217,7 @@
   }
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/****** POINTER ******/
+.pointer {
+  cursor: pointer;
+}
