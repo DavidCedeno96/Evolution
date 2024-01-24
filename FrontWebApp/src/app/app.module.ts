@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 // Este es para la apiRest
 import { HttpClientModule } from '@angular/common/http';
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 /* PÁGINAS */
 import { LoginComponent } from './Pages/login/login.component';
@@ -30,6 +30,14 @@ import { ViewCategoriaComponent } from './Pages/Noticia/view-categoria/view-cate
 import { UpsertCategoriaComponent } from './Pages/Noticia/upsert-categoria/upsert-categoria.component';
 import { ViewRecompensaComponent } from './Pages/Recompensa/view-recompensa/view-recompensa.component';
 import { UpsertRecompensaComponent } from './Pages/Recompensa/upsert-recompensa/upsert-recompensa.component';
+import { ViewNivelComponent } from './Pages/Nivel/view-nivel/view-nivel.component';
+import { UpsertNivelComponent } from './Pages/Nivel/upsert-nivel/upsert-nivel.component';
+import { ViewMedallaComponent } from './Pages/Medalla/view-medalla/view-medalla.component';
+import { UpsertMedallaComponent } from './Pages/Medalla/upsert-medalla/upsert-medalla.component';
+import { ViewRetoComponent } from './Pages/Reto/view-reto/view-reto.component';
+import { UpsertRetoComponent } from './Pages/Reto/upsert-reto/upsert-reto.component';
+import { ViewPreguntaComponent } from './Pages/Reto/view-pregunta/view-pregunta.component';
+import { UpsertPreguntaComponent } from './Pages/Reto/upsert-pregunta/upsert-pregunta.component';
 
 @NgModule({
   declarations: [
@@ -46,12 +54,21 @@ import { UpsertRecompensaComponent } from './Pages/Recompensa/upsert-recompensa/
     UpsertCategoriaComponent,
     ViewRecompensaComponent,
     UpsertRecompensaComponent,
+    ViewNivelComponent,
+    UpsertNivelComponent,
+    ViewMedallaComponent,
+    UpsertMedallaComponent,
+    ViewRetoComponent,
+    UpsertRetoComponent,
+    ViewPreguntaComponent,
+    UpsertPreguntaComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
     BrowserAnimationsModule,
     SharedModule,
     MatIconModule,

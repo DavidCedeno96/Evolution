@@ -1,0 +1,55 @@
+<div class="my-3 my-md-5">
+  <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+    <h5 class="my-5 text-center txt text-primary text-uppercase">
+      nueva medalla
+    </h5>
+    <form class="mb-3">
+      <div class="row g-3">
+        <div class="col-12 col-md-8">
+          <label for="med-nom" class="form-label">Nombre*</label>
+          <input type="text" class="form-control" id="med-nom" />
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="med-cond" class="form-label">Condicion*</label>
+          <select class="form-select" id="med-cond">
+            <option value="">Seleccione...</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="med-desc" class="form-label">Descripción</label>
+          <textarea
+            class="form-control"
+            cols="30"
+            rows="6"
+            id="med-desc"
+          ></textarea>
+        </div>
+        <div class="col-12 col-md-8">
+          <label for="med-imagen" class="form-label">Imagen</label>
+          <input
+            type="file"
+            class="form-control mb-2"
+            id="med-imagen"
+            accept=".jpg, .jpeg, .png"
+          />
+          <div class="text-center text-md-start">
+            <img
+              src="assets/img/medalla/default-medalla.jpg"
+              class="img-thumbnail"
+              width="110"
+              alt="medel"
+            />
+          </div>
+        </div>
+        <div class="col-12 mt-4 text-end d-grid d-md-block">
+          <button type="submit" class="btn btn-success mb-3 mb-md-0 me-md-2">
+            <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
+          </button>
+          <a class="btn btn-secondary" routerLink="/view-medalla">
+            <i class="fa-solid fa-angle-left me-2"></i>Cancelar
+          </a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

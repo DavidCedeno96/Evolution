@@ -69,6 +69,7 @@
   <hr class="hr-text" data-content="O" />
   <div class="menu">
     <!-- en este poner *ngIf="rol === 'adm' || rol === 'sadm'" -->
+    <!-- routerLink="{{ rol === 'adm' ? '/homeAdmin' : '/view-reto' }}" -->
     <a
       [class]="menuItemActive('/homeAdmin')"
       data-bs-dismiss="offcanvas"
@@ -88,9 +89,9 @@
       </div>
     </a>
     <a
-      [class]="menuItemActive('/reto')"
+      [class]="menuItemActive('/view-reto')"
       data-bs-dismiss="offcanvas"
-      routerLink=""
+      routerLink="/view-reto"
     >
       <div class="icon-text">
         <mat-icon svgIcon="gamepad"></mat-icon><span>Retos</span>
@@ -115,18 +116,18 @@
       </div>
     </a>
     <a
-      [class]="menuItemActive('/nivel')"
+      [class]="menuItemActive('/view-nivel')"
       data-bs-dismiss="offcanvas"
-      routerLink=""
+      routerLink="/view-nivel"
     >
       <div class="icon-text">
         <mat-icon svgIcon="podio"></mat-icon><span>Niveles</span>
       </div>
     </a>
     <a
-      [class]="menuItemActive('/medalla')"
+      [class]="menuItemActive('/view-medalla')"
       data-bs-dismiss="offcanvas"
-      routerLink=""
+      routerLink="/view-medalla"
     >
       <div class="icon-text">
         <mat-icon svgIcon="otorgar"></mat-icon><span>Medallas</span>

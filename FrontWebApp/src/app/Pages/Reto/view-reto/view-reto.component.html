@@ -1,22 +1,13 @@
 <div class="my-3 my-md-5">
   <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
-    <h5 class="my-5 text-center txt text-primary text-uppercase">
-      recompensas
-    </h5>
+    <h5 class="my-5 text-center txt text-primary text-uppercase">retos</h5>
     <div class="row g-3 mb-4">
       <div class="col-6 col-md-auto d-grid d-md-block">
-        <a class="btn btn-primary icon" routerLink="/upsert-recompensa">
+        <a class="btn btn-primary icon" routerLink="/upsert-reto">
           <div class="icon-text buton">
             <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
           </div>
         </a>
-      </div>
-      <div class="col-6 col-md-6 d-grid d-md-block">
-        <button class="btn btn-tertiary icon">
-          <div class="icon-text buton">
-            <mat-icon svgIcon="importar"></mat-icon><span>Importar</span>
-          </div>
-        </button>
       </div>
     </div>
     <!-- buscador -->
@@ -37,28 +28,35 @@
         <button type="submit" class="btn btn-success">Buscar</button>
       </div>
     </form>
-    <!-- Noticias -->
+    <!-- Items -->
     <div class="mb-2 mb-md-4">
-      <p-dataView #dv [value]="recompensa" [rows]="2" [paginator]="true">
-        <ng-template let-recompensa pTemplate="listItem">
+      <p-dataView #dv [value]="reto" [rows]="2" [paginator]="true">
+        <ng-template let-reto pTemplate="listItem">
           <div class="col-12">
             <div class="p-4 gap-4">
               <div class="row g-3 text-center text-md-start align-items-center">
                 <div class="col-12 col-md-auto">
                   <img
                     class="img-thumbnail"
-                    src="assets/img/recompensa/default-recompensa.jpg"
+                    src="assets/img/reto/default-reto.jpg"
                     width="150px"
-                    [alt]="recompensa.imagen"
+                    [alt]="reto.imagen"
                   />
                 </div>
                 <div class="col-12 col-md-4">
                   <h5 class="txt text-secondary">
-                    {{ recompensa.nombre }}
+                    {{ reto.nombre }}
                   </h5>
                   <div class="flex align-items-center gap-3">
+                    <strong>Fecha de Apertura:</strong>
                     <span class="d-block text-truncate">
-                      {{ recompensa.descripcion }}
+                      {{ dateFormat(reto.fechaApertura) }}
+                    </span>
+                  </div>
+                  <div class="flex align-items-center gap-3">
+                    <strong>Fecha de Cierre:</strong>
+                    <span class="d-block text-truncate">
+                      {{ dateFormat(reto.fechaCierre) }}
                     </span>
                   </div>
                 </div>
@@ -66,21 +64,25 @@
                 <div class="col-12 col-md-3">
                   <div class="flex align-items-center gap-3">
                     <div>
-                      <strong>Cantidad Disponible:</strong>
+                      <strong>Vidas:</strong>
                       <span class="">
-                        {{ recompensa.cantDisp }}
+                        {{ reto.vidas }}
                       </span>
                     </div>
                     <div>
-                      <strong>Cantidad de Canje:</strong>
+                      <strong>Tiempo:</strong>
+                      <span class=""> {{ reto.tiempo_ms }} ms </span>
+                    </div>
+                    <div>
+                      <strong>Puntos de Recompensa:</strong>
                       <span class="">
-                        {{ recompensa.cantCanje }}
+                        {{ reto.puntosRecompensa }}
                       </span>
                     </div>
                     <div>
-                      <strong>Entregados:</strong>
+                      <strong>Creditos Obtenidos:</strong>
                       <span class="">
-                        {{ recompensa.totalUsuarios }}
+                        {{ reto.creditosObtenidos }}
                       </span>
                     </div>
                   </div>
@@ -100,9 +102,14 @@
                     </button>
                     <ul class="dropdown-menu">
                       <li>
-                        <a class="dropdown-item" routerLink="/upsert-recompensa"
+                        <a class="dropdown-item" routerLink="/upsert-reto"
                           ><i class="fa-regular fa-pen-to-square me-2"></i
                           >Editar</a
+                        >
+                      </li>
+                      <li>
+                        <a class="dropdown-item" routerLink="/view-pregunta"
+                          ><i class="fa-solid fa-question me-2"></i>Preguntas</a
                         >
                       </li>
                       <li>

@@ -1,11 +1,9 @@
 <div class="my-3 my-md-5">
   <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
-    <h5 class="my-5 text-center txt text-primary text-uppercase">
-      recompensas
-    </h5>
+    <h5 class="my-5 text-center txt text-primary text-uppercase">medallas</h5>
     <div class="row g-3 mb-4">
       <div class="col-6 col-md-auto d-grid d-md-block">
-        <a class="btn btn-primary icon" routerLink="/upsert-recompensa">
+        <a class="btn btn-primary icon" routerLink="/upsert-medalla">
           <div class="icon-text buton">
             <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
           </div>
@@ -39,26 +37,26 @@
     </form>
     <!-- Noticias -->
     <div class="mb-2 mb-md-4">
-      <p-dataView #dv [value]="recompensa" [rows]="2" [paginator]="true">
-        <ng-template let-recompensa pTemplate="listItem">
+      <p-dataView #dv [value]="medalla" [rows]="2" [paginator]="true">
+        <ng-template let-medalla pTemplate="listItem">
           <div class="col-12">
             <div class="p-4 gap-4">
               <div class="row g-3 text-center text-md-start align-items-center">
                 <div class="col-12 col-md-auto">
                   <img
                     class="img-thumbnail"
-                    src="assets/img/recompensa/default-recompensa.jpg"
+                    src="assets/img/medalla/default-medalla.jpg"
                     width="150px"
-                    [alt]="recompensa.imagen"
+                    [alt]="medalla.imagen"
                   />
                 </div>
                 <div class="col-12 col-md-4">
                   <h5 class="txt text-secondary">
-                    {{ recompensa.nombre }}
+                    {{ medalla.nombre }}
                   </h5>
                   <div class="flex align-items-center gap-3">
                     <span class="d-block text-truncate">
-                      {{ recompensa.descripcion }}
+                      {{ medalla.descripcion }}
                     </span>
                   </div>
                 </div>
@@ -66,21 +64,21 @@
                 <div class="col-12 col-md-3">
                   <div class="flex align-items-center gap-3">
                     <div>
-                      <strong>Cantidad Disponible:</strong>
+                      <strong>Condición:</strong>
                       <span class="">
-                        {{ recompensa.cantDisp }}
+                        {{ medalla.condicion }}
                       </span>
                     </div>
                     <div>
-                      <strong>Cantidad de Canje:</strong>
+                      <strong>Usuarios:</strong>
                       <span class="">
-                        {{ recompensa.cantCanje }}
+                        {{ medalla.totalUsuarios }}
                       </span>
                     </div>
                     <div>
-                      <strong>Entregados:</strong>
+                      <strong>Estado:</strong>
                       <span class="">
-                        {{ recompensa.totalUsuarios }}
+                        {{ medalla.estado === 1 ? "Activado" : "Desactivado" }}
                       </span>
                     </div>
                   </div>
@@ -100,7 +98,7 @@
                     </button>
                     <ul class="dropdown-menu">
                       <li>
-                        <a class="dropdown-item" routerLink="/upsert-recompensa"
+                        <a class="dropdown-item" routerLink="/upsert-medalla"
                           ><i class="fa-regular fa-pen-to-square me-2"></i
                           >Editar</a
                         >

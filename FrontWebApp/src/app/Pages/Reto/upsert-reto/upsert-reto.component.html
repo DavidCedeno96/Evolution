@@ -1,0 +1,79 @@
+<div class="my-3 my-md-5">
+  <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+    <h5 class="my-5 text-center txt text-primary text-uppercase">nuevo reto</h5>
+    <form class="mb-3">
+      <div class="row g-3">
+        <div class="col-12 col-md-4">
+          <label for="ret-nom" class="form-label">Nombre*</label>
+          <input type="text" class="form-control" id="ret-nom" />
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="ret-fape" class="form-label">Fecha Apertura*</label>
+          <input type="date" class="form-control" id="ret-fape" />
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="ret-fcie" class="form-label">Fecha Cierre*</label>
+          <input type="date" class="form-control" id="ret-fcie" />
+        </div>
+        <div class="col-12 col-md-4 col-lg-2">
+          <label for="ret-vid" class="form-label">Vidas*</label>
+          <input type="text" class="form-control" id="ret-vid" />
+        </div>
+        <div class="col-12 col-md-4 col-lg-2">
+          <label for="ret-prec" class="form-label">Puntos Recompensa*</label>
+          <input type="text" class="form-control" id="ret-prec" />
+        </div>
+        <div class="col-12 col-md-4 col-lg-2">
+          <label for="ret-cobt" class="form-label">Créditos Obtenidos*</label>
+          <input type="text" class="form-control" id="ret-cobt" />
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <label for="ret-cobt" class="form-label">Tipo Reto*</label>
+          <select class="form-select" id="ret-cobt">
+            <option value="">Seleccione...</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <label for="ret-comp" class="form-label">Comportamiento*</label>
+          <select class="form-select" id="ret-comp">
+            <option value="">Seleccione...</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="ret-inst" class="form-label">Instrucciones</label>
+          <textarea
+            class="form-control"
+            cols="30"
+            rows="6"
+            id="ret-inst"
+          ></textarea>
+        </div>
+        <div class="col-12 col-md-8">
+          <label for="ret-imagen" class="form-label">Imagen</label>
+          <input
+            type="file"
+            class="form-control mb-2"
+            id="ret-imagen"
+            accept=".jpg, .jpeg, .png"
+          />
+          <div class="text-center text-md-start">
+            <img
+              src="assets/img/reto/default-reto.jpg"
+              class="img-thumbnail"
+              width="110"
+              alt="reto"
+            />
+          </div>
+        </div>
+        <div class="col-12 mt-4 text-end d-grid d-md-block">
+          <button type="submit" class="btn btn-success mb-3 mb-md-0 me-md-2">
+            <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
+          </button>
+          <a class="btn btn-secondary" routerLink="/view-reto">
+            <i class="fa-solid fa-angle-left me-2"></i>Cancelar
+          </a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

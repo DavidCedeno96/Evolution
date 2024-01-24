@@ -1,0 +1,39 @@
+.form-check-input {
+  border-color: #7a7a7a;
+  box-shadow: none;
+  width: 25px;
+  height: 25px;
+}
+
+.form-check-input.is-invalid {
+  border-color: #f10909;
+}
+
+.selec-op {
+  position: absolute;
+  margin-top: -32px;
+}
+
+@media (max-width: 1440px) {
+  .selec-op {
+    right: 8%;
+  }
+}
+
+@media (max-width: 991px) {
+  .selec-op {
+    right: 18%;
+  }
+}
+
+@media (max-width: 770px) {
+  .selec-op {
+    right: 20%;
+  }
+}
+
+@media (max-width: 768px) {
+  .selec-op {
+    right: 8%;
+  }
+}

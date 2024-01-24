@@ -57,7 +57,7 @@
                       {{ noticia.descripcion }}
                     </span>
                     <small class="d-block text-truncate">
-                      {{ formatDate(noticia.fechaPublicacion) }}
+                      {{ dateFormat(noticia.fechaPublicacion) }}
                     </small>
                   </div>
                 </div>
@@ -97,7 +97,7 @@
                 <div class="col-12 col-md-1 col-lg-2 text-md-end">
                   <div class="dropdown">
                     <button
-                      class="btn btn-secondary only-icon"
+                      class="btn btn-secondary normal only-icon"
                       type="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
@@ -106,7 +106,7 @@
                         <mat-icon svgIcon="rueda-dentada"></mat-icon>
                       </div>
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu dropdown-menu-start">
                       <li>
                         <a class="dropdown-item" routerLink="/upsert-noticia"
                           ><i class="fa-regular fa-pen-to-square me-2"></i

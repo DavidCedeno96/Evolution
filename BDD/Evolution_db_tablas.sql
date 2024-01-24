@@ -238,7 +238,7 @@ create table Reto(
 
 create table Pregunta(
 	idPregunta uniqueidentifier primary key default newid(),
-	nombre varchar(150) not null,
+	nombre varchar(200) not null,
 	estado int default 1,
 	idReto uniqueidentifier references Reto(idReto) not null,
 	fechaCreacion datetime default getdate(),
@@ -247,7 +247,7 @@ create table Pregunta(
 
 create table Opcion(
 	idOpcion uniqueidentifier primary key default newid(),
-	nombre varchar(150) not null,
+	nombre varchar(200) not null,
 	correcta int default 0,
 	estado int default 1,
 	idPregunta uniqueidentifier references Pregunta(idPregunta) not null,

@@ -1,0 +1,152 @@
+<div class="my-3 my-md-5">
+  <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+    <h5 class="my-5 text-center txt text-primary text-uppercase">
+      nueva pregunta
+    </h5>
+    <form class="mb-3" [formGroup]="formulario" (ngSubmit)="save()">
+      <div class="row g-3">
+        <div class="col-12 col-md-8 col-lg-10">
+          <label for="pre-nom" class="form-label">Pregunta*</label>
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('pregunta')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="pregunta"
+            id="pre-nom"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('pregunta')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('pregunta')?.hasError('maxlength')"
+            >
+              Máximo 150 caracteres
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('pregunta')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 col-lg-2">
+          <label for="pre-nop" class="form-label">Número de opciones</label>
+          <select
+            class="form-select {{
+              formulario.get('totalOpciones')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="totalOpciones"
+            (change)="selectTotalOpciones($event)"
+            id="pre-nop"
+          >
+            <option value="">Seleccione...</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('totalOpciones')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('totalOpciones')?.hasError('required')"
+            >
+              Seleccione una opción
+            </span>
+          </div>
+        </div>
+
+        <!-- CAMBIAR A "align-items-center" CUANDO EL INPUT DE LA OPCION SEA is-invalid-->
+        <div
+          class="row g-3 align-items-end"
+          *ngFor="let pregunta of pregunta.opcionList; index as i"
+        >
+          <div class="col-10 col-md-10">
+            <label for="pre-op-{{ i }}" class="form-label"
+              >Opción {{ opcion[i] }}*</label
+            >
+            <input
+              type="text"
+              class="form-control {{
+                formulario.get('opcion' + opcion[i])?.errors && verErrorsInputs
+                  ? 'is-invalid'
+                  : ''
+              }}"
+              formControlName="opcion{{ opcion[i] }}"
+              id="pre-op-{{ i }}"
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="formulario.get('opcion' + opcion[i])?.errors"
+            >
+              <span
+                class="d-block"
+                *ngIf="
+                  formulario.get('opcion' + opcion[i])?.hasError('maxlength')
+                "
+              >
+                Máximo 150 caracteres
+              </span>
+              <span
+                class="d-block"
+                *ngIf="
+                  formulario.get('opcion' + opcion[i])?.hasError('required')
+                "
+              >
+                Campo obligatorio
+              </span>
+            </div>
+          </div>
+          <div
+            class="col-2 p-2 text-center {{
+              formulario.get('opcion' + opcion[i])?.errors && numClicksSave > 0
+                ? 'mb-4'
+                : ''
+            }}"
+          >
+            <label
+              class="d-block selec-op {{
+                formulario.get('opcionCorrecta')?.errors && numClicksSave > 0
+                  ? 'text-danger'
+                  : ''
+              }}"
+              *ngIf="i === 0"
+              ><span class="d-none d-lg-inline"
+                >Seleccione la opción correcta*</span
+              >
+              <span class="d-lg-none">Opción correcta*</span>
+            </label>
+            <input
+              type="radio"
+              class="form-check-input {{
+                formulario.get('opcionCorrecta')?.errors && numClicksSave > 0
+                  ? 'is-invalid'
+                  : ''
+              }}"
+              formControlName="opcionCorrecta"
+              [value]="opcion[i]"
+            />
+          </div>
+        </div>
+
+        <div class="col-12 mt-4 text-end d-grid d-md-block">
+          <button type="submit" class="btn btn-success mb-3 mb-md-0 me-md-2">
+            <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
+          </button>
+          <a class="btn btn-secondary" routerLink="/view-pregunta">
+            <i class="fa-solid fa-angle-left me-2"></i>Cancelar
+          </a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
