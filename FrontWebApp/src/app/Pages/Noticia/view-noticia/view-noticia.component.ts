@@ -8,7 +8,7 @@ import { DateFormat } from 'src/app/Utils/Constants';
   styleUrls: ['./view-noticia.component.css'],
 })
 export class ViewNoticiaComponent implements OnInit {
-  dateFormat = DateFormat;
+  dateFormat = DateFormat();
 
   noticia: Noticia[] = [
     {

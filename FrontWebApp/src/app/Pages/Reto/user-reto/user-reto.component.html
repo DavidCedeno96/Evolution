@@ -1,0 +1,62 @@
+<div>
+  <h4 class="text-uppercase">Retos</h4>
+  <!-- buscador -->
+  <form class="row g-3 mb-4">
+    <div class="col-12 col-md-8">
+      <div class="input-group">
+        <span class="icon-left">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <input type="text" class="form-control icon" placeholder="buscar..." />
+      </div>
+    </div>
+    <div class="col-12 col-md-3 d-grid d-md-block">
+      <button type="submit" class="btn btn-success">Buscar</button>
+    </div>
+  </form>
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of paginatedItems()">
+      <div
+        class="shadow-lg p-3 mb-2 bg-body rounded pointer"
+        (click)="changeRoute('/entrada-reto', { reto: 'abc123' })"
+      >
+        <div class="row g-3 align-items-center">
+          <div class="col-3 text-center">
+            <img
+              src="assets/img/default/default-reto.jpg"
+              class="img-thumbnail"
+              width="100"
+              alt=""
+            />
+          </div>
+          <div class="col-9">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="txt text-primary fw-semibold text-truncate">{{
+                item.nombre
+              }}</span>
+              <span
+                class="badge {{
+                  item.estado ? 'text-bg-success' : 'text-bg-danger'
+                }}"
+                >{{ item.estado ? "Activado" : "Desactivado" }}</span
+              >
+            </div>
+            <small class="text-black-50 fw-semibold d-block">{{
+              item.tipoReto
+            }}</small>
+            <small class="fw-semibold me-1">Activo hasta:</small>
+            <small>23/02/2024</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-content-center">
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="first"
+      [rows]="rows"
+      [totalRecords]="totalItems()"
+    ></p-paginator>
+  </div>
+</div>

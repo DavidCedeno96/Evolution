@@ -81,5 +81,25 @@ export class IconModule {
         'assets/icons/importar.svg'
       )
     );
+
+    /********** OTROS **********/
+    this._matIconRegistry.addSvgIcon(
+      'corazon',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/corazon.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
+      'corazon-roto',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/corazon-roto.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
+      'reloj-arena',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/reloj-de-arena.svg'
+      )
+    );
   }
 }

@@ -7,7 +7,14 @@ import { AppComponent } from './app.component';
 // Este es para la apiRest
 import { HttpClientModule } from '@angular/common/http';
 
+/* FORMS */
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
+/* PRIME */
+import { DataViewModule } from 'primeng/dataview';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { InputTextModule } from 'primeng/inputtext';
+import { PaginatorModule } from 'primeng/paginator';
 
 /* PÁGINAS */
 import { LoginComponent } from './Pages/login/login.component';
@@ -19,11 +26,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { ConfiguracionComponent } from './Pages/configuracion/configuracion.component';
 import { ViewUserComponent } from './Pages/Usuario/view-user/view-user.component';
 import { UpsertUserComponent } from './Pages/Usuario/upsert-user/upsert-user.component';
-
-/* PRIME */
-import { DataViewModule } from 'primeng/dataview';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { InputTextModule } from 'primeng/inputtext';
 import { ViewNoticiaComponent } from './Pages/Noticia/view-noticia/view-noticia.component';
 import { UpsertNoticiaComponent } from './Pages/Noticia/upsert-noticia/upsert-noticia.component';
 import { ViewCategoriaComponent } from './Pages/Noticia/view-categoria/view-categoria.component';
@@ -36,8 +38,13 @@ import { ViewMedallaComponent } from './Pages/Medalla/view-medalla/view-medalla.
 import { UpsertMedallaComponent } from './Pages/Medalla/upsert-medalla/upsert-medalla.component';
 import { ViewRetoComponent } from './Pages/Reto/view-reto/view-reto.component';
 import { UpsertRetoComponent } from './Pages/Reto/upsert-reto/upsert-reto.component';
-import { ViewPreguntaComponent } from './Pages/Reto/view-pregunta/view-pregunta.component';
-import { UpsertPreguntaComponent } from './Pages/Reto/upsert-pregunta/upsert-pregunta.component';
+import { ViewPreguntaComponent } from './Pages/Pregunta/view-pregunta/view-pregunta.component';
+import { UpsertPreguntaComponent } from './Pages/Pregunta/upsert-pregunta/upsert-pregunta.component';
+import { HomeUserComponent } from './Pages/home-user/home-user.component';
+import { UserRetoComponent } from './Pages/Reto/user-reto/user-reto.component';
+import { EntradaRetoComponent } from './Pages/Reto/entrada-reto/entrada-reto.component';
+import { JuegoRetoComponent } from './Pages/Reto/juego-reto/juego-reto.component';
+import { TriviaComponent } from './Components/trivia/trivia.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +69,11 @@ import { UpsertPreguntaComponent } from './Pages/Reto/upsert-pregunta/upsert-pre
     UpsertRetoComponent,
     ViewPreguntaComponent,
     UpsertPreguntaComponent,
+    HomeUserComponent,
+    UserRetoComponent,
+    EntradaRetoComponent,
+    JuegoRetoComponent,
+    TriviaComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +87,7 @@ import { UpsertPreguntaComponent } from './Pages/Reto/upsert-pregunta/upsert-pre
     DataViewModule,
     SplitButtonModule,
     InputTextModule,
+    PaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

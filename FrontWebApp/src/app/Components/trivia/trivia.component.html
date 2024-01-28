@@ -1,0 +1,82 @@
+<div class="my-3 my-md-5">
+  <div class="shadow-lg p-4 px-md-5 mb-2 bg-body rounded">
+    <div class="d-flex justify-content-between mb-3">
+      <span class="fw-semibold txt text-primary fs-5"
+        >Pregunta {{ preguntaActual + 1 }}/{{ pregunta.length }}</span
+      >
+      <div class="icon-text">
+        <mat-icon
+          svgIcon="reloj-arena"
+          class="icon-border-circle me-2"
+        ></mat-icon>
+        <span class="fw-semibold txt text-primary fs-5">01:23:10</span>
+      </div>
+    </div>
+    <div class="col-12 text-danger mb-3">
+      <mat-icon svgIcon="corazon" class="icon-border"></mat-icon>
+      <mat-icon svgIcon="corazon" class="icon-border"></mat-icon>
+      <mat-icon svgIcon="corazon" class="icon-border"></mat-icon>
+      <mat-icon svgIcon="corazon-roto" class="icon-border"></mat-icon>
+    </div>
+    <div class="col-lg-8 mx-auto">
+      <div class="rounded p-4 mb-3 bg-superior text-white">
+        <span class="fw-semibold fs-5">{{
+          pregunta[preguntaActual].nombre
+        }}</span>
+      </div>
+      <form (ngSubmit)="next()">
+        <div class="mb-4">
+          <div
+            class="form-check"
+            *ngFor="let item of pregunta[preguntaActual].opcionList; index as i"
+          >
+            <input
+              class="form-check-input"
+              type="radio"
+              name="flexRadioDefault"
+              id="{{ i }}"
+              (change)="calificarOpcion(i + 1, item.correcta)"
+            />
+            <!-- text-body -->
+            <label
+              class="form-check-label d-block py-2  {{
+                cambiarTextColor(i + 1)
+              }}"
+              for="{{ i }}"
+            >
+              {{ item.nombre }}
+            </label>
+            <!-- <img
+              src="assets/img/juego/bien.png"
+              width="30"
+              height="30"
+              alt="XOp"
+            /> -->
+          </div>
+        </div>
+
+        <div class="col-12 d-grid d-md-block text-end">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="nextButonDisable"
+          >
+            <span>{{ nextText }}</span>
+            <i
+              class="fa-solid fa-angle-right ms-2 {{
+                nextButonDisable ? 'd-none' : ''
+              }}"
+            ></i>
+            <div
+              class="spinner-border spinner-border-sm ms-2 {{
+                nextButonDisable ? '' : 'd-none'
+              }}"
+              role="status"
+            ></div>
+          </button>
+        </div>
+        <div class="panel {{ verOpCalificacion ? '' : 'd-none' }}"></div>
+      </form>
+    </div>
+  </div>
+</div>

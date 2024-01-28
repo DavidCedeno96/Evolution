@@ -12,6 +12,8 @@ export class AppComponent implements OnInit {
   showSpaceBlank: boolean = false;
   url: string = '';
 
+  idRol: string = '';
+
   constructor(private router: Router) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -37,13 +39,29 @@ export class AppComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.idRol = 'jug';
+  }
 
-  menuItemActive(activeUrl: string): string {
-    if (activeUrl === this.url) {
+  menuItemActive(activeAdminUrl: string, activeUserUrl: string): string {
+    if (activeAdminUrl === this.url || activeUserUrl === this.url) {
       return 'active';
     }
     return '';
+  }
+
+  getUrlByRol(adminUrl: string, userUrl: string): string {
+    switch (this.idRol) {
+      case 'adm': {
+        return adminUrl;
+      }
+      case 'jug': {
+        return userUrl;
+      }
+      default: {
+        return '/';
+      }
+    }
   }
 
   cerrarSesion() {

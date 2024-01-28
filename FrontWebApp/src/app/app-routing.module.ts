@@ -18,13 +18,18 @@ import { ViewMedallaComponent } from './Pages/Medalla/view-medalla/view-medalla.
 import { UpsertMedallaComponent } from './Pages/Medalla/upsert-medalla/upsert-medalla.component';
 import { ViewRetoComponent } from './Pages/Reto/view-reto/view-reto.component';
 import { UpsertRetoComponent } from './Pages/Reto/upsert-reto/upsert-reto.component';
-import { ViewPreguntaComponent } from './Pages/Reto/view-pregunta/view-pregunta.component';
-import { UpsertPreguntaComponent } from './Pages/Reto/upsert-pregunta/upsert-pregunta.component';
+import { ViewPreguntaComponent } from './Pages/Pregunta/view-pregunta/view-pregunta.component';
+import { UpsertPreguntaComponent } from './Pages/Pregunta/upsert-pregunta/upsert-pregunta.component';
+import { HomeUserComponent } from './Pages/home-user/home-user.component';
+import { UserRetoComponent } from './Pages/Reto/user-reto/user-reto.component';
+import { EntradaRetoComponent } from './Pages/Reto/entrada-reto/entrada-reto.component';
+import { JuegoRetoComponent } from './Pages/Reto/juego-reto/juego-reto.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'homeAdmin', component: HomeAdminComponent },
+  { path: 'homeUser', component: HomeUserComponent },
   { path: 'view-user', component: ViewUserComponent },
   { path: 'upsert-user', component: UpsertUserComponent },
   { path: 'view-noticia', component: ViewNoticiaComponent },
@@ -39,6 +44,9 @@ const routes: Routes = [
   { path: 'upsert-medalla', component: UpsertMedallaComponent },
   { path: 'view-reto', component: ViewRetoComponent },
   { path: 'upsert-reto', component: UpsertRetoComponent },
+  { path: 'user-reto', component: UserRetoComponent },
+  { path: 'entrada-reto', component: EntradaRetoComponent },
+  { path: 'juego-reto', component: JuegoRetoComponent },
   { path: 'view-pregunta', component: ViewPreguntaComponent },
   { path: 'upsert-pregunta', component: UpsertPreguntaComponent },
   { path: 'config', component: ConfiguracionComponent },

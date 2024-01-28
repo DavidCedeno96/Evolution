@@ -1,0 +1,36 @@
+<div class="my-3 my-md-5">
+  <div class="shadow-lg p-3 mb-2 bg-body rounded">
+    <div class="row g-3 mx-2 mx-md-5 my-2">
+      <div class="col-12 text-center">
+        <h3 class="text-truncate">
+          Reto 1 bla bla bla bla bla bla bla bla bla bla bla bla
+        </h3>
+        <img
+          src="assets/img/default/default-reto.jpg"
+          class="img-thumbnail"
+          width="300"
+          alt=""
+        />
+      </div>
+
+      <div class="col-12">
+        <h4>Instrucciones</h4>
+        <p>
+          Contesta correctamente las preguntas para ganar puntos y avanza rápido
+          para llegar primero a la meta. Tienes 20 segundos por pregunta,
+          ¡Diviértete!
+        </p>
+      </div>
+      <div class="col-12 text-center text-md-end d-grid d-md-block">
+        <button
+          class="btn btn-primary icon"
+          (click)="changeRoute('/juego-reto', {})"
+        >
+          <div class="icon-text buton">
+            <mat-icon svgIcon="gamepad"></mat-icon><span>Comenzar</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

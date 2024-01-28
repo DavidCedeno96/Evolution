@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
+  load = Loading();
   verPassword: boolean = false;
   verErrorsInputs: boolean = false;
   numClicksSave: number = 0;
@@ -38,7 +39,9 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    //this.load(true, false);
+  }
 
   save() {
     console.log(this.formulario.valid);

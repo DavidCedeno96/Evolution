@@ -8,9 +8,26 @@ import { DateFormat } from 'src/app/Utils/Constants';
   styleUrls: ['./view-reto.component.css'],
 })
 export class ViewRetoComponent implements OnInit {
-  dateFormat = DateFormat;
+  dateFormat = DateFormat();
 
   reto: Reto[] = [
+    {
+      idReto: '',
+      nombre: 'Reto1',
+      fechaApertura: new Date(),
+      fechaCierre: new Date(),
+      vidas: 3,
+      tiempo_ms: 3600,
+      puntosRecompensa: 10,
+      creditosObtenidos: 23,
+      instrucciones: '',
+      imagen: 'imgreto.png',
+      idTipoReto: '',
+      tipoReto: 'Trivia',
+      idComportamiento: '',
+      comportamiento: 'aleatoria',
+      estado: 1,
+    },
     {
       idReto: '',
       nombre: 'Reto1',

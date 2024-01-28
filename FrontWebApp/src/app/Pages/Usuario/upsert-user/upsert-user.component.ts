@@ -14,6 +14,7 @@ import {
   styleUrls: ['./upsert-user.component.css'],
 })
 export class UpsertUserComponent implements OnInit {
+  alertError = AlertError();
   verPassword: boolean = false;
   verErrorsInputs: boolean = false;
   numClicksSave: number = 0;
@@ -56,7 +57,7 @@ export class UpsertUserComponent implements OnInit {
     } else {
       this.verErrorsInputs = true;
 
-      AlertError(TitleErrorForm, MsgErrorForm);
+      this.alertError(TitleErrorForm, MsgErrorForm);
     }
   }
 

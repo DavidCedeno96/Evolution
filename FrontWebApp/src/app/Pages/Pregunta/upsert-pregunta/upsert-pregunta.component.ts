@@ -14,6 +14,7 @@ import {
   styleUrls: ['./upsert-pregunta.component.css'],
 })
 export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
+  alertError = AlertError();
   auxIdPregunta: string = '';
   auxOpcionList: Opcion[] = [];
   opcion: string[] = ['A', 'B', 'C', 'D'];
@@ -103,7 +104,7 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
     } else {
       this.verErrorsInputs = true;
 
-      AlertError(TitleErrorForm, MsgErrorForm);
+      this.alertError(TitleErrorForm, MsgErrorForm);
     }
   }
 
