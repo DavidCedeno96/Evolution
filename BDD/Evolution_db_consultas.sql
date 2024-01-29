@@ -54,9 +54,10 @@ SELECT @@VERSION;
 --Insert into Constants (nombre,descripcion) values
 --('encontrar','encontrado'),
 --('no_encontrar','no encontrado'),
---('exito_eliminar','Registro eliminado satisfactoriamente'),
+--('exito_delete','Registro eliminado satisfactoriamente'),
 --('exito_update','Registro editado satisfactoriamente'),
---('exito_insert','Registro creado satisfactoriamente')
+--('exito_insert','Registro creado satisfactoriamente'),
+--('cero_filas','No se encontró ningun resultado')
 
 --Insert Into Rol (idRol, nombre, descripcion, estado) values
 --('adm', 'Administrador', 'Este rol es para el administrador',1),
@@ -99,6 +100,12 @@ exec sp_B_UsuarioById
 
 exec sp_B_UsuarioByCorreo
 @correo = 'mia@gmail.com',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_UsuarioByAll		
+@buscar = 'd/a',
 @error = '',
 @info = '',
 @id = ''

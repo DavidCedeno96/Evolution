@@ -1,0 +1,154 @@
+import { Injectable } from '@angular/core';
+import { servicioURL } from '../Utils/Constants';
+import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Usuario } from '../Models/Usuario';
+import { Observable } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UsuarioService {
+  private apiURL: string = servicioURL + '/api/usuario';
+  private apiURLImages: string = servicioURL + '/Content/Images/Usuario';
+
+  helper = new JwtHelperService();
+  private timeoutId!: number;
+  private tiempoDeInactividad: number = 60000; // esta en milisegundos
+
+  constructor(private http: HttpClient, private router: Router) {}
+
+  getImage(): string {
+    return this.apiURLImages;
+  }
+
+  getList(estado: number): Observable<number> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.get<number>(`${this.apiURL}/list/${estado}`, {
+      headers: headers,
+    });
+  }
+
+  getBuscarList(texto: string): Observable<Usuario[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.get<Usuario[]>(`${this.apiURL}/buscar/${texto}`, {
+      headers: headers,
+    });
+  }
+
+  /* register(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });    
+    return this.http.post<FormData>(`${this.apiURL}/register`, formData, {
+      headers: headers,
+    });
+  } */
+
+  registerView(): Observable<any> {
+    return this.http.get<any>(`${this.apiURL}/registerView`);
+  }
+
+  loginUsuario(usuario: Usuario): Observable<Usuario> {
+    return this.http.post<Usuario>(`${this.apiURL}/auth`, usuario);
+  }
+
+  loggedIn() {
+    return !!localStorage.getItem('token');
+  }
+
+  logout() {
+    this.removeLocalItems();
+    this.router.navigate(['/login']);
+  }
+
+  removeLocalItems() {
+    localStorage.removeItem('token');
+  }
+
+  getToken() {
+    return localStorage.getItem('token');
+  }
+
+  getRol() {
+    let idRol = '';
+
+    if (this.loggedIn()) {
+      let token = this.getToken();
+      const decodeToken = this.helper.decodeToken(token!);
+      idRol = decodeToken.role;
+    } else {
+      this.router.navigate(['/']);
+    }
+
+    return idRol;
+  }
+
+  getIdUsuario() {
+    let idUsuario = '';
+
+    if (this.loggedIn()) {
+      let token = this.getToken();
+      const decodeToken = this.helper.decodeToken(token!);
+      idUsuario = decodeToken.id;
+    } else {
+      this.router.navigate(['/']);
+    }
+
+    return idUsuario;
+  }
+
+  getUserName() {
+    let nombre = '';
+
+    if (this.loggedIn()) {
+      let token = this.getToken();
+      const decodeToken = this.helper.decodeToken(token!);
+      nombre = decodeToken.nombre;
+    } else {
+      this.router.navigate(['/']);
+    }
+
+    return nombre;
+  }
+
+  getUserCorreo() {
+    let correo = '';
+
+    if (this.loggedIn()) {
+      let token = this.getToken();
+      const decodeToken = this.helper.decodeToken(token!);
+      correo = decodeToken.correo;
+    } else {
+      this.router.navigate(['/']);
+    }
+
+    return correo;
+  }
+
+  stopTimer() {
+    clearTimeout(this.timeoutId);
+  }
+
+  resetTimer() {
+    clearTimeout(this.timeoutId);
+    this.timeoutId = window.setTimeout(() => {
+      if (this.loggedIn()) {
+        console.log('Cerrando sesion por inactividad');
+        this.logout();
+      }
+    }, this.tiempoDeInactividad);
+  }
+
+  startWatching() {
+    console.log(this.tiempoDeInactividad);
+    this.resetTimer();
+    document.addEventListener('mousemove', () => this.resetTimer());
+    document.addEventListener('keydown', () => this.resetTimer());
+  }
+}

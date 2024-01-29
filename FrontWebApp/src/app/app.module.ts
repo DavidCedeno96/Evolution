@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 /* FORMS */
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-/* PRIME */
+/* PRIMENG */
 import { DataViewModule } from 'primeng/dataview';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { InputTextModule } from 'primeng/inputtext';
@@ -45,6 +45,7 @@ import { UserRetoComponent } from './Pages/Reto/user-reto/user-reto.component';
 import { EntradaRetoComponent } from './Pages/Reto/entrada-reto/entrada-reto.component';
 import { JuegoRetoComponent } from './Pages/Reto/juego-reto/juego-reto.component';
 import { TriviaComponent } from './Components/trivia/trivia.component';
+import { UserNoticiaComponent } from './Pages/Noticia/user-noticia/user-noticia.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { TriviaComponent } from './Components/trivia/trivia.component';
     EntradaRetoComponent,
     JuegoRetoComponent,
     TriviaComponent,
+    UserNoticiaComponent,
   ],
   imports: [
     BrowserModule,

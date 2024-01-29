@@ -3,11 +3,19 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
+/* CONSTANTES */
+export const servicioURL: string = 'http://192.168.100.91:8087';
+
 export const FormatoFecha: string = 'dd/MM/yyyy';
+export const SinRegistros: string = 'No hay registros';
 export const TitleErrorForm: string = 'Error';
 export const MsgErrorForm: string =
   'Hay errores en los campos, por favor revisa e intantalo nuevamente.';
+export const TitleError: string = 'Error del servidor';
+export const MsgError: string =
+  'Ha ocurrido un error con el servidor, intentalo más tarde o vuelve a iniciar sesión';
 
+/* FUNCIONES */
 export const AlertError = () => {
   return (titulo: string, msg: string) => {
     Swal.fire({
@@ -54,7 +62,7 @@ export const Loading = () => {
       } else {
         setTimeout(() => {
           loading.classList.add('hidden');
-        }, 300);
+        }, 500);
       }
     }
   };

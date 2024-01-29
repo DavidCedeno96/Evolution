@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { UsuarioService } from './services/usuario.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ export class AppComponent implements OnInit {
 
   idRol: string = '';
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private usuarioServicio: UsuarioService) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe({
@@ -40,14 +41,25 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.idRol = 'jug';
+    if (this.usuarioServicio.loggedIn()) {
+      this.usuarioServicio.startWatching();
+    }
   }
 
-  menuItemActive(activeAdminUrl: string, activeUserUrl: string): string {
-    if (activeAdminUrl === this.url || activeUserUrl === this.url) {
-      return 'active';
+  menuItemActive(urls: string): string {
+    if (this.usuarioServicio.loggedIn()) {
+      this.idRol = this.usuarioServicio.getRol();
     }
-    return '';
+
+    let listUrls: string[] = urls.split(',');
+    let active: string = '';
+
+    listUrls.forEach((item) => {
+      if (item === this.url) {
+        active = 'active';
+      }
+    });
+    return active;
   }
 
   getUrlByRol(adminUrl: string, userUrl: string): string {

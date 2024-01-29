@@ -1,0 +1,4 @@
+.box-comentarios {
+  max-height: 150px;
+  overflow: auto;
+}

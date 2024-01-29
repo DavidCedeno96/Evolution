@@ -27,13 +27,58 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
+        [Route("list/{estado}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> List([FromRoute] int estado)
+        {
+            UsuarioList response = await data.GetUsuarioList(estado);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("buscar/{texto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> List([FromRoute] string texto)
+        {
+            UsuarioList response = await data.GetUsuarioList(texto);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
         [Route("item/{estado}/{idUsuario}")]
         [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idUsuario)
         {
             UsuarioItem response = await data.GetUsuario(estado, idUsuario);
             return StatusCode(StatusCodes.Status200OK, new { response});
-        }        
+        }
+
+        [HttpGet]
+        [Route("registerView")]
+        public IActionResult RegisterView()
+        {
+            Response response = new();
+            string date = DateTime.Now.ToString();
+
+            var keyBytes = Encoding.ASCII.GetBytes(settings.SecretKey);
+            var claims = new ClaimsIdentity();                        
+            claims.AddClaim(new Claim("exp_date", date));
+            claims.AddClaim(new Claim("defaultUser", "jugador"));
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = claims,
+                Expires = DateTime.UtcNow.AddMinutes(10), //Tiempo de expiracion del token en minutos
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenConfig = tokenHandler.CreateToken(tokenDescriptor);
+            string tokenCreado = tokenHandler.WriteToken(tokenConfig);
+            response.Info = tokenCreado;
+            response.Error = 0;
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
 
         [HttpPost]
         [Route("auth")]
@@ -78,6 +123,7 @@ namespace WebApiRest.Controllers
 
         [HttpPost]
         [Route("create")]
+        [Authorize(Roles = "adm,sadm")]
         public async Task<IActionResult> Create([FromForm] IFormFile archivo, [FromForm] Usuario usuario)
         {
             Response response = VF.ValidarUsuario(usuario);
@@ -110,9 +156,94 @@ namespace WebApiRest.Controllers
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
+        [HttpPost]
+        [Route("register")]
+        [Authorize]
+        public async Task<IActionResult> Register([FromForm] IFormFile archivo, [FromForm] Usuario usuario)
+        {
+            Response response = VF.ValidarUsuario(usuario);
+            string rutaArchivo = "";
+
+            if (archivo != null && response.Error == 0)
+            {
+                response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+
+                usuario.Foto = archivo.FileName.Trim();
+            }
+            else
+            {
+                usuario.Foto = "";
+            }
+
+            if (response.Error == 0)
+            {
+                usuario.IdRol = "jug";
+                response = await data.CreateUsuario(usuario);
+                if (response.Error == 0 && !rutaArchivo.Equals(""))
+                {
+                    //Aqui creamos una nueva imagen
+                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
+                    await archivo.CopyToAsync(fileStream);
+                    await fileStream.DisposeAsync();
+                }
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpPut]
+        [Route("updateUser")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUser([FromForm] IFormFile archivo, [FromForm] Usuario usuario)
+        {
+            Response response = VF.ValidarUsuario(usuario);
+            string rutaArchivo = "";
+
+            if (archivo != null && response.Error == 0)
+            {
+                response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+
+                usuario.Foto = archivo.FileName.Trim();
+            }
+            else
+            {
+                usuario.Foto = "";
+            }
+
+            if (response.Error == 0)
+            {
+                usuario.IdRol = "jug";
+                response = await data.UpdateUsuario(usuario);
+                if (response.Error == 0 && !rutaArchivo.Equals(""))
+                {
+                    string imagenAnterior = response.Info.Split(":")[1];
+
+                    //Aqui eliminamos el archivo anterior
+                    string rutaArchivoAnterior = WC.GetRutaImagen(_env, imagenAnterior, nombreCarpeta);
+                    if (System.IO.File.Exists(rutaArchivoAnterior))
+                    {
+                        System.IO.File.Delete(rutaArchivoAnterior);
+                    }
+
+                    //Aqui creamos una nueva imagen
+                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
+                    await archivo.CopyToAsync(fileStream);
+                    await fileStream.DisposeAsync();
+                }
+                if (response.Info.Contains("old_image"))
+                {
+                    response.Info = response.Info.Split(',')[0];
+                }
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
         [HttpPut]
         [Route("update")]
-        [Authorize]
+        [Authorize(Roles = "adm,sadm")]
         public async Task<IActionResult> Update([FromForm] IFormFile archivo, [FromForm] Usuario usuario)
         {
             Response response = VF.ValidarUsuario(usuario);

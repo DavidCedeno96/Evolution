@@ -19,7 +19,11 @@
     </div>
 
     <!-- buscador -->
-    <form class="row g-3 mb-1">
+    <form
+      [formGroup]="formulario"
+      (ngSubmit)="submitBuscar()"
+      class="row g-3 mb-1"
+    >
       <div class="col-12 col-md-8">
         <div class="input-group">
           <span class="icon-left">
@@ -29,6 +33,7 @@
             type="text"
             class="form-control icon"
             placeholder="buscar..."
+            formControlName="buscar"
           />
         </div>
       </div>
@@ -39,7 +44,13 @@
 
     <!-- Usuarios -->
     <div class="mb-2 mb-md-4">
-      <p-dataView #dv [value]="usuarios" [rows]="2" [paginator]="true">
+      <p-dataView
+        #dv
+        [value]="usuarios"
+        [rows]="10"
+        [paginator]="true"
+        [emptyMessage]="info"
+      >
         <ng-template let-usuario pTemplate="listItem">
           <div class="col-12">
             <div class="p-4 gap-4">
@@ -47,7 +58,7 @@
                 <div class="col-12 col-md-auto">
                   <img
                     class="img-thumbnail"
-                    src="assets/img/user/user1.jpg"
+                    [src]="getImage(usuario.foto)"
                     width="100px"
                     [alt]="usuario.imagen"
                   />

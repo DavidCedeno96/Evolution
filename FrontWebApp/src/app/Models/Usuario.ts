@@ -3,12 +3,15 @@ export interface Usuario {
   nombre: string;
   apellido: string;
   correo: string;
-  contrasena: string;
   celular: string;
   foto: string;
-  estado: number;
-  pais: string;
+  idRol: string;
+  rol: string;
+  idCiudad: string;
   ciudad: string;
-  empresa: string;
+  idArea: string;
   area: string;
+  contrasena: string;
+  estado: number;
+  empresa: string;
 }
