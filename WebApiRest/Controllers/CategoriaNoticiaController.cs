@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApiRest.Data;
 using WebApiRest.Models;
@@ -19,6 +18,24 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> GetList([FromRoute] int estado)
         {
             CategoriaNoticiaList response = await data.GetCategoriaNoticiaList(estado);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("buscar/{texto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Buscar([FromRoute] string texto)
+        {
+            CategoriaNoticiaList response = await data.GetCategoriaNoticiaList(texto);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("item/{estado}/{idCategoria}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idCategoria)
+        {
+            CategoriaNoticiaItem response = await data.GetCategoriaNoticia(estado, idCategoria);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 

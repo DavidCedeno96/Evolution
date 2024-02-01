@@ -17,6 +17,13 @@
         public DateTime FechaModificacion { get; set; }
     }
 
+    public class NoticiaItem
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public Noticia Noticia { get; set; }
+    }
+
     public class NoticiaList
     {
         public string Info { get; set; }

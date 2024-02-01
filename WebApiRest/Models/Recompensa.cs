@@ -14,6 +14,13 @@
         public DateTime FechaModificacion { get; set; }
     }
 
+    public class RecompensaItem
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public Recompensa Recompensa { get; set; } 
+    }
+
     public class RecompensaList
     {
         public string Info { get; set; }

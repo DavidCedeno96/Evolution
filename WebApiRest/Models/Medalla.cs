@@ -14,6 +14,13 @@
         public DateTime FechaModificacion { get; set; }
     }
 
+    public class MedallaItem
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public Medalla Medalla { get; set; }
+    }
+
     public class MedallaList
     {
         public string Info { get; set; }

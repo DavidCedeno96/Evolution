@@ -1,46 +1,187 @@
 <div class="my-3 my-md-5">
   <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
     <h5 class="my-5 text-center txt text-primary text-uppercase">
-      nueva recompensa
+      {{ titulo }}
     </h5>
-    <form class="mb-3">
+    <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
       <div class="row g-3">
         <div class="col-12 col-md-4">
           <label for="rec-nom" class="form-label">Nombre*</label>
-          <input type="text" class="form-control" id="rec-nom" />
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('nombre')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="nombre"
+            id="rec-nom"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('nombre')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('maxlength')"
+            >
+              Máximo 60 caracteres
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('pattern')"
+            >
+              Contiene caracteres invalidos
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-4">
           <label for="rec-cantdips" class="form-label"
             >Cantidad Disponible*</label
           >
-          <input type="text" class="form-control" id="rec-cantdips" />
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('cantDisponible')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="cantDisponible"
+            id="rec-cantdips"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('cantDisponible')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('cantDisponible')?.hasError('min')"
+            >
+              Mínimo 1
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('cantDisponible')?.hasError('max')"
+            >
+              Máximo 99999
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('cantDisponible')?.hasError('pattern')"
+            >
+              Solo se permiten números
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('cantDisponible')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-4">
           <label for="rec-cantcanje" class="form-label"
             >Cantidad de Canje*</label
           >
-          <input type="text" class="form-control" id="rec-cantcanje" />
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('cantCanje')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="cantCanje"
+            id="rec-cantcanje"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('cantCanje')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('cantCanje')?.hasError('min')"
+            >
+              Mínimo 1
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('cantCanje')?.hasError('max')"
+            >
+              Máximo 9999
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('cantCanje')?.hasError('pattern')"
+            >
+              Solo se permiten números
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('cantCanje')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-4">
           <label for="rec-desc" class="form-label">Descripción</label>
           <textarea
-            class="form-control"
+            class="form-control {{
+              formulario.get('descripcion')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="descripcion"
             cols="30"
             rows="6"
             id="rec-desc"
           ></textarea>
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('descripcion')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('descripcion')?.hasError('maxlength')"
+            >
+              Máximo 250 caracteres
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-8">
           <label for="rec-imagen" class="form-label">Imagen</label>
           <input
             type="file"
-            class="form-control mb-2"
+            class="form-control mb-2 {{
+              error && campo === 'imagen' ? 'is-invalid' : ''
+            }}"
             id="rec-imagen"
             accept=".jpg, .jpeg, .png"
+            (change)="onFileSelected($event)"
           />
           <div class="text-center text-md-start">
             <img
-              src="assets/img/default/default-recompensa.jpg"
+              *ngIf="!selectedImage"
+              [src]="
+                getImage(
+                  recompensa.imagen,
+                  'recompensa',
+                  'default-recompensa.jpg'
+                )
+              "
+              class="img-thumbnail"
+              width="110"
+              alt="recompensa"
+            />
+            <img
+              *ngIf="selectedImage"
+              [src]="previewImage"
               class="img-thumbnail"
               width="110"
               alt="recompensa"

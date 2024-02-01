@@ -62,6 +62,112 @@ namespace WebApiRest.Data
             return list;
         }
 
+        public async Task<CategoriaNoticiaList> GetCategoriaNoticiaList(string buscar)
+        {
+            CategoriaNoticiaList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_CategoriaNoticiaByAll", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.AddWithValue("@buscar", buscar);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    list.Lista.Add(new CategoriaNoticia()
+                    {
+                        IdCategoria = new Guid(dr["idCategoria"].ToString()),
+                        Nombre = dr["nombre"].ToString(),
+                        Descripcion = dr["descripcion"].ToString(),
+                        Estado = Convert.ToInt32(dr["estado"].ToString()),
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                    });
+                }
+
+                list.Info = WC.GetSatisfactorio();
+                list.Error = 0;
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+        }
+
+        public async Task<CategoriaNoticiaItem> GetCategoriaNoticia(int estado, Guid idCategoria)
+        {
+            CategoriaNoticiaItem item = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_CategoriaNoticiaById", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idCategoria", idCategoria);
+            cmd.Parameters.AddWithValue("@estado", estado);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                if (await dr.ReadAsync())
+                {
+                    item.CategoriaNoticia = new CategoriaNoticia()
+                    {
+                        IdCategoria = new Guid(dr["idCategoria"].ToString()),
+                        Nombre = dr["nombre"].ToString(),
+                        Descripcion = dr["descripcion"].ToString(),
+                        Estado = Convert.ToInt32(dr["estado"].ToString()),
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                    };
+                }
+                await dr.NextResultAsync();
+
+                item.Info = cmd.Parameters["@info"].Value.ToString();
+                item.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+            }
+            catch (Exception ex)
+            {
+                item.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                item.Error = 1;
+                item.CategoriaNoticia = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return item;
+        }
+
         public async Task<Response> CreateCategoriaNoticia(CategoriaNoticia categoriaNoticia)
         {
             Response response = new();

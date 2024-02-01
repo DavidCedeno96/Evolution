@@ -1,43 +1,127 @@
 <div class="my-3 my-md-5">
   <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
     <h5 class="my-5 text-center txt text-primary text-uppercase">
-      nueva medalla
+      {{ titulo }}
     </h5>
-    <form class="mb-3">
+    <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
       <div class="row g-3">
         <div class="col-12 col-md-8">
           <label for="med-nom" class="form-label">Nombre*</label>
-          <input type="text" class="form-control" id="med-nom" />
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('nombre')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="nombre"
+            id="med-nom"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('nombre')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('maxlength')"
+            >
+              Máximo 30 caracteres
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('pattern')"
+            >
+              Contiene caracteres invalidos
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-4">
           <label for="med-cond" class="form-label">Condicion*</label>
-          <select class="form-select" id="med-cond">
+          <select
+            class="form-select {{
+              formulario.get('idCondicion')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="idCondicion"
+            id="med-cond"
+          >
             <option value="">Seleccione...</option>
+            <option *ngFor="let item of condicion" [value]="item.idCondicion">
+              {{ item.nombre }}
+            </option>
+            <div
+              class="invalid-feedback"
+              *ngIf="formulario.get('idCondicion')?.errors"
+            >
+              <span
+                class="d-block"
+                *ngIf="formulario.get('idCondicion')?.hasError('required')"
+              >
+                Campo obligatorio
+              </span>
+            </div>
           </select>
         </div>
         <div class="col-12 col-md-4">
           <label for="med-desc" class="form-label">Descripción</label>
           <textarea
-            class="form-control"
+            class="form-control {{
+              formulario.get('descripcion')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="descripcion"
             cols="30"
             rows="6"
             id="med-desc"
           ></textarea>
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('descripcion')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('descripcion')?.hasError('maxlength')"
+            >
+              Máximo 250 caracteres
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-8">
           <label for="med-imagen" class="form-label">Imagen</label>
           <input
             type="file"
-            class="form-control mb-2"
+            class="form-control mb-2 {{
+              error && campo === 'imagen' ? 'is-invalid' : ''
+            }}"
             id="med-imagen"
             accept=".jpg, .jpeg, .png"
+            (change)="onFileSelected($event)"
           />
+          <div class="invalid-feedback" *ngIf="error && campo === 'imagen'">
+            {{ info }}
+          </div>
           <div class="text-center text-md-start">
             <img
-              src="assets/img/default/default-medalla.jpg"
+              *ngIf="!selectedImage"
+              [src]="getImage(medalla.imagen, 'medalla', 'default-medalla.jpg')"
               class="img-thumbnail"
               width="110"
-              alt="medel"
+              alt="medalla"
+            />
+            <img
+              *ngIf="selectedImage"
+              [src]="previewImage"
+              class="img-thumbnail"
+              width="110"
+              alt="medalla"
             />
           </div>
         </div>

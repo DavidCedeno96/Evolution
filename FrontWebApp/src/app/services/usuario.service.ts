@@ -11,23 +11,18 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class UsuarioService {
   private apiURL: string = servicioURL + '/api/usuario';
-  private apiURLImages: string = servicioURL + '/Content/Images/Usuario';
 
   helper = new JwtHelperService();
   private timeoutId!: number;
-  private tiempoDeInactividad: number = 60000; // esta en milisegundos
+  private tiempoDeInactividad: number = 300000; // esta en milisegundos
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getImage(): string {
-    return this.apiURLImages;
-  }
-
-  getList(estado: number): Observable<number> {
+  getList(estado: number): Observable<Usuario[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.getToken()}`,
     });
-    return this.http.get<number>(`${this.apiURL}/list/${estado}`, {
+    return this.http.get<Usuario[]>(`${this.apiURL}/list/${estado}`, {
       headers: headers,
     });
   }
@@ -37,6 +32,33 @@ export class UsuarioService {
       Authorization: `Bearer ${this.getToken()}`,
     });
     return this.http.get<Usuario[]>(`${this.apiURL}/buscar/${texto}`, {
+      headers: headers,
+    });
+  }
+
+  getItem(estado: number, id: string): Observable<Usuario> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.get<Usuario>(`${this.apiURL}/item/${estado}/${id}`, {
+      headers: headers,
+    });
+  }
+
+  create(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.post<FormData>(`${this.apiURL}/create`, formData, {
+      headers: headers,
+    });
+  }
+
+  update(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.put<FormData>(`${this.apiURL}/update`, formData, {
       headers: headers,
     });
   }

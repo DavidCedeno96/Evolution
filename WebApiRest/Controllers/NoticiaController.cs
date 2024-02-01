@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.POIFS.Crypt.Dsig;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -29,7 +27,25 @@ namespace WebApiRest.Controllers
         {
             NoticiaList response = await data.GetNoticiaList(estado);
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }        
+        }
+
+        [HttpGet]
+        [Route("buscar/{texto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Buscar([FromRoute] string texto)
+        {
+            NoticiaList response = await data.GetNoticiaList(texto);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("item/{estado}/{idNoticia}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idNoticia)
+        {
+            NoticiaItem response = await data.GetNoticia(estado, idNoticia);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
 
         [HttpPost]
         [Route("create")]
@@ -115,9 +131,9 @@ namespace WebApiRest.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{idNoticia}")]
+        [Route("delete")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Delete([FromRoute] Guid idNoticia)
+        public async Task<IActionResult> Delete([FromQuery] Guid idNoticia)
         {
             Response response = await data.DeleteNoticia(idNoticia);
 

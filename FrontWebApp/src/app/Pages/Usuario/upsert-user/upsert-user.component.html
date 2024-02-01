@@ -1,9 +1,9 @@
 <div class="my-3 my-md-5">
   <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
     <h5 class="my-5 text-center txt text-primary text-uppercase">
-      nuevo usuario
+      {{ titulo }}
     </h5>
-    <form class="mb-3" [formGroup]="formulario" (ngSubmit)="save()">
+    <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
       <div class="row g-3">
         <div class="col-12 col-md-4">
           <label for="nombre" class="form-label">Nombre*</label>
@@ -26,6 +26,12 @@
               *ngIf="formulario.get('nombre')?.hasError('maxlength')"
             >
               Máximo 23 caracteres
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('pattern')"
+            >
+              Solo se permiten letras
             </span>
             <span
               class="d-block"
@@ -59,10 +65,43 @@
             </span>
             <span
               class="d-block"
+              *ngIf="formulario.get('apellido')?.hasError('pattern')"
+            >
+              Solo se permiten letras
+            </span>
+            <span
+              class="d-block"
               *ngIf="formulario.get('apellido')?.hasError('required')"
             >
               Campo obligatorio
             </span>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="celular" class="form-label">Celular</label>
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('celular')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="celular"
+            id="celular"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('celular')?.errors"
+          >
+            <span *ngIf="formulario.get('celular')?.hasError('maxlength')"
+              >Máximo 15 caracteres</span
+            >
+            <span *ngIf="formulario.get('celular')?.hasError('minlength')"
+              >Minimo 10 caracteres</span
+            >
+            <span *ngIf="formulario.get('celular')?.hasError('pattern')"
+              >Solo se permiten números</span
+            >
           </div>
         </div>
         <div class="col-12 col-md-4">
@@ -102,21 +141,22 @@
           </div>
         </div>
         <div class="col-12 col-md-4">
-          <label for="contrasena" class="form-label">Contraseña*</label>
+          <label for="contrasena" class="form-label">Contraseña</label>
           <div class="input-group">
             <input
               class="form-control {{
                 formulario.get('contrasena')?.errors && verErrorsInputs
                   ? 'is-invalid'
                   : ''
-              }}"
+              }} {{ error && campo === 'clave' ? 'is-invalid' : '' }}"
               type="{{ verPassword ? 'text' : 'password' }}"
               formControlName="contrasena"
               id="contrasena"
             />
             <span
               class="toggle-password {{
-                formulario.get('contrasena')?.errors && numClicksSave > 0
+                (formulario.get('contrasena')?.errors && numClicksSave > 0) ||
+                (error && campo === 'clave')
                   ? 'error'
                   : ''
               }}"
@@ -132,75 +172,100 @@
               <span *ngIf="formulario.get('contrasena')?.hasError('maxlength')"
                 >Máximo 60 caracteres</span
               >
-              <span *ngIf="formulario.get('contrasena')?.hasError('required')"
-                >Campo obligatorio</span
-              >
+            </div>
+            <div class="invalid-feedback" *ngIf="error && campo === 'clave'">
+              <span>{{ info }}</span>
             </div>
           </div>
         </div>
+
         <div class="col-12 col-md-4">
-          <label for="celular" class="form-label">Celular</label>
-          <input
-            type="text"
-            class="form-control {{
-              formulario.get('celular')?.errors && verErrorsInputs
+          <label for="rol" class="form-label">Rol</label>
+          <select
+            class="form-select {{
+              formulario.get('idRol')?.errors && verErrorsInputs
                 ? 'is-invalid'
                 : ''
             }}"
-            formControlName="celular"
-            id="celular"
-          />
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('celular')?.errors"
+            id="rol"
+            formControlName="idRol"
           >
-            <span *ngIf="formulario.get('celular')?.hasError('maxlength')"
-              >Máximo 15 caracteres</span
-            >
-            <span *ngIf="formulario.get('celular')?.hasError('minlength')"
-              >Minimo 10 caracteres</span
+            <option value="">Seleccione...</option>
+            <option value="adm">Administrador</option>
+            <option value="jug">Jugador</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="formulario.get('idRol')?.errors">
+            <span *ngIf="formulario.get('idRol')?.hasError('required')"
+              >Campo obligatorio</span
             >
           </div>
         </div>
-        <div class="col-12 col-md-4">
+
+        <div class="col-12 col-md-6">
           <label for="pais" class="form-label">Pais</label>
-          <select class="form-select" id="pais">
+          <select
+            class="form-select"
+            id="pais"
+            formControlName="idPais"
+            (change)="selectedPais($event)"
+          >
             <option value="">Seleccione...</option>
+            <option *ngFor="let item of pais" [value]="item.idPais">
+              {{ item.nombre }}
+            </option>
           </select>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-6" *ngIf="auxCiudad.length">
           <label for="ciudad" class="form-label">Ciudad</label>
-          <select class="form-select" id="ciudad">
+          <select class="form-select" id="ciudad" formControlName="idCiudad">
             <option value="">Seleccione...</option>
+            <option *ngFor="let item of auxCiudad" [value]="item.idCiudad">
+              {{ item.nombre }}
+            </option>
           </select>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-6">
           <label for="empresa" class="form-label">Empresa</label>
-          <select class="form-select" id="empresa">
+          <select
+            class="form-select"
+            id="empresa"
+            formControlName="idEmpresa"
+            (change)="selectedEmpresa($event)"
+          >
             <option value="">Seleccione...</option>
+            <option *ngFor="let item of empresa" [value]="item.idEmpresa">
+              {{ item.nombre }}
+            </option>
           </select>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-6" *ngIf="auxArea.length">
           <label for="area" class="form-label">Area</label>
-          <select class="form-select" id="area">
+          <select class="form-select" id="area" formControlName="idArea">
             <option value="">Seleccione...</option>
+            <option *ngFor="let item of auxArea" [value]="item.idArea">
+              {{ item.nombre }}
+            </option>
           </select>
         </div>
         <div class="col-12">
           <label for="foto" class="form-label">Foto</label>
           <input
             type="file"
-            class="form-control"
+            class="form-control {{
+              error && campo === 'imagen' ? 'is-invalid' : ''
+            }}"
             id="foto"
             accept=".jpg, .jpeg, .png"
             (change)="onFileSelected($event)"
           />
-          <div class="invalid-feedback">Error</div>
+          <div class="invalid-feedback" *ngIf="error && campo === 'imagen'">
+            {{ info }}
+          </div>
         </div>
         <div class="col-12 text-center text-md-start">
           <img
             *ngIf="!selectedFoto"
-            src="assets/img/default/default-user.jpg"
+            [src]="getImage(usuario.foto, 'usuario', 'default-user.jpg')"
             class="img-thumbnail"
             width="130"
             alt="usuario"

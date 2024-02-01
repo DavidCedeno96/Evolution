@@ -66,6 +66,120 @@ namespace WebApiRest.Data
             return list;
         }
 
+        public async Task<RecompensaList> GetRecompensaList(string buscar)
+        {
+            RecompensaList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_RecompensaByAll", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.AddWithValue("@buscar", buscar);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    list.Lista.Add(new Recompensa()
+                    {
+                        IdRecompensa = new Guid(dr["idRecompensa"].ToString()),
+                        Nombre = dr["nombre"].ToString(),
+                        Descripcion = dr["descripcion"].ToString(),
+                        Imagen = dr["imagen"].ToString(),
+                        CantDisponible = Convert.ToInt32(dr["cantDisponible"].ToString()),
+                        CantCanje = Convert.ToInt32(dr["cantCanje"].ToString()),
+                        TotalUsuarios = Convert.ToInt32(dr["totalUsuarios"].ToString()),
+                        Estado = Convert.ToInt32(dr["estado"].ToString()),
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                    });
+                }
+
+                list.Info = WC.GetSatisfactorio();
+                list.Error = 0;
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+        }
+
+        public async Task<RecompensaItem> GetRecompensa(int estado, Guid idRecompensa)
+        {
+            RecompensaItem item = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_RecompensaById", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idRecompensa", idRecompensa);
+            cmd.Parameters.AddWithValue("@estado", estado);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                if (await dr.ReadAsync())
+                {
+                    item.Recompensa = new Recompensa()
+                    {
+                        IdRecompensa = new Guid(dr["idRecompensa"].ToString()),
+                        Nombre = dr["nombre"].ToString(),
+                        Descripcion = dr["descripcion"].ToString(),
+                        Imagen = dr["imagen"].ToString(),
+                        CantDisponible = Convert.ToInt32(dr["cantDisponible"].ToString()),
+                        CantCanje = Convert.ToInt32(dr["cantCanje"].ToString()),
+                        TotalUsuarios = Convert.ToInt32(dr["totalUsuarios"].ToString()),
+                        Estado = Convert.ToInt32(dr["estado"].ToString()),
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                    };
+                }
+                await dr.NextResultAsync();
+
+                item.Info = cmd.Parameters["@info"].Value.ToString();
+                item.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+            }
+            catch (Exception ex)
+            {
+                item.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                item.Error = 1;
+                item.Recompensa = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return item;
+        }
+
         public async Task<Response> CreateRecompensa(Recompensa recompensa)
         {
             Response response = new();

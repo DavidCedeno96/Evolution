@@ -5,7 +5,10 @@
     </h5>
     <div class="row g-3 mb-4">
       <div class="col-6 col-md-auto d-grid d-md-block">
-        <a class="btn btn-primary icon" routerLink="/upsert-recompensa">
+        <a
+          class="btn btn-primary icon"
+          (click)="changeRoute('/upsert-recompensa', { type: 'crear' })"
+        >
           <div class="icon-text buton">
             <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
           </div>
@@ -20,7 +23,11 @@
       </div>
     </div>
     <!-- buscador -->
-    <form class="row g-3 mb-1">
+    <form
+      class="row g-3 mb-1"
+      [formGroup]="formulario"
+      (ngSubmit)="submitBuscar()"
+    >
       <div class="col-12 col-md-8">
         <div class="input-group">
           <span class="icon-left">
@@ -30,6 +37,8 @@
             type="text"
             class="form-control icon"
             placeholder="buscar..."
+            formControlName="buscar"
+            (input)="defaultList($event)"
           />
         </div>
       </div>
@@ -39,7 +48,7 @@
     </form>
     <!-- Noticias -->
     <div class="mb-2 mb-md-4">
-      <p-dataView #dv [value]="recompensa" [rows]="2" [paginator]="true">
+      <p-dataView #dv [value]="recompensas" [rows]="10" [paginator]="true">
         <ng-template let-recompensa pTemplate="listItem">
           <div class="col-12">
             <div class="p-4 gap-4">
@@ -47,7 +56,13 @@
                 <div class="col-12 col-md-auto">
                   <img
                     class="img-thumbnail"
-                    src="assets/img/default/default-recompensa.jpg"
+                    [src]="
+                      getImage(
+                        recompensa.imagen,
+                        'recompensa',
+                        'default-recompensa.jpg'
+                      )
+                    "
                     width="150px"
                     [alt]="recompensa.imagen"
                   />
@@ -68,7 +83,7 @@
                     <div>
                       <strong>Cantidad Disponible:</strong>
                       <span class="">
-                        {{ recompensa.cantDisp }}
+                        {{ recompensa.cantDisponible }}
                       </span>
                     </div>
                     <div>
@@ -100,13 +115,22 @@
                     </button>
                     <ul class="dropdown-menu">
                       <li>
-                        <a class="dropdown-item" routerLink="/upsert-recompensa"
+                        <a
+                          class="dropdown-item pointer"
+                          (click)="
+                            changeRoute('/upsert-recompensa', {
+                              type: 'editar',
+                              recompensa: recompensa.idRecompensa
+                            })
+                          "
                           ><i class="fa-regular fa-pen-to-square me-2"></i
                           >Editar</a
                         >
                       </li>
                       <li>
-                        <a class="dropdown-item" routerLink=""
+                        <a
+                          class="dropdown-item pointer"
+                          (click)="confirmEliminar(recompensa.idRecompensa)"
                           ><i class="fa-solid fa-trash-can me-2"></i>Eliminar</a
                         >
                       </li>
@@ -121,3 +145,23 @@
     </div>
   </div>
 </div>
+
+<p-toast [styleClass]="'col-10 col-md-6 col-lg-3'"></p-toast>
+<p-confirmDialog #cd [styleClass]="'col-10 col-md-4'">
+  <ng-template pTemplate="footer">
+    <button
+      type="button"
+      class="btn btn-secondary me-2"
+      pButton
+      label="Cancelar"
+      (click)="cd.reject()"
+    ></button>
+    <button
+      type="button"
+      pButton
+      class="btn btn-danger"
+      label="Aceptar"
+      (click)="cd.accept()"
+    ></button>
+  </ng-template>
+</p-confirmDialog>

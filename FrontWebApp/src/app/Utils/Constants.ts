@@ -7,7 +7,12 @@ import Swal from 'sweetalert2';
 export const servicioURL: string = 'http://192.168.100.91:8087';
 
 export const FormatoFecha: string = 'dd/MM/yyyy';
+export const FormatoFechaInput: string = 'yyyy-MM-dd';
 export const SinRegistros: string = 'No hay registros';
+export const TitleEliminar: string = 'Confirmación Eliminar';
+export const MsgEliminar: string = '¿Seguro desea eliminar el registro?';
+export const MsgElimindo: string = 'Registro eliminado';
+export const MsgOk: string = 'Proceso ejecutado';
 export const TitleErrorForm: string = 'Error';
 export const MsgErrorForm: string =
   'Hay errores en los campos, por favor revisa e intantalo nuevamente.';
@@ -32,13 +37,17 @@ export const AlertError = () => {
 };
 
 export const DateFormat = () => {
-  //const opciones = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
-  //let auxFecha = fecha.toLocaleString('es-es', opciones);
-  //return fecha.toLocaleDateString('en-US');
-
   return (fecha: Date): string => {
     let pipe = new DatePipe('en-US');
     return pipe.transform(fecha, FormatoFecha)!;
+  };
+};
+
+export const DateFormatInput = () => {
+  return (fecha: string): string => {
+    let date = new Date(fecha);
+    let pipe = new DatePipe('en-US');
+    return pipe.transform(date, FormatoFechaInput)!;
   };
 };
 
@@ -46,6 +55,15 @@ export const ChangeRoute = () => {
   const router = inject(Router);
   return (ruta: string, params: object) => {
     router.navigate([ruta], { queryParams: params });
+  };
+};
+
+export const GetImage = () => {
+  return (image: string, directorio: string, defaultImage: string): string => {
+    if (image !== 'N/A' && image !== '') {
+      return `${servicioURL}/Content/Images/${directorio}/${image}`;
+    }
+    return `assets/img/default/${defaultImage}`;
   };
 };
 

@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
+  ChangeRoute,
+  GetImage,
   Loading,
   MsgError,
   SinRegistros,
@@ -20,8 +22,10 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class ViewUserComponent implements OnInit {
   alertError = AlertError();
   loading = Loading();
+  changeRoute = ChangeRoute();
+  getImage = GetImage();
 
-  info: string = SinRegistros;
+  info: string = '';
 
   formulario!: FormGroup;
   auxUsuarios: Usuario[] = [];
@@ -35,13 +39,15 @@ export class ViewUserComponent implements OnInit {
       foto: '',
       idRol: '',
       rol: '',
+      idPais: '',
       idCiudad: '',
       ciudad: '',
+      idEmpresa: '',
+      empresa: '',
       idArea: '',
       area: '',
       contrasena: '',
       estado: 0,
-      empresa: '',
     },
   ];
 
@@ -74,11 +80,12 @@ export class ViewUserComponent implements OnInit {
         this.loading(false, false);
       },
       error: (e) => {
-        console.log(e);
+        console.error(e);
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
           this.alertError(TitleError, MsgError);
+          this.loading(false, false);
         }
       },
     });
@@ -107,7 +114,7 @@ export class ViewUserComponent implements OnInit {
         this.loading(false, false);
       },
       error: (e) => {
-        console.log(e);
+        console.error(e);
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
@@ -117,10 +124,14 @@ export class ViewUserComponent implements OnInit {
     });
   }
 
-  getImage(image: string): string {
-    if (image !== 'N/A') {
-      return this.usuarioServicio.getImage() + '/' + image;
+  eliminar(idUsuario: string) {
+    console.log('Eliminando!', idUsuario);
+  }
+
+  defaultList(event: Event) {
+    let text = (event.target as HTMLInputElement).value;
+    if (!text) {
+      this.usuarios = this.auxUsuarios;
     }
-    return 'assets/img/default/default-user.jpg';
   }
 }

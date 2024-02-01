@@ -37,13 +37,15 @@ export class LoginComponent implements OnInit {
     foto: '',
     idRol: '',
     rol: '',
+    idPais: '',
     idCiudad: '',
     ciudad: '',
+    idEmpresa: '',
+    empresa: '',
     idArea: '',
     area: '',
     contrasena: '',
     estado: 0,
-    empresa: '',
   };
 
   constructor(
@@ -68,6 +70,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading(false, false);
     this.getRemember();
     this.config();
 

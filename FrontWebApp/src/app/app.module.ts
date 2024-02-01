@@ -15,6 +15,8 @@ import { DataViewModule } from 'primeng/dataview';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 
 /* PÁGINAS */
 import { LoginComponent } from './Pages/login/login.component';
@@ -90,6 +92,8 @@ import { UserNoticiaComponent } from './Pages/Noticia/user-noticia/user-noticia.
     SplitButtonModule,
     InputTextModule,
     PaginatorModule,
+    ConfirmDialogModule,
+    ToastModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

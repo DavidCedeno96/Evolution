@@ -3,7 +3,10 @@
     <h5 class="my-5 text-center txt text-primary text-uppercase">usuarios</h5>
     <div class="row g-3 mb-4">
       <div class="col-6 col-md-auto d-grid d-md-block">
-        <a class="btn btn-primary icon" routerLink="/upsert-user">
+        <a
+          class="btn btn-primary icon"
+          (click)="changeRoute('/upsert-user', { type: 'crear' })"
+        >
           <div class="icon-text buton">
             <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
           </div>
@@ -34,6 +37,7 @@
             class="form-control icon"
             placeholder="buscar..."
             formControlName="buscar"
+            (input)="defaultList($event)"
           />
         </div>
       </div>
@@ -58,7 +62,9 @@
                 <div class="col-12 col-md-auto">
                   <img
                     class="img-thumbnail"
-                    [src]="getImage(usuario.foto)"
+                    [src]="
+                      getImage(usuario.foto, 'usuario', 'default-user.jpg')
+                    "
                     width="100px"
                     [alt]="usuario.imagen"
                   />
@@ -71,14 +77,26 @@
                     <span class="d-block">
                       {{ usuario.correo }}
                     </span>
-                    <span class="d-block">
-                      {{ usuario.celular }}
+                    <span
+                      class="d-block {{
+                        usuario.idRol === 'adm'
+                          ? 'text-primary'
+                          : 'text-success'
+                      }}"
+                    >
+                      {{ usuario.rol }}
                     </span>
                   </div>
                 </div>
 
                 <div class="col-12 col-md-4">
                   <div class="flex align-items-center gap-3">
+                    <div>
+                      <strong>Celular:</strong>
+                      <span class="">
+                        {{ usuario.celular }}
+                      </span>
+                    </div>
                     <div>
                       <strong>Pais:</strong>
                       <span class="">
@@ -114,16 +132,25 @@
                     </button>
                     <ul class="dropdown-menu">
                       <li>
-                        <a class="dropdown-item" routerLink="/upsert-user"
+                        <a
+                          class="dropdown-item pointer"
+                          (click)="
+                            changeRoute('/upsert-user', {
+                              type: 'editar',
+                              usuario: usuario.idUsuario
+                            })
+                          "
                           ><i class="fa-regular fa-pen-to-square me-2"></i
                           >Editar</a
                         >
                       </li>
-                      <li>
-                        <a class="dropdown-item" routerLink=""
+                      <!-- <li>
+                        <a
+                          class="dropdown-item pointer"
+                          (click)="eliminar(usuario.idUsuario)"
                           ><i class="fa-solid fa-trash-can me-2"></i>Eliminar</a
                         >
-                      </li>
+                      </li> -->
                     </ul>
                   </div>
                 </div>

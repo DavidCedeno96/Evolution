@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.POIFS.Crypt.Dsig;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -28,6 +26,24 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> GetList([FromRoute] int estado)
         {
             RecompensaList response = await data.GetRecompensaList(estado);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("buscar/{texto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Buscar([FromRoute] string texto)
+        {
+            RecompensaList response = await data.GetRecompensaList(texto);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("item/{estado}/{idRecompensa}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idRecompensa)
+        {
+            RecompensaItem response = await data.GetRecompensa(estado, idRecompensa);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -115,9 +131,9 @@ namespace WebApiRest.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{idRecompensa}")]
+        [Route("delete")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Delete([FromRoute] Guid idRecompensa)
+        public async Task<IActionResult> Delete([FromQuery] Guid idRecompensa)
         {
             Response response = await data.DeleteRecompensa(idRecompensa);
 

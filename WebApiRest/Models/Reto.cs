@@ -21,6 +21,13 @@
         public DateTime FechaModificacion { get; set; }
     }
 
+    public class RetoItem
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public Reto Reto { get; set; }
+    }
+
     public class RetoList
     {
         public string Info { get; set; }

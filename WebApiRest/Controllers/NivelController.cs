@@ -29,6 +29,24 @@ namespace WebApiRest.Controllers
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
+        [HttpGet]
+        [Route("buscar/{texto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Buscar([FromRoute] string texto)
+        {
+            NivelList response = await data.GetNivelList(texto);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("item/{estado}/{idNivel}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idNivel)
+        {
+            NivelItem response = await data.GetNivel(estado, idNivel);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "adm,sadm")]
@@ -113,9 +131,9 @@ namespace WebApiRest.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{idNivel}")]
+        [Route("delete")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Delete([FromRoute] Guid idNivel)
+        public async Task<IActionResult> Delete([FromQuery] Guid idNivel)
         {
             Response response = await data.DeleteNivel(idNivel);
 

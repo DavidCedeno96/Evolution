@@ -10,6 +10,13 @@
         public DateTime FechaModificacion { get; set; }
     }
 
+    public class CategoriaNoticiaItem
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public CategoriaNoticia CategoriaNoticia { get; set; } 
+    }
+
     public class CategoriaNoticiaList
     {
         public string Info { get; set; }

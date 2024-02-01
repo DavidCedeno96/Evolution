@@ -3,7 +3,10 @@
     <h5 class="my-5 text-center txt text-primary text-uppercase">niveles</h5>
     <div class="row g-3 mb-4">
       <div class="col-6 col-md-auto d-grid d-md-block">
-        <a class="btn btn-primary icon" routerLink="/upsert-nivel">
+        <a
+          class="btn btn-primary icon"
+          (click)="changeRoute('/upsert-nivel', { type: 'crear' })"
+        >
           <div class="icon-text buton">
             <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
           </div>
@@ -18,7 +21,11 @@
       </div>
     </div>
     <!-- buscador -->
-    <form class="row g-3 mb-1">
+    <form
+      class="row g-3 mb-1"
+      [formGroup]="formulario"
+      (ngSubmit)="submitBuscar()"
+    >
       <div class="col-12 col-md-8">
         <div class="input-group">
           <span class="icon-left">
@@ -28,6 +35,8 @@
             type="text"
             class="form-control icon"
             placeholder="buscar..."
+            formControlName="buscar"
+            (input)="defaultList($event)"
           />
         </div>
       </div>
@@ -37,7 +46,7 @@
     </form>
     <!-- Noticias -->
     <div class="mb-2 mb-md-4">
-      <p-dataView #dv [value]="nivel" [rows]="2" [paginator]="true">
+      <p-dataView #dv [value]="nivel" [rows]="10" [paginator]="true">
         <ng-template let-nivel pTemplate="listItem">
           <div class="col-12">
             <div class="p-4 gap-4">
@@ -45,7 +54,7 @@
                 <div class="col-12 col-md-auto">
                   <img
                     class="img-thumbnail"
-                    src="assets/img/default/default-nivel.jpg"
+                    [src]="getImage(nivel.imagen, 'nivel', 'default-nivel.jpg')"
                     width="150px"
                     [alt]="nivel.imagen"
                   />
@@ -98,13 +107,22 @@
                     </button>
                     <ul class="dropdown-menu">
                       <li>
-                        <a class="dropdown-item" routerLink="/upsert-nivel"
+                        <a
+                          class="dropdown-item pointer"
+                          (click)="
+                            changeRoute('/upsert-nivel', {
+                              type: 'editar',
+                              nivel: nivel.idNivel
+                            })
+                          "
                           ><i class="fa-regular fa-pen-to-square me-2"></i
                           >Editar</a
                         >
                       </li>
                       <li>
-                        <a class="dropdown-item" routerLink=""
+                        <a
+                          class="dropdown-item pointer"
+                          (click)="confirmEliminar(nivel.idNivel)"
                           ><i class="fa-solid fa-trash-can me-2"></i>Eliminar</a
                         >
                       </li>
@@ -119,3 +137,23 @@
     </div>
   </div>
 </div>
+
+<p-toast [styleClass]="'col-10 col-md-6 col-lg-3'"></p-toast>
+<p-confirmDialog #cd [styleClass]="'col-10 col-md-4'">
+  <ng-template pTemplate="footer">
+    <button
+      type="button"
+      class="btn btn-secondary me-2"
+      pButton
+      label="Cancelar"
+      (click)="cd.reject()"
+    ></button>
+    <button
+      type="button"
+      pButton
+      class="btn btn-danger"
+      label="Aceptar"
+      (click)="cd.accept()"
+    ></button>
+  </ng-template>
+</p-confirmDialog>

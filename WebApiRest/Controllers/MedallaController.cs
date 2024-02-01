@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApiRest.Data;
 using WebApiRest.Models;
@@ -27,6 +26,24 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> GetList([FromRoute] int estado)
         {
             MedallaList response = await data.GetMedallaList(estado);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("buscar/{texto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Buscar([FromRoute] string texto)
+        {
+            MedallaList response = await data.GetMedallaList(texto);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("item/{estado}/{idMedalla}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idMedalla)
+        {
+            MedallaItem response = await data.GetMedalla(estado, idMedalla);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -114,9 +131,9 @@ namespace WebApiRest.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{idMedalla}")]
+        [Route("delete")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Delete([FromRoute] Guid idMedalla)
+        public async Task<IActionResult> Delete([FromQuery] Guid idMedalla)
         {
             Response response = await data.DeleteMedalla(idMedalla);
 

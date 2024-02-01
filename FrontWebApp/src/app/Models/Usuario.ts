@@ -7,11 +7,13 @@ export interface Usuario {
   foto: string;
   idRol: string;
   rol: string;
+  idPais: string;
   idCiudad: string;
   ciudad: string;
+  idEmpresa: string;
+  empresa: string;
   idArea: string;
   area: string;
   contrasena: string;
   estado: number;
-  empresa: string;
 }

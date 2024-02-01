@@ -1,64 +1,357 @@
 <div class="my-3 my-md-5">
   <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
-    <h5 class="my-5 text-center txt text-primary text-uppercase">nuevo reto</h5>
-    <form class="mb-3">
+    <h5 class="my-5 text-center txt text-primary text-uppercase">
+      {{ titulo }}
+    </h5>
+    <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
       <div class="row g-3">
         <div class="col-12 col-md-4">
           <label for="ret-nom" class="form-label">Nombre*</label>
-          <input type="text" class="form-control" id="ret-nom" />
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('nombre')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="nombre"
+            id="ret-nom"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('nombre')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('maxlength')"
+            >
+              Máximo 30 caracteres
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('pattern')"
+            >
+              Contiene caracteres invalidos
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-4">
           <label for="ret-fape" class="form-label">Fecha Apertura*</label>
-          <input type="date" class="form-control" id="ret-fape" />
+          <input
+            type="date"
+            class="form-control {{
+              formulario.get('fechaApertura')?.hasError('objectType') &&
+              verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="fechaApertura"
+            id="ret-fape"
+          />
+          <div class="invalid-feedback">
+            <span
+              class="d-block"
+              *ngIf="formulario.get('fechaApertura')?.hasError('objectType')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-4">
           <label for="ret-fcie" class="form-label">Fecha Cierre*</label>
-          <input type="date" class="form-control" id="ret-fcie" />
+          <input
+            type="date"
+            class="form-control {{
+              formulario.get('fechaCierre')?.hasError('objectType') &&
+              verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="fechaCierre"
+            id="ret-fcie"
+          />
+          <div class="invalid-feedback">
+            <span
+              class="d-block"
+              *ngIf="formulario.get('fechaCierre')?.hasError('objectType')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
-        <div class="col-12 col-md-4 col-lg-2">
+        <div class="col-12 col-md-3">
           <label for="ret-vid" class="form-label">Vidas*</label>
-          <input type="text" class="form-control" id="ret-vid" />
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('vidas')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="vidas"
+            id="ret-vid"
+          />
+          <div class="invalid-feedback" *ngIf="formulario.get('vidas')?.errors">
+            <span
+              class="d-block"
+              *ngIf="formulario.get('vidas')?.hasError('min')"
+            >
+              Mínimo 1
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('vidas')?.hasError('max')"
+            >
+              Máximo hasta 10
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('vidas')?.hasError('pattern')"
+            >
+              Solo se permiten números
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('vidas')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
-        <div class="col-12 col-md-4 col-lg-2">
+        <div class="col-12 col-md-3">
           <label for="ret-prec" class="form-label">Puntos Recompensa*</label>
-          <input type="text" class="form-control" id="ret-prec" />
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('puntosRecompensa')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="puntosRecompensa"
+            id="ret-prec"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('puntosRecompensa')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('puntosRecompensa')?.hasError('min')"
+            >
+              Mínimo 1
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('puntosRecompensa')?.hasError('max')"
+            >
+              Máximo hasta 100
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('puntosRecompensa')?.hasError('pattern')"
+            >
+              Solo se permiten números
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('puntosRecompensa')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
-        <div class="col-12 col-md-4 col-lg-2">
+        <div class="col-12 col-md-3">
           <label for="ret-cobt" class="form-label">Créditos Obtenidos*</label>
-          <input type="text" class="form-control" id="ret-cobt" />
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('creditosObtenidos')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="creditosObtenidos"
+            id="ret-cobt"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('creditosObtenidos')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('creditosObtenidos')?.hasError('min')"
+            >
+              Mínimo 1
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('creditosObtenidos')?.hasError('max')"
+            >
+              Máximo hasta 100
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('creditosObtenidos')?.hasError('pattern')"
+            >
+              Solo se permiten números
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('creditosObtenidos')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
-        <div class="col-12 col-md-6 col-lg-3">
+        <div class="col-12 col-md-3">
+          <label for="ret-cobt" class="form-label">Tiempo (ms)*</label>
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('tiempo_ms')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="tiempo_ms"
+            id="ret-cobt"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('tiempo_ms')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('tiempo_ms')?.hasError('min')"
+            >
+              Mínimo 600000
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('tiempo_ms')?.hasError('max')"
+            >
+              Máximo hasta 7200000
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('tiempo_ms')?.hasError('pattern')"
+            >
+              Solo se permiten números
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('tiempo_ms')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
           <label for="ret-cobt" class="form-label">Tipo Reto*</label>
-          <select class="form-select" id="ret-cobt">
+          <select
+            class="form-select {{
+              formulario.get('tipoReto')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="idTipoReto"
+            id="ret-cobt"
+          >
             <option value="">Seleccione...</option>
+            <option *ngFor="let item of tipoReto" [value]="item.idTipoReto">
+              {{ item.nombre }}
+            </option>
           </select>
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('tipoReto')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('tipoReto')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
-        <div class="col-12 col-md-6 col-lg-3">
+        <div class="col-12 col-md-6">
           <label for="ret-comp" class="form-label">Comportamiento*</label>
-          <select class="form-select" id="ret-comp">
+          <select
+            class="form-select {{
+              formulario.get('comportamiento')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="idComportamiento"
+            id="ret-comp"
+          >
             <option value="">Seleccione...</option>
+            <option
+              *ngFor="let item of comportPreg"
+              [value]="item.idComportamiento"
+            >
+              {{ item.nombre }}
+            </option>
           </select>
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('tipoReto')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('tipoReto')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-4">
           <label for="ret-inst" class="form-label">Instrucciones</label>
           <textarea
-            class="form-control"
+            class="form-control {{
+              error && campo === 'instrucciones' ? 'is-invalid' : ''
+            }}"
             cols="30"
             rows="6"
             id="ret-inst"
+            formControlName="instrucciones"
           ></textarea>
+          <div
+            class="invalid-feedback"
+            *ngIf="error && campo === 'instrucciones'"
+          >
+            {{ info }}
+          </div>
         </div>
         <div class="col-12 col-md-8">
           <label for="ret-imagen" class="form-label">Imagen</label>
           <input
             type="file"
-            class="form-control mb-2"
+            class="form-control mb-2 {{
+              error && campo === 'imagen' ? 'is-invalid' : ''
+            }}"
             id="ret-imagen"
             accept=".jpg, .jpeg, .png"
+            (change)="onFileSelected($event)"
           />
+          <div class="invalid-feedback" *ngIf="error && campo === 'imagen'">
+            {{ info }}
+          </div>
           <div class="text-center text-md-start">
             <img
-              src="assets/img/default/default-reto.jpg"
+              *ngIf="!selectedImage"
+              [src]="getImage(reto.imagen, 'reto', 'default-reto.jpg')"
+              class="img-thumbnail"
+              width="110"
+              alt="reto"
+            />
+            <img
+              *ngIf="selectedImage"
+              [src]="previewImage"
               class="img-thumbnail"
               width="110"
               alt="reto"

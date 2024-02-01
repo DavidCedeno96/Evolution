@@ -11,7 +11,14 @@
         public int TotalUsuarios { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
-    }    
+    }
+
+    public class NivelItem
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public Nivel Nivel { get; set; }
+    }
 
     public class NivelList
     {

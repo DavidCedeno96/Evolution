@@ -1,44 +1,158 @@
 <div class="my-3 my-md-5">
   <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
     <h5 class="my-5 text-center txt text-primary text-uppercase">
-      nueva noticia
+      {{ titulo }}
     </h5>
-    <form class="mb-3">
+    <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
       <div class="row g-3">
         <div class="col-12 col-md-4">
           <label for="noti-cat" class="form-label">Categoría*</label>
-          <select class="form-select" id="noti-cat">
+          <select
+            class="form-select {{
+              formulario.get('idCategoria')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="idCategoria"
+            id="noti-cat"
+          >
             <option value="">Seleccione...</option>
+            <option *ngFor="let item of categoria" [value]="item.idCategoria">
+              {{ item.nombre }}
+            </option>
           </select>
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('idCategoria')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('idCategoria')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-4">
           <label for="noti-Tit" class="form-label">Titular*</label>
-          <input type="text" class="form-control" id="noti-Tit" />
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('titular')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="titular"
+            id="noti-Tit"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('titular')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('titular')?.hasError('maxlength')"
+            >
+              Máximo 100 caracteres
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('titular')?.hasError('pattern')"
+            >
+              Contiene caracteres invalidos
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('titular')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-4">
           <label for="noti-url" class="form-label">Url</label>
-          <input type="text" class="form-control" id="noti-url" />
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('url')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="url"
+            id="noti-url"
+          />
+
+          <div class="invalid-feedback" *ngIf="formulario.get('url')?.errors">
+            <span
+              class="d-block"
+              *ngIf="formulario.get('url')?.hasError('maxlength')"
+            >
+              Máximo 250 caracteres
+            </span>
+          </div>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-6">
           <label for="noti-desc" class="form-label">Descripción*</label>
           <textarea
-            class="form-control"
+            class="form-control {{
+              formulario.get('descripcion')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="descripcion"
             cols="30"
             rows="6"
             id="noti-desc"
           ></textarea>
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('descripcion')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('descripcion')?.hasError('maxlength')"
+            >
+              Máximo 500 caracteres
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('descripcion')?.hasError('pattern')"
+            >
+              Contiene caracteres invalidos
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('descripcion')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-6">
           <label for="noti-imagen" class="form-label">Imagen</label>
           <input
             type="file"
-            class="form-control mb-2"
+            class="form-control mb-2 {{
+              error && campo === 'imagen' ? 'is-invalid' : ''
+            }}"
             id="noti-imagen"
             accept=".jpg, .jpeg, .png"
+            (change)="onFileSelected($event)"
           />
+          <div class="invalid-feedback" *ngIf="error && campo === 'imagen'">
+            {{ info }}
+          </div>
           <div class="text-center text-md-start">
             <img
-              src="assets/img/default/default-noticia.jpg"
+              *ngIf="!selectedImage"
+              [src]="getImage(noticia.imagen, 'noticia', 'default-noticia.jpg')"
+              class="img-thumbnail"
+              width="200"
+              alt="noticia"
+            />
+            <img
+              *ngIf="selectedImage"
+              [src]="previewImage"
               class="img-thumbnail"
               width="200"
               alt="noticia"

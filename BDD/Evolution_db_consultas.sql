@@ -45,7 +45,7 @@ WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Pregunta';
+WHERE tc.TABLE_NAME = 'Medalla';
 
 ---
 SELECT @@VERSION;
@@ -92,7 +92,7 @@ exec sp_B_Usuario
 @id = ''
 
 exec sp_B_UsuarioById	
-@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',	
+@idUsuario = '015E40DD-58CE-401E-A0A9-075874BC0B68',	
 @estado = -1,
 @error = '',
 @info = '',
@@ -149,16 +149,25 @@ exec sp_U_UsuarioByEstado
 @id = ''
 
 -- Area --------------------------------------------------------
+select * from Empresa
+
 exec sp_B_Area		
 @estado = -1,
 @error = '',
 @info = '',
 @id = ''
 
+--exec sp_B_AreaByIdEmpresa		
+--@estado = -1,
+--@idEmpresa = '4E87C6CD-992A-4F14-90C8-CB7BFD4B2DBA',
+--@error = '',
+--@info = '',
+--@id = ''
+
 exec sp_C_Area		
-@nombre = 'Preuab1',
-@descripcion = 'Este es solo para la prueba1',
-@idEmpresa = '4E87C6CD-992A-4F14-90C8-CB7BFD4B2DBA',
+@nombre = 'Call Center',
+@descripcion = '',
+@idEmpresa = '1CB1DB77-B372-43D8-9FA1-EB64FA7B9CDD',
 @error = '',
 @info = '',
 @id = ''
@@ -202,7 +211,7 @@ exec sp_B_Pais
 @id = ''
 
 exec sp_C_Pais		
-@nombre = 'Prueba',
+@nombre = 'México',
 @descripcion = '',
 @error = '',
 @info = '',
@@ -216,17 +225,26 @@ exec sp_U_Pais
 @info = '',
 @id = ''
 
--- Ciudad --------------------------------------------------------
+-- Ciudad -------------------------------------------------------- 
+select * from Pais
+
 exec sp_B_Ciudad
 @estado = -1,
 @error = '',
 @info = '',
 @id = ''
 
+--exec sp_B_CiudadByIdPais		
+--@estado = -1,
+--@idPais = '1E539FEF-7E19-4248-BD2C-D19B79726B0A',
+--@error = '',
+--@info = '',
+--@id = ''
+
 exec sp_C_Ciudad		
-@nombre = 'prueba',
+@nombre = 'Cancún',
 @descripcion = '',
-@idPais = '1E539FEF-7E19-4248-BD2C-D19B79726B0A',
+@idPais = '4A89B8A4-418D-47E1-BD16-80AAB501D4C0',
 @error = '',
 @info = '',
 @id = ''
@@ -243,6 +261,19 @@ exec sp_U_Ciudad
 -- Nivel --------------------------------------------------------
 exec sp_B_Nivel		
 @estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_NivelById		
+@idNivel = 'D18F415A-CD36-4E84-98FD-04DC30FC1EE1',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_NivelByAll		
+@buscar = '3',
 @error = '',
 @info = '',
 @id = ''
@@ -287,8 +318,23 @@ exec sp_B_Condicion
 @id = ''
 
 -- Medallas --------------------------------------------------------
+select * from Condicion
+
 exec sp_B_Medalla
 @estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_MedallaById		
+@idMedalla = '2EB8768C-F1AE-49BE-83E0-B04C39EB64C2',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_MedallaByAll		
+@buscar = 'medalla 2',
 @error = '',
 @info = '',
 @id = ''
@@ -328,6 +374,19 @@ exec sp_C_Usuario_Medalla
 -- Recompensas --------------------------------------------------------
 exec sp_B_Recompensa
 @estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_RecompensaById		
+@idRecompensa = 'CC0B9551-17E1-453A-9FFA-D0EF55F02F70',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_RecompensaByAll		
+@buscar = 'entradas',
 @error = '',
 @info = '',
 @id = ''
@@ -375,6 +434,19 @@ exec sp_B_CategoriaNoticia
 @info = '',
 @id = ''
 
+exec sp_B_CategoriaNoticiaById		
+@idCategoria = '65E3EC0D-24D9-4F06-9B9C-DE5F21C925AE',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_CategoriaNoticiaByAll		
+@buscar = 'cien',
+@error = '',
+@info = '',
+@id = ''
+
 exec sp_C_CategoriaNoticia
 @nombre = 'Culturales',
 @descripcion = 'Cuando se refieren a sucesos de la vida artística, literaria y cultural del país.',
@@ -393,6 +465,19 @@ exec sp_U_CategoriaNoticia
 -- Noticias
 exec sp_B_Noticia
 @estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_NoticiaById		
+@idNoticia = '',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_NoticiaByAll		
+@buscar = 'cient',
 @error = '',
 @info = '',
 @id = ''
@@ -589,9 +674,21 @@ exec sp_B_Reto
 @info = '',
 @id = ''
 
+exec sp_D_Reto	
+@idReto = '',
+@error = '',
+@info = '',
+@id = ''
+
 exec sp_B_RetoById	
 @idReto = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
 @estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_RetoByAll
+@buscar = 'segun',
 @error = '',
 @info = '',
 @id = ''
@@ -639,6 +736,23 @@ exec sp_C_Usuario_Reto
 @info = '',
 @id = ''
 
+-- Tipo de Reto ------------------------------------------------------------------------
+exec sp_B_tipoReto		
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+
+-- Comportamiento Pregunta ------------------------------------------------------------------------
+exec sp_B_ComporPregu		
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+
+
 ------------------------------------------------------------------------------------------------------------------------------------
 --insert into Reto (nombre, fechaApetura, fechaCierre, vidas, tiempo_ms, puntosRecompensa, creditosObtenidos, idTipoReto, idComportamiento) values
 --('Mi primer reto', '2023-12-16', '2023-12-17', 3, 300000, 10, 5, '63AA060B-CDE4-49C0-9D60-AAF069DF1533', '1DD28D88-34C7-4394-AB3D-525726001730')
@@ -654,3 +768,9 @@ exec sp_C_Usuario_Reto
 --('23', 0, '7178DEA1-9A99-475F-9F42-32A77FF81DD0'),
 --('25', 0, '7178DEA1-9A99-475F-9F42-32A77FF81DD0'),
 --('27', 1, '7178DEA1-9A99-475F-9F42-32A77FF81DD0')
+
+
+ SELECT CONVERT(uniqueidentifier,'DF215E10-8BD4-4401-B2DC-99BB03135F2E')
+
+ select * from Usuario
+ delete from Usuario where idUsuario = '6D3A6B25-C6C7-4ED4-A5E9-D992B1CC98A7'

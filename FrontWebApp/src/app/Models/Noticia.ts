@@ -4,14 +4,9 @@ export interface Noticia {
   descripcion: string;
   url: string;
   imagen: string;
+  idCategoria: string;
   categoria: string;
   fechaPublicacion: Date;
   totalLikes: number;
   totalComents: number;
-}
-
-export interface Categoria {
-  idCategoria: string;
-  nombre: string;
-  descripcion: string;
 }

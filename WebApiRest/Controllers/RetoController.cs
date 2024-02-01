@@ -31,11 +31,20 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
-        [Route("list/{estado}/{idReto}")]
-        [Authorize]
-        public async Task<IActionResult> GetListById([FromRoute] int estado, [FromRoute] Guid idReto)
+        [Route("buscar/{texto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> List([FromRoute] string texto)
         {
-            RetoList response = await data.GetRetoList(estado, idReto);
+            RetoList response = await data.GetRetoList(texto);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("item/{estado}/{idReto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idReto)
+        {
+            RetoItem response = await data.GetReto(estado, idReto);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -123,13 +132,36 @@ namespace WebApiRest.Controllers
         }
 
 
-
         [HttpPost]
         [Route("createUsuarioReto")]
         [Authorize(Roles = "adm,sadm")]
         public async Task<IActionResult> CreateUsuarioReto([FromBody] Usuario_Reto usuarioReto)
         {
             Response response = await data.CreateUsuarioReto(usuarioReto);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpDelete]
+        [Route("delete")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Delete([FromQuery] Guid idReto)
+        {
+            Response response = await data.DeleteReto(idReto);
+
+            if (response.Error == 0)
+            {
+                string imagenAnterior = response.Info.Split(':')[1];                
+
+                //Aqui eliminamos el archivo anterior
+                string rutaArchivoAnterior = WC.GetRutaImagen(_env, imagenAnterior, nombreCarpeta);
+                if (System.IO.File.Exists(rutaArchivoAnterior))
+                {
+                    System.IO.File.Delete(rutaArchivoAnterior);
+                }                
+
+                response.Info = response.Info.Split(',')[0];
+            }
+
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
     }

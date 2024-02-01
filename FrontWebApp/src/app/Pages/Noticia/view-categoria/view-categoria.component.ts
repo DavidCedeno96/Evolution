@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Categoria } from 'src/app/Models/Noticia';
+import { Categoria } from 'src/app/Models/Adicional';
 
 @Component({
   selector: 'app-view-categoria',

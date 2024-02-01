@@ -62,7 +62,7 @@ namespace WebApiRest.Data
             }
 
             return list;
-        }
+        }        
 
         public async Task<Response> CreateArea(Area area)
         {

@@ -3,7 +3,7 @@ export interface Recompensa {
   nombre: string;
   descripcion: string;
   imagen: string;
-  cantDisp: number;
+  cantDisponible: number;
   cantCanje: number;
   totalUsuarios: number;
 }

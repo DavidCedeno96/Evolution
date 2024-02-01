@@ -1,38 +1,135 @@
 <div class="my-3 my-md-5">
   <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
     <h5 class="my-5 text-center txt text-primary text-uppercase">
-      nuevo nivel
+      {{ titulo }}
     </h5>
-    <form class="mb-3">
+    <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
       <div class="row g-3">
         <div class="col-12 col-md-8">
           <label for="niv-nom" class="form-label">Nombre*</label>
-          <input type="text" class="form-control" id="niv-nom" />
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('nombre')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="nombre"
+            id="niv-nom"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('nombre')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('maxlength')"
+            >
+              Máximo 20 caracteres
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('pattern')"
+            >
+              Contiene caracteres invalidos
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('nombre')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-4">
           <label for="niv-puntnec" class="form-label">Puntos Necesarios*</label>
-          <input type="text" class="form-control" id="niv-puntnec" />
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('puntosNecesarios')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="puntosNecesarios"
+            id="niv-puntnec"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('puntosNecesarios')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('puntosNecesarios')?.hasError('min')"
+            >
+              Mínimo 1
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('puntosNecesarios')?.hasError('max')"
+            >
+              Máximo 99999
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('puntosNecesarios')?.hasError('pattern')"
+            >
+              Solo se permiten números
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('puntosNecesarios')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-4">
           <label for="niv-desc" class="form-label">Descripción</label>
           <textarea
-            class="form-control"
+            class="form-control {{
+              formulario.get('descripcion')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="descripcion"
             cols="30"
             rows="6"
             id="niv-desc"
           ></textarea>
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('descripcion')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('descripcion')?.hasError('maxlength')"
+            >
+              Máximo 250 caracteres
+            </span>
+          </div>
         </div>
         <div class="col-12 col-md-8">
           <label for="niv-imagen" class="form-label">Imagen</label>
           <input
             type="file"
-            class="form-control mb-2"
+            class="form-control mb-2 {{
+              error && campo === 'imagen' ? 'is-invalid' : ''
+            }}"
             id="niv-imagen"
             accept=".jpg, .jpeg, .png"
+            (change)="onFileSelected($event)"
           />
           <div class="text-center text-md-start">
             <img
-              src="assets/img/default/default-nivel.jpg"
+              *ngIf="!selectedImage"
+              [src]="getImage(nivel.imagen, 'nivel', 'default-nivel.jpg')"
+              class="img-thumbnail"
+              width="110"
+              alt="nivel"
+            />
+            <img
+              *ngIf="selectedImage"
+              [src]="previewImage"
               class="img-thumbnail"
               width="110"
               alt="nivel"
