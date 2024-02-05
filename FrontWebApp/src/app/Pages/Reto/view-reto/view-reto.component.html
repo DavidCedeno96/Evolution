@@ -131,7 +131,13 @@
                         >
                       </li>
                       <li>
-                        <a class="dropdown-item" routerLink="/view-pregunta"
+                        <a
+                          class="dropdown-item pointer"
+                          (click)="
+                            changeRoute('/view-pregunta', {
+                              reto: reto.idReto
+                            })
+                          "
                           ><i class="fa-solid fa-question me-2"></i>Preguntas</a
                         >
                       </li>

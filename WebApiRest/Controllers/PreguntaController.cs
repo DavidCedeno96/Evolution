@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using MathNet.Numerics.Distributions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NPOI.POIFS.Crypt.Dsig;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -19,7 +20,25 @@ namespace WebApiRest.Controllers
         [Authorize]
         public async Task<IActionResult> GetListByIdReto([FromRoute] int estado, [FromRoute] Guid idReto)
         {
-            PreguntaList response = await dataPregunta.GetPreguntaList(estado, idReto);
+            PreguntaList_opciones response = await dataPregunta.GetPreguntaList_opciones(estado, idReto);                        
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("buscar/{texto}/{idReto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Buscar([FromRoute] string texto, [FromRoute] Guid idReto)
+        {
+            PreguntaList_opciones response = await dataPregunta.GetPreguntaList_opciones(texto, idReto);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("item/{estado}/{idPregunta}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idPregunta)
+        {
+            Pregunta_OpcionList response = await dataPregunta.GetPregunta_OpcionList(estado, idPregunta);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -31,7 +50,7 @@ namespace WebApiRest.Controllers
 
             Response resultPregunta = VF.ValidarPregunta(pregunta_opcionList.Pregunta);
             Response resultOpcion = new();
-            Response result = new();
+            Response response = new();
             foreach (var item in pregunta_opcionList.OpcionList)
             {
                 resultOpcion = VF.ValidarOpcion(item);
@@ -43,31 +62,31 @@ namespace WebApiRest.Controllers
 
             if (resultPregunta.Error == 0 && resultOpcion.Error == 0)
             {
-                result = await dataPregunta.CreatePregunta(pregunta_opcionList.Pregunta);
-                if (result.Error == 0)
+                response = await dataPregunta.CreatePregunta(pregunta_opcionList.Pregunta);
+                if (response.Error == 0)
                 {
-                    Guid idPregunta = new(result.Id);
+                    Guid idPregunta = new(response.Id);
                     foreach (var item in pregunta_opcionList.OpcionList)
                     {
                         item.IdPregunta = idPregunta;
-                        result = await dataOpcion.CreateOpcion(item);
+                        response = await dataOpcion.CreateOpcion(item);
                     }
                 }
             }
             else if (resultPregunta.Error > 0)
             {
-                result.Error = 1;
-                result.Info = resultPregunta.Info;
-                result.Campo = resultPregunta.Campo;
+                response.Error = 1;
+                response.Info = resultPregunta.Info;
+                response.Campo = resultPregunta.Campo;
             }
             else if (resultOpcion.Error > 0)
             {
-                result.Error = 1;
-                result.Info = resultOpcion.Info;
-                result.Campo = resultOpcion.Campo;
+                response.Error = 1;
+                response.Info = resultOpcion.Info;
+                response.Campo = resultOpcion.Campo;
             }
 
-            return StatusCode(StatusCodes.Status200OK, new { result });
+            return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
         [HttpPut]
@@ -78,7 +97,7 @@ namespace WebApiRest.Controllers
 
             Response resultPregunta = VF.ValidarPregunta(pregunta_opcionList.Pregunta);
             Response resultOpcion = new();
-            Response result = new();
+            Response response = new();
             foreach (var item in pregunta_opcionList.OpcionList)
             {
                 resultOpcion = VF.ValidarOpcion(item);
@@ -90,36 +109,46 @@ namespace WebApiRest.Controllers
 
             if (resultPregunta.Error == 0 && resultOpcion.Error == 0)
             {
-                result = await dataPregunta.UpdatePregunta(pregunta_opcionList.Pregunta);
-                if (result.Error == 0)
+                response = await dataPregunta.UpdatePregunta(pregunta_opcionList.Pregunta);
+                if (response.Error == 0)
                 {
-                    foreach (var item in pregunta_opcionList.OpcionList)
+                    Guid idPregunta = pregunta_opcionList.Pregunta.IdPregunta;
+                    string idsOpcion = "";
+                    List<Opcion> list = pregunta_opcionList.OpcionList;
+                    for (int i = 0; i < list.Count; i++)
                     {
-                        result = await dataOpcion.UpdateOpcion(item);
+                        response = await dataOpcion.UpdateOpcion(list[i]);
+                        if (i == list.Count - 1)
+                        {
+                            // Es el último valor
+                            idsOpcion += response.Id;
+                        }
+                        else
+                        {
+                            idsOpcion += response.Id + "|";
+                        }
                     }
-                    if (result.Error == 0)
+                    if (response.Error == 0)
                     {
-                        //Guid ultimoIdOpcion = new(result.Id);
-                        //Guid idPregunta = pregunta_opcionList.Pregunta.IdPregunta;
-                        ////Aqui elimina los que no pertencen
-                        //result = await dataOpcion.DeleteOpcion(ultimoIdOpcion, idPregunta);
+                        //Aqui elimina los que no pertencen                        
+                        response = await dataOpcion.DeleteOpcionByNoIds(idsOpcion, idPregunta);
                     }
                 }
             }
             else if (resultPregunta.Error > 0)
             {
-                result.Error = 1;
-                result.Info = resultPregunta.Info;
-                result.Campo = resultPregunta.Campo;
+                response.Error = 1;
+                response.Info = resultPregunta.Info;
+                response.Campo = resultPregunta.Campo;
             }
             else if (resultOpcion.Error > 0)
             {
-                result.Error = 1;
-                result.Info = resultOpcion.Info;
-                result.Campo = resultOpcion.Campo;
+                response.Error = 1;
+                response.Info = resultOpcion.Info;
+                response.Campo = resultOpcion.Campo;
             }
 
-            return StatusCode(StatusCodes.Status200OK, new { result });
+            return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
         [HttpDelete]

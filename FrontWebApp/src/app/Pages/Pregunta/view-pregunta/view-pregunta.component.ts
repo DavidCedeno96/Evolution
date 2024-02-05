@@ -1,137 +1,187 @@
-import { Component, OnInit } from '@angular/core';
-import { Pregunta } from 'src/app/Models/Pregunta';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Pregunta, PreguntaOpciones } from 'src/app/Models/Pregunta';
+import {
+  AlertError,
+  ChangeRoute,
+  Loading,
+  MsgEliminar,
+  MsgElimindo,
+  MsgError,
+  MsgOk,
+  SinRegistros,
+  TitleEliminar,
+  TitleError,
+  TitleErrorForm,
+} from 'src/app/Utils/Constants';
+import { PreguntaService } from 'src/app/services/pregunta.service';
 
 @Component({
   selector: 'app-view-pregunta',
   templateUrl: './view-pregunta.component.html',
   styleUrls: ['./view-pregunta.component.css'],
+  providers: [ConfirmationService, MessageService],
 })
-export class ViewPreguntaComponent implements OnInit {
-  pregunta: Pregunta[] = [
+export class ViewPreguntaComponent implements OnInit, AfterViewInit {
+  alertError = AlertError();
+  loading = Loading();
+  changeRoute = ChangeRoute();
+
+  info: string = '';
+  idReto: string = '';
+
+  formulario!: FormGroup;
+  auxPreguntaOpciones: PreguntaOpciones[] = [];
+
+  preguntaOpciones: PreguntaOpciones[] = [
     {
-      idPregunta: '',
-      nombre: '¿Cuantos años tengo?',
+      pregunta: {
+        idPregunta: '',
+        idReto: '',
+        nombre: '',
+      },
       opcionList: [
         {
           idOpcion: '',
           idPregunta: '',
-          nombre: '23 años',
-          correcta: 1,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: '24 años',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: '25 años',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: '26 años',
-          correcta: 0,
-        },
-      ],
-    },
-    {
-      idPregunta: '',
-      nombre: '¿Cuál es el grupo de palabras escritas correctamente?',
-      opcionList: [
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Metamorfosis, extranjero, diversidac, equilivrio',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Metaformosis, estranjero, diversidad, ekilibrio',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Metamorfosis, extrangero, dibersidad, equilibrio',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Metamorfosis, extranjero, diversidad, equilibrio',
-          correcta: 1,
-        },
-      ],
-    },
-    {
-      idPregunta: '',
-      nombre:
-        '¿Cuáles son los representantes más destacados de la literatura renacentista?',
-      opcionList: [
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre:
-            'Leonardo da Vinci, Miguel Angel Buonarroti, Sandro Boticelli',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Miguel de Cervantes, William Shakespeare, Luis de Camões.',
-          correcta: 1,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Caravaggio, Bernini, Borromini',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Goethe, Victor Hugo, Gustavo Adolfo Bécquer',
-          correcta: 0,
-        },
-      ],
-    },
-    {
-      idPregunta: '',
-      nombre:
-        '¿Cuáles son los tres predadores del reino animal reconocidos por: 1) habilidad de cazar en grupo, 2) camuflajearse para sorprender a su presa, 3) poseer sentidos refinados?',
-      opcionList: [
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: '1) Tiburón blanco; 2) elefante; 3) escorpión',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: '1) León; 2) tiburón blanco; 3) orca',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: '1) Hiena; 2) Oso polar; 3) Lobo gris',
-          correcta: 1,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: '1) Tigre; 2) águila; 3) gato',
+          nombre: '',
           correcta: 0,
         },
       ],
     },
   ];
 
-  ngOnInit(): void {}
+  constructor(
+    private route: ActivatedRoute,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private preguntaServicio: PreguntaService,
+    private router: Router,
+    private formBuilder: FormBuilder
+  ) {
+    this.formulario = this.formBuilder.group({
+      buscar: [''],
+    });
+  }
+
+  ngOnInit(): void {
+    this.getRouteParams();
+  }
+
+  ngAfterViewInit(): void {
+    this.loading(true, false);
+    this.cargarData();
+  }
+
+  getRouteParams() {
+    this.route.queryParams.subscribe((params) => {
+      this.idReto = params['reto'];
+      if (this.idReto === '' || !params['reto']) {
+        history.back();
+      }
+    });
+  }
+
+  cargarData() {
+    this.preguntaServicio.getList(-1, this.idReto).subscribe({
+      next: (data: any) => {
+        let { error, info, list } = data.response;
+        if (error === 0) {
+          this.preguntaOpciones = list;
+          this.auxPreguntaOpciones = list;
+          this.info = SinRegistros;
+        } else {
+          this.alertError(TitleErrorForm, info);
+        }
+        this.loading(false, false);
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+          this.loading(false, false);
+        }
+      },
+    });
+  }
+
+  submitBuscar() {
+    let buscar = this.formulario.get(['buscar'])?.value;
+    if (buscar !== '') {
+      this.loading(true, false);
+      this.getBuscar(buscar);
+    } else {
+      this.preguntaOpciones = this.auxPreguntaOpciones;
+    }
+  }
+
+  getBuscar(texto: string) {
+    this.preguntaServicio.getBuscarList(texto, this.idReto).subscribe({
+      next: (data: any) => {
+        let { error, info, list } = data.response;
+        if (error === 0) {
+          this.preguntaOpciones = list;
+        } else {
+          this.preguntaOpciones = [];
+          this.info = info;
+        }
+        this.loading(false, false);
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+        }
+      },
+    });
+  }
+
+  confirmEliminar(id: string) {
+    this.confirmationService.confirm({
+      message: MsgEliminar,
+      header: TitleEliminar,
+      accept: () => this.eliminar(id),
+    });
+  }
+
+  eliminar(idReto: string) {
+    this.loading(true, false);
+    this.preguntaServicio.delete(idReto).subscribe({
+      next: (data: any) => {
+        let { error, info } = data.response;
+        if (error === 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: MsgOk,
+            detail: MsgElimindo,
+          });
+          this.cargarData();
+        } else {
+          this.loading(false, false);
+          this.alertError(TitleError, info);
+        }
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+        }
+      },
+    });
+  }
+
+  defaultList(event: Event) {
+    let text = (event.target as HTMLInputElement).value;
+    if (!text) {
+      this.preguntaOpciones = this.auxPreguntaOpciones;
+    }
+  }
 }

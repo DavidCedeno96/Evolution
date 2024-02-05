@@ -48,6 +48,7 @@ export interface Categoria {
   idCategoria: string;
   nombre: string;
   descripcion: string;
+  estado: number;
 }
 
 export interface Condicion {

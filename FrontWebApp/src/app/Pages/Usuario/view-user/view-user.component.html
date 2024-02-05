@@ -12,12 +12,98 @@
           </div>
         </a>
       </div>
-      <div class="col-6 col-md-6 d-grid d-md-block">
-        <button class="btn btn-tertiary icon">
+      <!-- <div class="col-6 col-md-6 d-grid d-md-block">
+        <button
+          class="btn btn-tertiary icon"
+          data-bs-toggle="modal"
+          data-bs-target="#importUserModal"
+        >
           <div class="icon-text buton">
             <mat-icon svgIcon="importar"></mat-icon><span>Importar</span>
           </div>
         </button>
+      </div> -->
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="importUserModal"
+      tabindex="-1"
+      aria-labelledby="importUserModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="importUserModalLabel">
+              Importar Usuarios
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-2">
+              <strong>Instrucciones:</strong>
+              <ol>
+                <li>
+                  Descargar el formato (archivo excel).
+                  <button class="btn btn-primary btn-sm mx-2 px-4">
+                    Descargar
+                  </button>
+                </li>
+                <li>
+                  Los campos con (*) son obligatorios, caso contrario no se
+                  guardará el usuario
+                </li>
+                <li>
+                  La contraseña debe tener mínimo 5 caracteres, una letra
+                  mayuscula, minuscula, un número, y solo los siguientes
+                  caracteres #@_-. o no se guardará el usuario
+                </li>
+                <li>
+                  En los campos de Ciudad y Area tiene que estar bien escrito
+                  tal como se creó en la configuración, caso contrario no se
+                  guardará la Ciudad o Area
+                </li>
+                <li>No se aceptan los caracteres &#60;, &#62; o =</li>
+              </ol>
+            </div>
+            <form class="row g-3 mb-3">
+              <div class="col-12">
+                <label
+                  for="archivoExcel"
+                  class="form-label ms-2"
+                  style="font-weight: bold; color: var(--color-texto2)"
+                  >Archivo</label
+                >
+                <input
+                  type="file"
+                  class="form-control is-invalid"
+                  id="archivoExcel"
+                  #valueArchivo
+                  accept=".xlsx"
+                  required
+                />
+                <small class="text-danger ms-2">error</small>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
       </div>
     </div>
 

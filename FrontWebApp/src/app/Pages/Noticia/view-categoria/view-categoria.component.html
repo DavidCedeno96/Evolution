@@ -5,7 +5,10 @@
     </h5>
     <div class="row g-3 mb-4">
       <div class="col-12">
-        <a class="btn btn-primary icon" routerLink="/upsert-categoria-noticia">
+        <a
+          class="btn btn-primary icon"
+          (click)="changeRoute('/upsert-categoria-noticia', { type: 'crear' })"
+        >
           <div class="icon-text buton">
             <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
           </div>
@@ -13,7 +16,11 @@
       </div>
     </div>
     <!-- buscador -->
-    <form class="row g-3 mb-1">
+    <form
+      class="row g-3 mb-1"
+      [formGroup]="formulario"
+      (ngSubmit)="submitBuscar()"
+    >
       <div class="col-12 col-md-8">
         <div class="input-group">
           <span class="icon-left">
@@ -23,6 +30,8 @@
             type="text"
             class="form-control icon"
             placeholder="buscar..."
+            formControlName="buscar"
+            (input)="defaultList($event)"
           />
         </div>
       </div>
@@ -32,12 +41,12 @@
     </form>
     <!-- Noticias -->
     <div class="mb-2 mb-md-4">
-      <p-dataView #dv [value]="categoria" [rows]="2" [paginator]="true">
+      <p-dataView #dv [value]="categorias" [rows]="2" [paginator]="true">
         <ng-template let-categoria pTemplate="listItem">
           <div class="col-12">
             <div class="p-4 gap-4">
               <div class="row g-3 text-center text-md-start align-items-center">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-9">
                   <h5 class="txt text-secondary">
                     {{ categoria.nombre }}
                   </h5>
@@ -48,7 +57,7 @@
                   </div>
                 </div>
 
-                <div class="col-12 col-md-5 text-md-end">
+                <div class="col-12 col-md-3 text-md-center">
                   <div class="dropdown">
                     <button
                       class="btn btn-secondary normal only-icon"
@@ -63,17 +72,22 @@
                     <ul class="dropdown-menu">
                       <li>
                         <a
-                          class="dropdown-item"
-                          routerLink="/upsert-categoria-noticia"
+                          class="dropdown-item pointer"
+                          (click)="
+                            changeRoute('/upsert-categoria-noticia', {
+                              type: 'editar',
+                              categoria: categoria.idCategoria
+                            })
+                          "
                           ><i class="fa-regular fa-pen-to-square me-2"></i
                           >Editar</a
                         >
                       </li>
-                      <li>
+                      <!-- <li>
                         <a class="dropdown-item" routerLink=""
                           ><i class="fa-solid fa-trash-can me-2"></i>Eliminar</a
                         >
-                      </li>
+                      </li> -->
                     </ul>
                   </div>
                 </div>

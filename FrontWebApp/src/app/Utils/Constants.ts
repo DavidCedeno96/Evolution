@@ -1,11 +1,14 @@
 import { DatePipe } from '@angular/common';
 import { inject } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 /* CONSTANTES */
 export const servicioURL: string = 'http://192.168.100.91:8087';
+//export const servicioURL: string = 'http://localhost:49090';
 
+export const ImgSizeMax: number = 600 * 1024;
 export const FormatoFecha: string = 'dd/MM/yyyy';
 export const FormatoFechaInput: string = 'yyyy-MM-dd';
 export const SinRegistros: string = 'No hay registros';
@@ -64,6 +67,18 @@ export const GetImage = () => {
       return `${servicioURL}/Content/Images/${directorio}/${image}`;
     }
     return `assets/img/default/${defaultImage}`;
+  };
+};
+
+export const ObjectInvalid = () => {
+  return (control: AbstractControl): { [key: string]: boolean } | null => {
+    const value = control.value;
+
+    if (value instanceof Date) {
+      return { objectInvalid: true };
+    }
+
+    return null;
   };
 };
 

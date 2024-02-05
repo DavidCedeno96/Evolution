@@ -13,13 +13,19 @@ import {
   AlertError,
   DateFormatInput,
   GetImage,
+  ImgSizeMax,
   Loading,
   MsgError,
   MsgErrorForm,
+  ObjectInvalid,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
-import { exp_invalidos, exp_numeros } from 'src/app/Utils/RegularExpressions';
+import {
+  CaracterInvalid,
+  exp_invalidos,
+  exp_numeros,
+} from 'src/app/Utils/RegularExpressions';
 import { AdicionalService } from 'src/app/services/adicional.service';
 import { RetoService } from 'src/app/services/reto.service';
 
@@ -33,6 +39,8 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   dateFormatInput = DateFormatInput();
+  objectInvalid = ObjectInvalid();
+  caracterInvalid = CaracterInvalid();
 
   type: string = '';
   titulo: string = '';
@@ -41,7 +49,7 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
 
   selectedImage!: File;
   previewImage: string = '';
-  ErrorArchivo: boolean = false;
+  errorArchivo: boolean = false;
   id: string = '';
   campo: string = '';
   error: number = 0;
@@ -87,8 +95,8 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
           Validators.pattern(exp_invalidos),
         ],
       ],
-      fechaApertura: [this.reto.fechaApertura, [this.objectType]],
-      fechaCierre: [this.reto.fechaCierre, [this.objectType]],
+      fechaApertura: [this.reto.fechaApertura, [this.objectInvalid]],
+      fechaCierre: [this.reto.fechaCierre, [this.objectInvalid]],
       vidas: [
         this.reto.vidas,
         [
@@ -125,7 +133,10 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
           Validators.pattern(exp_numeros),
         ],
       ],
-      instrucciones: [this.reto.instrucciones, Validators.maxLength(300)],
+      instrucciones: [
+        this.reto.instrucciones,
+        [Validators.maxLength(300), this.caracterInvalid],
+      ],
       imagen: [this.reto.imagen],
 
       idTipoReto: [this.reto.idTipoReto, [Validators.required]],
@@ -217,7 +228,7 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
 
   upsert() {
     //this.numClicksSave += 1;
-    if (this.formulario.valid) {
+    if (this.formulario.valid && !this.errorArchivo) {
       this.verErrorsInputs = false;
       this.reto = this.formulario.value;
       //console.log('GUARDANDO ......');
@@ -249,9 +260,11 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     this.retoServicio.create(this.getFormData()).subscribe({
       next: (data: any) => {
         let { campo, error, info } = data.response;
+
         if (error === 0) {
           this.router.navigate(['/view-reto']);
         } else if (campo !== '') {
+          console.log('Cambpo', campo);
           this.error = error;
           this.campo = campo;
           this.info = info;
@@ -326,7 +339,13 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
 
   onFileSelected(event: Event) {
     this.selectedImage = (event.target as HTMLInputElement).files![0];
-    this.ErrorArchivo = false;
+
+    if (this.selectedImage.size > ImgSizeMax) {
+      this.errorArchivo = true;
+    } else {
+      this.errorArchivo = false;
+    }
+
     if (this.selectedImage.size > 0) {
       let reader = new FileReader();
       reader.onload = (e: any) => {
@@ -335,15 +354,5 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
       reader.readAsDataURL(this.selectedImage);
     }
     console.log(this.selectedImage.name, this.previewImage);
-  }
-
-  objectType(control: AbstractControl): { [key: string]: boolean } | null {
-    const value = control.value;
-
-    if (value instanceof Date) {
-      return { objectType: true };
-    }
-
-    return null;
   }
 }

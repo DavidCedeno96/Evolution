@@ -148,7 +148,7 @@
                 formulario.get('contrasena')?.errors && verErrorsInputs
                   ? 'is-invalid'
                   : ''
-              }} {{ error && campo === 'clave' ? 'is-invalid' : '' }}"
+              }}"
               type="{{ verPassword ? 'text' : 'password' }}"
               formControlName="contrasena"
               id="contrasena"
@@ -172,15 +172,27 @@
               <span *ngIf="formulario.get('contrasena')?.hasError('maxlength')"
                 >Máximo 60 caracteres</span
               >
-            </div>
-            <div class="invalid-feedback" *ngIf="error && campo === 'clave'">
-              <span>{{ info }}</span>
+              <span
+                class="position-absolute text-danger shadow-lg card p-2"
+                *ngIf="
+                  formulario.get('contrasena')?.hasError('contrasenaInvalid')
+                "
+                >Debe tener al menos 5 caracteres una letra minuscula,
+                mayuscula, un número y solo los siguientes caracteres
+                #@_-.</span
+              >
+              <span
+                *ngIf="
+                  formulario.get('contrasena')?.hasError('contrasenaInvalid')
+                "
+                >error</span
+              >
             </div>
           </div>
         </div>
 
         <div class="col-12 col-md-4">
-          <label for="rol" class="form-label">Rol</label>
+          <label for="rol" class="form-label">Rol*</label>
           <select
             class="form-select {{
               formulario.get('idRol')?.errors && verErrorsInputs
@@ -252,14 +264,14 @@
           <input
             type="file"
             class="form-control {{
-              error && campo === 'imagen' ? 'is-invalid' : ''
+              errorArchivo && verErrorsInputs ? 'is-invalid' : ''
             }}"
             id="foto"
             accept=".jpg, .jpeg, .png"
             (change)="onFileSelected($event)"
           />
-          <div class="invalid-feedback" *ngIf="error && campo === 'imagen'">
-            {{ info }}
+          <div class="invalid-feedback" *ngIf="errorArchivo">
+            El tamaño del archivo no puede superar los 600 KB.
           </div>
         </div>
         <div class="col-12 text-center text-md-start">

@@ -6,13 +6,18 @@ import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
   GetImage,
+  ImgSizeMax,
   Loading,
   MsgError,
   MsgErrorForm,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
-import { exp_numeros, exp_palabras } from 'src/app/Utils/RegularExpressions';
+import {
+  ContrasenaInvalid,
+  exp_numeros,
+  exp_palabras,
+} from 'src/app/Utils/RegularExpressions';
 import { AdicionalService } from 'src/app/services/adicional.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
@@ -25,6 +30,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   loading = Loading();
+  contrasenaInvalid = ContrasenaInvalid();
 
   type: string = '';
   titulo: string = '';
@@ -35,7 +41,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
 
   selectedFoto!: File;
   previewFoto: string = '';
-  ErrorArchivo: boolean = false;
+  errorArchivo: boolean = false;
   id: string = '';
   campo: string = '';
   error: number = 0;
@@ -98,7 +104,10 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
         this.usuario.correo,
         [Validators.required, Validators.maxLength(60), Validators.email],
       ],
-      contrasena: [this.usuario.contrasena, Validators.maxLength(60)],
+      contrasena: [
+        this.usuario.contrasena,
+        [Validators.maxLength(60), this.contrasenaInvalid],
+      ],
       celular: [
         this.usuario.celular,
         [
@@ -172,7 +181,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
         this.loading(false, false);
       },
       error: (e) => {
-        console.log(e);
+        console.error(e);
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
@@ -192,7 +201,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
         this.area = areaList.lista;
       },
       error: (e) => {
-        console.log(e);
+        console.error(e);
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
@@ -204,7 +213,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
 
   upsert() {
     this.numClicksSave += 1;
-    if (this.formulario.valid) {
+    if (this.formulario.valid && !this.errorArchivo) {
       this.verErrorsInputs = false;
       this.usuario = this.formulario.value;
 
@@ -246,7 +255,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
         this.loading(false, false);
       },
       error: (e) => {
-        console.log(e);
+        console.error(e);
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
@@ -260,8 +269,6 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
   update() {
     this.usuarioServicio.update(this.getFormData()).subscribe({
       next: (data: any) => {
-        console.log(data);
-
         let { campo, error, info } = data.response;
         if (error === 0) {
           this.router.navigate(['/view-user']);
@@ -274,7 +281,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
         this.loading(false, false);
       },
       error: (e) => {
-        console.log(e);
+        console.error(e);
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
@@ -321,7 +328,13 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
 
   onFileSelected(event: Event) {
     this.selectedFoto = (event.target as HTMLInputElement).files![0];
-    this.ErrorArchivo = false;
+
+    if (this.selectedFoto.size > ImgSizeMax) {
+      this.errorArchivo = true;
+    } else {
+      this.errorArchivo = false;
+    }
+
     if (this.selectedFoto.size > 0) {
       let reader = new FileReader();
       reader.onload = (e: any) => {

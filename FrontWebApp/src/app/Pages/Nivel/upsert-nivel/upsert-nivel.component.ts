@@ -5,13 +5,18 @@ import { Nivel } from 'src/app/Models/Nivel';
 import {
   AlertError,
   GetImage,
+  ImgSizeMax,
   Loading,
   MsgError,
   MsgErrorForm,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
-import { exp_invalidos, exp_numeros } from 'src/app/Utils/RegularExpressions';
+import {
+  CaracterInvalid,
+  exp_invalidos,
+  exp_numeros,
+} from 'src/app/Utils/RegularExpressions';
 import { NivelService } from 'src/app/services/nivel.service';
 
 @Component({
@@ -23,6 +28,7 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   loading = Loading();
+  caracterInvalid = CaracterInvalid();
 
   type: string = '';
   titulo: string = '';
@@ -31,7 +37,7 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
 
   selectedImage!: File;
   previewImage: string = '';
-  ErrorArchivo: boolean = false;
+  errorArchivo: boolean = false;
   id: string = '';
   campo: string = '';
   error: number = 0;
@@ -64,7 +70,10 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
           Validators.pattern(exp_invalidos),
         ],
       ],
-      descripcion: [this.nivel.descripcion, [Validators.maxLength(250)]],
+      descripcion: [
+        this.nivel.descripcion,
+        [Validators.maxLength(250), this.caracterInvalid],
+      ],
       puntosNecesarios: [
         this.nivel.puntosNecesarios,
         [
@@ -140,7 +149,7 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
   }
 
   upsert() {
-    if (this.formulario.valid) {
+    if (this.formulario.valid && !this.errorArchivo) {
       this.verErrorsInputs = false;
       this.nivel = this.formulario.value;
       //console.log('GUARDANDO ......');
@@ -236,7 +245,13 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
 
   onFileSelected(event: Event) {
     this.selectedImage = (event.target as HTMLInputElement).files![0];
-    this.ErrorArchivo = false;
+
+    if (this.selectedImage.size > ImgSizeMax) {
+      this.errorArchivo = true;
+    } else {
+      this.errorArchivo = false;
+    }
+
     if (this.selectedImage.size > 0) {
       let reader = new FileReader();
       reader.onload = (e: any) => {

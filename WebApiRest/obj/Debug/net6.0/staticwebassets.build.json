@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "J0i5H3jHpQNhFj/kvYOZHBktEr3gpb/sfD8f/OkJMLU=",
+  "Hash": "kcSkRFBBnSZN9i5iH1sQbv0rCiTxEtUhhSXDBth9BSw=",
   "Source": "WebApiRest",
   "BasePath": "_content/WebApiRest",
   "Mode": "Default",
@@ -129,44 +129,6 @@
       "CopyToOutputDirectory": "Always",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Content\\Images\\Usuario\\_default.png"
-    },
-    {
-      "Identity": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Usuario\\Daniela.jpg",
-      "SourceId": "WebApiRest",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\",
-      "BasePath": "_content/WebApiRest",
-      "RelativePath": "Content/Images/Usuario/Daniela.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Content\\Images\\Usuario\\Daniela.jpg"
-    },
-    {
-      "Identity": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Usuario\\models.png",
-      "SourceId": "WebApiRest",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\",
-      "BasePath": "_content/WebApiRest",
-      "RelativePath": "Content/Images/Usuario/models.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Content\\Images\\Usuario\\models.png"
     }
   ]
 }

@@ -12,13 +12,17 @@ import {
   AlertError,
   DateFormatInput,
   GetImage,
+  ImgSizeMax,
   Loading,
   MsgError,
   MsgErrorForm,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
-import { exp_invalidos } from 'src/app/Utils/RegularExpressions';
+import {
+  CaracterInvalid,
+  exp_invalidos,
+} from 'src/app/Utils/RegularExpressions';
 import { AdicionalService } from 'src/app/services/adicional.service';
 import { NoticiaService } from 'src/app/services/noticia.service';
 
@@ -32,6 +36,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   dateFormatInput = DateFormatInput();
+  caracterInvalid = CaracterInvalid();
 
   type: string = '';
   titulo: string = '';
@@ -40,7 +45,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
 
   selectedImage!: File;
   previewImage: string = '';
-  ErrorArchivo: boolean = false;
+  errorArchivo: boolean = false;
   id: string = '';
   campo: string = '';
   error: number = 0;
@@ -88,7 +93,10 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
           Validators.pattern(exp_invalidos),
         ],
       ],
-      url: [this.noticia.url, [Validators.maxLength(250)]],
+      url: [
+        this.noticia.url,
+        [Validators.maxLength(250), this.caracterInvalid],
+      ],
 
       imagen: [this.noticia.imagen],
       fechaPublicacion: [this.noticia.fechaPublicacion],
@@ -176,7 +184,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
   }
 
   upsert() {
-    if (this.formulario.valid) {
+    if (this.formulario.valid && !this.errorArchivo) {
       this.verErrorsInputs = false;
       this.noticia = this.formulario.value;
       //console.log('GUARDANDO ......');
@@ -277,7 +285,13 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
 
   onFileSelected(event: Event) {
     this.selectedImage = (event.target as HTMLInputElement).files![0];
-    this.ErrorArchivo = false;
+
+    if (this.selectedImage.size > ImgSizeMax) {
+      this.errorArchivo = true;
+    } else {
+      this.errorArchivo = false;
+    }
+
     if (this.selectedImage.size > 0) {
       let reader = new FileReader();
       reader.onload = (e: any) => {

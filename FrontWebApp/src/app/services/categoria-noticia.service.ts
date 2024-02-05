@@ -24,4 +24,40 @@ export class CategoriaNoticiaService {
       headers: headers,
     });
   }
+
+  getBuscarList(texto: string): Observable<Categoria[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<Categoria[]>(`${this.apiURL}/buscar/${texto}`, {
+      headers: headers,
+    });
+  }
+
+  getItem(estado: number, id: string): Observable<Categoria> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<Categoria>(`${this.apiURL}/item/${estado}/${id}`, {
+      headers: headers,
+    });
+  }
+
+  create(categoria: Categoria): Observable<Categoria> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.post<Categoria>(`${this.apiURL}/create`, categoria, {
+      headers: headers,
+    });
+  }
+
+  update(categoria: Categoria): Observable<Categoria> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.put<Categoria>(`${this.apiURL}/update`, categoria, {
+      headers: headers,
+    });
+  }
 }

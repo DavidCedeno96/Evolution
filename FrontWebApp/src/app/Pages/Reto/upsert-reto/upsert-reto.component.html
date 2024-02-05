@@ -31,7 +31,7 @@
               class="d-block"
               *ngIf="formulario.get('nombre')?.hasError('pattern')"
             >
-              Contiene caracteres invalidos
+              Contiene caracteres inválidos
             </span>
             <span
               class="d-block"
@@ -46,7 +46,7 @@
           <input
             type="date"
             class="form-control {{
-              formulario.get('fechaApertura')?.hasError('objectType') &&
+              formulario.get('fechaApertura')?.hasError('objectInvalid') &&
               verErrorsInputs
                 ? 'is-invalid'
                 : ''
@@ -57,7 +57,7 @@
           <div class="invalid-feedback">
             <span
               class="d-block"
-              *ngIf="formulario.get('fechaApertura')?.hasError('objectType')"
+              *ngIf="formulario.get('fechaApertura')?.hasError('objectInvalid')"
             >
               Campo obligatorio
             </span>
@@ -68,7 +68,7 @@
           <input
             type="date"
             class="form-control {{
-              formulario.get('fechaCierre')?.hasError('objectType') &&
+              formulario.get('fechaCierre')?.hasError('objectInvalid') &&
               verErrorsInputs
                 ? 'is-invalid'
                 : ''
@@ -79,7 +79,7 @@
           <div class="invalid-feedback">
             <span
               class="d-block"
-              *ngIf="formulario.get('fechaCierre')?.hasError('objectType')"
+              *ngIf="formulario.get('fechaCierre')?.hasError('objectInvalid')"
             >
               Campo obligatorio
             </span>
@@ -313,7 +313,10 @@
           <label for="ret-inst" class="form-label">Instrucciones</label>
           <textarea
             class="form-control {{
-              error && campo === 'instrucciones' ? 'is-invalid' : ''
+              formulario.get('instrucciones')?.hasError('caracterInvalid') &&
+              verErrorsInputs
+                ? 'is-invalid'
+                : ''
             }}"
             cols="30"
             rows="6"
@@ -322,9 +325,9 @@
           ></textarea>
           <div
             class="invalid-feedback"
-            *ngIf="error && campo === 'instrucciones'"
+            *ngIf="formulario.get('instrucciones')?.hasError('caracterInvalid')"
           >
-            {{ info }}
+            Contiene caracteres inválidos
           </div>
         </div>
         <div class="col-12 col-md-8">
@@ -332,14 +335,14 @@
           <input
             type="file"
             class="form-control mb-2 {{
-              error && campo === 'imagen' ? 'is-invalid' : ''
+              errorArchivo && verErrorsInputs ? 'is-invalid' : ''
             }}"
             id="ret-imagen"
             accept=".jpg, .jpeg, .png"
             (change)="onFileSelected($event)"
           />
-          <div class="invalid-feedback" *ngIf="error && campo === 'imagen'">
-            {{ info }}
+          <div class="invalid-feedback" *ngIf="errorArchivo">
+            El tamaño del archivo no puede superar los 600 KB.
           </div>
           <div class="text-center text-md-start">
             <img

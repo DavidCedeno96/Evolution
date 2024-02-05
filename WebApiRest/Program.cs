@@ -12,7 +12,8 @@ var misReglasCors = "ReglasCors";
 builder.Services.AddCors(p => p.AddPolicy(misReglasCors, build => {
     build.WithOrigins(settings.Origin.Split(','))
     .AllowAnyHeader()
-    .AllowAnyMethod();
+    .WithMethods("GET","POST", "PUT", "DELETE");
+    //.AllowAnyMethod();
 }));
 
 //JWT

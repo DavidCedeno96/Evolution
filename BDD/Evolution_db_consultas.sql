@@ -45,13 +45,14 @@ WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Medalla';
+WHERE tc.TABLE_NAME = 'Opcion';
 
 ---
 SELECT @@VERSION;
 
 -- INSERTS IMPORTANTES ---------------------------------------------------------
 --Insert into Constants (nombre,descripcion) values
+--('no_delete','Registro no eliminado'),
 --('encontrar','encontrado'),
 --('no_encontrar','no encontrado'),
 --('exito_delete','Registro eliminado satisfactoriamente'),
@@ -635,12 +636,32 @@ exec sp_D_Opcion
 @info = '',
 @id = ''
 
+exec sp_D_OpcionByNoIds
+@ids = '',
+@idPregunta = '',
+@error = '',
+@info = '',
+@id = ''
 
 -- Pregunta ------------------------------------------------------------------------
 select * from Pregunta
 
 exec sp_B_PreguntaByIdReto		
 @estado = -1,
+@idReto = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_PreguntaById		
+@idPregunta = '7178DEA1-9A99-475F-9F42-32A77FF81DD0',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_PreguntaByAll		
+@buscar = '27',
 @idReto = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
 @error = '',
 @info = '',

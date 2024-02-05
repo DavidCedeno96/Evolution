@@ -2,7 +2,7 @@
   <div class="shadow-lg p-4 px-md-5 mb-2 bg-body rounded">
     <div class="d-flex justify-content-between mb-3">
       <span class="fw-semibold txt text-primary fs-5"
-        >Pregunta {{ preguntaActual + 1 }}/{{ pregunta.length }}</span
+        >Pregunta {{ preguntaActual + 1 }}/{{ preguntaOpciones.length }}</span
       >
       <div class="icon-text">
         <mat-icon
@@ -21,14 +21,17 @@
     <div class="col-lg-8 mx-auto">
       <div class="rounded p-4 mb-3 bg-superior text-white">
         <span class="fw-semibold fs-5">{{
-          pregunta[preguntaActual].nombre
+          preguntaOpciones[preguntaActual].pregunta.nombre
         }}</span>
       </div>
       <form (ngSubmit)="next()">
         <div class="mb-4">
           <div
             class="form-check"
-            *ngFor="let item of pregunta[preguntaActual].opcionList; index as i"
+            *ngFor="
+              let item of preguntaOpciones[preguntaActual].opcionList;
+              index as i
+            "
           >
             <input
               class="form-check-input"

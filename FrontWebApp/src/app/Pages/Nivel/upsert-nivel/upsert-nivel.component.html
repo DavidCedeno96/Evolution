@@ -31,7 +31,7 @@
               class="d-block"
               *ngIf="formulario.get('nombre')?.hasError('pattern')"
             >
-              Contiene caracteres invalidos
+              Contiene caracteres inválidos
             </span>
             <span
               class="d-block"
@@ -106,6 +106,12 @@
             >
               Máximo 250 caracteres
             </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('descripcion')?.hasError('caracterInvalid')"
+            >
+              Contiene caracteres inválidos
+            </span>
           </div>
         </div>
         <div class="col-12 col-md-8">
@@ -113,12 +119,15 @@
           <input
             type="file"
             class="form-control mb-2 {{
-              error && campo === 'imagen' ? 'is-invalid' : ''
+              errorArchivo && verErrorsInputs ? 'is-invalid' : ''
             }}"
             id="niv-imagen"
             accept=".jpg, .jpeg, .png"
             (change)="onFileSelected($event)"
           />
+          <div class="invalid-feedback" *ngIf="errorArchivo">
+            El tamaño del archivo no puede superar los 600 KB.
+          </div>
           <div class="text-center text-md-start">
             <img
               *ngIf="!selectedImage"

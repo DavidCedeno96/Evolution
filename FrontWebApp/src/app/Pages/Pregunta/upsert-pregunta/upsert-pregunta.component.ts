@@ -1,12 +1,18 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Opcion, Pregunta } from 'src/app/Models/Pregunta';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Opcion, PreguntaOpciones } from 'src/app/Models/Pregunta';
 import {
   AlertError,
+  ChangeRoute,
   Loading,
+  MsgError,
   MsgErrorForm,
+  TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
+import { exp_invalidos } from 'src/app/Utils/RegularExpressions';
+import { PreguntaService } from 'src/app/services/pregunta.service';
 
 @Component({
   selector: 'app-upsert-pregunta',
@@ -15,92 +21,177 @@ import {
 })
 export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
+  changeRoute = ChangeRoute();
+  loading = Loading();
+
   auxIdPregunta: string = '';
   auxOpcionList: Opcion[] = [];
   opcion: string[] = ['A', 'B', 'C', 'D'];
 
-  verErrorsInputs: boolean = false;
   numClicksSave: number = 0;
 
-  formulario!: FormGroup;
+  type: string = '';
+  titulo: string = '';
 
-  pregunta: Pregunta = {
-    idPregunta: '',
-    nombre: '',
+  verErrorsInputs: boolean = false;
+
+  idReto: string = '';
+  id: string = '';
+  campo: string = '';
+  error: number = 0;
+  info: string = '';
+
+  formulario!: FormGroup;
+  preguntaOpciones: PreguntaOpciones = {
+    pregunta: {
+      idPregunta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+      idReto: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+      nombre: '',
+    },
     opcionList: [],
   };
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private preguntaServicio: PreguntaService,
+    private formBuilder: FormBuilder
+  ) {
     this.formulario = this.formBuilder.group({
       pregunta: [
-        this.pregunta.nombre,
-        [Validators.required, Validators.maxLength(200)],
+        this.preguntaOpciones.pregunta.nombre,
+        [
+          Validators.required,
+          Validators.maxLength(200),
+          Validators.pattern(exp_invalidos),
+        ],
       ],
       totalOpciones: ['', [Validators.required]],
     });
   }
 
   ngOnInit(): void {
-    //this.cargaOpciones(0, this.pregunta); // este es cuando el tipo sea 'crear'
-    this.cargarData(); // este es cuando el tipo sea 'editar'
+    this.getRouteParams();
+
+    //this.cargaOpciones(0, this.preguntaOpciones); // este es cuando el tipo sea 'crear'
+    //this.cargarPregunta(); // este es cuando el tipo sea 'editar'
   }
 
   ngAfterViewInit(): void {}
 
-  cargarData() {
-    let preguntaDB: Pregunta = {
-      idPregunta: '',
-      nombre: '¿Cuál es el grupo de palabras escritas correctamente?',
-      opcionList: [
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Metaformosis, estranjero, diversidad, ekilibrio',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Metamorfosis, extrangero, dibersidad, equilibrio',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Metamorfosis, extranjero, diversidad, equilibrio',
-          correcta: 1,
-        },
-      ],
-    };
-
-    this.pregunta = preguntaDB;
-    this.auxOpcionList = preguntaDB.opcionList;
-
-    let totalOpciones = preguntaDB.opcionList.length;
-    this.cargaOpciones(totalOpciones, preguntaDB);
+  getRouteParams() {
+    this.route.queryParams.subscribe((params) => {
+      this.type = params['type'];
+      let idPregunta = params['pregunta'];
+      this.idReto = params['reto'];
+      if (idPregunta === '' && this.idReto === '' && this.type === 'editar') {
+        history.back();
+      }
+      switch (this.type) {
+        case 'crear': {
+          this.titulo = 'nueva pregunta';
+          this.cargaOpciones(0, this.preguntaOpciones);
+          break;
+        }
+        case 'editar': {
+          this.id = idPregunta;
+          this.titulo = 'editar pregunta';
+          this.loading(true, false);
+          this.cargarPregunta(idPregunta);
+          break;
+        }
+        default: {
+          this.titulo = '';
+          history.back();
+          break;
+        }
+      }
+    });
   }
 
-  cargaOpciones(totalOpciones: number, pregunta: Pregunta) {
+  cargarPregunta(idPregunta: string) {
+    /* let preguntaDB: PreguntaOpciones = {
+      pregunta: {
+        idPregunta: '',
+        nombre: '',
+      },
+      opcionList: [],
+    }; */
+
+    this.preguntaServicio.getItem(-1, idPregunta).subscribe({
+      next: (data: any) => {
+        let { error, pregunta, opcionList } = data.response;
+        if (error === 0) {
+          this.preguntaOpciones = data.response;
+          this.auxOpcionList = opcionList;
+
+          let totalOpciones = opcionList.length;
+          this.cargaOpciones(totalOpciones, data.response);
+
+          /* preguntaDB = data.response
+
+          this.preguntaOpciones = preguntaDB;
+          this.auxOpcionList = preguntaDB.opcionList;
+
+          let totalOpciones = preguntaDB.opcionList.length;
+          this.cargaOpciones(totalOpciones, preguntaDB); */
+
+          //this.formulario.patchValue(recompensa);
+        } else {
+          history.back();
+        }
+        this.loading(false, false);
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          history.back();
+        }
+      },
+    });
+  }
+
+  cargaOpciones(totalOpciones: number, preguntaOpciones: PreguntaOpciones) {
     if (totalOpciones > 1 && totalOpciones < 5) {
       this.formulario.patchValue({
-        pregunta: pregunta.nombre,
+        pregunta: preguntaOpciones.pregunta.nombre,
         totalOpciones: totalOpciones,
       });
 
-      this.pregunta.opcionList = this.opcionItem(totalOpciones);
+      this.preguntaOpciones.opcionList = this.opcionItem(totalOpciones);
     } else {
-      this.pregunta.opcionList = [];
+      this.preguntaOpciones.opcionList = [];
     }
   }
 
-  save() {
-    console.log(this.formulario.valid);
-    console.log(this.formulario.value);
+  upsert() {
+    /* console.log(this.formulario.valid);
+    console.log(this.formulario.value); */
 
     this.numClicksSave += 1;
     if (this.formulario.valid) {
       this.verErrorsInputs = false;
-      console.log('Creando Pregunta...');
+      this.setData();
+      //console.log('GUARDANDO ......', this.preguntaOpciones);
+
+      this.loading(true, false);
+      switch (this.type) {
+        case 'crear': {
+          this.create();
+          break;
+        }
+        case 'editar': {
+          this.update();
+          break;
+        }
+        default: {
+          this.loading(false, false);
+          history.back();
+          break;
+        }
+      }
     } else {
       this.verErrorsInputs = true;
 
@@ -108,12 +199,97 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
     }
   }
 
+  create() {
+    this.preguntaServicio.create(this.preguntaOpciones).subscribe({
+      next: (data: any) => {
+        let { campo, error, info } = data.response;
+        if (error === 0) {
+          this.changeRoute('/view-pregunta', { reto: this.idReto });
+        } else if (campo !== '') {
+          this.error = error;
+          this.campo = campo;
+          this.info = info;
+          this.alertError(TitleErrorForm, info); //MsgErrorForm
+        }
+        this.loading(false, false);
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+          this.loading(false, false);
+        }
+      },
+    });
+  }
+
+  update() {
+    this.preguntaServicio.update(this.preguntaOpciones).subscribe({
+      next: (data: any) => {
+        let { campo, error, info } = data.response;
+        if (error === 0) {
+          this.changeRoute('/view-pregunta', { reto: this.idReto });
+        } else if (campo !== '') {
+          this.error = error;
+          this.campo = campo;
+          this.info = info;
+          this.alertError(TitleErrorForm, info); //MsgErrorForm
+        }
+        this.loading(false, false);
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+          this.loading(false, false);
+        }
+      },
+    });
+  }
+
+  setData() {
+    this.preguntaOpciones.pregunta.nombre = this.formulario.get([
+      'pregunta',
+    ])?.value;
+    let numOpciones: number = this.formulario.get(['totalOpciones'])?.value;
+    let opCorrecta: string = this.formulario.get(['opcionCorrecta'])?.value;
+
+    for (let i = 0; i < numOpciones; i++) {
+      let opcion: Opcion = {
+        idOpcion: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+        idPregunta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+        nombre: '',
+        correcta: 0,
+      };
+      opcion.nombre = this.formulario.get(['opcion' + this.opcion[i]])?.value;
+
+      if (this.opcion[i] === opCorrecta) {
+        opcion.correcta = 1;
+      }
+      //debugger;
+      if (this.type === 'editar') {
+        opcion.idOpcion = this.auxOpcionList[i].idOpcion;
+        opcion.idPregunta = this.id;
+      } else {
+        this.preguntaOpciones.pregunta.idReto = this.idReto;
+      }
+
+      this.preguntaOpciones.opcionList[i] = opcion;
+    }
+  }
+
   selectTotalOpciones(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
     if (Number(selectedValue) < 5) {
-      this.pregunta.opcionList = this.opcionItem(Number(selectedValue));
+      this.preguntaOpciones.opcionList = this.opcionItem(Number(selectedValue));
+      this.auxOpcionList = this.opcionItem(Number(selectedValue));
     } else {
-      this.pregunta.opcionList = [];
+      this.preguntaOpciones.opcionList = [];
+      this.auxOpcionList = [];
     }
   }
 
@@ -122,7 +298,7 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
     this.eliminarControlform('opcion');
     for (let i = 0; i < num; i++) {
       item.push({
-        idOpcion: '',
+        idOpcion: '7c8c2672-2233-486a-a184-f0b51eb4a331',
         idPregunta: this.auxIdPregunta,
         nombre: '',
         correcta: 0,
@@ -147,6 +323,7 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
       this.formBuilder.control(value, [
         Validators.required,
         Validators.maxLength(200),
+        Validators.pattern(exp_invalidos),
       ])
     );
 

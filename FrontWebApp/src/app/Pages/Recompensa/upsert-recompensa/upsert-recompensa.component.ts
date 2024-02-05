@@ -5,13 +5,18 @@ import { Recompensa } from 'src/app/Models/Recompensa';
 import {
   AlertError,
   GetImage,
+  ImgSizeMax,
   Loading,
   MsgError,
   MsgErrorForm,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
-import { exp_invalidos, exp_numeros } from 'src/app/Utils/RegularExpressions';
+import {
+  CaracterInvalid,
+  exp_invalidos,
+  exp_numeros,
+} from 'src/app/Utils/RegularExpressions';
 import { RecompensaService } from 'src/app/services/recompensa.service';
 
 @Component({
@@ -23,6 +28,7 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   loading = Loading();
+  caracterInvalid = CaracterInvalid();
 
   type: string = '';
   titulo: string = '';
@@ -31,7 +37,7 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
 
   selectedImage!: File;
   previewImage: string = '';
-  ErrorArchivo: boolean = false;
+  errorArchivo: boolean = false;
   id: string = '';
   campo: string = '';
   error: number = 0;
@@ -64,7 +70,10 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
           Validators.pattern(exp_invalidos),
         ],
       ],
-      descripcion: [this.recompensa.descripcion, [Validators.maxLength(250)]],
+      descripcion: [
+        this.recompensa.descripcion,
+        [Validators.maxLength(250), this.caracterInvalid],
+      ],
       cantDisponible: [
         this.recompensa.cantDisponible,
         [
@@ -149,7 +158,7 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
   }
 
   upsert() {
-    if (this.formulario.valid) {
+    if (this.formulario.valid && !this.errorArchivo) {
       this.verErrorsInputs = false;
       this.recompensa = this.formulario.value;
       //console.log('GUARDANDO ......');
@@ -249,7 +258,13 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
 
   onFileSelected(event: Event) {
     this.selectedImage = (event.target as HTMLInputElement).files![0];
-    this.ErrorArchivo = false;
+
+    if (this.selectedImage.size > ImgSizeMax) {
+      this.errorArchivo = true;
+    } else {
+      this.errorArchivo = false;
+    }
+
     if (this.selectedImage.size > 0) {
       let reader = new FileReader();
       reader.onload = (e: any) => {

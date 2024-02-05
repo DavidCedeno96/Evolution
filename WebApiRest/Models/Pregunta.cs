@@ -7,8 +7,8 @@
         public int Estado { get; set; }
         public Guid IdReto { get; set; }
         public DateTime FechaCreacion { get; set; }
-        public DateTime FechaModificacion { get; set; }
-    }
+        public DateTime FechaModificacion { get; set; }        
+    }    
 
     public class PreguntaList
     {

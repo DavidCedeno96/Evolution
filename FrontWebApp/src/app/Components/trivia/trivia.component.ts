@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Pregunta } from 'src/app/Models/Pregunta';
+import { Pregunta, PreguntaOpciones } from 'src/app/Models/Pregunta';
 
 @Component({
   selector: 'app-trivia',
@@ -14,11 +14,14 @@ export class TriviaComponent implements OnInit {
   verOpCalificacion: boolean = false;
   selectedIndex: number = 0;
 
-  pregunta: Pregunta[] = [
+  preguntaOpciones: PreguntaOpciones[] = [
     {
-      idPregunta: '',
-      nombre:
-        '¿Cuáles son los tres predadores del reino animal reconocidos por: 1) habilidad de cazar en grupo, 2) camuflajearse para sorprender a su presa, 3) poseer sentidos refinados?',
+      pregunta: {
+        idPregunta: '',
+        idReto: '',
+        nombre:
+          '¿Cuáles son los tres predadores del reino animal reconocidos por: 1) habilidad de cazar en grupo, 2) camuflajearse para sorprender a su presa, 3) poseer sentidos refinados?',
+      },
       opcionList: [
         {
           idOpcion: '',
@@ -46,66 +49,6 @@ export class TriviaComponent implements OnInit {
         },
       ],
     },
-    {
-      idPregunta: '',
-      nombre: '¿Cuantos años tengo?',
-      opcionList: [
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: '23 años',
-          correcta: 1,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: '24 años',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: '25 años',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: '26 años',
-          correcta: 0,
-        },
-      ],
-    },
-    {
-      idPregunta: '',
-      nombre: 'Cual es el pais mas pequeño del mundo',
-      opcionList: [
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Ecuador',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Uruguay',
-          correcta: 0,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'El Vaticano',
-          correcta: 1,
-        },
-        {
-          idOpcion: '',
-          idPregunta: '',
-          nombre: 'Suecia',
-          correcta: 0,
-        },
-      ],
-    },
   ];
 
   ngOnInit(): void {}
@@ -114,20 +57,20 @@ export class TriviaComponent implements OnInit {
     /* console.log(this.formulario.valid);
     console.log(this.formulario.value); */
 
-    if (this.preguntaActual === this.pregunta.length - 1) {
+    if (this.preguntaActual === this.preguntaOpciones.length - 1) {
       this.opCalificacion(true, false);
       setTimeout(() => {
         //this.opCalificacion(false, true);
         this.finalizarTrivia();
       }, 2500);
     }
-    if (this.preguntaActual < this.pregunta.length - 1) {
+    if (this.preguntaActual < this.preguntaOpciones.length - 1) {
       this.opCalificacion(true, false);
       setTimeout(() => {
         this.preguntaActual += 1;
         this.opCalificacion(false, true);
 
-        if (this.preguntaActual === this.pregunta.length - 1) {
+        if (this.preguntaActual === this.preguntaOpciones.length - 1) {
           this.nextText = 'Finalizar';
         }
       }, 2500);

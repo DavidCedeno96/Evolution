@@ -1,7 +1,7 @@
 export interface Pregunta {
   idPregunta: string;
+  idReto: string;
   nombre: string;
-  opcionList: Opcion[];
 }
 
 export interface Opcion {
@@ -9,4 +9,9 @@ export interface Opcion {
   idPregunta: string;
   nombre: string;
   correcta: number;
+}
+
+export interface PreguntaOpciones {
+  pregunta: Pregunta;
+  opcionList: Opcion[];
 }
