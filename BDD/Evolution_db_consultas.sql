@@ -45,7 +45,7 @@ WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Opcion';
+WHERE tc.TABLE_NAME = 'Configuracion';
 
 ---
 SELECT @@VERSION;
@@ -158,6 +158,13 @@ exec sp_B_Area
 @info = '',
 @id = ''
 
+exec sp_B_AreaById		
+@idArea = 'C1DF8D3C-0069-468E-8811-A0F404F12819',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
 --exec sp_B_AreaByIdEmpresa		
 --@estado = -1,
 --@idEmpresa = '4E87C6CD-992A-4F14-90C8-CB7BFD4B2DBA',
@@ -189,6 +196,13 @@ exec sp_B_Empresa
 @info = '',
 @id = ''
 
+exec sp_B_EmpresaById		
+@idEmpresa = '4E87C6CD-992A-4F14-90C8-CB7BFD4B2DBA',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
 exec sp_C_Empresa		
 @nombre = 'Prueba',
 @descripcion = '',
@@ -211,6 +225,13 @@ exec sp_B_Pais
 @info = '',
 @id = ''
 
+exec sp_B_PaisById		
+@idPais = '4A89B8A4-418D-47E1-BD16-80AAB501D4C0',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
 exec sp_C_Pais		
 @nombre = 'México',
 @descripcion = '',
@@ -228,8 +249,16 @@ exec sp_U_Pais
 
 -- Ciudad -------------------------------------------------------- 
 select * from Pais
+DELETE from Pais where idPais = 'B9CB4FD1-FF4F-4606-981C-AC7A6EAE3649'
 
 exec sp_B_Ciudad
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_CiudadById		
+@idCiudad = 'F25E73BA-3D82-4D9B-86B4-D4AA94745649',	
 @estado = -1,
 @error = '',
 @info = '',
@@ -563,24 +592,26 @@ exec sp_B_Configuracion
 @info = '',
 @id = ''
 
+--update Configuracion set valor = '#898a8d' where idConfig = '8D0176A4-6480-4C48-894C-D9794EE4E740'
+
 exec sp_C_Configuracion
 @tipo = 'color',
-@propiedad = '--ColorBotonSecundario',
+@propiedad = '--BotonSecundario',
 @nombre = 'boton secundario',
-@valor = '#58CD2C',
-@descripcion = '',
+@valor = '#b0b5be',
+@descripcion = 'Es para el color de los botones secundarios',
 @idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_U_Configuracion
-@idConfig = '453657DA-CC12-403D-888F-96D72035A4C0',
+@idConfig = 'FEB39DE3-2A26-42F3-89D4-8A98B93586F3',
 @tipo = 'color',
-@propiedad = '--ColorBotonSecundario',
+@propiedad = '--BotonSecundario',
 @nombre = 'boton secundario',
-@valor = '#4CBB23',
-@descripcion = '',
+@valor = '#b0b5be',
+@descripcion = 'Es para el color de los botones secundarios',
 @idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
 @error = '',
 @info = '',
@@ -709,7 +740,7 @@ exec sp_B_RetoById
 @id = ''
 
 exec sp_B_RetoByAll
-@buscar = 'segun',
+@buscar = 'hola',
 @error = '',
 @info = '',
 @id = ''

@@ -62,6 +62,59 @@ namespace WebApiRest.Data
             return list;
         }
 
+        public async Task<PaisItem> GetPais(int estado, Guid idPais)
+        {
+            PaisItem item = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_PaisById", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idPais", idPais);
+            cmd.Parameters.AddWithValue("@estado", estado);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                if (await dr.ReadAsync())
+                {
+                    item.Pais = new Pais()
+                    {
+                        IdPais = new Guid(dr["idPais"].ToString()),
+                        Nombre = dr["nombre"].ToString(),
+                        Descripcion = dr["descripcion"].ToString(),
+                        Estado = Convert.ToInt32(dr["estado"].ToString()),
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                    };
+                }
+                await dr.NextResultAsync();
+
+                item.Info = cmd.Parameters["@info"].Value.ToString();
+                item.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+            }
+            catch (Exception ex)
+            {
+                item.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                item.Error = 1;
+                item.Pais = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return item;
+        }
+
         public async Task<Response> CreatePais(Pais pais)
         {
             Response response = new();

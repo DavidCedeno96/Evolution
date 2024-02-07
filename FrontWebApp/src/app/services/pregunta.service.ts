@@ -16,6 +16,12 @@ export class PreguntaService {
     private usuarioServicio: UsuarioService
   ) {}
 
+  getArchivo(): Observable<Blob> {
+    return this.http.get('assets/archivos/FormatoPreguntasReto.xlsx', {
+      responseType: 'blob',
+    });
+  }
+
   getList(estado: number, idReto: string): Observable<PreguntaOpciones[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
@@ -86,5 +92,19 @@ export class PreguntaService {
     return this.http.delete<string>(`${this.apiURL}/delete/${idPregunta}`, {
       headers: headers,
     });
+  }
+
+  enviarArchivo(formData: FormData, idReto: string): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    //headers.append('Access-Control-Allow-Credentials', 'true');
+    return this.http.post<FormData>(
+      `${this.apiURL}/import/${idReto}`,
+      formData,
+      {
+        headers: headers,
+      }
+    );
   }
 }

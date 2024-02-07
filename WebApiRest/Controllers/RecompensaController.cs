@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MathNet.Numerics.Distributions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using System.Collections.Generic;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -166,6 +170,95 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> CreateUsuarioRecompensa([FromBody] Usuario_Recompensa usuarioRecompensa)
         {
             Response response = await data.CreateUsuarioRecompensa(usuarioRecompensa);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpPost]
+        [Route("import")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> ImportList([FromForm] IFormFile archivo)
+        {            
+            Response response = new();
+
+            List<Recompensa> lista = new();
+
+            if (archivo != null)
+            {
+                Stream stream = archivo.OpenReadStream();
+                if (Path.GetExtension(archivo.FileName).Equals(".xlsx"))
+                {
+                    IWorkbook archivoExcel = new XSSFWorkbook(stream);
+                    ISheet hojaExcel = archivoExcel.GetSheetAt(0);
+                    int cantidadFilas = hojaExcel.LastRowNum + 1;
+
+                    for (int i = 0; i < cantidadFilas; i++)
+                    {
+                        if (i > 0)
+                        {
+                            IRow filaEncabezado = hojaExcel.GetRow(0);
+                            IRow filaData = hojaExcel.GetRow(i);
+                            Recompensa recompensa = new();                            
+                            for (int j = 0; j < 4; j++)
+                            {
+                                try
+                                {
+                                    if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("nombre"))
+                                    {
+                                        recompensa.Nombre = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("cantidad disponible"))
+                                    {
+                                        recompensa.CantDisponible = Convert.ToInt32(WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString()));
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("cantidad de canje"))
+                                    {
+                                        recompensa.CantCanje = Convert.ToInt32(WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString()));
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("descripción"))
+                                    {
+                                        recompensa.Descripcion = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
+                                    }
+                                }
+                                catch (Exception) { }
+                            }
+
+                            if (!string.IsNullOrEmpty(recompensa.Nombre.Trim()) && recompensa.CantDisponible > 0 && recompensa.CantCanje > 0)
+                            {
+                                recompensa.Imagen = "";
+                                lista.Add(recompensa);
+                            }
+                        }
+                    }
+
+                    if (lista.Count > 0)
+                    {
+                        foreach (var item in lista)
+                        {
+                            response = VF.ValidarRecompensa(item);
+                            if (response.Error == 0)
+                            {
+                                response = await data.CreateRecompensa(item);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        response.Error = 1;
+                        response.Info = "el Archivo no tiene registros válidos";
+                    }
+                }
+                else
+                {
+                    response.Error = 1;
+                    response.Info = "Archivo no permitido";
+                }
+            }
+            else
+            {
+                response.Error = 1;
+                response.Info = "Falta el archivo";
+            }
+
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
     }

@@ -1,98 +1,522 @@
 <div class="my-3 my-md-5">
-  <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
-    <h5 class="my-5 text-center txt text-primary">CONFIGURACIÓN</h5>
-    <form>
-      <!-- ESTE ES EL DE LAYOUT -->
-      <h6>COLORES</h6>
-      <div class="row g-3 mb-5">
-        <div class="col-12 col-md-4">
-          <label for="colbs" class="form-label">Banda superior</label>
-          <input type="color" id="colbs" class="form-control" />
-        </div>
-        <div class="col-12 col-md-4">
-          <label for="colen" class="form-label">Encabezado</label>
-          <input type="color" id="colen" class="form-control" />
-        </div>
-        <div class="col-12 col-md-4">
-          <label for="colpie" class="form-label">Pie de página</label>
-          <input type="color" id="colpie" class="form-control" />
-        </div>
-        <div class="col-12 col-md-3">
-          <label for="colbPri" class="form-label">Boton primario</label>
-          <input type="color" id="colbPri" class="form-control mb-2" />
-          <div class="d-grid d-md-block text-center">
-            <button type="button" class="btn btn-primary">Boton ejemplo</button>
-          </div>
-        </div>
-        <div class="col-12 col-md-3">
-          <label for="colbSec" class="form-label">Boton secundario</label>
-          <input type="color" id="colbSec" class="form-control mb-2" />
-          <div class="d-grid d-md-block text-center">
-            <button type="button" class="btn btn-secondary">
-              Boton ejemplo
-            </button>
-          </div>
-        </div>
-        <div class="col-12 col-md-3">
-          <label for="colbTer" class="form-label">Boton terciario</label>
-          <input type="color" id="colbTer" class="form-control mb-2" />
-          <div class="d-grid d-md-block text-center">
-            <button type="button" class="btn btn-tertiary">
-              Boton ejemplo
-            </button>
-          </div>
-        </div>
-        <div class="col-12 col-md-3">
-          <label for="colbSucc" class="form-label">Boton guardado</label>
-          <input type="color" id="colbSucc" class="form-control mb-2" />
-          <div class="d-grid d-md-block text-center">
-            <button type="button" class="btn btn-success">Boton ejemplo</button>
-          </div>
-        </div>
-        <div class="col-12 col-md-6">
-          <label for="coltPri" class="form-label">Texto primario</label>
-          <input type="color" id="coltPri" class="form-control mb-2" />
-          <div class="text-center">
-            <span class="txt text-primary fs-5">Texto ejemplo</span>
-          </div>
-        </div>
-        <div class="col-12 col-md-6">
-          <label for="coltSec" class="form-label">Texto secundario</label>
-          <input type="color" id="coltSec" class="form-control" />
-          <div class="text-center">
-            <span class="txt text-secondary fs-5">Texto ejemplo</span>
-          </div>
-        </div>
-        <div class="col-12 col-md-6">
-          <label for="colLoad" class="form-label">Carga superior</label>
-          <input type="color" id="colLoad" class="form-control" />
-          <div class="text-center"><div class="loading-ejemplo"></div></div>
-        </div>
-        <div class="col-12 col-md-6">
-          <label for="colLoad" class="form-label">Carga inferior</label>
-          <input type="color" id="colLoad" class="form-control" />
-          <div class="text-center"><div class="loading-ejemplo"></div></div>
-        </div>
-        <div class="col-12 col-md-6">
-          <h6>IMÁGENES</h6>
-          <label for="login" class="form-label">Iniciar Sesión</label>
-          <input type="file" id="login" class="form-control" />
-          <div class="text-center text-md-start mt-3">
-            <img
-              src="assets/img/login-register/fondo.png"
-              class="img-thumbnail"
-              width="200"
-              alt="login"
-            />
-          </div>
-        </div>
+  <h5 class="my-5 text-center txt text-primary">CONFIGURACIÓN</h5>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a
+        class="nav-link text-dark {{
+          configIndex === 0 ? 'active' : 'pointer'
+        }}"
+        (click)="config(0)"
+        >Colores</a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link text-dark {{
+          configIndex === 1 ? 'active' : 'pointer'
+        }}"
+        (click)="config(1)"
+        >Imagenes</a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link text-dark {{
+          configIndex === 2 ? 'active' : 'pointer'
+        }}"
+        (click)="config(2)"
+        >Campos Usuario</a
+      >
+    </li>
+  </ul>
 
-        <div class="col-12 mt-4 text-end d-grid d-md-block">
-          <button type="submit" class="btn btn-success">
-            Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
-          </button>
+  <div class="shadow-lg bg-white px-4 py-2 pt-4 pt-lg-5 px-lg-5 rounded">
+    <!-- ******************* 1 ************************** -->
+    <form
+      class="row g-3 mb-4"
+      [formGroup]="formColor"
+      (ngSubmit)="updateColor()"
+      *ngIf="configIndex === 0"
+    >
+      <div class="col-12 col-md-4">
+        <label for="colbs" class="form-label">Banda superior</label>
+        <input
+          type="color"
+          id="colbs"
+          class="form-control"
+          formControlName="bandaSuperior"
+          (change)="cambiarColor($event, '--BandaSuperior')"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="colen" class="form-label">Encabezado</label>
+        <input
+          type="color"
+          id="colen"
+          class="form-control"
+          formControlName="encabezado"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="colpie" class="form-label">Pie de página</label>
+        <input
+          type="color"
+          id="colpie"
+          class="form-control"
+          formControlName="piePagina"
+        />
+      </div>
+      <div class="col-12 col-md-3">
+        <label for="colbPri" class="form-label">Boton primario</label>
+        <input
+          type="color"
+          id="colbPri"
+          class="form-control mb-2"
+          formControlName="botonPrimario"
+          (change)="cambiarColor($event, '--BotonPrimario')"
+        />
+        <div class="d-grid d-md-block text-center">
+          <button type="button" class="btn btn-primary">Boton ejemplo</button>
         </div>
       </div>
+      <div class="col-12 col-md-3">
+        <label for="colbSec" class="form-label">Boton secundario</label>
+        <input
+          type="color"
+          id="colbSec"
+          class="form-control mb-2"
+          formControlName="botonSecundario"
+        />
+        <div class="d-grid d-md-block text-center">
+          <button type="button" class="btn btn-secondary">Boton ejemplo</button>
+        </div>
+      </div>
+      <div class="col-12 col-md-3">
+        <label for="colbTer" class="form-label">Boton terciario</label>
+        <input
+          type="color"
+          id="colbTer"
+          class="form-control mb-2"
+          formControlName="botonTerciario"
+        />
+        <div class="d-grid d-md-block text-center">
+          <button type="button" class="btn btn-tertiary">Boton ejemplo</button>
+        </div>
+      </div>
+      <div class="col-12 col-md-3">
+        <label for="colbSucc" class="form-label">Boton guardado</label>
+        <input
+          type="color"
+          id="colbSucc"
+          class="form-control mb-2"
+          formControlName="botonGuardado"
+        />
+        <div class="d-grid d-md-block text-center">
+          <button type="button" class="btn btn-success">Boton ejemplo</button>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="coltPri" class="form-label">Texto primario</label>
+        <input
+          type="color"
+          id="coltPri"
+          class="form-control mb-2"
+          formControlName="textoPrimario"
+        />
+        <div class="text-center">
+          <span class="txt text-primary fs-5">Texto ejemplo</span>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="coltSec" class="form-label">Texto secundario</label>
+        <input
+          type="color"
+          id="coltSec"
+          class="form-control"
+          formControlName="textoSecundario"
+        />
+        <div class="text-center">
+          <span class="txt text-secondary fs-5">Texto ejemplo</span>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="colLoad" class="form-label">Carga superior</label>
+        <input
+          type="color"
+          id="colLoad"
+          class="form-control"
+          formControlName="cargaSuperior"
+        />
+        <div class="text-center"><div class="loading-ejemplo"></div></div>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="colLoad" class="form-label">Carga inferior</label>
+        <input
+          type="color"
+          id="colLoad"
+          class="form-control"
+          formControlName="cargaInferior"
+        />
+        <div class="text-center"><div class="loading-ejemplo"></div></div>
+      </div>
+
+      <div class="col-12 mt-4 text-end d-grid d-md-block">
+        <button type="submit" class="btn btn-success">
+          Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
+        </button>
+      </div>
     </form>
+
+    <!-- ******************* 2 ************************** -->
+    <form class="row g-3 mb-4" *ngIf="configIndex === 1">
+      <div class="col-12 col-md-6">
+        <label for="login" class="form-label">Iniciar Sesión</label>
+        <input type="file" id="login" class="form-control" />
+        <div class="text-center text-md-start mt-3">
+          <img
+            src="assets/img/login-register/fondo.png"
+            class="img-thumbnail"
+            width="400"
+            alt="login"
+          />
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="login" class="form-label">Logo Header</label>
+        <input type="file" id="login" class="form-control" />
+        <div class="text-center text-md-start mt-3">
+          <img
+            src="assets/img/logo/logo-dm.png"
+            class="img-thumbnail"
+            width="400"
+            alt="login"
+          />
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="login" class="form-label">Logo Footer</label>
+        <input type="file" id="login" class="form-control" />
+        <div class="text-center text-md-start mt-3">
+          <img
+            src="assets/img/logo/logo-d.png"
+            class="img-thumbnail"
+            width="150"
+            alt="login"
+          />
+        </div>
+      </div>
+      <div class="col-12 mt-4 text-end d-grid d-md-block">
+        <button type="submit" class="btn btn-success">
+          Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
+        </button>
+      </div>
+    </form>
+
+    <!-- ******************* 3 ************************** -->
+    <div class="row g-3 mb-4" *ngIf="configIndex === 2">
+      <div class="col-12 col-md-6">
+        <div class="body-table">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th scope="col" class="d-flex align-items-center">
+                  <span>Pais</span>
+                  <button
+                    class="btn btn-primary btn-sm ms-2"
+                    (click)="
+                      modalCampoUsuario(
+                        'pais',
+                        'crear',
+                        '',
+                        '7c8c2672-2233-486a-a184-f0b51eb4a331',
+                        ''
+                      )
+                    "
+                  >
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of paises">
+                <td class="col-8">{{ item.nombre }}</td>
+                <td class="text-end">
+                  <button
+                    class="btn btn-info btn-sm"
+                    (click)="
+                      modalCampoUsuario(
+                        'pais',
+                        'editar',
+                        item.nombre,
+                        item.idPais,
+                        ''
+                      )
+                    "
+                  >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="body-table">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th scope="col" class="d-flex align-items-center">
+                  <span>Ciudad</span>
+                  <button
+                    class="btn btn-primary btn-sm ms-2"
+                    (click)="
+                      modalCampoUsuario(
+                        'ciudad',
+                        'crear',
+                        '',
+                        '',
+                        '7c8c2672-2233-486a-a184-f0b51eb4a331'
+                      )
+                    "
+                  >
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of ciudades">
+                <td class="col-8">{{ item.nombre }} - {{ item.pais }}</td>
+                <td class="text-end">
+                  <button
+                    class="btn btn-info btn-sm"
+                    (click)="
+                      modalCampoUsuario(
+                        'ciudad',
+                        'editar',
+                        item.nombre,
+                        item.idPais,
+                        item.idCiudad
+                      )
+                    "
+                  >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="body-table">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th scope="col" class="d-flex align-items-center">
+                  <span>Empresa</span>
+                  <button
+                    class="btn btn-primary btn-sm ms-2"
+                    (click)="
+                      modalCampoUsuario(
+                        'empresa',
+                        'crear',
+                        '',
+                        '7c8c2672-2233-486a-a184-f0b51eb4a331',
+                        ''
+                      )
+                    "
+                  >
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of empresas">
+                <td class="col-8">{{ item.nombre }}</td>
+                <td class="text-end">
+                  <button
+                    class="btn btn-info btn-sm"
+                    (click)="
+                      modalCampoUsuario(
+                        'empresa',
+                        'editar',
+                        item.nombre,
+                        item.idEmpresa,
+                        ''
+                      )
+                    "
+                  >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="body-table">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th scope="col" class="d-flex align-items-center">
+                  <span>Area</span>
+                  <button
+                    class="btn btn-primary btn-sm ms-2"
+                    (click)="
+                      modalCampoUsuario(
+                        'area',
+                        'crear',
+                        '',
+                        '',
+                        '7c8c2672-2233-486a-a184-f0b51eb4a331'
+                      )
+                    "
+                  >
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of areas">
+                <td class="col-8">{{ item.nombre }} - {{ item.empresa }}</td>
+                <td class="text-end">
+                  <button
+                    class="btn btn-info btn-sm"
+                    (click)="
+                      modalCampoUsuario(
+                        'area',
+                        'editar',
+                        item.nombre,
+                        item.idEmpresa,
+                        item.idArea
+                      )
+                    "
+                  >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <button
+        class="col-1 position-absolute d-none"
+        data-bs-toggle="modal"
+        data-bs-target="#complementoModal"
+        #openModal
+      ></button>
+      <div class="modal fade" id="complementoModal" tabindex="-1">
+        <div class="modal-dialog">
+          <form
+            class="modal-content"
+            [formGroup]="formCampos"
+            (ngSubmit)="upsertCampo()"
+          >
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="complementoModalLabel">
+                {{ tituloModal }}
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                #closeModal
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3" *ngIf="labelSelect">
+                <label class="form-label">{{ labelSelect }}*</label>
+                <select
+                  *ngIf="tipoCampo === 'ciudad'"
+                  class="form-select  {{
+                    formCampos.get('idSelect')?.errors && verErrorsInputsCampo
+                      ? 'is-invalid'
+                      : ''
+                  }}"
+                  formControlName="idSelect"
+                >
+                  <option value="">Seleccione...</option>
+                  <option *ngFor="let item of paises" [value]="item.idPais">
+                    {{ item.nombre }}
+                  </option>
+                </select>
+                <select
+                  *ngIf="tipoCampo === 'area'"
+                  class="form-select  {{
+                    formCampos.get('idSelect')?.errors && verErrorsInputsCampo
+                      ? 'is-invalid'
+                      : ''
+                  }}"
+                  formControlName="idSelect"
+                >
+                  <option value="">Seleccione...</option>
+                  <option
+                    *ngFor="let item of empresas"
+                    [value]="item.idEmpresa"
+                  >
+                    {{ item.nombre }}
+                  </option>
+                </select>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="formCampos.get('idSelect')?.errors"
+                >
+                  <span *ngIf="formCampos.get('idSelect')?.hasError('required')"
+                    >Campo obligatorio</span
+                  >
+                </div>
+              </div>
+              <div *ngIf="formCampos.get(['idSelect'])?.value">
+                <label class="form-label" for="conf-nombre">Nombre*</label>
+                <input
+                  type="text"
+                  class="form-control {{
+                    formCampos.get('nombre')?.errors && verErrorsInputsCampo
+                      ? 'is-invalid'
+                      : ''
+                  }}"
+                  id="conf-nombre"
+                  formControlName="nombre"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="formCampos.get('nombre')?.errors"
+                >
+                  <span *ngIf="formCampos.get('nombre')?.hasError('required')"
+                    >Campo obligatorio</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success btn-sm">
+                Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Fin Modal -->
+      <!-- <div class="col-12 mt-4 text-end d-grid d-md-block">
+        <button type="submit" class="btn btn-success">
+          Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
+        </button>
+      </div> -->
+    </div>
   </div>
 </div>

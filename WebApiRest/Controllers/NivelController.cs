@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -165,6 +167,91 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> CreateUsuarioNivel([FromBody] Usuario_Nivel usuarioNivel)
         {
             Response response = await data.CreateUsuario_Nivel(usuarioNivel);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpPost]
+        [Route("import")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> ImportList([FromForm] IFormFile archivo)
+        {
+            Response response = new();
+
+            List<Nivel> lista = new();
+
+            if (archivo != null)
+            {
+                Stream stream = archivo.OpenReadStream();
+                if (Path.GetExtension(archivo.FileName).Equals(".xlsx"))
+                {
+                    IWorkbook archivoExcel = new XSSFWorkbook(stream);
+                    ISheet hojaExcel = archivoExcel.GetSheetAt(0);
+                    int cantidadFilas = hojaExcel.LastRowNum + 1;
+
+                    for (int i = 0; i < cantidadFilas; i++)
+                    {
+                        if (i > 0)
+                        {
+                            IRow filaEncabezado = hojaExcel.GetRow(0);
+                            IRow filaData = hojaExcel.GetRow(i);
+                            Nivel nivel = new();
+                            for (int j = 0; j < 3; j++)
+                            {
+                                try
+                                {
+                                    if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("nombre"))
+                                    {
+                                        nivel.Nombre = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("puntos necesarios"))
+                                    {
+                                        nivel.PuntosNecesarios = Convert.ToInt32(WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString()));
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("descripción"))
+                                    {
+                                        nivel.Descripcion = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
+                                    }                                    
+                                }
+                                catch (Exception) { }
+                            }
+
+                            if (!string.IsNullOrEmpty(nivel.Nombre.Trim()) && nivel.PuntosNecesarios > 0)
+                            {
+                                nivel.Imagen = "";
+                                lista.Add(nivel);
+                            }
+                        }
+                    }
+
+                    if (lista.Count > 0)
+                    {
+                        foreach (var item in lista)
+                        {
+                            response = VF.ValidarNivel(item);
+                            if (response.Error == 0)
+                            {
+                                response = await data.CreateNivel(item);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        response.Error = 1;
+                        response.Info = "el Archivo no tiene registros válidos";
+                    }
+                }
+                else
+                {
+                    response.Error = 1;
+                    response.Info = "Archivo no permitido";
+                }
+            }
+            else
+            {
+                response.Error = 1;
+                response.Info = "Falta el archivo";
+            }
+
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
     }

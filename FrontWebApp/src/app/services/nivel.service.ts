@@ -16,6 +16,12 @@ export class NivelService {
     private usuarioServicio: UsuarioService
   ) {}
 
+  getArchivo(): Observable<Blob> {
+    return this.http.get('assets/archivos/FormatoNiveles.xlsx', {
+      responseType: 'blob',
+    });
+  }
+
   getList(estado: number): Observable<Nivel[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
@@ -71,5 +77,14 @@ export class NivelService {
         headers: headers,
       }
     );
+  }
+
+  enviarArchivo(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.post<FormData>(`${this.apiURL}/import`, formData, {
+      headers: headers,
+    });
   }
 }

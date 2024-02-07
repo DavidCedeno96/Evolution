@@ -12,6 +12,13 @@
         public DateTime FechaModificacion { get; set; }
     }
 
+    public class CiudadItem
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public Ciudad Ciudad { get; set; }
+    }
+
     public class CiudadList
     {
         public string Info { get; set; }

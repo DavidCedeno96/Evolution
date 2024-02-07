@@ -72,9 +72,6 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getRouteParams();
-
-    //this.cargaOpciones(0, this.preguntaOpciones); // este es cuando el tipo sea 'crear'
-    //this.cargarPregunta(); // este es cuando el tipo sea 'editar'
   }
 
   ngAfterViewInit(): void {}
@@ -110,14 +107,6 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
   }
 
   cargarPregunta(idPregunta: string) {
-    /* let preguntaDB: PreguntaOpciones = {
-      pregunta: {
-        idPregunta: '',
-        nombre: '',
-      },
-      opcionList: [],
-    }; */
-
     this.preguntaServicio.getItem(-1, idPregunta).subscribe({
       next: (data: any) => {
         let { error, pregunta, opcionList } = data.response;
@@ -127,16 +116,6 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
 
           let totalOpciones = opcionList.length;
           this.cargaOpciones(totalOpciones, data.response);
-
-          /* preguntaDB = data.response
-
-          this.preguntaOpciones = preguntaDB;
-          this.auxOpcionList = preguntaDB.opcionList;
-
-          let totalOpciones = preguntaDB.opcionList.length;
-          this.cargaOpciones(totalOpciones, preguntaDB); */
-
-          //this.formulario.patchValue(recompensa);
         } else {
           history.back();
         }

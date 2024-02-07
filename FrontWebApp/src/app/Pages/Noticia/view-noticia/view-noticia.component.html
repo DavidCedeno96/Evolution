@@ -44,7 +44,13 @@
     </form>
     <!-- Noticias -->
     <div class="mb-2 mb-md-4">
-      <p-dataView #dv [value]="noticias" [rows]="10" [paginator]="true">
+      <p-dataView
+        #dv
+        [value]="noticias"
+        [rows]="10"
+        [paginator]="true"
+        [emptyMessage]="info"
+      >
         <ng-template let-noticia pTemplate="listItem">
           <div class="col-12">
             <div class="p-4 gap-4">

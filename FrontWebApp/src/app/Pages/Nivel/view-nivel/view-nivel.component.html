@@ -13,13 +13,93 @@
         </a>
       </div>
       <div class="col-6 col-md-6 d-grid d-md-block">
-        <button class="btn btn-tertiary icon">
+        <button
+          class="btn btn-tertiary icon"
+          data-bs-toggle="modal"
+          data-bs-target="#importNivel"
+        >
           <div class="icon-text buton">
             <mat-icon svgIcon="importar"></mat-icon><span>Importar</span>
           </div>
         </button>
       </div>
     </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="importNivel"
+      tabindex="-1"
+      aria-labelledby="importNivelLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="importNivelLabel">
+              Importar Niveles
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              #closeModal
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-2">
+              <span class="fw-medium">Instrucciones</span>
+              <ol>
+                <li>
+                  Descargar el formato (archivo excel).
+                  <button
+                    class="btn btn-primary btn-sm mx-2 px-4"
+                    (click)="exportArchivo()"
+                  >
+                    Descargar
+                  </button>
+                </li>
+                <li>Solo se permiten archivos en formato .xlsx</li>
+                <li>los campos que contengan (*) son obligatorios.</li>
+                <li>No se aceptan los caracteres &#60;, &#62; o =</li>
+                <li>
+                  Si no se cumpen con los requisitos mencionados anteriormente
+                  no se guardará la recompensa.
+                </li>
+              </ol>
+            </div>
+            <form class="row g-3 mb-3">
+              <div class="col-12">
+                <label for="archivoExcel" class="form-label ms-2 fw-medium"
+                  >Archivo*</label
+                >
+                <input
+                  type="file"
+                  class="form-control {{ errorArchivo ? 'is-invalid' : '' }}"
+                  id="archivoExcel"
+                  #valueArchivo
+                  accept=".xlsx"
+                  (change)="onFileSelected($event)"
+                />
+                <div class="invalid-feedback">{{ info }}</div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              (click)="importArchivo()"
+            >
+              Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Fin Modal -->
+
     <!-- buscador -->
     <form
       class="row g-3 mb-1"
@@ -46,7 +126,13 @@
     </form>
     <!-- Noticias -->
     <div class="mb-2 mb-md-4">
-      <p-dataView #dv [value]="nivel" [rows]="10" [paginator]="true">
+      <p-dataView
+        #dv
+        [value]="nivel"
+        [rows]="10"
+        [paginator]="true"
+        [emptyMessage]="info"
+      >
         <ng-template let-nivel pTemplate="listItem">
           <div class="col-12">
             <div class="p-4 gap-4">

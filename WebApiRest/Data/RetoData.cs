@@ -88,7 +88,7 @@ namespace WebApiRest.Data
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@buscar", buscar);
+            cmd.Parameters.AddWithValue("@buscar", WC.GetTrim(buscar));
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -121,9 +121,10 @@ namespace WebApiRest.Data
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     });
                 }
+                await dr.NextResultAsync();
 
-                list.Info = WC.GetSatisfactorio();
-                list.Error = 0;
+                list.Info = cmd.Parameters["@info"].Value.ToString();
+                list.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
             }
             catch (Exception ex)
             {

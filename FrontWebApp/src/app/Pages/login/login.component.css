@@ -5,3 +5,11 @@
   background-position: center center;
   height: 100vh;
 }
+
+.franja {
+  position: absolute;
+  width: 100%;
+  height: 9px;
+  top: 0;
+  z-index: 999;
+}

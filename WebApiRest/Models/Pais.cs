@@ -10,6 +10,13 @@
         public DateTime FechaModificacion { get; set; }
     }
 
+    public class PaisItem
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public Pais Pais { get; set; }
+    }
+
     public class PaisList
     {
         public string Info { get; set; }

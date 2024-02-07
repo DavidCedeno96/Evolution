@@ -53,6 +53,7 @@
     <Folder Include="wwwroot\Content\Images\Medalla\" />
     <Folder Include="wwwroot\Content\Images\Reto\" />
     <Folder Include="wwwroot\Content\Images\Nivel\" />
+    <Folder Include="wwwroot\Content\Archivos\" />
   </ItemGroup>
 
 </Project>

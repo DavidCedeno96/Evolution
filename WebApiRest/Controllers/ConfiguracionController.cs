@@ -14,39 +14,50 @@ namespace WebApiRest.Controllers
         readonly ConfiguracionData data = new();
 
         [HttpGet]
-        [Route("list")]
-        [Authorize(Roles = "adm,sadm")]
+        [Route("list")]        
         public async Task<IActionResult> GetList()
         {
             ConfiguracionList response = await data.GetConfiguracionList();
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
-        [HttpPost]
-        [Route("create")]
-        [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Create([FromBody] Configuracion configuracion)
-        {
-            Response response = VF.ValidarConfiguracion(configuracion);
+        //[HttpPost]
+        //[Route("create")]
+        //[Authorize(Roles = "adm,sadm")]
+        //public async Task<IActionResult> Create([FromBody] Configuracion configuracion)
+        //{
+        //    Response response = VF.ValidarConfiguracion(configuracion);
 
-            if (response.Error == 0)
-            {
-                response = await data.CreateConfiguracion(configuracion);
-            }
+        //    if (response.Error == 0)
+        //    {
+        //        response = await data.CreateConfiguracion(configuracion);
+        //    }
 
-            return StatusCode(StatusCodes.Status200OK, new { response });
-        }
+        //    return StatusCode(StatusCodes.Status200OK, new { response });
+        //}
 
         [HttpPut]
         [Route("update")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Update([FromBody] Configuracion configuracion)
+        public async Task<IActionResult> Update([FromBody] List<Configuracion> configuracion)
         {
-            Response response = VF.ValidarConfiguracion(configuracion);
+            Response response = new();
+
+            foreach (var item in configuracion)
+            {
+                response = VF.ValidarConfiguracion(item);
+                if (response.Error > 0)
+                {
+                    break;
+                }
+            }
 
             if (response.Error == 0)
             {
-                response = await data.UpdateConfiguracion(configuracion);
+                foreach(var item in configuracion)
+                {
+                    response = await data.UpdateConfiguracion(item);
+                }
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });

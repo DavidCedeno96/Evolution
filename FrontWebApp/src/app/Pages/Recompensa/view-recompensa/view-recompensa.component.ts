@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -11,10 +11,13 @@ import {
   MsgEliminar,
   MsgElimindo,
   MsgError,
+  MsgErrorArchivo,
+  MsgFormatoDescargado,
   MsgOk,
   SinRegistros,
   TitleEliminar,
   TitleError,
+  TitleErrorArchivo,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { RecompensaService } from 'src/app/services/recompensa.service';
@@ -30,6 +33,12 @@ export class ViewRecompensaComponent implements OnInit {
   loading = Loading();
   changeRoute = ChangeRoute();
   getImage = GetImage();
+
+  @ViewChild('closeModal') closeModal!: ElementRef;
+  @ViewChild('valueArchivo') valueArchivo!: ElementRef;
+
+  selectedFile: File | null = null;
+  errorArchivo: boolean = false;
 
   info: string = '';
 
@@ -92,7 +101,7 @@ export class ViewRecompensaComponent implements OnInit {
 
   submitBuscar() {
     let buscar = this.formulario.get(['buscar'])?.value;
-    if (buscar !== '') {
+    if (buscar.trim() !== '') {
       this.loading(true, false);
       this.getBuscar(buscar);
     } else {
@@ -121,6 +130,77 @@ export class ViewRecompensaComponent implements OnInit {
         }
       },
     });
+  }
+
+  importArchivo() {
+    if (this.selectedFile) {
+      this.loading(true, false);
+      this.errorArchivo = false;
+
+      const formData = new FormData();
+      formData.append('archivo', this.selectedFile);
+
+      this.recompensaServicio.enviarArchivo(formData).subscribe({
+        next: (data: any) => {
+          const { info, error } = data.response;
+          this.info = info;
+          if (error === 0) {
+            this.errorArchivo = false;
+            this.limpiarArchivo();
+            this.cargarData();
+            this.messageService.add({
+              severity: 'success',
+              summary: MsgOk,
+              detail: 'Preguntas creadas',
+            });
+          } else {
+            this.errorArchivo = true;
+          }
+          this.loading(false, false);
+        },
+        error: (e) => {
+          this.limpiarArchivo();
+          console.error(e);
+          if (e.status === 401 || e.status === 403) {
+            this.router.navigate(['/']);
+          } else {
+            this.loading(false, false);
+            this.alertError(TitleErrorArchivo, MsgErrorArchivo);
+          }
+        },
+      });
+    } else {
+      this.errorArchivo = true;
+      this.info = 'Ingrese un archivo en formato .xlsx';
+    }
+  }
+
+  exportArchivo() {
+    this.loading(true, false);
+    this.recompensaServicio.getArchivo().subscribe({
+      next: (data: Blob) => {
+        const urlObject = window.URL.createObjectURL(data);
+        const element = document.createElement('a');
+        element.download = `Formato de Recompensas.xlsx`;
+        element.href = urlObject;
+        element.click();
+        this.loading(false, false);
+        this.messageService.add({
+          severity: 'success',
+          summary: MsgOk,
+          detail: MsgFormatoDescargado,
+        });
+      },
+      error: (e) => {
+        console.log(e);
+      },
+    });
+  }
+
+  onFileSelected(event: Event) {
+    this.selectedFile = (event.target as HTMLInputElement).files![0];
+    this.errorArchivo = false;
+    console.log(this.selectedFile.name);
   }
 
   confirmEliminar(id: string) {
@@ -164,5 +244,11 @@ export class ViewRecompensaComponent implements OnInit {
     if (!text) {
       this.recompensas = this.auxRecompensas;
     }
+  }
+
+  limpiarArchivo() {
+    this.closeModal.nativeElement.click();
+    this.selectedFile = null;
+    this.valueArchivo.nativeElement.value = '';
   }
 }

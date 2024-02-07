@@ -63,6 +63,59 @@ namespace WebApiRest.Data
             return list;
         }
 
+        public async Task<EmpresaItem> GetEmpresa(int estado, Guid idEmpresa)
+        {
+            EmpresaItem item = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_EmpresaById", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idEmpresa", idEmpresa);
+            cmd.Parameters.AddWithValue("@estado", estado);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                if (await dr.ReadAsync())
+                {
+                    item.Empresa = new Empresa()
+                    {
+                        IdEmpresa = new Guid(dr["idEmpresa"].ToString()),
+                        Nombre = dr["nombre"].ToString(),
+                        Descripcion = dr["descripcion"].ToString(),
+                        Estado = Convert.ToInt32(dr["estado"].ToString()),
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString()),
+                    };
+                }
+                await dr.NextResultAsync();
+
+                item.Info = cmd.Parameters["@info"].Value.ToString();
+                item.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+            }
+            catch (Exception ex)
+            {
+                item.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                item.Error = 1;
+                item.Empresa = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return item;
+        }
+
         public async Task<Response> CreateEmpresa(Empresa empresa)
         {
             Response response = new();
@@ -112,6 +165,7 @@ namespace WebApiRest.Data
                 CommandType = CommandType.StoredProcedure
             };
 
+            cmd.Parameters.AddWithValue("@idEmpresa", empresa.IdEmpresa);
             cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(empresa.Nombre));
             cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(empresa.Descripcion));
 

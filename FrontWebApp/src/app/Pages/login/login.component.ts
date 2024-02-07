@@ -1,4 +1,11 @@
-import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Renderer2,
+  ElementRef,
+  AfterViewInit,
+  isDevMode,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Usuario } from 'src/app/Models/Usuario';
@@ -17,7 +24,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
   loading = Loading();
   alertError = AlertError();
   helper = new JwtHelperService();
@@ -74,9 +81,15 @@ export class LoginComponent implements OnInit {
     this.getRemember();
     this.config();
 
+    this.usuarioServicio.removeLocalItems();
+  }
+
+  ngAfterViewInit(): void {
+    if (!isDevMode()) {
+      console.clear();
+    }
     const url = window.location;
     console.log(url.origin);
-    this.usuarioServicio.removeLocalItems();
   }
 
   config() {

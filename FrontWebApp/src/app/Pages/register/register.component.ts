@@ -40,7 +40,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.load(true, false);
+    //this.load(false, false);
   }
 
   save() {

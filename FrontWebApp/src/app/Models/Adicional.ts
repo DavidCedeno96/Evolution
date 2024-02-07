@@ -10,7 +10,7 @@ export interface Ciudad {
   nombre: string;
   descripcion: string;
   idPais: string;
-  Pais: string;
+  pais: string;
   estado: number;
 }
 
@@ -26,7 +26,7 @@ export interface Area {
   nombre: string;
   descripcion: string;
   idEmpresa: string;
-  Empresa: string;
+  empresa: string;
   estado: number;
 }
 

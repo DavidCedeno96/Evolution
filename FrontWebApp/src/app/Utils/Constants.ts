@@ -15,13 +15,19 @@ export const SinRegistros: string = 'No hay registros';
 export const TitleEliminar: string = 'Confirmación Eliminar';
 export const MsgEliminar: string = '¿Seguro desea eliminar el registro?';
 export const MsgElimindo: string = 'Registro eliminado';
+export const MsgFormatoDescargado: string = 'Formato descargado';
 export const MsgOk: string = 'Proceso ejecutado';
 export const TitleErrorForm: string = 'Error';
+export const MsgErrorArchivo: string =
+  'No se encuentran las cabeceras en el archivo';
+export const TitleErrorArchivo: string = 'Error del archivo';
 export const MsgErrorForm: string =
   'Hay errores en los campos, por favor revisa e intantalo nuevamente.';
 export const TitleError: string = 'Error del servidor';
 export const MsgError: string =
   'Ha ocurrido un error con el servidor, intentalo más tarde o vuelve a iniciar sesión';
+export const MsgErrorConexion: string =
+  'Ha ocurrido un error en la conexión, intentalo más tarde o recarga la página';
 
 /* FUNCIONES */
 export const AlertError = () => {

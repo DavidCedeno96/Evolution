@@ -10,6 +10,13 @@
         public DateTime FechaModificacion { get; set; }
     }
 
+    public class EmpresaItem
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public Empresa Empresa { get; set; }
+    }
+
     public class EmpresaList
     {
         public string Info { get; set; }

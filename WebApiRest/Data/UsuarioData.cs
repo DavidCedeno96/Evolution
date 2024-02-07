@@ -91,7 +91,7 @@ namespace WebApiRest.Data
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@buscar", buscar);
+            cmd.Parameters.AddWithValue("@buscar", WC.GetTrim(buscar));
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;

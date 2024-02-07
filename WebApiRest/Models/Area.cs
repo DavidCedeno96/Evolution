@@ -12,6 +12,13 @@
         public DateTime FechaModificacion { get; set; }
     }
 
+    public class AreaItem
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public Area Area { get; set; }
+    }
+
     public class AreaList
     {
         public string Info { get; set; }

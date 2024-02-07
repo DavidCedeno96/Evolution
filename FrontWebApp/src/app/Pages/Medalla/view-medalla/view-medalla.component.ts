@@ -93,7 +93,7 @@ export class ViewMedallaComponent implements OnInit {
 
   submitBuscar() {
     let buscar = this.formulario.get(['buscar'])?.value;
-    if (buscar !== '') {
+    if (buscar.trim() !== '') {
       this.loading(true, false);
       this.getBuscar(buscar);
     } else {

@@ -22,6 +22,15 @@ namespace WebApiRest.Controllers
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
+        [HttpGet]
+        [Route("item/{estado}/{idPais}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idPais)
+        {
+            PaisItem response = await data.GetPais(estado, idPais);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "adm,sadm")]
@@ -36,6 +45,7 @@ namespace WebApiRest.Controllers
 
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
+
 
         [HttpPut]
         [Route("update")]

@@ -39,7 +39,13 @@
     </form>
     <!-- Items -->
     <div class="mb-2 mb-md-4">
-      <p-dataView #dv [value]="retos" [rows]="10" [paginator]="true">
+      <p-dataView
+        #dv
+        [value]="retos"
+        [rows]="10"
+        [paginator]="true"
+        [emptyMessage]="info"
+      >
         <ng-template let-reto pTemplate="listItem">
           <div class="col-12">
             <div class="p-4 gap-4">
