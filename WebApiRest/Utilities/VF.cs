@@ -471,8 +471,8 @@ namespace WebApiRest.Utilities
             if (File.Exists(rutaArchivo))
             {
                 result.Error = 1;
-                result.Info = WC.GetArchivoExistente();
-                result.Campo = "imagen";
+                result.Info = WC.GetArchivoExistente()+": "+archivo.FileName;
+                result.Campo = $"imagen";
                 validForm = false;
             }
 

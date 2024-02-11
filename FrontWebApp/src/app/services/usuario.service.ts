@@ -63,6 +63,15 @@ export class UsuarioService {
     });
   }
 
+  updateByFoto(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.put<FormData>(`${this.apiURL}/updateFoto`, formData, {
+      headers: headers,
+    });
+  }
+
   /* register(formData: FormData): Observable<FormData> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
@@ -90,7 +99,7 @@ export class UsuarioService {
   }
 
   removeLocalItems() {
-    localStorage.removeItem('token');
+    localStorage.clear();
   }
 
   getToken() {
@@ -137,6 +146,20 @@ export class UsuarioService {
     }
 
     return nombre;
+  }
+
+  getUserFoto() {
+    let foto = '';
+
+    if (this.loggedIn()) {
+      let token = this.getToken();
+      const decodeToken = this.helper.decodeToken(token!);
+      foto = decodeToken.foto;
+    } else {
+      this.router.navigate(['/']);
+    }
+
+    return foto;
   }
 
   getUserCorreo() {

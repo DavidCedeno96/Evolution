@@ -86,6 +86,7 @@
           id="colbSec"
           class="form-control mb-2"
           formControlName="botonSecundario"
+          (change)="cambiarColor($event, '--BotonSecundario')"
         />
         <div class="d-grid d-md-block text-center">
           <button type="button" class="btn btn-secondary">Boton ejemplo</button>
@@ -98,6 +99,7 @@
           id="colbTer"
           class="form-control mb-2"
           formControlName="botonTerciario"
+          (change)="cambiarColor($event, '--BotonTerciario')"
         />
         <div class="d-grid d-md-block text-center">
           <button type="button" class="btn btn-tertiary">Boton ejemplo</button>
@@ -110,6 +112,7 @@
           id="colbSucc"
           class="form-control mb-2"
           formControlName="botonGuardado"
+          (change)="cambiarColor($event, '--BotonGuardado')"
         />
         <div class="d-grid d-md-block text-center">
           <button type="button" class="btn btn-success">Boton ejemplo</button>
@@ -146,18 +149,70 @@
           id="colLoad"
           class="form-control"
           formControlName="cargaSuperior"
+          (change)="cambiarColor($event, '--Loading1')"
         />
         <div class="text-center"><div class="loading-ejemplo"></div></div>
       </div>
       <div class="col-12 col-md-6">
-        <label for="colLoad" class="form-label">Carga inferior</label>
+        <label for="colLoad2" class="form-label">Carga inferior</label>
         <input
           type="color"
-          id="colLoad"
+          id="colLoad2"
           class="form-control"
           formControlName="cargaInferior"
+          (change)="cambiarColor($event, '--Loading2')"
         />
         <div class="text-center"><div class="loading-ejemplo"></div></div>
+      </div>
+      <div class="col-12 col-md-3">
+        <label for="conMItem" class="form-label">Menú item active</label>
+        <input
+          type="color"
+          id="conMItem"
+          class="form-control"
+          formControlName="menuItem"
+          (change)="cambiarColor($event, '--BgMenuItem')"
+        />
+      </div>
+      <div class="col-12 col-md-3">
+        <label for="conMItemH" class="form-label">Menú item hover</label>
+        <input
+          type="color"
+          id="conMItemH"
+          class="form-control"
+          formControlName="menuItemHover"
+          (change)="cambiarColor($event, '--BgMenuItem-hover')"
+        />
+      </div>
+      <div class="col-12 col-md-3">
+        <label for="contxtMItemA" class="form-label">Texto menú active</label>
+        <input
+          type="color"
+          id="contxtMItemA"
+          class="form-control"
+          formControlName="textoMenuItemActive"
+          (change)="cambiarColor($event, '--TxtMenuItem-active')"
+        />
+      </div>
+      <div class="col-12 col-md-3">
+        <label for="contxtMItem" class="form-label">Texto menú</label>
+        <input
+          type="color"
+          id="contxtMItem"
+          class="form-control"
+          formControlName="textoMenuItem"
+          (change)="cambiarColor($event, '--TxtMenuItem')"
+        />
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="menu">
+          <a class="active">
+            <div class="icon-text">
+              <mat-icon svgIcon="casa"></mat-icon><span>Inicio</span>
+            </div>
+          </a>
+        </div>
       </div>
 
       <div class="col-12 mt-4 text-end d-grid d-md-block">
@@ -168,13 +223,38 @@
     </form>
 
     <!-- ******************* 2 ************************** -->
-    <form class="row g-3 mb-4" *ngIf="configIndex === 1">
+    <form
+      class="row g-3 mb-4"
+      *ngIf="configIndex === 1"
+      (ngSubmit)="updateImagen()"
+    >
       <div class="col-12 col-md-6">
-        <label for="login" class="form-label">Iniciar Sesión</label>
-        <input type="file" id="login" class="form-control" />
+        <label for="imgLogin" class="form-label">Iniciar Sesión</label>
+        <input
+          type="file"
+          id="imgLogin"
+          class="form-control {{
+            errorImgLogin && verErrorsInputsImage ? 'is-invalid' : ''
+          }}"
+          accept=".jpg, .jpeg, .png"
+          (change)="onFileSelected($event, 'login')"
+        />
+        <div class="invalid-feedback" *ngIf="errorImgLogin">
+          El tamaño del archivo no puede superar los 600 KB.
+        </div>
         <div class="text-center text-md-start mt-3">
           <img
-            src="assets/img/login-register/fondo.png"
+            *ngIf="!imgLogin"
+            [src]="
+              getImage(configImages[0].valor, 'config', 'default-login.png')
+            "
+            class="img-thumbnail"
+            width="400"
+            alt="login"
+          />
+          <img
+            *ngIf="imgLogin"
+            [src]="previewLogin"
             class="img-thumbnail"
             width="400"
             alt="login"
@@ -182,26 +262,68 @@
         </div>
       </div>
       <div class="col-12 col-md-6">
-        <label for="login" class="form-label">Logo Header</label>
-        <input type="file" id="login" class="form-control" />
+        <label for="imgHeader" class="form-label">Logo Header</label>
+        <input
+          type="file"
+          id="imgHeader"
+          class="form-control {{
+            errorImgHeader && verErrorsInputsImage ? 'is-invalid' : ''
+          }}"
+          accept=".jpg, .jpeg, .png"
+          (change)="onFileSelected($event, 'header')"
+        />
+        <div class="invalid-feedback" *ngIf="errorImgHeader">
+          El tamaño del archivo no puede superar los 600 KB.
+        </div>
         <div class="text-center text-md-start mt-3">
           <img
-            src="assets/img/logo/logo-dm.png"
+            *ngIf="!imgHeader"
+            [src]="
+              getImage(configImages[1].valor, 'config', 'default-logoDM.png')
+            "
             class="img-thumbnail"
             width="400"
-            alt="login"
+            alt="header"
+          />
+          <img
+            *ngIf="imgHeader"
+            [src]="previewHeader"
+            class="img-thumbnail"
+            width="400"
+            alt="header"
           />
         </div>
       </div>
       <div class="col-12 col-md-6">
-        <label for="login" class="form-label">Logo Footer</label>
-        <input type="file" id="login" class="form-control" />
+        <label for="imgFooter" class="form-label">Logo Footer</label>
+        <input
+          type="file"
+          id="imgFooter"
+          class="form-control {{
+            errorImgFooter && verErrorsInputsImage ? 'is-invalid' : ''
+          }}"
+          accept=".jpg, .jpeg, .png"
+          (change)="onFileSelected($event, 'footer')"
+        />
+        <div class="invalid-feedback" *ngIf="errorImgFooter">
+          El tamaño del archivo no puede superar los 600 KB.
+        </div>
         <div class="text-center text-md-start mt-3">
           <img
-            src="assets/img/logo/logo-d.png"
+            *ngIf="!imgFooter"
+            [src]="
+              getImage(configImages[2].valor, 'config', 'default-logoD.png')
+            "
             class="img-thumbnail"
             width="150"
-            alt="login"
+            alt="footer"
+          />
+          <img
+            *ngIf="imgFooter"
+            [src]="previewFooter"
+            class="img-thumbnail"
+            width="150"
+            alt="footer"
           />
         </div>
       </div>
@@ -512,11 +634,6 @@
         </div>
       </div>
       <!-- Fin Modal -->
-      <!-- <div class="col-12 mt-4 text-end d-grid d-md-block">
-        <button type="submit" class="btn btn-success">
-          Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
-        </button>
-      </div> -->
     </div>
   </div>
 </div>

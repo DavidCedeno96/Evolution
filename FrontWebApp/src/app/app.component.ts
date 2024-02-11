@@ -1,10 +1,19 @@
-import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { UsuarioService } from './services/usuario.service';
 import { ConfiguracionService } from './services/configuracion.service';
 import {
   AlertError,
+  GetImage,
+  ImgSizeMax,
+  MsgError,
   MsgErrorConexion,
   TitleError,
   TitleErrorForm,
@@ -16,20 +25,26 @@ import { Configuracion } from './Models/Configuracion';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, AfterContentInit {
   alertError = AlertError();
+  getImage = GetImage();
 
   load: boolean = false;
-  showNavbarFooter: boolean = false;
-  showSpaceBlank: boolean = false;
+  showNavbar: boolean = false;
   url: string = '';
 
+  userName: string = '';
+  userFoto: string = '';
   idRol: string = '';
+  previewFoto: string = '';
 
-  //configuraciones: Configuracion[] = [];
+  imgLogin: string = '';
+  imgHeader: string = '';
+  imgFooter: string = '';
 
   constructor(
     private router: Router,
+    private renderer: Renderer2,
     private el: ElementRef,
     private usuarioServicio: UsuarioService,
     private configuracionService: ConfiguracionService
@@ -45,14 +60,18 @@ export class AppComponent implements OnInit, AfterViewInit {
           }
 
           if (this.url.includes('/login') || this.url.includes('/register')) {
-            this.showNavbarFooter = false;
+            this.showNavbar = false;
           } else {
-            this.showNavbarFooter = true;
+            this.showNavbar = true;
+            if (usuarioServicio.loggedIn()) {
+              this.idRol = this.usuarioServicio.getRol();
+              this.userName = this.usuarioServicio.getUserName();
+              this.userFoto = this.usuarioServicio.getUserFoto();
+            }
           }
-          if (this.url.includes('/login')) {
-            this.showSpaceBlank = false;
-          } else {
-            this.showSpaceBlank = true;
+
+          if (localStorage.getItem('foto')) {
+            this.userFoto = localStorage.getItem('foto')!;
           }
         },
       });
@@ -67,7 +86,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterContentInit(): void {}
 
   cargarConfig() {
     let hostElement = this.el.nativeElement;
@@ -75,13 +94,23 @@ export class AppComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { error, info, lista } = data.response;
         if (error === 0) {
-          //this.configuraciones = lista;
-          //console.log(lista);
           lista.forEach((item: Configuracion) => {
             if (item.tipo === 'color') {
               hostElement.style.setProperty(item.propiedad, item.valor);
             }
           });
+
+          let imagenes: Configuracion[] = lista.filter(
+            (item: Configuracion) => {
+              return item.tipo === 'imagen';
+            }
+          );
+
+          this.imgLogin = imagenes[0].valor;
+          this.imgHeader = imagenes[1].valor;
+          this.imgFooter = imagenes[2].valor;
+
+          this.setImageLogin();
         } else {
           this.alertError(TitleErrorForm, info);
         }
@@ -95,10 +124,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   menuItemActive(urls: string): string {
-    if (this.usuarioServicio.loggedIn()) {
-      this.idRol = this.usuarioServicio.getRol();
-    }
-
     let listUrls: string[] = urls.split(',');
     let active: string = '';
 
@@ -119,15 +144,71 @@ export class AppComponent implements OnInit, AfterViewInit {
         return userUrl;
       }
       default: {
-        return '/';
+        return '/login';
       }
     }
   }
 
-  cerrarSesion() {
-    this.auxLoad(true);
-    console.log('cerrando session...');
-    this.router.navigate(['/']);
+  onFileSelected(event: Event) {
+    let selectedImage = (event.target as HTMLInputElement).files![0];
+
+    if (selectedImage.size > ImgSizeMax) {
+      this.alertError(
+        TitleErrorForm,
+        'El tamaño del archivo no puede superar los 600 KB.'
+      );
+    } else {
+      if (selectedImage.size > 0) {
+        let reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.previewFoto = e.target.result;
+        };
+        reader.readAsDataURL(selectedImage);
+        this.load = true;
+        this.cambiarFotoUser(selectedImage);
+      }
+    }
+    console.log(selectedImage.name, this.previewFoto);
+  }
+
+  cambiarFotoUser(foto: File) {
+    let formData = new FormData();
+    if (foto) {
+      formData.append('archivo', foto);
+    }
+    this.usuarioServicio.updateByFoto(formData).subscribe({
+      next: (data: any) => {
+        let { error, info } = data.response;
+        if (error === 0) {
+          localStorage.setItem('foto', foto.name);
+        } else {
+          this.alertError(TitleErrorForm, info); //MsgErrorForm
+          localStorage.removeItem('foto');
+        }
+        this.load = false;
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+          this.load = false;
+        }
+      },
+    });
+  }
+
+  setImageLogin() {
+    const fondo = this.el.nativeElement.querySelector('.fondoImagen');
+    if (fondo) {
+      this.renderer.setStyle(
+        fondo,
+        'background-image',
+        `url("${this.getImage(this.imgLogin, 'config', 'default-login.png')}")`
+      );
+      /* `url("assets/img/default/${this.imgFondo}")` */
+    }
   }
 
   auxLoad(visible: boolean) {
@@ -137,5 +218,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.load = false;
     }, 400);
+  }
+
+  cerrarSesion() {
+    this.load = true;
+    console.log('cerrando session...');
+    this.usuarioServicio.logout();
   }
 }

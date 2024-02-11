@@ -111,6 +111,13 @@ exec sp_B_UsuarioByAll
 @info = '',
 @id = ''
 
+select * from Usuario
+exec sp_B_Usuario_fechaLogin	
+@idUsuario = '91DB7BAE-7D2F-423D-B595-D227C63CA0A6',
+@error = '',
+@info = '',
+@id = ''
+
 declare @auxClave varbinary(max) = CAST('aqui el texo encriptado' AS VARBINARY(MAX))
 exec sp_C_Usuario
 @nombre = 'Daniela',
@@ -145,6 +152,13 @@ exec sp_U_Usuario
 exec sp_U_UsuarioByEstado
 @idUsuario = 'F42329D1-EDAA-4F2C-9AE1-8F026C92C842',
 @estado = 1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_UsuarioByFoto
+@idUsuario = 'F42329D1-EDAA-4F2C-9AE1-8F026C92C842',
+@foto = '',
 @error = '',
 @info = '',
 @id = ''
@@ -512,6 +526,12 @@ exec sp_B_NoticiaByAll
 @info = '',
 @id = ''
 
+exec sp_B_Noticia_enTendencia
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
 exec sp_C_Noticia
 @titular = 'titular 3  de prueba',
 @descripcion = 'descripcion 3  de prueba',
@@ -592,26 +612,27 @@ exec sp_B_Configuracion
 @info = '',
 @id = ''
 
---update Configuracion set valor = '#898a8d' where idConfig = '8D0176A4-6480-4C48-894C-D9794EE4E740'
+--update Configuracion set valor = '#f58220' where idConfig = 'F7A0D011-57B5-4417-A8C4-F38C8DCE0A20'
+--update Configuracion set valor = null where idConfig = 'E21410F4-491B-4E5D-A639-FE5C0E70278D'
 
 exec sp_C_Configuracion
-@tipo = 'color',
-@propiedad = '--BotonSecundario',
-@nombre = 'boton secundario',
-@valor = '#b0b5be',
-@descripcion = 'Es para el color de los botones secundarios',
+@tipo = 'imagen',
+@propiedad = '',
+@nombre = 'footer',
+@valor = '',
+@descripcion = 'Esta es la imagen que esta en el footer',
 @idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_U_Configuracion
-@idConfig = 'FEB39DE3-2A26-42F3-89D4-8A98B93586F3',
+@idConfig = '5DFF0459-133F-4EAF-889A-8B2E5557184B',
 @tipo = 'color',
-@propiedad = '--BotonSecundario',
-@nombre = 'boton secundario',
-@valor = '#b0b5be',
-@descripcion = 'Es para el color de los botones secundarios',
+@propiedad = '--TxtMenuItem-active',
+@nombre = 'texto menu item active',
+@valor = '#FFFFFF',
+@descripcion = 'Es para el texto del item del menu cuando esta en active y hover',
 @idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
 @error = '',
 @info = '',
@@ -804,6 +825,18 @@ exec sp_B_ComporPregu
 @id = ''
 
 
+-- Chart puntos ------------------------------------------------------------------------
+exec sp_B_chartPuntos
+@error = '',
+@info = '',
+@id = ''
+
+select * from Usuario
+exec sp_B_resumenGeneral
+@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@error = '',
+@info = '',
+@id = ''
 
 ------------------------------------------------------------------------------------------------------------------------------------
 --insert into Reto (nombre, fechaApetura, fechaCierre, vidas, tiempo_ms, puntosRecompensa, creditosObtenidos, idTipoReto, idComportamiento) values
@@ -822,7 +855,4 @@ exec sp_B_ComporPregu
 --('27', 1, '7178DEA1-9A99-475F-9F42-32A77FF81DD0')
 
 
- SELECT CONVERT(uniqueidentifier,'DF215E10-8BD4-4401-B2DC-99BB03135F2E')
-
- select * from Usuario
- delete from Usuario where idUsuario = '6D3A6B25-C6C7-4ED4-A5E9-D992B1CC98A7'
+SELECT CONVERT(uniqueidentifier,'DF215E10-8BD4-4401-B2DC-99BB03135F2E')

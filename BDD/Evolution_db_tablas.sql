@@ -71,7 +71,8 @@ create table Usuario(
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate(),
 	clave varbinary(MAX) not null,
-	idCiudad uniqueidentifier references Ciudad(idCiudad) null
+	idCiudad uniqueidentifier references Ciudad(idCiudad) null,
+	fechaLogin datetime
 );
 
 create table Nivel(
@@ -193,7 +194,7 @@ create table Configuracion(
 	tipo varchar(10) not null,
 	propiedad varchar(40),
 	nombre varchar(30) unique not null,
-	valor varchar(50) not null,
+	valor varchar(50),
 	descripcion varchar(250),
 	idUsuario uniqueidentifier references Usuario(idUsuario) not null,	
 	fechaCreacion datetime default getdate(),

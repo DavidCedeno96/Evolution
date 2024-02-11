@@ -94,7 +94,8 @@ namespace WebApiRest.Controllers
                     var claims = new ClaimsIdentity();
                     claims.AddClaim(new Claim("correo", response.Usuario.Correo));
                     claims.AddClaim(new Claim("id", response.Usuario.IdUsuario.ToString()));
-                    claims.AddClaim(new Claim("nombre", response.Usuario.Nombre));
+                    claims.AddClaim(new Claim("nombre", $"{response.Usuario.Nombre} {response.Usuario.Apellido}"));
+                    claims.AddClaim(new Claim("foto", response.Usuario.Foto));
                     claims.AddClaim(new Claim("rol", response.Usuario.Rol));
                     claims.AddClaim(new Claim(ClaimTypes.Role, response.Usuario.IdRol));
                     var tokenDescriptor = new SecurityTokenDescriptor
@@ -216,6 +217,60 @@ namespace WebApiRest.Controllers
             {
                 usuario.IdRol = "jug";
                 response = await data.UpdateUsuario(usuario);
+                if (response.Error == 0 && !rutaArchivo.Equals(""))
+                {
+                    string imagenAnterior = response.Info.Split(":")[1];
+
+                    //Aqui eliminamos el archivo anterior
+                    string rutaArchivoAnterior = WC.GetRutaImagen(_env, imagenAnterior, nombreCarpeta);
+                    if (System.IO.File.Exists(rutaArchivoAnterior))
+                    {
+                        System.IO.File.Delete(rutaArchivoAnterior);
+                    }
+
+                    //Aqui creamos una nueva imagen
+                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
+                    await archivo.CopyToAsync(fileStream);
+                    await fileStream.DisposeAsync();
+                }
+                if (response.Info.Contains("old_image"))
+                {
+                    response.Info = response.Info.Split(',')[0];
+                }
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpPut]
+        [Route("updateFoto")]
+        [Authorize]
+        public async Task<IActionResult> UpdateFoto([FromForm] IFormFile archivo)
+        {
+            Response response = new();
+            Usuario usuario = new();
+            Claim userClaim = User.FindFirst("id");
+
+            usuario.IdUsuario = new Guid(userClaim.Value);
+            response.Error = 0;
+
+            string rutaArchivo = "";
+
+            if (archivo != null && response.Error == 0)
+            {
+                response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+
+                usuario.Foto = archivo.FileName.Trim();
+            }
+            else
+            {
+                usuario.Foto = "";
+            }
+
+            if (response.Error == 0)
+            {
+                response = await data.UpdateUsuarioByFoto(usuario);
                 if (response.Error == 0 && !rutaArchivo.Equals(""))
                 {
                     string imagenAnterior = response.Info.Split(":")[1];

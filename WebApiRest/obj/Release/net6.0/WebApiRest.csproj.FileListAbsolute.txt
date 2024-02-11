@@ -77,3 +77,4 @@ C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiR
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.pdb
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.genruntimeconfig.cache
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\ref\WebApiRest.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Images\Config\_default.png

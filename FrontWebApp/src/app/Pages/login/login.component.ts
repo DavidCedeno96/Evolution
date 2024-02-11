@@ -12,12 +12,17 @@ import { Usuario } from 'src/app/Models/Usuario';
 import { StorageMap } from '@ngx-pwa/local-storage'; // Importa LocalStorage
 import {
   AlertError,
+  GetImage,
   Loading,
   MsgError,
+  MsgErrorConexion,
   TitleError,
+  TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Router } from '@angular/router';
+import { ConfiguracionService } from 'src/app/services/configuracion.service';
+import { Configuracion } from 'src/app/Models/Configuracion';
 
 @Component({
   selector: 'app-login',
@@ -27,9 +32,10 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit, AfterViewInit {
   loading = Loading();
   alertError = AlertError();
+  getImage = GetImage();
+
   helper = new JwtHelperService();
 
-  imgFondo: string = '';
   verPassword: boolean = false;
   verErrorsInputs: boolean = false;
   numClicksLogin: number = 0;
@@ -61,7 +67,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private localStorage: StorageMap,
-    private usuarioServicio: UsuarioService
+    private usuarioServicio: UsuarioService,
+    private configuracionService: ConfiguracionService
   ) {
     this.formulario = this.formBuilder.group({
       correo: [
@@ -77,11 +84,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.loading(false, false);
+    this.loading(true, false);
     this.getRemember();
-    this.config();
-
     this.usuarioServicio.removeLocalItems();
+
+    this.cargarConfig();
   }
 
   ngAfterViewInit(): void {
@@ -90,18 +97,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     }
     const url = window.location;
     console.log(url.origin);
-  }
-
-  config() {
-    this.imgFondo = 'fondo.png';
-    const fondo = this.el.nativeElement.querySelector('.fondoImagen');
-    if (fondo) {
-      this.renderer.setStyle(
-        fondo,
-        'background-image',
-        `url("assets/img/login-register/${this.imgFondo}")`
-      );
-    }
   }
 
   iniciarSesion() {
@@ -151,6 +146,40 @@ export class LoginComponent implements OnInit, AfterViewInit {
         console.log(e);
         this.loading(false, false);
         this.alertError(TitleError, MsgError);
+      },
+    });
+  }
+
+  cargarConfig() {
+    this.configuracionService.getList().subscribe({
+      next: (data: any) => {
+        let { error, info, lista } = data.response;
+        if (error === 0) {
+          let imagenes: Configuracion[] = lista.filter(
+            (item: Configuracion) => {
+              return item.tipo === 'imagen';
+            }
+          );
+          const fondo = this.el.nativeElement.querySelector('.fondoImagen');
+          if (fondo) {
+            this.renderer.setStyle(
+              fondo,
+              'background-image',
+              `url("${this.getImage(
+                imagenes[0].valor,
+                'config',
+                'default-login.png'
+              )}")`
+            );
+          }
+        } else {
+          this.alertError(TitleErrorForm, info);
+        }
+        this.loading(false, false);
+      },
+      error: (e) => {
+        console.error(e);
+        this.alertError(TitleError, MsgErrorConexion);
       },
     });
   }

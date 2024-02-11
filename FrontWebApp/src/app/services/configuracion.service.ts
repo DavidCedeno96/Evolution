@@ -37,4 +37,13 @@ export class ConfiguracionService {
       }
     );
   }
+
+  updateImages(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.put<FormData>(`${this.apiURL}/updateImages`, formData, {
+      headers: headers,
+    });
+  }
 }

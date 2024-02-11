@@ -24,6 +24,30 @@
   background: #999;
 }
 
+.menu a {
+  display: block;
+  padding: 10px;
+  margin-bottom: 5px;
+  text-decoration: none;
+  color: var(--TxtMenuItem);
+}
+
+.menu a.active {
+  background: var(--BgMenuItem);
+  color: var(--TxtMenuItem-active);
+}
+
+.menu a:hover {
+  background: var(--BgMenuItem-hover);
+  color: var(--TxtMenuItem-active);
+}
+
+.menu a mat-icon {
+  margin: 0px 18px 0px 50px;
+  font-size: 1px;
+  transform: scale(1);
+}
+
 .loading-ejemplo {
   display: inline-block;
   width: 80px;
@@ -34,7 +58,7 @@
   display: block;
   width: 50px;
   height: 50px;
-  margin: 8px;
+  margin-top: 8px;
   border-radius: 50%;
   border: 6px solid;
   border-color: var(--Loading1) transparent var(--Loading2) transparent;

@@ -19,11 +19,7 @@ export class RegisterComponent implements OnInit {
   previewFoto: string = '';
   ErrorArchivo: boolean = false;
 
-  constructor(
-    private renderer: Renderer2,
-    private el: ElementRef,
-    private formBuilder: FormBuilder
-  ) {
+  constructor(private formBuilder: FormBuilder) {
     this.formulario = this.formBuilder.group({
       nombre: ['', [Validators.required, Validators.maxLength(23)]],
       apellido: ['', [Validators.required, Validators.maxLength(23)]],

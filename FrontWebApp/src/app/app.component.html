@@ -1,9 +1,28 @@
-<div class="bg-superior" style="height: 9px" *ngIf="showNavbarFooter"></div>
-<!-- NavBar -->
+<div
+  class="bg-superior"
+  style="height: 10px"
+  *ngIf="!url.includes('/login')"
+></div>
+<!-- NavBar Register -->
 <nav
   class="navbar navbar-expand-lg sticky-top bg-header"
-  *ngIf="showNavbarFooter"
+  *ngIf="url.includes('/register')"
 >
+  <div class="container">
+    <a class="navbar-nav mb-0" routerLink="/login">
+      <img
+        [src]="getImage(imgHeader, 'config', 'default-logoDM.png')"
+        class="img-fluid"
+        width="200"
+        alt="Logo"
+      />
+    </a>
+  </div>
+</nav>
+<!-- End NavBar Register -->
+
+<!-- NavBar -->
+<nav class="navbar navbar-expand-lg sticky-top bg-header" *ngIf="showNavbar">
   <div class="container">
     <button
       class="btn"
@@ -20,12 +39,15 @@
         </a>
       </li>
     </ul>
-    <a class="navbar-nav ms-auto mb-0" routerLink="">
+    <a
+      class="navbar-nav ms-auto mb-0"
+      [routerLink]="getUrlByRol('/homeAdmin', '/homeUser')"
+    >
       <img
-        src="assets/img/logo/logo-dm.png"
-        alt="Logo"
-        width="200"
+        [src]="getImage(imgHeader, 'config', 'default-logoDM.png')"
         class="img-fluid"
+        width="200"
+        alt="Logo"
       />
     </a>
   </div>
@@ -51,16 +73,36 @@
   <div class="offcanvas-user">
     <div class="row g-3 d-flex align-items-center">
       <div class="col-auto">
-        <img src="assets/img/user/user1.jpg" class="imgRedonda" alt="User" />
+        <img
+          *ngIf="!previewFoto"
+          [src]="getImage(userFoto, 'usuario', 'default-user.jpg')"
+          class="imgRedonda"
+          alt="User"
+        />
+        <img
+          *ngIf="previewFoto"
+          [src]="previewFoto"
+          class="imgRedonda"
+          alt="User"
+        />
       </div>
-      <div class="col-6">
-        <span class="d-block">Danna Nuñez Danna Nuñez Danna Nuñez</span>
-        <a data-bs-dismiss="offcanvas" routerLink=""
-          ><small>Cambiar Foto</small></a
+      <div class="col-6 lh-sm">
+        <span class="d-block">{{ userName }}</span>
+        <label
+          class="link-primary text-decoration-underline pointer"
+          for="camfotouser"
+          ><small>Cambiar Foto</small></label
         >
+        <input
+          type="file"
+          class="d-none"
+          id="camfotouser"
+          accept=".jpg, .jpeg, .png"
+          (change)="onFileSelected($event)"
+        />
       </div>
       <div class="col-auto">
-        <a class="text-dark" data-bs-dismiss="offcanvas" routerLink=""
+        <a class="text-dark" data-bs-dismiss="offcanvas"
           ><i class="fa-solid fa-chevron-right"></i
         ></a>
       </div>
@@ -162,9 +204,9 @@
 <!-- Fin Menu -->
 
 <!-- Main -->
-<div role="main" [ngClass]="showNavbarFooter == true ? 'container mt-4' : ''">
+<div role="main" [ngClass]="showNavbar == true ? 'container mt-4' : ''">
   <router-outlet></router-outlet>
-  <div class="blank-space" *ngIf="showSpaceBlank"></div>
+  <div class="blank-space" *ngIf="!url.includes('/login')"></div>
 </div>
 <!-- End Main -->
 
@@ -174,7 +216,12 @@
 
 <!-- Footer -->
 <footer class="fixed-bottom bg-footer text-white" style="height: 65px">
-  <img src="assets/img/logo/logo-d.png" class="logoFooter" alt="" />
+  <img
+    [src]="getImage(imgFooter, 'config', 'default-logoD.png')"
+    class="logoFooter"
+    width="200"
+    alt="Logo"
+  />
 </footer>
 <!-- End Footer -->
 

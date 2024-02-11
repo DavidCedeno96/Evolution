@@ -15,6 +15,7 @@ export const SinRegistros: string = 'No hay registros';
 export const TitleEliminar: string = 'Confirmación Eliminar';
 export const MsgEliminar: string = '¿Seguro desea eliminar el registro?';
 export const MsgElimindo: string = 'Registro eliminado';
+export const MsgEditado: string = 'Registro actualizado';
 export const MsgFormatoDescargado: string = 'Formato descargado';
 export const MsgOk: string = 'Proceso ejecutado';
 export const TitleErrorForm: string = 'Error';

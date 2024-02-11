@@ -14,6 +14,7 @@
   --BgMenuItem: #f58220;
   --BgMenuItem-hover: #898a8d;
   --TxtMenuItem: #0b2b34;
+  --TxtMenuItem-active: #ffffff;
 }
 
 /******** MENU ********/
@@ -49,13 +50,13 @@
 }
 
 .menu a.active {
-  background-color: var(--BgMenuItem);
-  color: #fff;
+  background: var(--BgMenuItem);
+  color: var(--TxtMenuItem-active);
 }
 
 .menu a:hover {
-  background-color: var(--BgMenuItem-hover);
-  color: #fff;
+  background: var(--BgMenuItem-hover);
+  color: var(--TxtMenuItem-active);
 }
 
 .menu a mat-icon {

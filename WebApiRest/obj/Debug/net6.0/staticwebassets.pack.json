@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Config\\_default.png",
+      "PackagePath": "staticwebassets\\Content\\Images\\Config\\_default.png"
+    },
+    {
       "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Medalla\\_default.png",
       "PackagePath": "staticwebassets\\Content\\Images\\Medalla\\_default.png"
     },

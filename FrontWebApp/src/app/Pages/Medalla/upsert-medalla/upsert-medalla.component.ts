@@ -166,7 +166,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
   }
 
   upsert() {
-    if (this.formulario.valid && this.errorArchivo) {
+    if (this.formulario.valid && !this.errorArchivo) {
       this.verErrorsInputs = false;
       this.medalla = this.formulario.value;
       //console.log('GUARDANDO ......');
