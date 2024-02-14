@@ -32,7 +32,16 @@
     {
         public Guid IdUsuario { get; set; }
         public Guid IdNivel { get; set; }
+        public string Nombre { get; set; }
+        public string Imagen { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
+    }
+
+    public class Usuario_NivelList
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public List<Usuario_Nivel> Lista { get; set; }
     }
 }

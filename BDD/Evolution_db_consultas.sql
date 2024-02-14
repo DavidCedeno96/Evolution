@@ -45,7 +45,7 @@ WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Configuracion';
+WHERE tc.TABLE_NAME = 'usuario';
 
 ---
 SELECT @@VERSION;
@@ -347,6 +347,14 @@ exec sp_D_Nivel
 @info = '',
 @id = ''
 
+select * from Usuario_Nivel
+exec sp_B_Usuario_NivelByIdUsuario		
+@idUsuario = '91331754-1E83-417F-90E7-0E596E996510',
+@top = 1,
+@error = '',
+@info = '',
+@id = ''
+
 exec sp_C_Usuario_Nivel
 @idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
 @idNivel = 'D18F415A-CD36-4E84-98FD-04DC30FC1EE1',
@@ -404,6 +412,13 @@ exec sp_U_Medalla
 
 exec sp_D_Medalla	
 @idMedalla = '6D3A6B25-C6C7-4ED4-A5E9-D992B1CC98A7',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_Usuario_MedallaByIdUsuario		
+@idUsuario = 'F42329D1-EDAA-4F2C-9AE1-8F026C92C842',
+@top = 2,
 @error = '',
 @info = '',
 @id = ''
@@ -799,6 +814,14 @@ exec sp_U_Reto
 @info = '',
 @id = ''
 
+
+exec sp_B_Usuario_RetoByIdUsuario		
+@idUsuario = 'ab37197c-bf33-44b8-ba5d-e246fa250b41',
+@top = -1,
+@error = '',
+@info = '',
+@id = ''
+
 exec sp_C_Usuario_Reto
 @idUsuario = 'F42329D1-EDAA-4F2C-9AE1-8F026C92C842',
 @idReto = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
@@ -833,7 +856,7 @@ exec sp_B_chartPuntos
 
 select * from Usuario
 exec sp_B_resumenGeneral
-@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA069',
 @error = '',
 @info = '',
 @id = ''
@@ -856,3 +879,4 @@ exec sp_B_resumenGeneral
 
 
 SELECT CONVERT(uniqueidentifier,'DF215E10-8BD4-4401-B2DC-99BB03135F2E')
+select top 1 * from Usuario_Nivel order by fechaCreacion desc

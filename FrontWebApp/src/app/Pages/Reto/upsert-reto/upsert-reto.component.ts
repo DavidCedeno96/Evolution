@@ -110,8 +110,8 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
         this.reto.tiempo_ms,
         [
           Validators.required,
-          Validators.min(600000), // 10 minutos
-          Validators.max(7200000), // 2 horas
+          Validators.min(10000), // 10 segundos
+          Validators.max(300000), // 5 minutos
           Validators.pattern(exp_numeros),
         ],
       ],

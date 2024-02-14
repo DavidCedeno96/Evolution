@@ -3,10 +3,10 @@
     <div class="row g-3 mx-2 mx-md-5 my-2">
       <div class="col-12 text-center">
         <h3 class="text-truncate">
-          Reto 1 bla bla bla bla bla bla bla bla bla bla bla bla
+          {{ reto.nombre }}
         </h3>
         <img
-          src="assets/img/default/default-reto.jpg"
+          [src]="getImage(reto.imagen, 'reto', 'default-reto.jpg')"
           class="img-thumbnail"
           width="300"
           alt=""
@@ -17,14 +17,14 @@
         <h4>Instrucciones</h4>
         <p>
           Contesta correctamente las preguntas para ganar puntos y avanza rápido
-          para llegar primero a la meta. Tienes 20 segundos por pregunta,
-          ¡Diviértete!
+          para llegar primero a la meta. Tienes
+          <strong>{{ reto.tiempo_ms }} ms</strong> por pregunta, ¡Diviértete!
         </p>
       </div>
       <div class="col-12 text-center text-md-end d-grid d-md-block">
         <button
           class="btn btn-primary icon"
-          (click)="changeRoute('/juego-reto', {})"
+          (click)="changeRoute('/juego-reto', { reto: reto.idReto })"
         >
           <div class="icon-text buton">
             <mat-icon svgIcon="gamepad"></mat-icon><span>Comenzar</span>

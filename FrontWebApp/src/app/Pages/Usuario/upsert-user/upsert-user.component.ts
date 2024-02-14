@@ -65,6 +65,8 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
     idArea: '',
     area: '',
     contrasena: '',
+    puntos: 0,
+    creditos: 0,
     estado: 0,
   };
 

@@ -124,6 +124,61 @@ namespace WebApiRest.Data
             return list;
         }
 
+        public async Task<Usuario_MedallaList> GetUsuarioMedallaList(int top, Guid idUsuario)
+        {
+            Usuario_MedallaList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_Usuario_MedallaByIdUsuario", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+            cmd.Parameters.AddWithValue("@top", top);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    list.Lista.Add(new Usuario_Medalla()
+                    {
+                        IdMedalla = new Guid(dr["idMedalla"].ToString()),
+                        Nombre = dr["nombre"].ToString(),        
+                        Imagen = dr["imagen"].ToString(),                        
+                        IdUsuario = new Guid(dr["idUsuario"].ToString()),
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                    });
+                }
+                await dr.NextResultAsync();
+
+                list.Info = cmd.Parameters["@info"].Value.ToString();
+                list.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+        }
+
         public async Task<MedallaItem> GetMedalla(int estado, Guid idMedalla)
         {
             MedallaItem item = new();

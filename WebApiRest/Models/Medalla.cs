@@ -31,9 +31,18 @@
     // TABLA INTERMEDIA
     public class Usuario_Medalla
     {
+        public Guid IdMedalla { get; set; }
+        public string Nombre { get; set; }
+        public string Imagen { get; set; }
         public Guid IdUsuario { get; set; }        
-        public Guid IdMedalla { get; set; }        
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
+    }
+
+    public class Usuario_MedallaList
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public List<Usuario_Medalla> Lista { get; set; }
     }
 }

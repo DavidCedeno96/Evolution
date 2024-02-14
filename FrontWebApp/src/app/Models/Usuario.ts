@@ -15,5 +15,7 @@ export interface Usuario {
   idArea: string;
   area: string;
   contrasena: string;
+  puntos: number;
+  creditos: number;
   estado: number;
 }

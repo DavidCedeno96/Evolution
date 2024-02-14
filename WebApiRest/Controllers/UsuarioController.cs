@@ -92,6 +92,8 @@ namespace WebApiRest.Controllers
                 {
                     var keyBytes = Encoding.ASCII.GetBytes(settings.SecretKey);
                     var claims = new ClaimsIdentity();
+                    claims.AddClaim(new Claim("puntos", response.Usuario.Puntos.ToString()));
+                    claims.AddClaim(new Claim("creditos", response.Usuario.Creditos.ToString()));
                     claims.AddClaim(new Claim("correo", response.Usuario.Correo));
                     claims.AddClaim(new Claim("id", response.Usuario.IdUsuario.ToString()));
                     claims.AddClaim(new Claim("nombre", $"{response.Usuario.Nombre} {response.Usuario.Apellido}"));

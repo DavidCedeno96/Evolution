@@ -20,6 +20,8 @@
         public string IdEmpresa { get; set; }
         public string Empresa { get; set; }
         public int Estado { get; set; }
+        public int Puntos { get; set; }
+        public int Creditos { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
     }

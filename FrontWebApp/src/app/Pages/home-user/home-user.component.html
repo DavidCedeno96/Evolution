@@ -9,6 +9,14 @@
         >
           <div class="col-auto col-xl-2">
             <img
+              *ngIf="nivel.length"
+              [src]="getImage(nivel[0].imagen, 'nivel', 'default-nivel.jpg')"
+              class="rounded-circle img-thumbnail"
+              width="60px"
+              alt="nivel"
+            />
+            <img
+              *ngIf="!nivel.length"
               src="assets/img/default/default-nivel.jpg"
               class="rounded-circle img-thumbnail"
               width="60px"
@@ -17,7 +25,8 @@
           </div>
           <div class="col-7 col-md-8 col-xl-10">
             <div class="d-flex justify-content-between col-10">
-              <span>Nivel 3</span>
+              <span *ngIf="nivel.length">{{ nivel[0].nombre }}</span>
+              <span *ngIf="!nivel.length">Nivel 0</span>
               <span>90 / 20</span>
             </div>
             <div class="row g-3 align-items-center">
@@ -48,31 +57,17 @@
     <div class="shadow-lg bg-white p-4 px-lg-5 rounded">
       <h5 class="mb-3 text-center txt text-primary">Mis Medallas</h5>
       <div class="row g-3 text-center">
-        <div class="col-12">
+        <div class="col-12" *ngIf="medallas.length">
           <img
-            src="assets/img/default/default-medalla.jpg"
+            *ngFor="let item of medallas"
+            [src]="getImage(item.imagen, 'medalla', 'default-medalla.jpg')"
             class="rounded-circle img-thumbnail mx-2 mx-lg-3"
             width="80"
             alt="medalla"
           />
-          <img
-            src="assets/img/default/default-medalla.jpg"
-            class="rounded-circle img-thumbnail mx-2 mx-lg-3"
-            width="80"
-            alt="medalla"
-          />
-          <img
-            src="assets/img/default/default-medalla.jpg"
-            class="rounded-circle img-thumbnail mx-2 mx-lg-3"
-            width="80"
-            alt="medalla"
-          />
-          <img
-            src="assets/img/default/default-medalla.jpg"
-            class="rounded-circle img-thumbnail mx-lg-3 d-none d-xl-inline"
-            width="80"
-            alt="medalla"
-          />
+        </div>
+        <div class="col-12" *ngIf="!medallas.length">
+          <span>Sin medallas</span>
         </div>
       </div>
     </div>
@@ -83,15 +78,15 @@
       <h5 class="mb-3 text-center txt text-primary">Resumen general</h5>
       <div class="row g-3 text-center">
         <div class="col-12 col-md-6 col-xl-4">
-          <h2 class="txt text-primary">23</h2>
+          <h2 class="txt text-primary">{{ retosCompletados }}</h2>
           <span class="txt text-secondary">Retos Compretados</span>
         </div>
         <div class="col-12 col-md-6 col-xl-4">
-          <h2 class="txt text-primary">23</h2>
+          <h2 class="txt text-primary">{{ medallasConseguidas }}</h2>
           <span class="txt text-secondary">Medallas Conseguidas</span>
         </div>
         <div class="col-12 col-md-6 col-xl-4">
-          <h2 class="txt text-primary">23</h2>
+          <h2 class="txt text-primary">{{ recomensasReclamadas }}</h2>
           <span class="txt text-secondary">Recompensas Reclamadas</span>
         </div>
       </div>
@@ -102,41 +97,50 @@
     <div class="shadow-lg bg-white p-4 px-lg-5 rounded">
       <h5 class="mb-3 text-center txt text-primary">Noticias</h5>
 
-      <div class="border border-1 rounded p-2 mb-2">
+      <div
+        class="border border-1 rounded p-2 mb-2"
+        *ngFor="let item of noticias"
+      >
         <div class="row g-3 px-2 px-lg-5 align-items-center">
-          <div class="col-6 lh-sm pointer">
-            <span class="d-block fs-5 text-truncate"
-              >Podcast para aprender</span
-            >
-            <small class="text-black-50 fw-semibold">23/01/2024</small>
+          <div class="col-8 lh-sm pointer">
+            <span class="d-block fs-5 text-truncate">{{ item.titular }}</span>
+            <small class="text-black-50 fw-semibold">{{
+              dateFormat(item.fechaPublicacion)
+            }}</small>
           </div>
-          <div class="col-6 text-end text-truncate">
+          <div class="col-4 text-end text-truncate">
             <span class="m-2 me-lg-3"
-              ><i class="fa-regular fa-thumbs-up"></i>100</span
+              ><i class="fa-regular fa-thumbs-up me-1"></i
+              >{{ item.totalLikes }}</span
             >
-            <span><i class="fa-regular fa-comments"></i>100</span>
+            <span
+              ><i class="fa-regular fa-comments me-1"></i
+              >{{ item.totalComents }}</span
+            >
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- ****** Últimos retos accedidos ****** -->
+  <!-- ****** Últimos retos terminados ****** -->
   <div class="col-12 col-md-6">
     <div class="shadow-lg bg-white p-4 px-lg-5 rounded">
-      <h5 class="mb-3 text-center txt text-primary">Últimos retos accedidos</h5>
+      <h5 class="mb-3 text-center txt text-primary">
+        Últimos retos terminados
+      </h5>
       <table class="table">
         <thead>
           <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Tipo</th>
-            <th scope="col">Usuarios</th>
+            <th scope="col">Puntos</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Pregunton</td>
-            <td>Trivia</td>
-            <td>23</td>
+          <tr *ngFor="let item of retos">
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.tipoReto }}</td>
+            <td>{{ item.puntosRecompensa }}</td>
           </tr>
         </tbody>
       </table>

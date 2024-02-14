@@ -122,6 +122,61 @@ namespace WebApiRest.Data
             return list;
         }
 
+        public async Task<Usuario_NivelList> GetUsuarioNivelList(int top, Guid idUsuario)
+        {
+            Usuario_NivelList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_Usuario_NivelByIdUsuario", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+            cmd.Parameters.AddWithValue("@top", top);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    list.Lista.Add(new Usuario_Nivel()
+                    {
+                        IdUsuario = new Guid(dr["idUsuario"].ToString()),
+                        IdNivel = new Guid(dr["idNivel"].ToString()),
+                        Nombre = dr["nombre"].ToString(),
+                        Imagen = dr["imagen"].ToString(),                        
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                    });
+                }
+                await dr.NextResultAsync();
+
+                list.Info = cmd.Parameters["@info"].Value.ToString();
+                list.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+        }
+
         public async Task<NivelItem> GetNivel(int estado, Guid idNivel)
         {
             NivelItem item = new();

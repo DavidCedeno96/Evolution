@@ -72,7 +72,9 @@ create table Usuario(
 	fechaModificacion datetime default getdate(),
 	clave varbinary(MAX) not null,
 	idCiudad uniqueidentifier references Ciudad(idCiudad) null,
-	fechaLogin datetime
+	fechaLogin datetime,
+	puntos int not null default 0,
+	creditos int not null default 0,
 );
 
 create table Nivel(

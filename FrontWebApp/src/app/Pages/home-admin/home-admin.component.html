@@ -5,15 +5,15 @@
       <h5 class="mb-3 text-center txt text-primary">Resumen general</h5>
       <div class="row g-3 text-center">
         <div class="col-12 col-md-4">
-          <h2 class="txt text-primary">23</h2>
+          <h2 class="txt text-primary">{{ retosCompletados }}</h2>
           <span class="txt text-secondary">Retos Compretados</span>
         </div>
         <div class="col-12 col-md-4">
-          <h2 class="txt text-primary">23</h2>
+          <h2 class="txt text-primary">{{ medallasConseguidas }}</h2>
           <span class="txt text-secondary">Medallas Conseguidas</span>
         </div>
         <div class="col-12 col-md-4">
-          <h2 class="txt text-primary">23</h2>
+          <h2 class="txt text-primary">{{ recomensasReclamadas }}</h2>
           <span class="txt text-secondary">Recompensas Reclamadas</span>
         </div>
       </div>
@@ -26,37 +26,8 @@
       <div class="row g-3 text-center">
         <div class="col-12">
           <img
-            src="assets/img/user/user1.jpg"
-            class="img-thumbnail mx-1"
-            width="80"
-            alt="user"
-          />
-          <img
-            src="assets/img/user/user1.jpg"
-            class="img-thumbnail mx-1"
-            width="80"
-            alt="user"
-          />
-          <img
-            src="assets/img/user/user1.jpg"
-            class="img-thumbnail mx-1"
-            width="80"
-            alt="user"
-          />
-          <img
-            src="assets/img/user/user1.jpg"
-            class="img-thumbnail mx-1"
-            width="80"
-            alt="user"
-          />
-          <img
-            src="assets/img/user/user1.jpg"
-            class="img-thumbnail mx-1"
-            width="80"
-            alt="user"
-          />
-          <img
-            src="assets/img/user/user1.jpg"
+            *ngFor="let item of usuarios"
+            [src]="getImage(item.foto, 'usuario', 'default-user.jpg')"
             class="img-thumbnail mx-1"
             width="80"
             alt="user"
@@ -70,10 +41,9 @@
     <div class="shadow-lg bg-white p-4 px-lg-5 rounded">
       <h5 class="mb-3 text-center txt text-primary">Noticias en tendencia</h5>
       <div>
-        <h5 class="txt text-secondary">Titular de la noticia 1</h5>
-        <h5 class="txt text-secondary">Titular de la noticia 1</h5>
-        <h5 class="txt text-secondary">Titular de la noticia 1</h5>
-        <h5 class="txt text-secondary">Titular de la noticia 1</h5>
+        <h5 class="txt text-secondary" *ngFor="let item of noticias">
+          {{ item.titular }}
+        </h5>
       </div>
     </div>
   </div>

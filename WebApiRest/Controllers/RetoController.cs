@@ -32,7 +32,7 @@ namespace WebApiRest.Controllers
 
         [HttpGet]
         [Route("buscar/{texto}")]
-        [Authorize(Roles = "adm,sadm")]
+        [Authorize]
         public async Task<IActionResult> List([FromRoute] string texto)
         {
             RetoList response = await data.GetRetoList(texto);
@@ -41,7 +41,7 @@ namespace WebApiRest.Controllers
 
         [HttpGet]
         [Route("item/{estado}/{idReto}")]
-        [Authorize(Roles = "adm,sadm")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idReto)
         {
             RetoItem response = await data.GetReto(estado, idReto);

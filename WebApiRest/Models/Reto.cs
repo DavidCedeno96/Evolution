@@ -38,12 +38,23 @@
     // TABLA INTERMEDIA
     public class Usuario_Reto
     {
-        public Guid IdUsuario { get; set; }
         public Guid IdReto { get; set; }
-        public int Puntos { get; set; }
+        public string Nombre { get; set; }
+        public string Imagen { get; set; }
+        public string TipoReto { get; set; }
+        public Guid IdUsuario { get; set; }
+        public int PuntosRecompensa { get; set; }
+        public int CreditosObtenidos { get; set; }
         public int Tiempo { get; set; }
         public int Vidas { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
+    }
+
+    public class Usuario_RetoList
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public List<Usuario_Reto> Lista { get; set; }
     }
 }

@@ -209,7 +209,9 @@
           </div>
         </div>
         <div class="col-12 col-md-3">
-          <label for="ret-cobt" class="form-label">Tiempo (ms)*</label>
+          <label for="ret-cobt" class="form-label"
+            >Tiempo (ms) por pregunta*</label
+          >
           <input
             type="text"
             class="form-control {{
@@ -228,13 +230,13 @@
               class="d-block"
               *ngIf="formulario.get('tiempo_ms')?.hasError('min')"
             >
-              Mínimo 600000
+              Mínimo 10000
             </span>
             <span
               class="d-block"
               *ngIf="formulario.get('tiempo_ms')?.hasError('max')"
             >
-              Máximo hasta 7200000
+              Máximo hasta 300000
             </span>
             <span
               class="d-block"

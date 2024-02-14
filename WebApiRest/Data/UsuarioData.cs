@@ -252,6 +252,8 @@ namespace WebApiRest.Data
                         Ciudad = dr["ciudad"].ToString(),                        
                         IdArea = dr["idArea"].ToString(),
                         Area = dr["area"].ToString(),
+                        Puntos = Convert.ToInt32(dr["puntos"].ToString()),
+                        Creditos = Convert.ToInt32(dr["creditos"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString()),

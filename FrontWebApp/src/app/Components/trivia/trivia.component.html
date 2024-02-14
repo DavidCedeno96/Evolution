@@ -9,14 +9,22 @@
           svgIcon="reloj-arena"
           class="icon-border-circle me-2"
         ></mat-icon>
-        <span class="fw-semibold txt text-primary fs-5">01:23:10</span>
+        <span class="fw-semibold txt text-primary fs-5">{{
+          tiempoRestante | date : "mm:ss"
+        }}</span>
       </div>
     </div>
     <div class="col-12 text-danger mb-3">
-      <mat-icon svgIcon="corazon" class="icon-border"></mat-icon>
-      <mat-icon svgIcon="corazon" class="icon-border"></mat-icon>
-      <mat-icon svgIcon="corazon" class="icon-border"></mat-icon>
-      <mat-icon svgIcon="corazon-roto" class="icon-border"></mat-icon>
+      <mat-icon
+        svgIcon="corazon"
+        class="icon-border"
+        *ngFor="let item of vidas"
+      ></mat-icon>
+      <mat-icon
+        svgIcon="corazon-roto"
+        class="icon-border"
+        *ngFor="let item of muertes"
+      ></mat-icon>
     </div>
     <div class="col-lg-8 mx-auto">
       <div class="rounded p-4 mb-3 bg-superior text-white">
