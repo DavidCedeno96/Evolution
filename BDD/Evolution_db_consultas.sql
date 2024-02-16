@@ -34,7 +34,7 @@ FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
 JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
     ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME
 WHERE 
-    tc.TABLE_NAME = 'Usuario' AND 
+    tc.TABLE_NAME = 'Opcion' AND 
     tc.CONSTRAINT_TYPE = 'UNIQUE'    
 
 ----
@@ -45,7 +45,7 @@ WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'usuario';
+WHERE tc.TABLE_NAME = 'Inicio';
 
 ---
 SELECT @@VERSION;
@@ -79,6 +79,35 @@ select * from Usuario
 -- ROL --------------------------------------------------------
 exec sp_B_Rol
 @estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+-- INICIO --------------------------------------------------------
+exec sp_B_Inicio
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_InicioByIdRol	
+@idRol = 'jug',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Inicio		
+@idInicio = '7c8c2672-2233-486a-a184-f0b51eb4a331',
+@nombre = 'Mis Medallas',
+@indice = 1,
+@idRol = 'jug',
+@color = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_D_InicioByNoIds
+@ids = '',
+@idRol = '',
 @error = '',
 @info = '',
 @id = ''
@@ -348,16 +377,17 @@ exec sp_D_Nivel
 @id = ''
 
 select * from Usuario_Nivel
+
 exec sp_B_Usuario_NivelByIdUsuario		
 @idUsuario = '91331754-1E83-417F-90E7-0E596E996510',
-@top = 1,
+@top = -1,
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_C_Usuario_Nivel
-@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
-@idNivel = 'D18F415A-CD36-4E84-98FD-04DC30FC1EE1',
+@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
+@idNivel = '62629073-7CC1-4AD3-82F1-B57A823E0092',
 @error = '',
 @info = '',
 @id = ''
@@ -575,6 +605,8 @@ exec sp_D_Noticia
 @error = '',
 @info = '',
 @id = ''
+
+select * from Usuario_Noticia
 
 exec sp_B_Usuario_NoticiaByIdNoticia	
 @idNoticia = '7CF3F854-ABE0-4033-BD63-4A94DC7DAF1A',	
@@ -854,6 +886,7 @@ exec sp_B_chartPuntos
 @info = '',
 @id = ''
 
+-- Resumen General ------------------------------------------------------------------------
 select * from Usuario
 exec sp_B_resumenGeneral
 @idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA069',

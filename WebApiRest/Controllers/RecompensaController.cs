@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Collections.Generic;
+using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -15,6 +16,7 @@ namespace WebApiRest.Controllers
     public class RecompensaController : ControllerBase
     {
         readonly RecompensaData data = new();
+        readonly UsuarioData dataUser = new();
 
         private readonly IWebHostEnvironment _env;
         private readonly string nombreCarpeta = "Recompensa";
@@ -29,8 +31,11 @@ namespace WebApiRest.Controllers
         [Authorize]
         public async Task<IActionResult> GetList([FromRoute] int estado)
         {
+            Claim userClaim = User.FindFirst("id");
             RecompensaList response = await data.GetRecompensaList(estado);
-            return StatusCode(StatusCodes.Status200OK, new { response });
+            UsuarioItem responseUser = await dataUser.GetUsuario(estado, new Guid(userClaim.Value));
+
+            return StatusCode(StatusCodes.Status200OK, new { response, responseUser });
         }
 
         [HttpGet]
@@ -47,7 +52,7 @@ namespace WebApiRest.Controllers
         [Authorize(Roles = "adm,sadm")]
         public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idRecompensa)
         {
-            RecompensaItem response = await data.GetRecompensa(estado, idRecompensa);
+            RecompensaItem response = await data.GetRecompensa(estado, idRecompensa);            
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -162,14 +167,35 @@ namespace WebApiRest.Controllers
         }
 
 
-
-
         [HttpPost]
         [Route("createUsuarioRecompensa")]
         [Authorize]
         public async Task<IActionResult> CreateUsuarioRecompensa([FromBody] Usuario_Recompensa usuarioRecompensa)
         {
-            Response response = await data.CreateUsuarioRecompensa(usuarioRecompensa);
+            Response response = new();
+            Claim userClaim = User.FindFirst("id");
+
+            usuarioRecompensa.IdUsuario = new Guid(userClaim.Value);
+
+            UsuarioItem userItem = await dataUser.GetUsuario(-1, new Guid(userClaim.Value));
+            RecompensaItem recompensaItem = await data.GetRecompensa(-1, usuarioRecompensa.IdRecompensa);
+
+            if (userItem.Usuario.Creditos < recompensaItem.Recompensa.CantCanje)
+            {
+                response.Error = 1;
+                response.Info = "El usuario tiene créditos insuficientes";
+            }
+            else if (recompensaItem.Recompensa.CantDisponible < 1)
+            {
+                response.Error = 1;
+                response.Info = "Cantidad insuficiente";
+            }
+            else
+            {
+                response = await data.CreateUsuarioRecompensa(usuarioRecompensa);
+            }
+
+
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 

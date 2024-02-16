@@ -3,7 +3,7 @@ import { servicioURL } from '../Utils/Constants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UsuarioService } from './usuario.service';
 import { Observable } from 'rxjs';
-import { Recompensa } from '../Models/Recompensa';
+import { Recompensa, Usuario_Recompensa } from '../Models/Recompensa';
 
 @Injectable({
   providedIn: 'root',
@@ -86,5 +86,20 @@ export class RecompensaService {
     return this.http.post<FormData>(`${this.apiURL}/import`, formData, {
       headers: headers,
     });
+  }
+
+  cajearRecompensa(
+    usuario_recompensa: Usuario_Recompensa
+  ): Observable<Usuario_Recompensa> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.post<Usuario_Recompensa>(
+      `${this.apiURL}/createUsuarioRecompensa`,
+      usuario_recompensa,
+      {
+        headers: headers,
+      }
+    );
   }
 }

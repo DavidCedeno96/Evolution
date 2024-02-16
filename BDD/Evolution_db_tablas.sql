@@ -17,6 +17,17 @@ create table Rol(
 	fechaModificacion datetime default getdate()
 );
 
+create table Inicio(
+	idInicio uniqueidentifier primary key default newid(),
+	nombre varchar(60) not null,
+	indice int not null default 0,
+	estado int not null default 1,
+	color varchar(10),
+	idRol varchar(9) references Rol(idRol) not null,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+)
+
 create table Empresa(
 	idEmpresa uniqueidentifier primary key default newid(),
 	nombre varchar(100) unique not null,

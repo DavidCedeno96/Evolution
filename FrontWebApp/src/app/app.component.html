@@ -39,10 +39,7 @@
         </a>
       </li>
     </ul>
-    <a
-      class="navbar-nav ms-auto mb-0"
-      [routerLink]="getUrlByRol('/homeAdmin', '/homeUser')"
-    >
+    <a class="navbar-nav ms-auto mb-0" routerLink="/home">
       <img
         [src]="getImage(imgHeader, 'config', 'default-logoDM.png')"
         class="img-fluid"
@@ -111,9 +108,9 @@
   <hr class="hr-text" data-content="O" />
   <div class="menu">
     <a
-      [class]="menuItemActive('/homeAdmin,/homeUser')"
+      [class]="menuItemActive('/home')"
       data-bs-dismiss="offcanvas"
-      [routerLink]="getUrlByRol('/homeAdmin', '/homeUser')"
+      routerLink="/home"
     >
       <div class="icon-text">
         <mat-icon svgIcon="casa"></mat-icon><span>Inicio</span>
@@ -148,27 +145,27 @@
       </div>
     </a>
     <a
-      [class]="menuItemActive('/view-recompensa')"
+      [class]="menuItemActive('/view-recompensa,/user-recompensa')"
       data-bs-dismiss="offcanvas"
-      routerLink="/view-recompensa"
+      [routerLink]="getUrlByRol('/view-recompensa', '/user-recompensa')"
     >
       <div class="icon-text">
         <mat-icon svgIcon="recompensa"></mat-icon><span>Recompensas</span>
       </div>
     </a>
     <a
-      [class]="menuItemActive('/view-nivel')"
+      [class]="menuItemActive('/view-nivel,/user-nivel')"
       data-bs-dismiss="offcanvas"
-      routerLink="/view-nivel"
+      [routerLink]="getUrlByRol('/view-nivel', '/user-nivel')"
     >
       <div class="icon-text">
         <mat-icon svgIcon="podio"></mat-icon><span>Niveles</span>
       </div>
     </a>
     <a
-      [class]="menuItemActive('/view-medalla')"
+      [class]="menuItemActive('/view-medalla,/user-medalla')"
       data-bs-dismiss="offcanvas"
-      routerLink="/view-medalla"
+      [routerLink]="getUrlByRol('/view-medalla', '/user-medalla')"
     >
       <div class="icon-text">
         <mat-icon svgIcon="otorgar"></mat-icon><span>Medallas</span>

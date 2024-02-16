@@ -1,0 +1,182 @@
+<div>
+  <h4 class="text-uppercase">Recompensas</h4>
+  <!-- buscador -->
+  <!-- <form
+          class="row g-3 mb-4"
+          [formGroup]="formulario"
+          (ngSubmit)="submitBuscar()"
+        >
+          <div class="col-12 col-md-8">
+            <div class="input-group">
+              <span class="icon-left">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control icon"
+                placeholder="buscar..."
+                formControlName="buscar"
+                (input)="defaultList($event)"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-md-3 d-grid d-md-block">
+            <button type="submit" class="btn btn-success">Buscar</button>
+          </div>
+        </form> -->
+  <div class="card col-12 col-md-6 col-lg-4 text-center mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Créditos Acumulados</h5>
+      <p class="card-text text-truncate">
+        <span class="badge text-bg-dark">{{ usuario.creditos }}</span>
+      </p>
+    </div>
+  </div>
+  <div *ngIf="!recomensas.length">Sin Recompensas</div>
+  <div class="row g-3 mb-4">
+    <div
+      class="col-12 col-md-6 col-lg-4 pointer"
+      *ngFor="let item of recomensas"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+      (click)="selectRecompensa(item)"
+    >
+      <div class="shadow-lg p-3 mb-2 bg-body rounded">
+        <div class="row g-3 align-items-center">
+          <div class="col-3 text-center">
+            <img
+              [src]="
+                getImage(item.imagen, 'Recompensa', 'default-recompensa.jpg')
+              "
+              class="img-thumbnail"
+              width="100"
+              alt="recomensa"
+            />
+          </div>
+          <div class="col-9">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="txt text-primary fw-semibold text-truncate me-2">{{
+                item.nombre
+              }}</span>
+              <span
+                class="badge {{
+                  item.estado ? 'text-bg-success' : 'text-bg-danger'
+                }}"
+                >{{ item.estado ? "Disponible" : "Agotado" }}</span
+              >
+            </div>
+            <small class="text-black-50 d-block" *ngIf="item.cantDisponible > 1"
+              >{{ item.cantDisponible }} disponibles</small
+            >
+            <small
+              class="text-black-50 d-block"
+              *ngIf="item.cantDisponible === 1"
+              >{{ item.cantDisponible }} disponible</small
+            >
+            <small class="text-black-50 fw-semibold d-block"
+              >{{ item.cantCanje }} créditos</small
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Recompensa</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              #closeModal
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="text-center">
+              <div
+                class="d-flex justify-content-between align-items-center mb-3"
+              >
+                <span class="txt text-primary fw-semibold text-truncate me-3">{{
+                  recomensa.nombre
+                }}</span>
+                <span
+                  class="badge {{
+                    recomensa.estado ? 'text-bg-success' : 'text-bg-danger'
+                  }}"
+                  >{{ recomensa.estado ? "Disponible" : "Agotado" }}</span
+                >
+              </div>
+              <img
+                [src]="
+                  getImage(
+                    recomensa.imagen,
+                    'Recompensa',
+                    'default-recompensa.jpg'
+                  )
+                "
+                class="img-thumbnail"
+                width="200"
+                alt="recomensa"
+              />
+              <div>
+                <small
+                  class="fw-semibold d-block {{
+                    errorCantDisp ? 'text-danger' : 'text-black-50'
+                  }}"
+                  >{{ recomensa.cantDisponible }} disponible</small
+                >
+                <small
+                  class="fw-semibold d-block {{
+                    errorCreditos ? 'text-danger' : 'text-black-50'
+                  }}"
+                  >{{ recomensa.cantCanje }} créditos</small
+                >
+                <span class="text-danger" *ngIf="errorCreditos"
+                  >Créditos insuficientes</span
+                >
+                <span class="text-danger" *ngIf="errorCantDisp"
+                  >Cantidad insuficiente</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              (click)="canjear(recomensa)"
+            >
+              Canjear
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Fin Modal -->
+  </div>
+  <!-- <div class="flex justify-content-center">
+          <p-paginator
+            (onPageChange)="onPageChange($event)"
+            [first]="first"
+            [rows]="rows"
+            [totalRecords]="totalItems()"
+          ></p-paginator>
+        </div> -->
+</div>

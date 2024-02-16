@@ -8,3 +8,12 @@ export interface Configuracion {
   idUsuario: string;
   usuario: string;
 }
+
+export interface ConfigInicio {
+  idConfigInicio: string;
+  nombre: string;
+  indice: number;
+  estado: number;
+  idRol: string;
+  color: string;
+}

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -30,11 +31,13 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
-        [Route("buscar/{texto}")]
-        [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Buscar([FromRoute] string texto)
+        [Route("list")]
+        [Authorize]
+        public async Task<IActionResult> GetByIdUsuario()
         {
-            MedallaList response = await data.GetMedallaList(texto);
+            Claim userClaim = User.FindFirst("id");
+            Usuario_MedallaList response = await data.GetUsuarioMedallaList(-1, new Guid(userClaim.Value));
+
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -44,6 +47,15 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idMedalla)
         {
             MedallaItem response = await data.GetMedalla(estado, idMedalla);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }        
+
+        [HttpGet]
+        [Route("buscar/{texto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Buscar([FromRoute] string texto)
+        {
+            MedallaList response = await data.GetMedallaList(texto);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 

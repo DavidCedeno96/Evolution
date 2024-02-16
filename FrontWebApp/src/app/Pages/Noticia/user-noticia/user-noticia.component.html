@@ -1,44 +1,75 @@
 <div class="my-3 my-md-5">
-  <h5 class="my-5 text-center text-md-start txt text-primary text-uppercase">
+  <h5 class="my-3 text-center text-md-start txt text-primary text-uppercase">
     noticias
   </h5>
-  <div class="shadow-lg bg-white p-4 pb-md-3 p-md-5 pb-md-3 mb-4 rounded">
-    <h6 class="txt text-primary">Titular de la noticia</h6>
-    <p>descripcion... blabb lba</p>
+  <div
+    class="shadow-lg bg-white p-4 pb-md-3 p-md-5 pb-md-3 mb-4 rounded"
+    *ngFor="let item of noticia_reaccion"
+  >
+    <h6 class="txt text-primary">{{ item.noticia.titular }}</h6>
+    <p>{{ item.noticia.descripcion }}</p>
     <div class="col-12 mb-3">
       <div class="row g-3">
         <div class="col-6 col-md-2 col-lg-2 col-xl-1 text-truncate">
-          <span class="pointer" (click)="addReaccion('like')"
-            ><i class="fa-regular fa-thumbs-up me-1"></i>2</span
+          <span
+            class="pointer"
+            type="button"
+            (click)="addReaccion('like', item)"
+            ><i class="fa-regular fa-thumbs-up me-1"></i
+            >{{ item.noticia.totalLikes }}</span
           >
         </div>
         <div class="col-6 col-md-2 col-lg-2 col-xl-1 text-truncate">
-          <span class="pointer" (click)="addReaccion('comentario')"
-            ><i class="fa-regular fa-comments me-1"></i>1</span
+          <span
+            ><i class="fa-regular fa-comments me-1"></i
+            >{{ item.noticia.totalComents }}</span
           >
         </div>
       </div>
     </div>
-    <form (submit)="comentar()" class="{{ verTxtComentario ? '' : 'd-none' }}">
-      <div class="mb-3">
-        <textarea
-          class="form-control"
-          cols="30"
-          rows="5"
-          placeholder="Escribe aqui tu comentario..."
-        ></textarea>
-      </div>
-      <div class="mb-2 d-grid d-md-block">
-        <button type="submit" class="btn btn-success">Comentar</button>
+    <form [formGroup]="formulario" (ngSubmit)="addReaccion('comentario', item)">
+      <div class="row g-3 mb-3">
+        <div class="col-12 col-md-10">
+          <input
+            type="text"
+            class="form-control me-2 {{
+              formulario.get('comentario')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="comentario"
+            placeholder="Escribe aqui tu comentario..."
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="formulario.get('comentario')?.errors"
+          >
+            <span
+              class="d-block"
+              *ngIf="formulario.get('comentario')?.hasError('maxlength')"
+            >
+              Máximo 250 caracteres
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('comentario')?.hasError('pattern')"
+            >
+              Contiene caracteres inválidos
+            </span>
+          </div>
+        </div>
+        <div class="col-12 col-md-auto">
+          <button type="submit" class="btn btn-success">Comentar</button>
+        </div>
       </div>
     </form>
-    <div class="{{ verTxtComentario ? 'd-none' : '' }}">
+    <div *ngIf="getComentarios(item).length">
       <hr />
       <h6>Comentarios</h6>
       <div class="box-comentarios">
-        <div class="mb-3">
-          <span class="d-block fs-5">Nombre Usuario</span>
-          <span class="fs-6">comentario.... blab lbaL</span>
+        <div class="mb-3" *ngFor="let ob of getComentarios(item)">
+          <span class="d-block fs-5">{{ ob.usuario }}</span>
+          <span class="fs-6">{{ ob.comentario }}</span>
         </div>
       </div>
     </div>

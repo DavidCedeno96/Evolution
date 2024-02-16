@@ -1,0 +1,62 @@
+<div>
+  <h4 class="text-uppercase">Mis Medallas</h4>
+  <!-- buscador -->
+  <!-- <form
+      class="row g-3 mb-4"
+      [formGroup]="formulario"
+      (ngSubmit)="submitBuscar()"
+    >
+      <div class="col-12 col-md-8">
+        <div class="input-group">
+          <span class="icon-left">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </span>
+          <input
+            type="text"
+            class="form-control icon"
+            placeholder="buscar..."
+            formControlName="buscar"
+            (input)="defaultList($event)"
+          />
+        </div>
+      </div>
+      <div class="col-12 col-md-3 d-grid d-md-block">
+        <button type="submit" class="btn btn-success">Buscar</button>
+      </div>
+    </form> -->
+  <div *ngIf="!medallas.length">Sin Medallas</div>
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of medallas">
+      <div class="shadow-lg p-3 mb-2 bg-body rounded">
+        <div class="row g-3 align-items-center">
+          <div class="col-3 text-center">
+            <img
+              [src]="getImage(item.imagen, 'medalla', 'default-medalla.jpg')"
+              class="img-thumbnail"
+              width="100"
+              alt="miMedalla"
+            />
+          </div>
+          <div class="col-9">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="txt text-primary fw-semibold text-truncate me-2">{{
+                item.nombre
+              }}</span>
+            </div>
+            <small class="text-black-50 fw-semibold d-block">{{
+              item.fechaCreacion
+            }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="flex justify-content-center">
+      <p-paginator
+        (onPageChange)="onPageChange($event)"
+        [first]="first"
+        [rows]="rows"
+        [totalRecords]="totalItems()"
+      ></p-paginator>
+    </div> -->
+</div>

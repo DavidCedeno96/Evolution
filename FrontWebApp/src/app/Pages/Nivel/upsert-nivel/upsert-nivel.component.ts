@@ -52,6 +52,7 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
     imagen: '',
     totalUsuarios: 0,
     estado: 0,
+    fechaCreacion: new Date(),
   };
 
   constructor(

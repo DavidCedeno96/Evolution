@@ -31,6 +31,15 @@ export class NivelService {
     });
   }
 
+  getListByUsuario(): Observable<Nivel[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<Nivel[]>(`${this.apiURL}/list`, {
+      headers: headers,
+    });
+  }
+
   getItem(estado: number, id: string): Observable<Nivel> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,

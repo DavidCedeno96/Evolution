@@ -31,6 +31,7 @@
         public List<Noticia> Lista { get; set; }
     }
 
+
     // TABLA INTERMEDIA
     public class Usuario_Noticia
     {
@@ -48,5 +49,19 @@
         public string Info { get; set; }
         public int Error { get; set; }
         public List<Usuario_Noticia> Lista { get; set; }
+    }
+    public class Noticia_ComentarioList
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public Noticia Noticia { get; set; }
+        public List<Usuario_Noticia> ComentarioList { get; set; }
+    }
+
+    public class NoticiaList_comentarios
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public List<Noticia_ComentarioList> Lista { get; set; }
     }
 }

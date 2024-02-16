@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pregunta, PreguntaOpciones } from 'src/app/Models/Pregunta';
-import { Reto } from 'src/app/Models/Reto';
+import { Reto, Usuario_Reto } from 'src/app/Models/Reto';
 import {
   AlertError,
   Loading,
@@ -32,6 +32,8 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
   vidas: number[] = [];
   muertes: number[] = [];
   tiempoRestante: number = 0;
+  tiempoTotal: number = 0;
+  termporizador: any;
   contador: any;
   puntosPorPregunta: number = 0;
   puntajeTotal: number = 0;
@@ -105,10 +107,11 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.load(true, false);
     this.cargarReto();
+    //    this.iniciarTiempo();
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.contador); // detiene el contador
+    clearInterval(this.termporizador); // detiene el termporizador
   }
 
   getRouteParams() {
@@ -170,7 +173,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   next() {
-    clearInterval(this.contador);
+    clearInterval(this.termporizador);
 
     if (this.preguntaActual === this.preguntaOpciones.length - 1) {
       this.opCalificacion(true, false);
@@ -244,20 +247,57 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
 
   iniciarContador() {
     this.tiempoRestante = this.reto.tiempo_ms;
-    this.contador = setInterval(() => {
+    this.termporizador = setInterval(() => {
       this.tiempoRestante -= 1000;
       if (this.tiempoRestante == 1000) {
         this.nextButonDisable = true;
       } else if (this.tiempoRestante < 1) {
         this.next();
-        clearInterval(this.contador); // detiene el contador
+        clearInterval(this.termporizador); // detiene el termporizador
       }
     }, 1000); // Actualiza cada segundo
   }
 
+  iniciarTiempo() {
+    this.contador = setInterval(() => {
+      this.tiempoTotal += 1000;
+    }, 1000); // Actualiza cada segundo
+  }
+
   finalizarTrivia() {
+    this.load(true, false);
+    clearInterval(this.termporizador); // detiene el termporizador
     clearInterval(this.contador); // detiene el contador
-    console.log('puntaje total', this.puntajeTotal);
+    /* console.log('puntaje total', this.puntajeTotal); */
     console.log('FINALIZANDO TRIVIA');
+
+    let usuario_reto: Usuario_Reto = {
+      idReto: this.reto.idReto,
+      idUsuario: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+      puntos: this.puntajeTotal,
+      tiempo: this.tiempoTotal,
+      vidas: this.vidas.length,
+    };
+
+    this.retoService.createUsuario_Reto(usuario_reto).subscribe({
+      next: (data: any) => {
+        let { error, info } = data.response;
+        if (error === 0) {
+          this.router.navigate(['/user-reto']);
+        } else {
+          this.alertError(TitleErrorForm, info); //MsgErrorForm
+        }
+        this.load(false, false);
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+          this.load(false, false);
+        }
+      },
+    });
   }
 }

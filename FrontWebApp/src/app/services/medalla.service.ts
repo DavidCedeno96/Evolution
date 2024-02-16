@@ -25,6 +25,15 @@ export class MedallaService {
     });
   }
 
+  getListByUsuario(): Observable<Medalla[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<Medalla[]>(`${this.apiURL}/list`, {
+      headers: headers,
+    });
+  }
+
   getItem(estado: number, id: string): Observable<Medalla> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,

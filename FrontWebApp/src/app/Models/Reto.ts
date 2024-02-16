@@ -15,3 +15,11 @@ export interface Reto {
   comportamiento: string;
   estado: number;
 }
+
+export interface Usuario_Reto {
+  idReto: string;
+  idUsuario: string;
+  puntos: number;
+  tiempo: number;
+  vidas: number;
+}

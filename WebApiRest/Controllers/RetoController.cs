@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -134,9 +135,11 @@ namespace WebApiRest.Controllers
 
         [HttpPost]
         [Route("createUsuarioReto")]
-        [Authorize(Roles = "adm,sadm")]
+        [Authorize]
         public async Task<IActionResult> CreateUsuarioReto([FromBody] Usuario_Reto usuarioReto)
         {
+            Claim userClaim = User.FindFirst("id");
+            usuarioReto.IdUsuario = new Guid(userClaim.Value);
             Response response = await data.CreateUsuarioReto(usuarioReto);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }

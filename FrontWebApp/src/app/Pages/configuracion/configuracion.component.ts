@@ -1,9 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Area, Ciudad, Empresa, Pais } from 'src/app/Models/Adicional';
-import { Configuracion } from 'src/app/Models/Configuracion';
+import { ConfigInicio, Configuracion } from 'src/app/Models/Configuracion';
 import {
   AlertError,
   GetImage,
@@ -11,6 +12,7 @@ import {
   Loading,
   MsgError,
   MsgErrorForm,
+  MsgOk,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
@@ -21,6 +23,8 @@ import { CiudadService } from 'src/app/services/ciudad.service';
 import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { PaisService } from 'src/app/services/pais.service';
+import { ConfigInicioList } from 'src/app/Utils/DefaultLists';
+import { HomeService } from 'src/app/services/home.service';
 
 @Component({
   selector: 'app-configuracion',
@@ -33,6 +37,7 @@ export class ConfiguracionComponent implements OnInit {
   loading = Loading();
   getImage = GetImage();
   configIndex: number = 0;
+  configIndexInicio: number = 0;
 
   tituloModal: string = '';
   labelSelect: string = '';
@@ -63,6 +68,9 @@ export class ConfiguracionComponent implements OnInit {
   formImages!: FormGroup;
   formCampos!: FormGroup;
 
+  configInicioItems: ConfigInicio[] = ConfigInicioList;
+  configInicioItemsJug: ConfigInicio[] = [];
+  configInicioItemsAdm: ConfigInicio[] = [];
   configColores: Configuracion[] = [];
   configImages: Configuracion[] = [];
 
@@ -112,6 +120,7 @@ export class ConfiguracionComponent implements OnInit {
     private areaService: AreaService,
     private adicionalServicio: AdicionalService,
     private configuracionService: ConfiguracionService,
+    private homeService: HomeService,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
@@ -155,15 +164,24 @@ export class ConfiguracionComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading(true, false);
-    this.cargarConfig();
+    this.cargarColores();
     this.cargarCampos();
+    this.cargarInicio();
   }
 
   config(index: number) {
     this.configIndex = index;
   }
 
-  cargarConfig() {
+  configInicio(index: number, rol: string) {
+    this.configIndexInicio = index;
+    this.configInicioItems.forEach((item) => {
+      item.idRol = rol;
+      item.color = '#dcdcdc';
+    });
+  }
+
+  cargarColores() {
     this.configuracionService.getList().subscribe({
       next: (data: any) => {
         let { error, info, lista } = data.response;
@@ -202,7 +220,6 @@ export class ConfiguracionComponent implements OnInit {
         } else {
           this.alertError(TitleErrorForm, info);
         }
-        this.loading(false, false);
       },
       error: (e) => {
         console.error(e);
@@ -219,12 +236,40 @@ export class ConfiguracionComponent implements OnInit {
         this.ciudades = ciudadList.lista;
         this.empresas = empresaList.lista;
         this.areas = areaList.lista;
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          //this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+        }
+      },
+    });
+  }
+
+  cargarInicio() {
+    this.homeService.getList().subscribe({
+      next: (data: any) => {
+        let { error, info, lista } = data.response;
+        if (error === 0) {
+          lista.forEach((item: ConfigInicio) => {
+            if (item.idRol === 'jug') {
+              this.configInicioItemsJug.push(item);
+            } else if (item.idRol === 'adm') {
+              this.configInicioItemsAdm.push(item);
+            }
+          });
+          this.configInicio(0, 'jug');
+        } else {
+          this.alertError(TitleErrorForm, info);
+        }
         this.loading(false, false);
       },
       error: (e) => {
         console.error(e);
         if (e.status === 401 || e.status === 403) {
-          this.router.navigate(['/']);
+          //this.router.navigate(['/']);
         } else {
           this.alertError(TitleError, MsgError);
         }
@@ -310,7 +355,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              this.router.navigate(['/']);
+              //this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -334,7 +379,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              this.router.navigate(['/']);
+              //this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -358,7 +403,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              this.router.navigate(['/']);
+              //this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -382,7 +427,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              this.router.navigate(['/']);
+              //this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -411,7 +456,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              this.router.navigate(['/']);
+              //this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -435,7 +480,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              this.router.navigate(['/']);
+              //this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -459,7 +504,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              this.router.navigate(['/']);
+              //this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -483,7 +528,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              this.router.navigate(['/']);
+              //this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -513,7 +558,7 @@ export class ConfiguracionComponent implements OnInit {
         error: (e) => {
           console.error(e);
           if (e.status === 401 || e.status === 403) {
-            this.router.navigate(['/']);
+            //this.router.navigate(['/']);
           } else {
             this.alertError(TitleError, MsgError);
             this.loading(false, false);
@@ -543,7 +588,54 @@ export class ConfiguracionComponent implements OnInit {
       error: (e) => {
         console.error(e);
         if (e.status === 401 || e.status === 403) {
-          this.router.navigate(['/']);
+          //this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+          this.loading(false, false);
+        }
+      },
+    });
+  }
+
+  updateInicio() {
+    this.loading(true, false);
+    let list: ConfigInicio[] = [];
+    let idRol: string = '';
+    if (this.configIndexInicio === 0) {
+      for (let i = 0; i < this.configInicioItemsJug.length; i++) {
+        this.configInicioItemsJug[i].indice = i + 1;
+        this.configInicioItemsJug[i].color = '';
+      }
+      list = this.configInicioItemsJug;
+      idRol = 'jug';
+    } else if (this.configIndexInicio === 1) {
+      for (let i = 0; i < this.configInicioItemsAdm.length; i++) {
+        this.configInicioItemsAdm[i].indice = i + 1;
+        this.configInicioItemsAdm[i].color = '';
+      }
+      list = this.configInicioItemsAdm;
+      idRol = 'adm';
+    }
+    //console.log('Guardar las tarjetitas del Inicio', list);
+
+    this.homeService.update(list, idRol).subscribe({
+      next: (data: any) => {
+        let { error, info } = data.response;
+        if (error === 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: MsgOk,
+            detail: 'Configuración Guardada',
+          });
+        } else {
+          this.alertError(TitleErrorForm, info);
+        }
+        this.loading(false, false);
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          //this.router.navigate(['/']);
         } else {
           this.alertError(TitleError, MsgError);
           this.loading(false, false);
@@ -678,5 +770,89 @@ export class ConfiguracionComponent implements OnInit {
     let selectedValue = (e.target as HTMLInputElement).value;
     let hostElement = this.el.nativeElement;
     hostElement.style.setProperty(propiedad, selectedValue);
+  }
+
+  agregarItemInicio(item: ConfigInicio) {
+    let itemAgregado: boolean = false;
+
+    if (item.idRol === 'jug') {
+      itemAgregado =
+        this.configInicioItemsJug.filter((ob) => {
+          return ob.nombre === item.nombre;
+        }).length > 0;
+
+      if (!itemAgregado) {
+        this.configInicioItemsJug.push(item);
+      }
+    } else if (item.idRol === 'adm') {
+      itemAgregado =
+        this.configInicioItemsAdm.filter((ob) => {
+          return ob.nombre === item.nombre;
+        }).length > 0;
+
+      if (!itemAgregado) {
+        this.configInicioItemsAdm.push(item);
+      }
+    }
+  }
+
+  quitarItemInicio(item: ConfigInicio) {
+    let itemAgregado: boolean = false;
+
+    if (item.idRol === 'jug') {
+      itemAgregado =
+        this.configInicioItemsJug.filter((ob) => {
+          return ob.nombre === item.nombre;
+        }).length > 0;
+
+      if (itemAgregado) {
+        this.configInicioItemsJug = this.configInicioItemsJug.filter(
+          (ob) => ob != item
+        );
+      }
+    } else if (item.idRol === 'adm') {
+      itemAgregado =
+        this.configInicioItemsAdm.filter((ob) => {
+          return ob.nombre === item.nombre;
+        }).length > 0;
+
+      if (itemAgregado) {
+        this.configInicioItemsAdm = this.configInicioItemsAdm.filter(
+          (ob) => ob != item
+        );
+      }
+    }
+  }
+
+  onItemDrop(event: CdkDragDrop<ConfigInicio[]>): void {
+    if (this.configIndexInicio === 0) {
+      moveItemInArray(
+        this.configInicioItemsJug,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else if (this.configIndexInicio === 1) {
+      moveItemInArray(
+        this.configInicioItemsAdm,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
+  }
+
+  calculateNewIndex(
+    draggedElement: Element,
+    freeDragPosition: { x: number; y: number }
+  ): number {
+    const elements = Array.from(draggedElement.parentElement!.children);
+    const draggedIndex = elements.indexOf(draggedElement);
+    const newIndex = Math.max(
+      0,
+      Math.min(
+        elements.length,
+        draggedIndex + freeDragPosition.x / draggedElement.clientWidth
+      )
+    );
+    return Math.round(newIndex);
   }
 }

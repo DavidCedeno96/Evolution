@@ -54,6 +54,7 @@ export class ViewRecompensaComponent implements OnInit {
       cantDisponible: 0,
       cantCanje: 0,
       totalUsuarios: 0,
+      estado: 0,
     },
   ];
 

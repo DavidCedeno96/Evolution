@@ -28,10 +28,19 @@ import { UserRetoComponent } from './Pages/Reto/user-reto/user-reto.component';
 import { EntradaRetoComponent } from './Pages/Reto/entrada-reto/entrada-reto.component';
 import { JuegoRetoComponent } from './Pages/Reto/juego-reto/juego-reto.component';
 import { UserNoticiaComponent } from './Pages/Noticia/user-noticia/user-noticia.component';
+import { UserMedallaComponent } from './Pages/Medalla/user-medalla/user-medalla.component';
+import { UserNivelComponent } from './Pages/Nivel/user-nivel/user-nivel.component';
+import { UserRecompensaComponent } from './Pages/Recompensa/user-recompensa/user-recompensa.component';
+import { HomeComponent } from './Pages/home/home.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [authGuardPlayer],
+  },
   {
     path: 'homeAdmin',
     component: HomeAdminComponent,
@@ -88,6 +97,11 @@ const routes: Routes = [
     canActivate: [authGuardAdmin],
   },
   {
+    path: 'user-recompensa',
+    component: UserRecompensaComponent,
+    canActivate: [authGuardPlayer],
+  },
+  {
     path: 'view-nivel',
     component: ViewNivelComponent,
     canActivate: [authGuardAdmin],
@@ -98,6 +112,11 @@ const routes: Routes = [
     canActivate: [authGuardAdmin],
   },
   {
+    path: 'user-nivel',
+    component: UserNivelComponent,
+    canActivate: [authGuardPlayer],
+  },
+  {
     path: 'view-medalla',
     component: ViewMedallaComponent,
     canActivate: [authGuardAdmin],
@@ -106,6 +125,11 @@ const routes: Routes = [
     path: 'upsert-medalla',
     component: UpsertMedallaComponent,
     canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'user-medalla',
+    component: UserMedallaComponent,
+    canActivate: [authGuardPlayer],
   },
   {
     path: 'view-reto',
@@ -145,7 +169,7 @@ const routes: Routes = [
   {
     path: 'config',
     component: ConfiguracionComponent,
-    canActivate: [authGuardAdmin],
+    //canActivate: [authGuardAdmin],
   },
 ];
 

@@ -6,4 +6,10 @@ export interface Recompensa {
   cantDisponible: number;
   cantCanje: number;
   totalUsuarios: number;
+  estado: number;
+}
+
+export interface Usuario_Recompensa {
+  idRecompensa: string;
+  idUsuario: string;
 }

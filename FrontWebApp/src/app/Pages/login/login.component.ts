@@ -122,12 +122,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         const { info, error } = data.response;
         if (error === 0) {
-          const decodeToken = this.helper.decodeToken(info);
-          let { role } = decodeToken;
           localStorage.setItem('token', info);
           this.setRemember();
           this.usuarioServicio.startWatching();
+          this.router.navigate(['/home']);
 
+          /*const decodeToken = this.helper.decodeToken(info);
+          let { role } = decodeToken;
           //Ruta para el jugador
           if (role === 'jug') {
             this.router.navigate(['/homeUser']);
@@ -135,7 +136,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
           //Ruta para el administrador
           if (role === 'adm' || role === 'sadm') {
             this.router.navigate(['/homeAdmin']);
-          }
+          } */
         } else {
           this.alertError(
             'Error de credenciales',

@@ -30,6 +30,15 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
+        [Route("listByComents/{estado}")]
+        [Authorize]
+        public async Task<IActionResult> ByComents([FromRoute] int estado)
+        {
+            NoticiaList_comentarios response = await data.GetNoticiaList_comentarios(estado);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
         [Route("buscar/{texto}")]
         [Authorize(Roles = "adm,sadm")]
         public async Task<IActionResult> Buscar([FromRoute] string texto)
@@ -171,7 +180,7 @@ namespace WebApiRest.Controllers
 
         [HttpPost]
         [Route("createUsuarioNoticia")]
-        [Authorize(Roles = "adm,sadm")]
+        [Authorize]
         public async Task<IActionResult> CreateUsuarioNoticia([FromBody] Usuario_Noticia usuarioNoticia)
         {
             Response response = VF.ValidarUsuarioNoticia(usuarioNoticia);            

@@ -46,6 +46,7 @@ export class ViewMedallaComponent implements OnInit {
       idCondicion: '',
       condicion: '',
       estado: 1,
+      fechaCreacion: new Date(),
     },
   ];
 

@@ -10,6 +10,9 @@ import { HttpClientModule } from '@angular/common/http';
 /* FORMS */
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
+/* ARRASTRAR ITEMS */
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 /* PRIMENG */
 import { DataViewModule } from 'primeng/dataview';
 import { SplitButtonModule } from 'primeng/splitbutton';
@@ -48,6 +51,10 @@ import { EntradaRetoComponent } from './Pages/Reto/entrada-reto/entrada-reto.com
 import { JuegoRetoComponent } from './Pages/Reto/juego-reto/juego-reto.component';
 import { TriviaComponent } from './Components/trivia/trivia.component';
 import { UserNoticiaComponent } from './Pages/Noticia/user-noticia/user-noticia.component';
+import { UserMedallaComponent } from './Pages/Medalla/user-medalla/user-medalla.component';
+import { UserNivelComponent } from './Pages/Nivel/user-nivel/user-nivel.component';
+import { UserRecompensaComponent } from './Pages/Recompensa/user-recompensa/user-recompensa.component';
+import { HomeComponent } from './Pages/home/home.component';
 
 @NgModule({
   declarations: [
@@ -78,12 +85,17 @@ import { UserNoticiaComponent } from './Pages/Noticia/user-noticia/user-noticia.
     JuegoRetoComponent,
     TriviaComponent,
     UserNoticiaComponent,
+    UserMedallaComponent,
+    UserNivelComponent,
+    UserRecompensaComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    DragDropModule,
     FormsModule,
     BrowserAnimationsModule,
     SharedModule,

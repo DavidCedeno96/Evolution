@@ -7,4 +7,5 @@ export interface Medalla {
   idCondicion: string;
   condicion: string;
   estado: number;
+  fechaCreacion: Date;
 }

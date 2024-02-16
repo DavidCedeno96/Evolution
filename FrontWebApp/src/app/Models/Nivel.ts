@@ -6,4 +6,5 @@ export interface Nivel {
   imagen: string;
   totalUsuarios: number;
   estado: number;
+  fechaCreacion: Date;
 }

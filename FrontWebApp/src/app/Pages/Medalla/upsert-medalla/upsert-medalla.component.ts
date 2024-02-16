@@ -55,6 +55,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
     idCondicion: '',
     condicion: '',
     estado: 0,
+    fechaCreacion: new Date(),
   };
 
   condicion: Condicion[] = [];

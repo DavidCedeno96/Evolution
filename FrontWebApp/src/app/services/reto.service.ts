@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { servicioURL } from '../Utils/Constants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Reto } from '../Models/Reto';
+import { Reto, Usuario_Reto } from '../Models/Reto';
 import { UsuarioService } from './usuario.service';
 
 @Injectable({
@@ -41,6 +41,19 @@ export class RetoService {
     return this.http.get<Reto[]>(`${this.apiURL}/buscar/${texto}`, {
       headers: headers,
     });
+  }
+
+  createUsuario_Reto(usuario_reto: Usuario_Reto): Observable<Usuario_Reto> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.post<Usuario_Reto>(
+      `${this.apiURL}/createUsuarioReto`,
+      usuario_reto,
+      {
+        headers: headers,
+      }
+    );
   }
 
   create(formData: FormData): Observable<FormData> {

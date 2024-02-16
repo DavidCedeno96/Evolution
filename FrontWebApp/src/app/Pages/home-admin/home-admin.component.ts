@@ -5,6 +5,7 @@ import { Noticia } from 'src/app/Models/Noticia';
 import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
+  DateFormat,
   GetImage,
   Loading,
   MsgError,
@@ -19,6 +20,7 @@ import { HomeService } from 'src/app/services/home.service';
 })
 export class HomeAdminComponent implements OnInit {
   load = Loading();
+  dateFormat = DateFormat();
   alertError = AlertError();
   getImage = GetImage();
 
@@ -27,6 +29,23 @@ export class HomeAdminComponent implements OnInit {
   retosCompletados: number = 0;
   medallasConseguidas: number = 0;
   recomensasReclamadas: number = 0;
+
+  indexMesesChart: number = 0;
+  meses: string[] = [
+    'enero',
+    'febrero',
+    'marzo',
+    'abril',
+    'mayo',
+    'junio',
+    'julio',
+    'agosto',
+    'septiembre',
+    'octubre',
+    'noviembre',
+    'diciembre',
+  ];
+  auxMeses: string[] = [];
 
   noticias: Noticia[] = [];
   usuarios: Usuario[] = [];
@@ -48,6 +67,14 @@ export class HomeAdminComponent implements OnInit {
           usuariosMasActivos,
         } = data;
         if (datasetList.error === 0) {
+          datasetList.lista.forEach((item: any) => {
+            if (item.data.length > this.indexMesesChart) {
+              this.indexMesesChart = item.data.length;
+            }
+          });
+          for (let i = 0; i < this.indexMesesChart; i++) {
+            this.auxMeses.push(this.meses[i]);
+          }
           this.lineChart(datasetList.lista);
         }
         if (noticiasEnTendencia.error === 0) {
@@ -80,20 +107,7 @@ export class HomeAdminComponent implements OnInit {
   // Son los puntos de todos los usuarios
   lineChart(datasetsList: any[]) {
     const data = {
-      labels: [
-        'enero',
-        'febrero',
-        'marzo',
-        'abril',
-        'mayo',
-        'junio',
-        'julio',
-        'agosto',
-        'septiembre',
-        'octubre',
-        'noviembre',
-        'diciembre',
-      ],
+      labels: this.auxMeses,
       datasets: datasetsList,
       /* [
         {

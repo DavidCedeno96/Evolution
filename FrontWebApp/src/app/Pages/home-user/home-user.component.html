@@ -57,15 +57,13 @@
     <div class="shadow-lg bg-white p-4 px-lg-5 rounded">
       <h5 class="mb-3 text-center txt text-primary">Mis Medallas</h5>
       <div class="row g-3 text-center">
-        <div class="col-12" *ngIf="medallas.length">
-          <img
-            *ngFor="let item of medallas"
-            [src]="getImage(item.imagen, 'medalla', 'default-medalla.jpg')"
-            class="rounded-circle img-thumbnail mx-2 mx-lg-3"
-            width="80"
-            alt="medalla"
-          />
-        </div>
+        <img
+          *ngFor="let item of medallas"
+          [src]="getImage(item.imagen, 'medalla', 'default-medalla.jpg')"
+          class="rounded-circle img-thumbnail mx-2 mx-lg-3"
+          width="80"
+          alt="medalla"
+        />
         <div class="col-12" *ngIf="!medallas.length">
           <span>Sin medallas</span>
         </div>
@@ -96,27 +94,25 @@
   <div class="col-12 col-md-6">
     <div class="shadow-lg bg-white p-4 px-lg-5 rounded">
       <h5 class="mb-3 text-center txt text-primary">Noticias</h5>
-
-      <div
-        class="border border-1 rounded p-2 mb-2"
-        *ngFor="let item of noticias"
-      >
-        <div class="row g-3 px-2 px-lg-5 align-items-center">
-          <div class="col-8 lh-sm pointer">
-            <span class="d-block fs-5 text-truncate">{{ item.titular }}</span>
-            <small class="text-black-50 fw-semibold">{{
-              dateFormat(item.fechaPublicacion)
-            }}</small>
+      <div class="text-center col-12" *ngIf="!noticias.length">
+        <span>Sin noticias</span>
+      </div>
+      <div class="card mb-2" *ngFor="let item of noticias">
+        <div class="card-body d-flex justify-content-between">
+          <div class="col-5 col-lg-7 col-xl-8 text-truncate">
+            {{ item.titular }}
           </div>
-          <div class="col-4 text-end text-truncate">
-            <span class="m-2 me-lg-3"
-              ><i class="fa-regular fa-thumbs-up me-1"></i
-              >{{ item.totalLikes }}</span
-            >
-            <span
-              ><i class="fa-regular fa-comments me-1"></i
-              >{{ item.totalComents }}</span
-            >
+          <div class="col-6 col-lg-4 col-xl-3">
+            <div class="row g-3">
+              <div class="col-6 text-end text-truncate">
+                <i class="fa-regular fa-thumbs-up me-1"></i
+                >{{ item.totalLikes }}
+              </div>
+              <div class="col-6 text-start text-truncate">
+                <i class="fa-regular fa-comments me-1"></i
+                >{{ item.totalComents }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -128,7 +124,10 @@
       <h5 class="mb-3 text-center txt text-primary">
         Últimos retos terminados
       </h5>
-      <table class="table">
+      <div class="text-center col-12" *ngIf="!retos.length">
+        <span>Sin retos</span>
+      </div>
+      <table class="table" *ngIf="retos.length">
         <thead>
           <tr>
             <th scope="col">Nombre</th>

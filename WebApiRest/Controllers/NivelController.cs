@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -28,6 +29,17 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> GetList([FromRoute] int estado)
         {
             NivelList response = await data.GetNivelList(estado);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("list")]
+        [Authorize]
+        public async Task<IActionResult> GetByIdUsuario()
+        {
+            Claim userClaim = User.FindFirst("id");
+            Usuario_NivelList response = await data.GetUsuarioNivelList(-1, new Guid(userClaim.Value));
+
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 

@@ -54,6 +54,7 @@ export class ViewNivelComponent implements OnInit {
       imagen: '',
       totalUsuarios: 0,
       estado: 0,
+      fechaCreacion: new Date(),
     },
   ];
 

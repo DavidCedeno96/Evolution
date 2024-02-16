@@ -52,6 +52,7 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
     cantDisponible: 0,
     cantCanje: 0,
     totalUsuarios: 0,
+    estado: 0,
   };
 
   constructor(

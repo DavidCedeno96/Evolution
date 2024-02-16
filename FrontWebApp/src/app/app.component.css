@@ -41,6 +41,10 @@
   box-shadow: none;
 }
 
+.menu {
+  overflow-y: auto;
+}
+
 .menu a {
   display: block;
   padding: 10px;
