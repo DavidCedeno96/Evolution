@@ -34,7 +34,7 @@ FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
 JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
     ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME
 WHERE 
-    tc.TABLE_NAME = 'Opcion' AND 
+    tc.TABLE_NAME = 'Usuario' AND 
     tc.CONSTRAINT_TYPE = 'UNIQUE'    
 
 ----
@@ -45,7 +45,7 @@ WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Inicio';
+WHERE tc.TABLE_NAME = 'empresa';
 
 ---
 SELECT @@VERSION;
@@ -113,9 +113,10 @@ exec sp_D_InicioByNoIds
 @id = ''
 
 -- USUARIO --------------------------------------------------------
---delete from Usuario
+-- delete from Usuario where idUsuario = '015E40DD-58CE-401E-A0A9-075874BC0B68'
+-- delete from Usuario where fechaCreacion > '2024-02-20'
 
-exec sp_B_Usuario		
+exec sp_B_Usuario
 @estado = -1,
 @error = '',
 @info = '',
@@ -135,7 +136,7 @@ exec sp_B_UsuarioByCorreo
 @id = ''
 
 exec sp_B_UsuarioByAll		
-@buscar = 'd/a',
+@buscar = 'david',
 @error = '',
 @info = '',
 @id = ''
@@ -152,6 +153,7 @@ exec sp_C_Usuario
 @nombre = 'Daniela',
 @apellido = 'Dias',
 @correo = 'dani@gmail.com',
+@idU  = '',
 @clave = @auxClave,
 @celular = '0998467221',
 @foto = '',
@@ -168,6 +170,7 @@ exec sp_U_Usuario
 @nombre = 'Elver',
 @apellido = 'Galarraga',
 @correo = 'elver.ga.larga@gmail.com',
+@idU = '',
 @clave = @auxClave,
 @celular = '1234567891',
 @foto = 'models.png',
@@ -179,8 +182,8 @@ exec sp_U_Usuario
 @id = ''
 
 exec sp_U_UsuarioByEstado
-@idUsuario = 'F42329D1-EDAA-4F2C-9AE1-8F026C92C842',
-@estado = 1,
+@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@estado = 0,
 @error = '',
 @info = '',
 @id = ''
@@ -204,6 +207,13 @@ exec sp_B_Area
 exec sp_B_AreaById		
 @idArea = 'C1DF8D3C-0069-468E-8811-A0F404F12819',
 @estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_AreaByNombre		
+@nombre = 'Call Center',
+@empresa = 'Dinamica Mercados',
 @error = '',
 @info = '',
 @id = ''
@@ -296,6 +306,12 @@ DELETE from Pais where idPais = 'B9CB4FD1-FF4F-4606-981C-AC7A6EAE3649'
 
 exec sp_B_Ciudad
 @estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_CiudadByNombre		
+@nombre = 'quito',
 @error = '',
 @info = '',
 @id = ''

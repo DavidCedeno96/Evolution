@@ -10,11 +10,13 @@ import {
   Loading,
   MsgError,
   MsgErrorForm,
+  SetUpsert,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import {
   ContrasenaInvalid,
+  exp_invalidos,
   exp_numeros,
   exp_palabras,
 } from 'src/app/Utils/RegularExpressions';
@@ -31,6 +33,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   contrasenaInvalid = ContrasenaInvalid();
+  setUpsert = SetUpsert();
 
   type: string = '';
   titulo: string = '';
@@ -53,6 +56,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
     nombre: '',
     apellido: '',
     correo: '',
+    id: '',
     celular: '',
     foto: '',
     idRol: '',
@@ -105,6 +109,14 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
       correo: [
         this.usuario.correo,
         [Validators.required, Validators.maxLength(60), Validators.email],
+      ],
+      id: [
+        this.usuario.id,
+        [
+          Validators.required,
+          Validators.maxLength(20),
+          Validators.pattern(exp_invalidos),
+        ],
       ],
       contrasena: [
         this.usuario.contrasena,
@@ -247,6 +259,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Creado');
           this.router.navigate(['/view-user']);
         } else if (campo !== '') {
           this.error = error;
@@ -273,6 +286,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Actualizado');
           this.router.navigate(['/view-user']);
         } else if (campo !== '') {
           this.error = error;
@@ -300,6 +314,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
     formData.append('nombre', this.usuario.nombre.trim());
     formData.append('apellido', this.usuario.apellido.trim());
     formData.append('correo', this.usuario.correo.trim());
+    formData.append('id', this.usuario.id.trim());
     formData.append('celular', this.usuario.celular.trim());
     formData.append('idRol', this.usuario.idRol);
     formData.append('idCiudad', this.usuario.idCiudad);

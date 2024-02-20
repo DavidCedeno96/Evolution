@@ -18,6 +18,8 @@ export const MsgElimindo: string = 'Registro eliminado';
 export const MsgEditado: string = 'Registro actualizado';
 export const MsgFormatoDescargado: string = 'Formato descargado';
 export const MsgOk: string = 'Proceso ejecutado';
+export const MsgActivado: string = 'Registro Activado';
+export const MsgDesactivado: string = 'Registro Desactivado';
 export const TitleErrorForm: string = 'Error';
 export const MsgErrorArchivo: string =
   'No se encuentran las cabeceras en el archivo';
@@ -29,6 +31,9 @@ export const MsgError: string =
   'Ha ocurrido un error con el servidor, intentalo más tarde o vuelve a iniciar sesión';
 export const MsgErrorConexion: string =
   'Ha ocurrido un error en la conexión, intentalo más tarde o recarga la página';
+
+export var UpsertMsg: string = '';
+export var Upsert: boolean = false;
 
 /* FUNCIONES */
 export const AlertError = () => {
@@ -86,6 +91,13 @@ export const ObjectInvalid = () => {
     }
 
     return null;
+  };
+};
+
+export const SetUpsert = () => {
+  return (isUpsert: boolean, msg: string) => {
+    Upsert = isUpsert;
+    UpsertMsg = msg;
   };
 };
 

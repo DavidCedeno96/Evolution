@@ -42,6 +42,7 @@ namespace WebApiRest.Data
                         Nombre = dr["nombre"].ToString(),
                         Apellido = dr["apellido"].ToString(),
                         Correo = dr["correo"].ToString(),
+                        Id = dr["id"].ToString(),
                         Celular = dr["celular"].ToString(),
                         Foto = dr["foto"].ToString(),
                         IdRol = dr["idRol"].ToString(),
@@ -109,6 +110,7 @@ namespace WebApiRest.Data
                         Nombre = dr["nombre"].ToString(),
                         Apellido = dr["apellido"].ToString(),
                         Correo = dr["correo"].ToString(),
+                        Id = dr["id"].ToString(),
                         Celular = dr["celular"].ToString(),
                         Foto = dr["foto"].ToString(),
                         IdRol = dr["idRol"].ToString(),
@@ -177,6 +179,7 @@ namespace WebApiRest.Data
                         Nombre = dr["nombre"].ToString(),
                         Apellido = dr["apellido"].ToString(),
                         Correo = dr["correo"].ToString(),
+                        Id = dr["id"].ToString(),
                         Celular = dr["celular"].ToString(),
                         Foto = dr["foto"].ToString(),
                         IdRol = dr["idRol"].ToString(),
@@ -244,6 +247,7 @@ namespace WebApiRest.Data
                         Nombre = dr["nombre"].ToString(),
                         Apellido = dr["apellido"].ToString(),
                         Correo = dr["correo"].ToString(),
+                        Id = dr["id"].ToString(),
                         Contrasena = decryptedText,
                         Celular = dr["celular"].ToString(),
                         Foto = dr["foto"].ToString(),
@@ -307,6 +311,7 @@ namespace WebApiRest.Data
                         Nombre = dr["nombre"].ToString(),
                         Apellido = dr["apellido"].ToString(),
                         Correo = dr["correo"].ToString(),
+                        Id = dr["id"].ToString(),
                         Celular = dr["celular"].ToString(),
                         Foto = dr["foto"].ToString(),
                         IdRol = dr["idRol"].ToString(),
@@ -341,7 +346,7 @@ namespace WebApiRest.Data
             }
 
             return item;
-        }
+        }        
 
         public async Task<Response> CreateUsuario(Usuario usuario)
         {
@@ -356,6 +361,7 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(usuario.Nombre));
             cmd.Parameters.AddWithValue("@apellido", WC.GetTrim(usuario.Apellido));
             cmd.Parameters.AddWithValue("@correo", WC.GetTrim(usuario.Correo));
+            cmd.Parameters.AddWithValue("@idU", WC.GetTrim(usuario.Id));
             cmd.Parameters.AddWithValue("@celular", WC.GetTrim(usuario.Celular));
             cmd.Parameters.AddWithValue("@foto", WC.GetTrim(usuario.Foto));
             cmd.Parameters.AddWithValue("@idRol", WC.GetTrim(usuario.IdRol));
@@ -404,6 +410,7 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(usuario.Nombre));
             cmd.Parameters.AddWithValue("@apellido", WC.GetTrim(usuario.Apellido));
             cmd.Parameters.AddWithValue("@correo", WC.GetTrim(usuario.Correo));
+            cmd.Parameters.AddWithValue("@idU", WC.GetTrim(usuario.Id));
             cmd.Parameters.AddWithValue("@celular", WC.GetTrim(usuario.Celular));
             cmd.Parameters.AddWithValue("@foto", WC.GetTrim(usuario.Foto));
             cmd.Parameters.AddWithValue("@idRol", WC.GetTrim(usuario.IdRol));

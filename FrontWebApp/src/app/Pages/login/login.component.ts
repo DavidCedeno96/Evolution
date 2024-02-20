@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     nombre: '',
     apellido: '',
     correo: '',
+    id: '',
     celular: '',
     foto: '',
     idRol: '',

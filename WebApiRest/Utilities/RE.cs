@@ -6,12 +6,12 @@ namespace WebApiRest.Utilities
     public static class RE
     {
         /*
-         * La clave debe:
-            Tener al menos 5 caracteres de longitud.
-            Contener al menos un número.
-            Contener al menos una letra mayúscula.
-            Contener al menos una letra minúscula.
-            Y solo los siguientes caracteres #@_-.
+         * La clave:
+            debe tener mínimo 5 caracteres y máximo 20
+            debe tener al menos una letra minúscula
+            debe tener al menos una letra mayúscula
+            debe tener la menos un número
+            debe tener al menos un carácter especial pero solo los siguientes @.-_#$
          */
 
         private static readonly string palabras = @"^[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ\s]+$";
@@ -19,7 +19,7 @@ namespace WebApiRest.Utilities
         private static readonly string celular = @"^\d{10}$";
         private static readonly string cedula = @"^\d{10,15}$";
         private static readonly string email = @"^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$";
-        private static readonly string clave = @"^(?=.*[A-Z]+)(?=.*[a-z]+)(?=.*\d+)[#@_\-\.a-zA-Z\d]{5,}$";
+        private static readonly string clave = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@\.\-_$#])[a-zA-Z\d@\.\-_$#]{5,20}$";
         private static readonly string invalid = @"^[^<>]+$";        
 
         public static bool ValidRE(string text, string nombrePatron)

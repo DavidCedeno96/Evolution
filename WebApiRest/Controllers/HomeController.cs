@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -19,7 +20,7 @@ namespace WebApiRest.Controllers
         readonly NoticiaData dataNoticia = new();
         readonly MedallaData dataMedalla  = new();
         readonly RetoData dataReto = new();
-        readonly NivelData dataNivel = new();
+        readonly NivelData dataNivel = new();        
 
         [HttpGet]
         [Route("list")]

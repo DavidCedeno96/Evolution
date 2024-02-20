@@ -31,6 +31,13 @@ namespace WebApiRest.Utilities
                 result.Campo = "correo";
                 validForm = false;
             }
+            if (!RE.ValidRE(usuario.Id, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "id único";
+                validForm = false;
+            }
             if (!RE.ValidRE(usuario.Contrasena, "clave"))
             {
                 result.Error = 1;

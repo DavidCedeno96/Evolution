@@ -1,0 +1,8 @@
+.form-check-input {
+  border-color: #c2c2c2;
+  box-shadow: none;
+}
+
+.form-check-input.is-invalid {
+  border-color: #f10909;
+}

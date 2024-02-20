@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Security.Cryptography;
 
 namespace WebApiRest.Utilities
 {
@@ -60,7 +61,6 @@ namespace WebApiRest.Utilities
             return "";
         }
 
-
         public static string GetHoraActual(DateTime dateTime)
         {
             int hora = dateTime.Hour;
@@ -107,6 +107,37 @@ namespace WebApiRest.Utilities
             }
 
             return false;
+        }
+
+        public static string GenerarContrasena()
+        {
+            Random random = new();
+
+            string caracteresPermitidos = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_#$";
+            int longitud = random.Next(5, 21);
+
+            char[] password = new char[longitud];
+
+            // Asegurar que hay al menos un carácter de cada tipo
+            password[0] = caracteresPermitidos[random.Next(26)]; // al menos una letra minúscula
+            password[1] = caracteresPermitidos[random.Next(26, 52)]; // al menos una letra mayúscula
+            password[2] = caracteresPermitidos[random.Next(52, 62)]; // al menos un número
+            password[3] = caracteresPermitidos[random.Next(62, 66)]; // al menos un carácter especial
+
+            // Rellenar el resto de la contraseña con caracteres aleatorios
+            for (int i = 4; i < longitud; i++)
+            {
+                password[i] = caracteresPermitidos[random.Next(caracteresPermitidos.Length)];
+            }
+
+            // Mezclar los caracteres para mayor aleatoriedad
+            for (int i = 0; i < longitud; i++)
+            {
+                int j = random.Next(i, longitud);
+                (password[j], password[i]) = (password[i], password[j]);
+            }
+
+            return new string(password);
         }
 
         public static string GetSatisfactorio()

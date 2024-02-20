@@ -86,6 +86,7 @@ create table Usuario(
 	fechaLogin datetime,
 	puntos int not null default 0,
 	creditos int not null default 0,
+	id varchar(20) unique not null
 );
 
 create table Nivel(

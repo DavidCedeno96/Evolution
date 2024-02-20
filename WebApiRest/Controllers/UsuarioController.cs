@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -15,6 +17,9 @@ namespace WebApiRest.Controllers
     public class UsuarioController : ControllerBase
     {
         readonly UsuarioData data = new();
+        readonly CiudadData dataCiudad = new();
+        readonly AreaData dataArea = new();
+
         readonly Settings settings = new();        
 
         private readonly IWebHostEnvironment _env;
@@ -144,6 +149,11 @@ namespace WebApiRest.Controllers
                 usuario.Foto = "";
             }
 
+            if (string.IsNullOrEmpty(usuario.Contrasena))
+            {
+                usuario.Contrasena = WC.GenerarContrasena();
+            }
+
             if (response.Error == 0)
             {
                 response = await data.CreateUsuario(usuario);
@@ -179,6 +189,11 @@ namespace WebApiRest.Controllers
                 usuario.Foto = "";
             }
 
+            if (string.IsNullOrEmpty(usuario.Contrasena))
+            {
+                usuario.Contrasena = WC.GenerarContrasena();
+            }
+
             if (response.Error == 0)
             {
                 usuario.IdRol = "jug";
@@ -189,6 +204,54 @@ namespace WebApiRest.Controllers
                     FileStream fileStream = new(rutaArchivo, FileMode.Create);
                     await archivo.CopyToAsync(fileStream);
                     await fileStream.DisposeAsync();
+                }
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpPut]
+        [Route("update")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Update([FromForm] IFormFile archivo, [FromForm] Usuario usuario)
+        {
+            Response response = VF.ValidarUsuario(usuario);
+            string rutaArchivo = "";
+
+            if (archivo != null && response.Error == 0)
+            {
+                response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+
+                usuario.Foto = archivo.FileName.Trim();
+            }
+            else
+            {
+                usuario.Foto = "";
+            }
+
+            if (response.Error == 0)
+            {
+                response = await data.UpdateUsuario(usuario);
+                if (response.Error == 0 && !rutaArchivo.Equals(""))
+                {
+                    string imagenAnterior = response.Info.Split(":")[1];
+
+                    //Aqui eliminamos el archivo anterior
+                    string rutaArchivoAnterior = WC.GetRutaImagen(_env, imagenAnterior, nombreCarpeta);
+                    if (System.IO.File.Exists(rutaArchivoAnterior))
+                    {
+                        System.IO.File.Delete(rutaArchivoAnterior);
+                    }
+
+                    //Aqui creamos una nueva imagen
+                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
+                    await archivo.CopyToAsync(fileStream);
+                    await fileStream.DisposeAsync();
+                }
+                if (response.Info.Contains("old_image"))
+                {
+                    response.Info = response.Info.Split(',')[0];
                 }
             }
 
@@ -296,54 +359,7 @@ namespace WebApiRest.Controllers
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }
-
-        [HttpPut]
-        [Route("update")]
-        [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Update([FromForm] IFormFile archivo, [FromForm] Usuario usuario)
-        {
-            Response response = VF.ValidarUsuario(usuario);
-            string rutaArchivo = "";
-
-            if (archivo != null && response.Error == 0)
-            {
-                response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
-                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
-
-                usuario.Foto = archivo.FileName.Trim();
-            }
-            else
-            {
-                usuario.Foto = "";
-            }
-
-            if (response.Error == 0)
-            {
-                response = await data.UpdateUsuario(usuario);
-                if (response.Error == 0 && !rutaArchivo.Equals(""))
-                {
-                    string imagenAnterior = response.Info.Split(":")[1];                    
-
-                    //Aqui eliminamos el archivo anterior
-                    string rutaArchivoAnterior = WC.GetRutaImagen(_env, imagenAnterior, nombreCarpeta);
-                    if (System.IO.File.Exists(rutaArchivoAnterior))
-                    {
-                        System.IO.File.Delete(rutaArchivoAnterior);
-                    }
-
-                    //Aqui creamos una nueva imagen
-                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
-                    await archivo.CopyToAsync(fileStream);
-                    await fileStream.DisposeAsync();
-                }
-                if (response.Info.Contains("old_image")) {
-                    response.Info = response.Info.Split(',')[0];
-                }
-            }
-
-            return StatusCode(StatusCodes.Status200OK, new { response });
-        }
+        }        
 
         [HttpPut]
         [Route("updateEstado")]
@@ -351,6 +367,169 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> Update([FromBody] Usuario usuario)
         {
             Response response = await data.UpdateUsuarioByEstado(usuario);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+
+        [HttpPost]
+        [Route("import")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> ImportList([FromForm] IFormFile archivo)
+        {
+            Response response = new();
+
+            List<Usuario> lista = new();
+
+            if (archivo != null)
+            {
+                Stream stream = archivo.OpenReadStream();
+                if (Path.GetExtension(archivo.FileName).Equals(".xlsx"))
+                {
+                    IWorkbook archivoExcel = new XSSFWorkbook(stream);
+                    ISheet hojaExcel = archivoExcel.GetSheetAt(0);
+                    int cantidadFilas = hojaExcel.LastRowNum + 1;
+
+                    for (int i = 0; i < cantidadFilas; i++)
+                    {
+                        if (i > 0)
+                        {
+                            IRow filaEncabezado = hojaExcel.GetRow(0);
+                            IRow filaData = hojaExcel.GetRow(i);
+                            Usuario usuario = new();
+                            string empresa = "";
+
+                            for (int j = 0; j < 10; j++)
+                            {
+                                try
+                                {
+                                    if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("nombre"))
+                                    {
+                                        usuario.Nombre = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("apellido"))
+                                    {
+                                        usuario.Apellido = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("id único"))
+                                    {
+                                        usuario.Id = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("celular"))
+                                    {
+                                        usuario.Celular = filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString();
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("correo electrónico"))
+                                    {
+                                        usuario.Correo = filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString();
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("contraseña"))
+                                    {
+                                        string clave = filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString();
+                                        if(!string.IsNullOrEmpty(clave)) {
+                                            usuario.Contrasena = clave;
+                                        }
+                                        else
+                                        {
+                                            usuario.Contrasena = WC.GenerarContrasena();
+                                        }
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("rol"))
+                                    {
+                                        string rol = filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString();
+                                        if (rol.ToLower() == "administrador")
+                                        {
+                                            usuario.IdRol = "adm";
+                                        }
+                                        else
+                                        {
+                                            usuario.IdRol = "jug";
+                                        }                                        
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("ciudad"))
+                                    {
+                                        string ciudad = filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString();
+                                        if (!string.IsNullOrEmpty(ciudad))
+                                        {
+                                            CiudadItem result = await dataCiudad.GetCiudad(ciudad);
+                                            if(result.Error == 0)
+                                            {
+                                                usuario.IdCiudad = result.Ciudad.IdCiudad.ToString();
+                                            }
+                                            else
+                                            {
+                                                usuario.IdCiudad = "";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            usuario.IdCiudad = "";
+                                        }
+
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("empresa"))
+                                    {
+                                        empresa = filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString();
+                                    }
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("area"))
+                                    {
+                                        string area = filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString();
+                                        if (!string.IsNullOrEmpty(area))
+                                        {
+                                            AreaItem result = await dataArea.GetArea(area, empresa);
+                                            if(result.Error == 0) { 
+                                                usuario.IdArea = result.Area.IdArea.ToString();
+                                            }
+                                            else
+                                            {
+                                                usuario.IdArea = "";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            usuario.IdArea = "";
+                                        }
+                                    }
+                                }
+                                catch (Exception) { }
+                            }
+
+                            if (!string.IsNullOrEmpty(usuario.Nombre.Trim()) && !string.IsNullOrEmpty(usuario.Apellido.Trim()) && !string.IsNullOrEmpty(usuario.Id.Trim()) && !string.IsNullOrEmpty(usuario.Correo.Trim()) && !string.IsNullOrEmpty(usuario.IdRol.Trim()))
+                            {
+                                usuario.Foto = "";
+                                lista.Add(usuario);
+                            }
+                        }
+                    }
+
+                    if (lista.Count > 0)
+                    {
+                        foreach (var item in lista)
+                        {
+                            response = VF.ValidarUsuario(item);
+                            if (response.Error == 0)
+                            {
+                                response = await data.CreateUsuario(item);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        response.Error = 1;
+                        response.Info = "el Archivo no tiene registros válidos";
+                    }
+                }
+                else
+                {
+                    response.Error = 1;
+                    response.Info = "Archivo no permitido";
+                }
+            }
+            else
+            {
+                response.Error = 1;
+                response.Info = "Falta el archivo";
+            }
+
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
     }

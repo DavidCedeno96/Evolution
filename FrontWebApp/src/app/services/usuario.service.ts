@@ -18,6 +18,12 @@ export class UsuarioService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
+  getArchivo(): Observable<Blob> {
+    return this.http.get('assets/archivos/FormatoUsuarios.xlsx', {
+      responseType: 'blob',
+    });
+  }
+
   getList(estado: number): Observable<Usuario[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.getToken()}`,
@@ -72,6 +78,15 @@ export class UsuarioService {
     });
   }
 
+  updateEstado(usuario: Usuario): Observable<Usuario> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.put<Usuario>(`${this.apiURL}/updateEstado`, usuario, {
+      headers: headers,
+    });
+  }
+
   /* register(formData: FormData): Observable<FormData> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
@@ -80,6 +95,15 @@ export class UsuarioService {
       headers: headers,
     });
   } */
+
+  enviarArchivo(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.post<FormData>(`${this.apiURL}/import`, formData, {
+      headers: headers,
+    });
+  }
 
   registerView(): Observable<any> {
     return this.http.get<any>(`${this.apiURL}/registerView`);

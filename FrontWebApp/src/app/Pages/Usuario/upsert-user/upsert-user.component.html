@@ -5,7 +5,7 @@
     </h5>
     <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
       <div class="row g-3">
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
           <label for="nombre" class="form-label">Nombre*</label>
           <input
             type="text"
@@ -41,7 +41,7 @@
             </span>
           </div>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
           <label for="apellido" class="form-label">Apellido*</label>
           <input
             type="text"
@@ -77,7 +77,40 @@
             </span>
           </div>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
+          <label for="idU" class="form-label">Id único*</label>
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('id')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="id"
+            id="idU"
+          />
+          <div class="invalid-feedback" *ngIf="formulario.get('id')?.errors">
+            <span
+              class="d-block"
+              *ngIf="formulario.get('id')?.hasError('maxlength')"
+            >
+              Máximo 20 caracteres
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('id')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('id')?.hasError('pattern')"
+            >
+              Contiene caracteres inválidos
+            </span>
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
           <label for="celular" class="form-label">Celular</label>
           <input
             type="text"
@@ -177,9 +210,9 @@
                 *ngIf="
                   formulario.get('contrasena')?.hasError('contrasenaInvalid')
                 "
-                >Debe tener al menos 5 caracteres una letra minuscula,
-                mayuscula, un número y solo los siguientes caracteres
-                #@_-.</span
+                >Debe tener 5 caracteres de longitud y máximo 20, una letra
+                minúscula, mayúscula, un número, sin espacios y solo los
+                siguientes caracteres @.-_#$</span
               >
               <span
                 *ngIf="

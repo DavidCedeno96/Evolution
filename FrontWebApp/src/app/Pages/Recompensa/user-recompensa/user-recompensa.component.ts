@@ -53,6 +53,7 @@ export class UserRecompensaComponent implements OnInit, AfterViewInit {
     nombre: '',
     apellido: '',
     correo: '',
+    id: '',
     celular: '',
     foto: '',
     idRol: '',

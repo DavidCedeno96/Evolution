@@ -18,4 +18,10 @@
         public int Error { get; set; }
         public List<Home> Lista { get; set; }
     }
+
+
+    public class Preuba
+    {
+        public string Text { get; set; }        
+    }
 }

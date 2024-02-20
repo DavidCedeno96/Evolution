@@ -12,7 +12,7 @@
           </div>
         </a>
       </div>
-      <!-- <div class="col-6 col-md-6 d-grid d-md-block">
+      <div class="col-6 col-md-6 d-grid d-md-block">
         <button
           class="btn btn-tertiary icon"
           data-bs-toggle="modal"
@@ -22,7 +22,7 @@
             <mat-icon svgIcon="importar"></mat-icon><span>Importar</span>
           </div>
         </button>
-      </div> -->
+      </div>
     </div>
 
     <!-- Modal -->
@@ -44,6 +44,7 @@
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              #closeModal
             ></button>
           </div>
           <div class="modal-body">
@@ -52,56 +53,62 @@
               <ol>
                 <li>
                   Descargar el formato (archivo excel).
-                  <button class="btn btn-primary btn-sm mx-2 px-4">
+                  <button
+                    class="btn btn-primary btn-sm mx-2 px-4"
+                    (click)="exportArchivo()"
+                  >
                     Descargar
                   </button>
                 </li>
+                <li>Los campos con (*) son obligatorios</li>
                 <li>
-                  Los campos con (*) son obligatorios, caso contrario no se
-                  guardará el usuario
+                  En los campos Nombre y Apellido, Correo, Id único y Celular no
+                  deben de repetirse porque son campos únicos
                 </li>
                 <li>
-                  La contraseña debe tener mínimo 5 caracteres, una letra
-                  mayuscula, minuscula, un número, y solo los siguientes
-                  caracteres #@_-. o no se guardará el usuario
+                  La contraseña Debe tener 5 caracteres de longitud y máximo 20,
+                  una letra minúscula, mayúscula, un número, sin espacios y solo
+                  los siguientes caracteres @.-_#$
                 </li>
                 <li>
-                  En los campos de Ciudad y Area tiene que estar bien escrito
-                  tal como se creó en la configuración, caso contrario no se
-                  guardará la Ciudad o Area
+                  En los campos de Ciudad, Empresa y Area tiene que estar bien
+                  escrito tal como se creó en la configuración, caso contrario
+                  no se guardará la Ciudad o Area
                 </li>
-                <li>No se aceptan los caracteres &#60;, &#62; o =</li>
+                <li>
+                  No se aceptan los caracteres &#60;, &#62; en ningún campo
+                </li>
+                <li>
+                  Si no se cumplen las instrucciones mencionadas no se guardará
+                  el usuario
+                </li>
               </ol>
             </div>
             <form class="row g-3 mb-3">
               <div class="col-12">
-                <label
-                  for="archivoExcel"
-                  class="form-label ms-2"
-                  style="font-weight: bold; color: var(--color-texto2)"
-                  >Archivo</label
+                <label for="archivoExcel" class="form-label ms-2 fw-medium"
+                  >Archivo*</label
                 >
                 <input
                   type="file"
-                  class="form-control is-invalid"
+                  class="form-control {{ errorArchivo ? 'is-invalid' : '' }}"
                   id="archivoExcel"
                   #valueArchivo
                   accept=".xlsx"
-                  required
+                  (change)="onFileSelected($event)"
                 />
-                <small class="text-danger ms-2">error</small>
+                <div class="invalid-feedback">{{ info }}</div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
+              class="btn btn-success"
+              (click)="importArchivo()"
             >
-              Close
+              Guardar
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -157,21 +164,22 @@
                   />
                 </div>
                 <div class="col-12 col-md-4">
-                  <h5 class="txt text-secondary">
+                  <h5 class="txt text-secondary text-truncate">
                     {{ usuario.nombre }} {{ usuario.apellido }}
                   </h5>
                   <div class="flex align-items-center gap-3">
-                    <span class="d-block">
+                    <span class="d-block text-truncate">
                       {{ usuario.correo }}
+                    </span>
+                    <span class="d-block text-truncate">
+                      {{ usuario.id }}
                     </span>
                     <span
                       class="d-block {{
-                        usuario.idRol === 'adm'
-                          ? 'text-primary'
-                          : 'text-success'
+                        usuario.estado ? 'text-success' : 'text-danger'
                       }}"
                     >
-                      {{ usuario.rol }}
+                      {{ usuario.estado ? "Activado" : "Desactivado" }}
                     </span>
                   </div>
                 </div>
@@ -185,21 +193,27 @@
                       </span>
                     </div>
                     <div>
-                      <strong>Pais:</strong>
-                      <span class="">
-                        {{ usuario.pais }}
-                      </span>
-                    </div>
-                    <div>
                       <strong>Ciudad:</strong>
                       <span class="">
                         {{ usuario.ciudad }}
                       </span>
                     </div>
                     <div>
-                      <strong>Empresa:</strong>
+                      <strong>Area:</strong>
                       <span class="">
-                        {{ usuario.empresa }}
+                        {{ usuario.area }}
+                      </span>
+                    </div>
+                    <div>
+                      <strong>Rol:</strong>
+                      <span
+                        class="{{
+                          usuario.idRol === 'adm'
+                            ? 'text-warning'
+                            : 'text-primary'
+                        }}"
+                      >
+                        {{ usuario.rol }}
                       </span>
                     </div>
                   </div>
@@ -231,13 +245,21 @@
                           >Editar</a
                         >
                       </li>
-                      <!-- <li>
+                      <li *ngIf="usuario.estado">
                         <a
-                          class="dropdown-item pointer"
-                          (click)="eliminar(usuario.idUsuario)"
-                          ><i class="fa-solid fa-trash-can me-2"></i>Eliminar</a
+                          class="dropdown-item pointer text-danger"
+                          (click)="setEstado(usuario.idUsuario, 0)"
+                          ><i class="fa-solid fa-user-slash me-2"></i
+                          >Desactivar</a
                         >
-                      </li> -->
+                      </li>
+                      <li *ngIf="!usuario.estado">
+                        <a
+                          class="dropdown-item pointer text-success"
+                          (click)="setEstado(usuario.idUsuario, 1)"
+                          ><i class="fa-solid fa-user-check me-2"></i>Activar</a
+                        >
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -249,3 +271,5 @@
     </div>
   </div>
 </div>
+
+<p-toast [styleClass]="'col-10 col-md-6 col-lg-3'"></p-toast>
