@@ -102,28 +102,28 @@
 
     <!-- buscador -->
     <form
-      class="row g-3 mb-1"
+      class="d-md-flex w-100"
       [formGroup]="formulario"
       (ngSubmit)="submitBuscar()"
     >
-      <div class="col-12 col-md-8">
-        <div class="input-group">
-          <span class="icon-left">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </span>
-          <input
-            type="text"
-            class="form-control icon"
-            placeholder="buscar..."
-            formControlName="buscar"
-            (input)="defaultList($event)"
-          />
-        </div>
+      <div class="input-group flex-grow-1 me-md-3 mb-3 mb-md-0">
+        <span class="icon-left">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control icon"
+          placeholder="Buscar..."
+          formControlName="buscar"
+          (input)="defaultList($event)"
+        />
       </div>
-      <div class="col-12 col-md-3 d-grid d-md-block">
+      <div class="d-grid">
         <button type="submit" class="btn btn-success">Buscar</button>
       </div>
     </form>
+    <!-- Fin buscador -->
+
     <!-- Noticias -->
     <div class="mb-2 mb-md-4">
       <p-dataView

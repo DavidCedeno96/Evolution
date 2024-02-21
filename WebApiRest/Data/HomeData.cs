@@ -1,8 +1,7 @@
-﻿using System.Data.SqlClient;
-using System.Data;
+﻿using System.Data;
+using System.Data.SqlClient;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
-using NPOI.POIFS.Crypt.Dsig;
 
 namespace WebApiRest.Data
 {

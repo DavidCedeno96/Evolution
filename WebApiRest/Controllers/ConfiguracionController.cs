@@ -28,27 +28,30 @@ namespace WebApiRest.Controllers
         {
             ConfiguracionList response = await data.GetConfiguracionList();
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }
-
-        //[HttpPost]
-        //[Route("create")]
-        //[Authorize(Roles = "adm,sadm")]
-        //public async Task<IActionResult> Create([FromBody] Configuracion configuracion)
-        //{
-        //    Response response = VF.ValidarConfiguracion(configuracion);
-
-        //    if (response.Error == 0)
-        //    {
-        //        response = await data.CreateConfiguracion(configuracion);
-        //    }
-
-        //    return StatusCode(StatusCodes.Status200OK, new { response });
-        //}
+        }        
 
         [HttpPut]
         [Route("update")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Update([FromBody] List<Configuracion> configuracion)
+        public async Task<IActionResult> UpdateItem([FromBody] Configuracion configuracion)
+        {
+            Response response = VF.ValidarConfiguracion(configuracion);
+            if (response.Error == 0)
+            {                
+                response = await data.UpdateConfiguracion(configuracion);
+                if (response.Info.Contains("old_value"))
+                {
+                    response.Info = response.Info.Split(',')[0];
+                }
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpPut]
+        [Route("updateList")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> UpdateList([FromBody] List<Configuracion> configuracion)
         {
             Response response = new();
 

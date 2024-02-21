@@ -19,6 +19,7 @@ namespace WebApiRest.Controllers
         readonly UsuarioData data = new();
         readonly CiudadData dataCiudad = new();
         readonly AreaData dataArea = new();
+        readonly ConfiguracionData dataConfig = new();
 
         readonly Settings settings = new();        
 
@@ -172,9 +173,10 @@ namespace WebApiRest.Controllers
         [HttpPost]
         [Route("register")]
         [Authorize]
-        public async Task<IActionResult> Register([FromForm] IFormFile archivo, [FromForm] Usuario usuario)
+        public async Task<IActionResult> Register([FromForm] IFormFile archivo, [FromForm] Usuario usuario, [FromForm] string codigoRegistro)
         {
             Response response = VF.ValidarUsuario(usuario);
+            ConfiguracionList responseConfig = await dataConfig.GetConfiguracionList(codigoRegistro);
             string rutaArchivo = "";
 
             if (archivo != null && response.Error == 0)
@@ -192,9 +194,9 @@ namespace WebApiRest.Controllers
             if (string.IsNullOrEmpty(usuario.Contrasena))
             {
                 usuario.Contrasena = WC.GenerarContrasena();
-            }
+            }            
 
-            if (response.Error == 0)
+            if (response.Error == 0 && responseConfig.Error == 0)
             {
                 usuario.IdRol = "jug";
                 response = await data.CreateUsuario(usuario);

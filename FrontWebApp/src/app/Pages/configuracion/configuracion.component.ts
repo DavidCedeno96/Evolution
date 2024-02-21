@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
@@ -25,6 +31,7 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 import { PaisService } from 'src/app/services/pais.service';
 import { ConfigInicioList } from 'src/app/Utils/DefaultLists';
 import { HomeService } from 'src/app/services/home.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-configuracion',
@@ -32,7 +39,7 @@ import { HomeService } from 'src/app/services/home.service';
   styleUrls: ['./configuracion.component.css'],
   providers: [MessageService],
 })
-export class ConfiguracionComponent implements OnInit {
+export class ConfiguracionComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   getImage = GetImage();
@@ -51,6 +58,8 @@ export class ConfiguracionComponent implements OnInit {
   verErrorsInputsImage: boolean = false;
   verErrorsInputsCampo: boolean = false;
 
+  idUsuario: string = '';
+
   imgLogin!: File;
   previewLogin: string = '';
 
@@ -67,12 +76,14 @@ export class ConfiguracionComponent implements OnInit {
   formColor!: FormGroup;
   formImages!: FormGroup;
   formCampos!: FormGroup;
+  formCodigoRegistro!: FormGroup;
 
   configInicioItems: ConfigInicio[] = ConfigInicioList;
   configInicioItemsJug: ConfigInicio[] = [];
   configInicioItemsAdm: ConfigInicio[] = [];
   configColores: Configuracion[] = [];
   configImages: Configuracion[] = [];
+  configLlave: Configuracion[] = [];
 
   paises: Pais[] = [];
   ciudades: Ciudad[] = [];
@@ -118,6 +129,7 @@ export class ConfiguracionComponent implements OnInit {
     private ciudadService: CiudadService,
     private empresaService: EmpresaService,
     private areaService: AreaService,
+    private usuarioService: UsuarioService,
     private adicionalServicio: AdicionalService,
     private configuracionService: ConfiguracionService,
     private homeService: HomeService,
@@ -160,13 +172,21 @@ export class ConfiguracionComponent implements OnInit {
       homeImage: [''],
       footerImage: [''],
     });
+
+    this.formCodigoRegistro = formBuilder.group({
+      llave: [''],
+    });
   }
 
   ngOnInit(): void {
     this.loading(true, false);
-    this.cargarColores();
+    this.cargarConfig();
     this.cargarCampos();
     this.cargarInicio();
+  }
+
+  ngAfterViewInit(): void {
+    this.idUsuario = this.usuarioService.getIdUsuario();
   }
 
   config(index: number) {
@@ -181,7 +201,7 @@ export class ConfiguracionComponent implements OnInit {
     });
   }
 
-  cargarColores() {
+  cargarConfig() {
     this.configuracionService.getList().subscribe({
       next: (data: any) => {
         let { error, info, lista } = data.response;
@@ -192,6 +212,10 @@ export class ConfiguracionComponent implements OnInit {
 
           this.configImages = lista.filter((item: Configuracion) => {
             return item.tipo === 'imagen';
+          });
+
+          this.configLlave = lista.filter((item: Configuracion) => {
+            return item.tipo === 'llave';
           });
 
           this.formColor.patchValue({
@@ -217,6 +241,10 @@ export class ConfiguracionComponent implements OnInit {
             homeImage: this.configImages[1].valor,
             footerImage: this.configImages[2].valor,
           });
+
+          this.formCodigoRegistro.patchValue({
+            llave: this.configLlave[0].valor,
+          });
         } else {
           this.alertError(TitleErrorForm, info);
         }
@@ -240,7 +268,7 @@ export class ConfiguracionComponent implements OnInit {
       error: (e) => {
         console.error(e);
         if (e.status === 401 || e.status === 403) {
-          //this.router.navigate(['/']);
+          this.router.navigate(['/']);
         } else {
           this.alertError(TitleError, MsgError);
         }
@@ -269,7 +297,7 @@ export class ConfiguracionComponent implements OnInit {
       error: (e) => {
         console.error(e);
         if (e.status === 401 || e.status === 403) {
-          //this.router.navigate(['/']);
+          this.router.navigate(['/']);
         } else {
           this.alertError(TitleError, MsgError);
         }
@@ -355,7 +383,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              //this.router.navigate(['/']);
+              this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -379,7 +407,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              //this.router.navigate(['/']);
+              this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -403,7 +431,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              //this.router.navigate(['/']);
+              this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -427,7 +455,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              //this.router.navigate(['/']);
+              this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -456,7 +484,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              //this.router.navigate(['/']);
+              this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -480,7 +508,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              //this.router.navigate(['/']);
+              this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -504,7 +532,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              //this.router.navigate(['/']);
+              this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -528,7 +556,7 @@ export class ConfiguracionComponent implements OnInit {
           error: (e) => {
             console.error(e);
             if (e.status === 401 || e.status === 403) {
-              //this.router.navigate(['/']);
+              this.router.navigate(['/']);
             } else {
               this.alertError(TitleError, MsgError);
               this.loading(false, false);
@@ -558,7 +586,7 @@ export class ConfiguracionComponent implements OnInit {
         error: (e) => {
           console.error(e);
           if (e.status === 401 || e.status === 403) {
-            //this.router.navigate(['/']);
+            this.router.navigate(['/']);
           } else {
             this.alertError(TitleError, MsgError);
             this.loading(false, false);
@@ -575,7 +603,7 @@ export class ConfiguracionComponent implements OnInit {
   updateColor() {
     this.loading(true, false);
     this.setDataColor();
-    this.configuracionService.update(this.configColores).subscribe({
+    this.configuracionService.updateList(this.configColores).subscribe({
       next: (data: any) => {
         let { error, info } = data.response;
         if (error === 0) {
@@ -588,7 +616,7 @@ export class ConfiguracionComponent implements OnInit {
       error: (e) => {
         console.error(e);
         if (e.status === 401 || e.status === 403) {
-          //this.router.navigate(['/']);
+          this.router.navigate(['/']);
         } else {
           this.alertError(TitleError, MsgError);
           this.loading(false, false);
@@ -635,7 +663,36 @@ export class ConfiguracionComponent implements OnInit {
       error: (e) => {
         console.error(e);
         if (e.status === 401 || e.status === 403) {
-          //this.router.navigate(['/']);
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+          this.loading(false, false);
+        }
+      },
+    });
+  }
+
+  updateCodigo() {
+    this.loading(true, false);
+    this.setDataCodigo();
+    this.configuracionService.update(this.configLlave[0]).subscribe({
+      next: (data: any) => {
+        let { info, error } = data.response;
+        if (error === 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: MsgOk,
+            detail: 'Configuración Guardada',
+          });
+        } else {
+          this.alertError(TitleErrorForm, info);
+        }
+        this.loading(false, false);
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
         } else {
           this.alertError(TitleError, MsgError);
           this.loading(false, false);
@@ -764,6 +821,15 @@ export class ConfiguracionComponent implements OnInit {
     this.configColores[14].valor = this.formColor.get([
       'textoMenuItemActive',
     ])?.value;
+
+    this.configColores.forEach((item) => {
+      item.idUsuario = this.idUsuario;
+    });
+  }
+
+  setDataCodigo() {
+    this.configLlave[0].valor = this.formCodigoRegistro.get(['llave'])?.value;
+    this.configLlave[0].idUsuario = this.idUsuario;
   }
 
   cambiarColor(e: Event, propiedad: string) {

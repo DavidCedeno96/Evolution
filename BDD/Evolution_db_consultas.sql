@@ -12,7 +12,7 @@ SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES
    WHERE ROUTINE_TYPE = 'PROCEDURE'
    ORDER BY ROUTINE_NAME 
 
----
+--- TRIGGERS
 SELECT
     tr.name AS TriggerName,
     tr.object_id AS TriggerObjectId,
@@ -34,7 +34,7 @@ FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
 JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
     ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME
 WHERE 
-    tc.TABLE_NAME = 'Usuario' AND 
+    tc.TABLE_NAME = 'configuracion' AND 
     tc.CONSTRAINT_TYPE = 'UNIQUE'    
 
 ----
@@ -42,10 +42,11 @@ SELECT *
 FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
 WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
 
+
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'empresa';
+WHERE tc.TABLE_NAME = 'configuracion';
 
 ---
 SELECT @@VERSION;
@@ -302,7 +303,7 @@ exec sp_U_Pais
 
 -- Ciudad -------------------------------------------------------- 
 select * from Pais
-DELETE from Pais where idPais = 'B9CB4FD1-FF4F-4606-981C-AC7A6EAE3649'
+--DELETE from Pais where idPais = 'B9CB4FD1-FF4F-4606-981C-AC7A6EAE3649'
 
 exec sp_B_Ciudad
 @estado = -1,
@@ -670,7 +671,15 @@ exec sp_C_Usuario_RedSocial
 @id = ''
 
 -- Configuracion --------------------------------------------------------
+select * from Configuracion where tipo = 'imagen'
+
 exec sp_B_Configuracion
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_ConfiguracionByValor
+@valor = '',
 @error = '',
 @info = '',
 @id = ''
@@ -679,11 +688,11 @@ exec sp_B_Configuracion
 --update Configuracion set valor = null where idConfig = 'E21410F4-491B-4E5D-A639-FE5C0E70278D'
 
 exec sp_C_Configuracion
-@tipo = 'imagen',
+@tipo = 'llave',
 @propiedad = '',
-@nombre = 'footer',
-@valor = '',
-@descripcion = 'Esta es la imagen que esta en el footer',
+@nombre = 'codigo de registro',
+@valor = 'abc-123',
+@descripcion = 'Este es el código para que el usuario pueda registrarse en el sitio web',
 @idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
 @error = '',
 @info = '',
@@ -691,11 +700,7 @@ exec sp_C_Configuracion
 
 exec sp_U_Configuracion
 @idConfig = '5DFF0459-133F-4EAF-889A-8B2E5557184B',
-@tipo = 'color',
-@propiedad = '--TxtMenuItem-active',
-@nombre = 'texto menu item active',
 @valor = '#FFFFFF',
-@descripcion = 'Es para el texto del item del menu cuando esta en active y hover',
 @idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
 @error = '',
 @info = '',

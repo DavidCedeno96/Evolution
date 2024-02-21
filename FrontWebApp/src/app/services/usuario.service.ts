@@ -87,14 +87,14 @@ export class UsuarioService {
     });
   }
 
-  /* register(formData: FormData): Observable<FormData> {
+  register(formData: FormData): Observable<FormData> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
-    });    
+      Authorization: `Bearer ${this.getToken()}`,
+    });
     return this.http.post<FormData>(`${this.apiURL}/register`, formData, {
       headers: headers,
     });
-  } */
+  }
 
   enviarArchivo(formData: FormData): Observable<FormData> {
     const headers = new HttpHeaders({

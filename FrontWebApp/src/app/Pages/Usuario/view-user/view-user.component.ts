@@ -232,7 +232,7 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
         });
       },
       error: (e) => {
-        console.log(e);
+        console.error(e);
         this.alertError(TitleError, MsgError);
         this.loading(false, false);
       },

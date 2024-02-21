@@ -25,12 +25,25 @@ export class ConfiguracionService {
     });
   }
 
-  update(configuracion: Configuracion[]): Observable<Configuracion[]> {
+  update(configuracion: Configuracion): Observable<Configuracion> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.put<Configuracion>(
+      `${this.apiURL}/update`,
+      configuracion,
+      {
+        headers: headers,
+      }
+    );
+  }
+
+  updateList(configuracion: Configuracion[]): Observable<Configuracion[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
     return this.http.put<Configuracion[]>(
-      `${this.apiURL}/update`,
+      `${this.apiURL}/updateList`,
       configuracion,
       {
         headers: headers,

@@ -755,6 +755,31 @@
         </div>
       </div>
       <!-- Fin Modal -->
+
+      <div class="col-12">
+        <form
+          class="d-md-flex w-100"
+          [formGroup]="formCodigoRegistro"
+          (ngSubmit)="updateCodigo()"
+        >
+          <div class="flex-grow-1 me-md-3 mb-3 mb-md-0">
+            <label for="codRerUser" class="form-label"
+              >Código de registro de usuario</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              formControlName="llave"
+              id="codRerUser"
+            />
+          </div>
+          <div class="d-grid d-md-flex align-items-end">
+            <button type="submit" class="btn btn-success">
+              Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
