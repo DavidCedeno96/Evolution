@@ -17,10 +17,7 @@
             formControlName="nombre"
             id="noti-Tit"
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('nombre')?.errors"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('nombre')?.hasError('maxlength')"
@@ -56,10 +53,7 @@
             rows="4"
             id="noti-desc"
           ></textarea>
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('descripcion')?.errors || error"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('descripcion')?.hasError('maxlength')"

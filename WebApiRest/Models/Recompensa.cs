@@ -33,5 +33,15 @@
     {
         public Guid IdRecompensa { get; set; }
         public Guid IdUsuario { get; set; }
+        public string Nombre { get; set; }
+        public string Imagen { get; set; }
+        public int TotalUsuarios { get; set; }
+    }
+
+    public class Usuario_RecompensalList
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public List<Usuario_Recompensa> Lista { get; set; }
     }
 }

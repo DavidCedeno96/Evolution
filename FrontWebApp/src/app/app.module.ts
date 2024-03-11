@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { CommonModule, DatePipe } from '@angular/common';
+
 // Este es para la apiRest
 import { HttpClientModule } from '@angular/common/http';
 
@@ -55,6 +57,9 @@ import { UserMedallaComponent } from './Pages/Medalla/user-medalla/user-medalla.
 import { UserNivelComponent } from './Pages/Nivel/user-nivel/user-nivel.component';
 import { UserRecompensaComponent } from './Pages/Recompensa/user-recompensa/user-recompensa.component';
 import { HomeComponent } from './Pages/home/home.component';
+import { HomeViewsComponent } from './Components/home-views/home-views.component';
+import { AsigUserRetoComponent } from './Pages/Reto/asig-user-reto/asig-user-reto.component';
+import { RedSocialComponent } from './Pages/red-social/red-social.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +94,9 @@ import { HomeComponent } from './Pages/home/home.component';
     UserNivelComponent,
     UserRecompensaComponent,
     HomeComponent,
+    HomeViewsComponent,
+    AsigUserRetoComponent,
+    RedSocialComponent,
   ],
   imports: [
     BrowserModule,
@@ -106,6 +114,7 @@ import { HomeComponent } from './Pages/home/home.component';
     PaginatorModule,
     ConfirmDialogModule,
     ToastModule,
+    CommonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -5,7 +5,6 @@ import { Noticia } from 'src/app/Models/Noticia';
 import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
-  DateFormat,
   GetImage,
   Loading,
   MsgError,
@@ -20,7 +19,6 @@ import { HomeService } from 'src/app/services/home.service';
 })
 export class HomeAdminComponent implements OnInit {
   load = Loading();
-  dateFormat = DateFormat();
   alertError = AlertError();
   getImage = GetImage();
 
@@ -58,7 +56,7 @@ export class HomeAdminComponent implements OnInit {
   }
 
   cargarData() {
-    this.homeService.getAdminList().subscribe({
+    this.homeService.getUserList().subscribe({
       next: (data: any) => {
         let {
           datasetList,

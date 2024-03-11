@@ -17,14 +17,11 @@
             id="noti-cat"
           >
             <option value="">Seleccione...</option>
-            <option *ngFor="let item of categoria" [value]="item.idCategoria">
+            <option *ngFor="let item of categorias" [value]="item.idCategoria">
               {{ item.nombre }}
             </option>
           </select>
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('idCategoria')?.errors"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('idCategoria')?.hasError('required')"
@@ -45,10 +42,7 @@
             formControlName="titular"
             id="noti-Tit"
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('titular')?.errors"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('titular')?.hasError('maxlength')"
@@ -82,7 +76,7 @@
             id="noti-url"
           />
 
-          <div class="invalid-feedback" *ngIf="formulario.get('url')?.errors">
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('url')?.hasError('maxlength')"
@@ -107,13 +101,10 @@
             }}"
             formControlName="descripcion"
             cols="30"
-            rows="6"
+            rows="7"
             id="noti-desc"
           ></textarea>
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('descripcion')?.errors"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('descripcion')?.hasError('maxlength')"
@@ -145,10 +136,11 @@
             accept=".jpg, .jpeg, .png"
             (change)="onFileSelected($event)"
           />
-          <div class="invalid-feedback" *ngIf="errorArchivo">
-            El tamaño del archivo no puede superar los 600 KB.
+          <div class="invalid-feedback">
+            El tamaño del archivo no puede superar los 200 KB.
           </div>
           <div class="text-center text-md-start">
+            <small class="d-block">{{ sugerenciaImagen }} </small>
             <img
               *ngIf="!selectedImage"
               [src]="getImage(noticia.imagen, 'noticia', 'default-noticia.jpg')"

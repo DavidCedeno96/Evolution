@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { UsuarioService } from './usuario.service';
 import { servicioURL } from '../Utils/Constants';
 import { Observable } from 'rxjs';
-import { Nivel } from '../Models/Nivel';
+import { Nivel, Usuario_Nivel } from '../Models/Nivel';
 
 @Injectable({
   providedIn: 'root',
@@ -65,6 +65,19 @@ export class NivelService {
     return this.http.post<FormData>(`${this.apiURL}/create`, formData, {
       headers: headers,
     });
+  }
+
+  createUsuarioNivel(usuarioNivel: Usuario_Nivel): Observable<Usuario_Nivel> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.post<Usuario_Nivel>(
+      `${this.apiURL}/createUsuarioNivel`,
+      usuarioNivel,
+      {
+        headers: headers,
+      }
+    );
   }
 
   update(formData: FormData): Observable<FormData> {

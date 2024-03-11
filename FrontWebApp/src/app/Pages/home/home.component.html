@@ -1,3 +1,258 @@
 <div class="row g-3 mt-md-5">
-  <div class="col-12 col-md-6">home</div>
+  <div class="col-12 col-md-6" *ngFor="let item of configInicioItems">
+    <div class="shadow-lg bg-white p-4 px-lg-5 rounded">
+      <h5 class="mb-3 text-center txt text-primary">
+        {{ item.nombre }}
+      </h5>
+
+      <div *ngIf="item.nombre === 'Resumen General'">
+        <div class="p-4 px-lg-5 rounded">
+          <div class="row g-3 text-center">
+            <div class="col-12 col-md-4">
+              <h2 class="txt text-primary">
+                {{ resumenG.retosCompletados }}
+              </h2>
+              <span class="txt text-secondary">Retos Completados</span>
+            </div>
+            <div class="col-12 col-md-4">
+              <h2 class="txt text-primary">
+                {{ resumenG.medallasConseguidas }}
+              </h2>
+              <span class="txt text-secondary">Medallas Conseguidas</span>
+            </div>
+            <div class="col-12 col-md-4">
+              <h2 class="txt text-primary">
+                {{ resumenG.recomensasReclamadas }}
+              </h2>
+              <span class="txt text-secondary">Recompensas Reclamadas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="item.nombre === 'Nivel de Experiencia'">
+        <div>
+          <div class="rounded-pill p-2 bg-menu-item">
+            <div class="d-flex">
+              <img
+                *ngIf="miNivel.length"
+                [src]="
+                  getImage(miNivel[0].imagen, 'nivel', 'default-nivel.jpg')
+                "
+                class="imageRedonda me-2"
+                alt="nivel"
+              />
+              <img
+                *ngIf="!miNivel.length"
+                src="assets/img/default/default-nivel.jpg"
+                class="imageRedonda me-2"
+                alt="nivel"
+              />
+              <div class="col-10 pe-5 p-xl-2 align-self-center">
+                <div class="d-flex justify-content-between text-white">
+                  <span *ngIf="miNivel.length">{{ miNivel[0].nombre }}</span>
+                  <span *ngIf="!miNivel.length">Nivel 0</span>
+                  <span class="text-truncate"
+                    >{{ usuario.puntos }} /
+                    {{ nivelProx.puntosNecesarios }}</span
+                  >
+                </div>
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    aria-label="Success example"
+                    [style.width]="porcentajeNivel + '%'"
+                    aria-valuenow="25"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  >
+                    <span *ngIf="porcentajeNivel > 9">
+                      {{ porcentajeNivel }}%
+                    </span>
+                  </div>
+                  <span class="text-dark ms-2" *ngIf="porcentajeNivel < 10"
+                    >{{ porcentajeNivel }}%</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="item.nombre === 'Usuarios más activos'">
+        <div class="text-center col-12 mb-3" *ngIf="!usuariosActivos.length">
+          <span>Sin usuarios más activos</span>
+        </div>
+        <div class="row g-3 d-flex justify-content-center text-center">
+          <div class="col-4 col-lg-3" *ngFor="let user of usuariosActivos">
+            <img
+              [src]="getImage(user.foto, 'usuario', 'default-user.jpg')"
+              class="imgRedonda me-2"
+              width="80px"
+              alt="user"
+            />
+            <small class="text-truncate d-block"
+              >{{ user.nombre }} {{ user.apellido }}</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="item.nombre === 'Noticias'">
+        <div class="text-center col-12" *ngIf="!noticias.length">
+          <span>Sin noticias</span>
+        </div>
+
+        <div class="overflow-auto pe-2" style="max-height: 150px">
+          <div class="card mb-2" *ngFor="let noticia of noticias">
+            <div class="card-body d-flex justify-content-between">
+              <div class="col-5 col-lg-7 col-xl-8 text-truncate">
+                {{ noticia.titular }}
+              </div>
+              <div class="col-6 col-lg-4 col-xl-3">
+                <div class="row g-3">
+                  <div class="col-6 text-end text-truncate">
+                    <i class="fa-regular fa-thumbs-up me-1"></i
+                    >{{ noticia.totalLikes }}
+                  </div>
+                  <div class="col-6 text-start text-truncate">
+                    <i class="fa-regular fa-comments me-1"></i
+                    >{{ noticia.totalComents }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="item.nombre === 'Puntos alcanzados'">
+        <div>
+          <canvas #canvas>{{ chart }}</canvas>
+        </div>
+      </div>
+
+      <div *ngIf="item.nombre === 'Recompensas más reclamadas'">
+        <div class="text-center col-12 mb-3" *ngIf="!recompensas.length">
+          <span>Sin recompensas</span>
+        </div>
+
+        <div class="row g-3 d-flex justify-content-center text-center">
+          <div class="col-4 col-lg-3" *ngFor="let recompensa of recompensas">
+            <img
+              [src]="
+                getImage(
+                  recompensa.imagen,
+                  'recompensa',
+                  'default-recompensa.jpg'
+                )
+              "
+              class="rounded-circle img-thumbnail me-2"
+              width="80"
+              alt="recompensa"
+            />
+            <small class="text-truncate d-block">{{ recompensa.nombre }}</small>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="item.nombre === 'Mis medallas'">
+        <div class="text-center col-12 mb-3" *ngIf="!medallas.length">
+          <span>Sin medallas</span>
+        </div>
+
+        <div class="row g-3 d-flex justify-content-center text-center">
+          <div class="col-4 col-lg-3" *ngFor="let medalla of medallas">
+            <img
+              [src]="getImage(medalla.imagen, 'medalla', 'default-medalla.jpg')"
+              class="rounded-circle img-thumbnail me-2"
+              width="80"
+              alt="medalla"
+            />
+            <small class="text-truncate d-block">{{ medalla.nombre }}</small>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="item.nombre === 'Mis últimos retos terminados'">
+        <div class="text-center col-12" *ngIf="!retosTerminados.length">
+          <span>Sin retos</span>
+        </div>
+
+        <table class="table" *ngIf="retosTerminados.length">
+          <thead>
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Puntos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ur of retosTerminados">
+              <td>{{ ur.reto.nombre }}</td>
+              <td>{{ ur.reto.tipoReto }}</td>
+              <td>{{ ur.reto.puntosRecompensa }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="item.nombre === 'Ranking por puntos'">
+        <div class="text-center col-12" *ngIf="!usuariosRanking.length">
+          <span>Sin ranking</span>
+        </div>
+
+        <table class="table align-middle" *ngIf="usuariosRanking.length">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col">Usuario</th>
+              <th scope="col">Puntos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ur of usuariosRanking; index as i">
+              <th>{{ i + 1 }}</th>
+              <td>
+                <img
+                  [src]="
+                    getImage(ur.usuario.foto, 'usuario', 'default-user.jpg')
+                  "
+                  class="imgRedonda-ranking me-2"
+                  alt="user"
+                />
+              </td>
+              <td>{{ ur.usuario.puntos }}</td>
+              <td>{{ ur.usuario.nombre }} {{ ur.usuario.apellido }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="item.nombre === 'Mis retos asignados'">
+        <div class="text-center col-12" *ngIf="!retosAsignados.length">
+          <span>Sin retos asignados</span>
+        </div>
+
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let ur of retosAsignados">
+              <div class="d-flex justify-content-between">
+                <span>{{ ur.reto.nombre }}</span>
+                <span
+                  class="badge {{
+                    ur.reto.estado ? 'text-bg-success' : 'text-bg-danger'
+                  }}"
+                  >{{ ur.reto.estado ? "Activado" : "Desactivado" }}</span
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

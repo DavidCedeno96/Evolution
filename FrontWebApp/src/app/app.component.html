@@ -29,6 +29,7 @@
       data-bs-toggle="offcanvas"
       href="#offcanvasExample"
       aria-controls="offcanvasExample"
+      (click)="activeSubMenu = false"
     >
       <i class="fa-solid fa-bars"></i>
     </button>
@@ -98,11 +99,11 @@
           (change)="onFileSelected($event)"
         />
       </div>
-      <div class="col-auto">
+      <!-- <div class="col-auto">
         <a class="text-dark" data-bs-dismiss="offcanvas"
           ><i class="fa-solid fa-chevron-right"></i
         ></a>
-      </div>
+      </div> -->
     </div>
   </div>
   <hr class="hr-text" data-content="O" />
@@ -135,15 +136,39 @@
         <mat-icon svgIcon="gamepad"></mat-icon><span>Retos</span>
       </div>
     </a>
-    <a
-      [class]="menuItemActive('/view-noticia,/user-noticia')"
-      data-bs-dismiss="offcanvas"
-      [routerLink]="getUrlByRol('/view-noticia', '/user-noticia')"
-    >
-      <div class="icon-text">
-        <mat-icon svgIcon="periodico"></mat-icon><span>Noticias</span>
-      </div>
-    </a>
+
+    <div class="menu-container">
+      <a
+        [class]="menuItemActive('/view-noticia,/user-noticia')"
+        data-bs-dismiss="offcanvas"
+        [routerLink]="getUrlByRol('/view-noticia', '/user-noticia')"
+      >
+        <div class="icon-text">
+          <mat-icon svgIcon="periodico"></mat-icon><span>Noticias</span>
+        </div>
+      </a>
+      <i
+        class="fa-solid fa-chevron-left"
+        *ngIf="!activeSubMenu && idRol === 'adm'"
+        (click)="openSumMenu(1)"
+      ></i>
+      <i
+        class="fa-solid fa-chevron-down"
+        *ngIf="activeSubMenu && idRol === 'adm'"
+        (click)="openSumMenu(1)"
+      ></i>
+    </div>
+
+    <div *ngIf="subMenu === 1 && activeSubMenu">
+      <a
+        data-bs-dismiss="offcanvas"
+        [routerLink]="getUrlByRol('/view-categoria-noticia', '/home')"
+        ><div class="icon-text">
+          <mat-icon svgIcon="categoria"></mat-icon><span>Categoría</span>
+        </div>
+      </a>
+    </div>
+
     <a
       [class]="menuItemActive('/view-recompensa,/user-recompensa')"
       data-bs-dismiss="offcanvas"
@@ -171,15 +196,15 @@
         <mat-icon svgIcon="otorgar"></mat-icon><span>Medallas</span>
       </div>
     </a>
-    <!-- <a
+    <a
       [class]="menuItemActive('/redSocial')"
       data-bs-dismiss="offcanvas"
-      routerLink=""
+      routerLink="/red-social"
     >
       <div class="icon-text">
         <mat-icon svgIcon="reaccion"></mat-icon><span>Red Social</span>
       </div>
-    </a> -->
+    </a>
     <a
       [class]="menuItemActive('/config')"
       data-bs-dismiss="offcanvas"

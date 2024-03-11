@@ -11,7 +11,7 @@ namespace WebApiRest.Utilities
         private static readonly string error = "Ha ocurrido un error, intentalo más tarde";
         private static readonly string archivoExistente = "El archivo ya existe";        
         private static readonly string errorArchivo = "Tipo de archivo no permitido";
-        private static readonly string errorTamanoArchivo = "El tamaño del archivo no puede superar los 600 KB.";
+        private static readonly string errorTamanoArchivo = "El tamaño del archivo no puede superar los 200 KB.";
         private static readonly string errorLogin = "Usuario no encontrado";        
         private static readonly string errorLetrasNumeros = "Solo se permiten letras y números";
         private static readonly string errorLetras = "Solo se permiten letras";

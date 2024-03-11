@@ -17,10 +17,7 @@
             formControlName="nombre"
             id="nombre"
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('nombre')?.errors"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('nombre')?.hasError('maxlength')"
@@ -53,10 +50,7 @@
             formControlName="apellido"
             id="apellido"
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('apellido')?.errors"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('apellido')?.hasError('maxlength')"
@@ -89,7 +83,7 @@
             formControlName="id"
             id="idU"
           />
-          <div class="invalid-feedback" *ngIf="formulario.get('id')?.errors">
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('id')?.hasError('maxlength')"
@@ -122,10 +116,7 @@
             formControlName="celular"
             id="celular"
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('celular')?.errors"
-          >
+          <div class="invalid-feedback">
             <span *ngIf="formulario.get('celular')?.hasError('maxlength')"
               >Máximo 15 caracteres</span
             >
@@ -149,10 +140,7 @@
             formControlName="correo"
             id="correo"
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('correo')?.errors"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('correo')?.hasError('maxlength')"
@@ -198,10 +186,7 @@
               <i class="fas fa-eye" *ngIf="!verPassword"></i>
               <i class="fas fa-eye-slash" *ngIf="verPassword"></i>
             </span>
-            <div
-              class="invalid-feedback"
-              *ngIf="formulario.get('contrasena')?.errors"
-            >
+            <div class="invalid-feedback">
               <span *ngIf="formulario.get('contrasena')?.hasError('maxlength')"
                 >Máximo 60 caracteres</span
               >
@@ -239,7 +224,7 @@
             <option value="adm">Administrador</option>
             <option value="jug">Jugador</option>
           </select>
-          <div class="invalid-feedback" *ngIf="formulario.get('idRol')?.errors">
+          <div class="invalid-feedback">
             <span *ngIf="formulario.get('idRol')?.hasError('required')"
               >Campo obligatorio</span
             >
@@ -303,11 +288,12 @@
             accept=".jpg, .jpeg, .png"
             (change)="onFileSelected($event)"
           />
-          <div class="invalid-feedback" *ngIf="errorArchivo">
-            El tamaño del archivo no puede superar los 600 KB.
+          <div class="invalid-feedback">
+            El tamaño del archivo no puede superar los 200 KB.
           </div>
         </div>
         <div class="col-12 text-center text-md-start">
+          <small class="d-block">{{ sugerenciaImagen }} </small>
           <img
             *ngIf="!selectedFoto"
             [src]="getImage(usuario.foto, 'usuario', 'default-user.jpg')"

@@ -215,9 +215,14 @@ export class UsuarioService {
   }
 
   startWatching() {
-    console.log(this.tiempoDeInactividad);
+    console.log('Start', this.tiempoDeInactividad);
     this.resetTimer();
     document.addEventListener('mousemove', () => this.resetTimer());
     document.addEventListener('keydown', () => this.resetTimer());
+  }
+
+  clearWatching() {
+    console.log('Stop', this.tiempoDeInactividad);
+    clearTimeout(this.timeoutId);
   }
 }

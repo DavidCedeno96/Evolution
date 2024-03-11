@@ -124,6 +124,56 @@ namespace WebApiRest.Data
             return list;
         }
 
+        public async Task<Usuario_RecompensalList> GetUsuarioRecompensaList()
+        {
+            Usuario_RecompensalList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_Usuario_RecompensaTotalUsuarios", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };            
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    list.Lista.Add(new Usuario_Recompensa()
+                    {
+                        IdRecompensa = new Guid(dr["idRecompensa"].ToString()),
+                        Nombre = dr["nombre"].ToString(),                        
+                        Imagen = dr["imagen"].ToString(),
+                        TotalUsuarios = Convert.ToInt32(dr["totalUsuarios"].ToString()),                        
+                    });
+                }
+
+                list.Info = WC.GetSatisfactorio();
+                list.Error = 0;
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+        }
+
         public async Task<RecompensaItem> GetRecompensa(int estado, Guid idRecompensa)
         {
             RecompensaItem item = new();

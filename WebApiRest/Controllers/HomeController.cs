@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -20,7 +18,8 @@ namespace WebApiRest.Controllers
         readonly NoticiaData dataNoticia = new();
         readonly MedallaData dataMedalla  = new();
         readonly RetoData dataReto = new();
-        readonly NivelData dataNivel = new();        
+        readonly NivelData dataNivel = new();
+        readonly RecompensaData dataRecompensa = new();
 
         [HttpGet]
         [Route("list")]
@@ -29,50 +28,7 @@ namespace WebApiRest.Controllers
         {
             HomeList response = await data.GetHomeList();
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }
-
-        [HttpGet]
-        [Route("list/{idRol}")]
-        [Authorize]
-        public async Task<IActionResult> GetList([FromRoute] string idRol)
-        {
-            HomeList response = await data.GetHomeList(idRol);
-            return StatusCode(StatusCodes.Status200OK, new { response });
-        }
-
-        [HttpPut]
-        [Route("update/{idRol}")]
-        [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Update([FromRoute] string idRol, [FromBody] List<Home> lista)
-        {
-            Response response = new();
-            string idsInicio = "";
-
-            for (int i = 0; i < lista.Count; i++)
-            {
-                response = await data.UpdateHome(lista[i]);
-                if(response.Error == 0)
-                {
-                    if (i == lista.Count - 1)
-                    {
-                        // Es el último valor
-                        idsInicio += response.Id;
-                    }
-                    else
-                    {
-                        idsInicio += response.Id + "|";
-                    }
-                }
-            }
-
-            if(response.Error == 0)
-            {
-                //Aqui elimina los que no pertencen                        
-                response = await data.DeleteHomeByNoIds(idsInicio, idRol);
-            }
-            
-            return StatusCode(StatusCodes.Status200OK, new { response });
-        }
+        }        
 
         [HttpGet]
         [Route("user")]
@@ -80,20 +36,56 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> Usuario()
         {
             ResponseObjects response = new() { Lista = new() };
-            Claim userClaim = User.FindFirst("id");
+            string userId = User.FindFirst("id").Value;            
+            string userIdRol = User.FindFirst(ClaimTypes.Role).Value;
+
             bool hayError = false;
-            string errorInfo = "Error ";
+            string errorInfo = "Error";
+            int posicionNivel;
+            int puntosNecesarios = 100;
+            int porcentajeNivel;
 
-            ResumenGeneralItem resumenGeneral = await dataResumenGeneral.GetResumenGeneral(new Guid(userClaim.Value));
+            HomeList homeList = await data.GetHomeList(userIdRol);
+            UsuarioItem miInfo = await dataUsuario.GetUsuario(-1, new Guid(userId));
+            ResumenGeneralItem resumenGeneral = await dataResumenGeneral.GetResumenGeneral(new Guid(userId));
             NoticiaList noticiasEnTendencia = await dataNoticia.GetNoticiaTendenciaList(-1);
-            Usuario_MedallaList misMedallas = await dataMedalla.GetUsuarioMedallaList(4, new Guid(userClaim.Value));
+            Usuario_MedallaList misMedallas = await dataMedalla.GetUsuarioMedallaList(4, new Guid(userId));
             ChartPuntosList chartList = await dataChartPuntos.GetChartPuntosList();
-            UsuarioList usuariosMasActivos = await dataUsuario.GetUsuarioList(new Guid(userClaim.Value));
-            Usuario_RetoList misRetosTerminados = await dataReto.GetUsuarioRetoList(10, new Guid(userClaim.Value));
-            Usuario_NivelList miNivel = await dataNivel.GetUsuarioNivelList(1, new Guid(userClaim.Value));
+            UsuarioList usuariosMasActivos = await dataUsuario.GetUsuarioList(new Guid(userId));
+            Usuario_RetoList misRetosTerminados = await dataReto.GetUsuarioRetoList(10, new Guid(userId), 1);
+            Usuario_NivelList miNivel = await dataNivel.GetUsuarioNivelList(1, new Guid(userId));
+            Usuario_RecompensalList recompensasMasReclamadas = await dataRecompensa.GetUsuarioRecompensaList();
+            Usuario_RetoList rankingPorPuntos = await dataReto.GetUsuarioRetoList();
+            Usuario_RetoList misRetosAsignados = await dataReto.GetUsuarioRetoList(10, new Guid(userId), 0);
 
+            if (miNivel.Lista.Count == 0)
+            {
+                posicionNivel = 0;
+            }
+            else
+            {
+                posicionNivel = miNivel.Lista[0].Posicion;
+            }
+            NivelItem proximoNivel = await dataNivel.GetNivel(posicionNivel);
             DatasetPuntosList datasetList = Charts.ChartPuntos(chartList);
 
+            if (proximoNivel.Nivel != null)
+            {
+                puntosNecesarios = proximoNivel.Nivel.PuntosNecesarios;
+            }
+
+            double totalPorcentaje = (miInfo.Usuario.Puntos * 100) / puntosNecesarios;
+            if(totalPorcentaje >= 100)
+            {                
+                porcentajeNivel = 100;
+            }
+            else
+            {
+                porcentajeNivel = (int)totalPorcentaje;
+            }
+
+            response.Lista.Add(homeList.Lista);
+            response.Lista.Add(miInfo.Usuario);
             response.Lista.Add(resumenGeneral.ResumenGeneral);
             response.Lista.Add(noticiasEnTendencia.Lista);
             response.Lista.Add(misMedallas.Lista);
@@ -101,12 +93,22 @@ namespace WebApiRest.Controllers
             response.Lista.Add(usuariosMasActivos.Lista);
             response.Lista.Add(misRetosTerminados.Lista);
             response.Lista.Add(miNivel.Lista);
+            response.Lista.Add(proximoNivel.Nivel);
+            response.Lista.Add(recompensasMasReclamadas.Lista);
+            response.Lista.Add(rankingPorPuntos.Lista);
+            response.Lista.Add(misRetosAsignados.Lista);
+            response.Lista.Add(porcentajeNivel);
 
 
+            if (homeList.Error > 0)
+            {
+                hayError = true;
+                errorInfo += ", Lista Vistas: " + homeList.Info;
+            }
             if (resumenGeneral.Error > 0)
             {
                 hayError = true;
-                errorInfo += "Resumen General: " + resumenGeneral.Info;
+                errorInfo += ", Resumen General: " + resumenGeneral.Info;
             }
             if (noticiasEnTendencia.Error > 0)
             {
@@ -138,6 +140,26 @@ namespace WebApiRest.Controllers
                 hayError = true;
                 errorInfo += ", Nivel: " + miNivel.Info;
             }
+            if(recompensasMasReclamadas.Error > 0)
+            {
+                hayError = true;
+                errorInfo += ", Recompensas más reclamadas: " + recompensasMasReclamadas.Info;
+            }
+            if (rankingPorPuntos.Error > 0)
+            {
+                hayError = true;
+                errorInfo += ", Ranking por puntos: " + rankingPorPuntos.Info;
+            }
+            if (misRetosAsignados.Error > 0)
+            {
+                hayError = true;
+                errorInfo += ", Mis retos asignados: " + misRetosAsignados.Info;
+            }
+            if (proximoNivel.Error > 0)
+            {
+                hayError = true;
+                errorInfo += ", Proximo nivel: " + proximoNivel.Info;
+            }
 
 
             if (hayError)
@@ -153,85 +175,41 @@ namespace WebApiRest.Controllers
 
 
             return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpPut]
+        [Route("update/{idRol}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Update([FromRoute] string idRol, [FromBody] List<Home> lista)
+        {
+            Response response = new();
+            string idsInicio = "";
+
+            for (int i = 0; i < lista.Count; i++)
+            {
+                response = await data.UpdateHome(lista[i]);
+                if (response.Error == 0)
+                {
+                    if (i == lista.Count - 1)
+                    {
+                        // Es el último valor
+                        idsInicio += response.Id;
+                    }
+                    else
+                    {
+                        idsInicio += response.Id + "|";
+                    }
+                }
+            }
+
+            if (response.Error == 0)
+            {
+                //Aqui elimina los que no pertencen                        
+                response = await data.DeleteHomeByNoIds(idsInicio, idRol);
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
         }        
-
-
-        //[HttpGet]
-        //[Route("jugador")]
-        //[Authorize]
-        //public async Task<IActionResult> Jugador()
-        //{            
-        //    Claim userClaim = User.FindFirst("id");
-        //    ResumenGeneralItem resumenGeneral = await dataResumenGeneral.GetResumenGeneral(new Guid(userClaim.Value));
-        //    NoticiaList noticiasEnTendencia = await dataNoticia.GetNoticiaTendenciaList(-1);
-        //    Usuario_MedallaList misMedallas = await dataMedalla.GetUsuarioMedallaList(4, new Guid(userClaim.Value));
-        //    Usuario_RetoList misRetosTerminados = await dataReto.GetUsuarioRetoList(10, new Guid(userClaim.Value));
-        //    Usuario_NivelList miNivel = await dataNivel.GetUsuarioNivelList(1, new Guid(userClaim.Value));
-
-        //    return StatusCode(StatusCodes.Status200OK, new { resumenGeneral, noticiasEnTendencia, misMedallas, misRetosTerminados, miNivel });
-        //}
-
-        //[HttpGet]
-        //[Route("admin")]
-        //[Authorize(Roles = "adm,sadm")]
-        //public async Task<IActionResult> Admin()
-        //{            
-        //    Claim userClaim = User.FindFirst("id");
-        //    UsuarioList usuariosMasActivos = await dataUsuario.GetUsuarioList(new Guid(userClaim.Value));
-        //    NoticiaList noticiasEnTendencia = await dataNoticia.GetNoticiaTendenciaList(-1);
-        //    ResumenGeneralItem resumenGeneral = await dataResumenGeneral.GetResumenGeneral(new Guid(userClaim.Value));
-        //    ChartPuntosList chartList = await dataChartPuntos.GetChartPuntosList();
-
-        //    DatasetPuntosList datasetList = new() { Lista = new()};            
-        //    Random random = new();
-                        
-        //    var gruposPorAño = chartList.Lista.GroupBy(ob => ob.Año).ToList();            
-
-        //    foreach (var item in gruposPorAño)
-        //    {
-        //        int r = random.Next(256);
-        //        int g = random.Next(256);
-        //        int b = random.Next(256);
-        //        int index = 0;
-
-        //        var j = item;
-
-        //        List<int> dataList = new();                
-        //        for (int i = 0; i < 12; i++)
-        //        {
-        //            dataList.Add(0);
-        //        }
-
-        //        foreach (var ob in item)
-        //        {
-        //            index = ob.Mes - 1;
-        //            dataList[index] += ob.Puntos;
-        //        }
-
-        //        for (int i = 0; i < dataList.Count; i++)
-        //        {
-        //            if(i > index)
-        //            {
-        //                dataList[i] = -1;
-        //            }
-        //        }
-
-        //        dataList.RemoveAll(x => x == -1);
-
-        //        datasetList.Lista.Add(new DatasetPuntos()
-        //        {
-        //            Label = $"año {item.Key}",
-        //            Data = dataList,
-        //            Fill = false,
-        //            BorderColor = $"rgb({r}, {g}, {b})",
-        //            Tension = 0.1
-        //        });
-        //    }
-        //    datasetList.Error = chartList.Error;
-        //    datasetList.Info = chartList.Info;
-
-        //    return StatusCode(StatusCodes.Status200OK, new { datasetList, usuariosMasActivos, resumenGeneral, noticiasEnTendencia });
-        //}
 
     }
 }

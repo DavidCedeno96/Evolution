@@ -52,7 +52,7 @@ export class ViewRecompensaComponent implements OnInit {
       descripcion: '',
       imagen: '',
       cantDisponible: 0,
-      cantCanje: 0,
+      cantCanje: 0, // Son los Créditos Requeridos
       totalUsuarios: 0,
       estado: 0,
     },

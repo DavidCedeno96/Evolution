@@ -2,28 +2,28 @@
   <h4 class="text-uppercase">Retos</h4>
   <!-- buscador -->
   <form
-    class="row g-3 mb-4"
+    class="d-md-flex w-100 mb-4"
     [formGroup]="formulario"
     (ngSubmit)="submitBuscar()"
   >
-    <div class="col-12 col-md-8">
-      <div class="input-group">
-        <span class="icon-left">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </span>
-        <input
-          type="text"
-          class="form-control icon"
-          placeholder="buscar..."
-          formControlName="buscar"
-          (input)="defaultList($event)"
-        />
-      </div>
+    <div class="input-group flex-grow-1 me-md-3 mb-3 mb-md-0">
+      <span class="icon-left">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control icon"
+        placeholder="Buscar..."
+        formControlName="buscar"
+        (input)="defaultList($event)"
+      />
     </div>
-    <div class="col-12 col-md-3 d-grid d-md-block">
+    <div class="d-grid">
       <button type="submit" class="btn btn-success">Buscar</button>
     </div>
   </form>
+  <!-- Fin buscador -->
+
   <div *ngIf="!retos.length">{{ info }}</div>
   <div class="row g-3 mb-4">
     <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of paginatedItems()">
@@ -55,8 +55,14 @@
             <small class="text-black-50 fw-semibold d-block">{{
               item.tipoReto
             }}</small>
-            <small class="fw-semibold me-1">Activo hasta:</small>
-            <small>{{ dateFormat(item.fechaCierre) }}</small>
+            <div>
+              <small class="fw-semibold me-1">Activo desde:</small>
+              <small>{{ dateCompare(item.fechaApertura) }}</small>
+            </div>
+            <div>
+              <small class="fw-semibold me-1">Activo hasta:</small>
+              <small>{{ dateCompare(item.fechaCierre) }}</small>
+            </div>
           </div>
         </div>
       </div>

@@ -1,9 +1,7 @@
-﻿using MathNet.Numerics.Distributions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
-using System.Collections.Generic;
 using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;

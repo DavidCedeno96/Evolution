@@ -6,7 +6,7 @@ import { Noticia } from 'src/app/Models/Noticia';
 import {
   AlertError,
   ChangeRoute,
-  DateFormat,
+  DateCompare,
   GetImage,
   Loading,
   MsgEliminar,
@@ -31,7 +31,7 @@ export class ViewNoticiaComponent implements OnInit {
   loading = Loading();
   changeRoute = ChangeRoute();
   getImage = GetImage();
-  dateFormat = DateFormat();
+  dateCompare = DateCompare();
 
   info: string = '';
 

@@ -8,9 +8,16 @@ import Swal from 'sweetalert2';
 export const servicioURL: string = 'http://192.168.100.91:8087';
 //export const servicioURL: string = 'http://localhost:49090';
 
-export const ImgSizeMax: number = 600 * 1024;
+export const ImgSizeMax: number = 200 * 1024;
+export const ImgSizeMaxConfig: number = 600 * 1024;
+export const SoundQuizCorrect: string = 'assets/sounds/QuizCorrect.wav';
+export const SoundQuizIncorrect: string = 'assets/sounds/QuizWrong.wav';
+export const SoundQuizVictory: string = 'assets/sounds/Victory.mp3';
 export const FormatoFecha: string = 'dd/MM/yyyy';
 export const FormatoFechaInput: string = 'yyyy-MM-dd';
+export const SugerenciaImagen: string =
+  'Tamaño máximo permitido 200 KB, se recomienda 360 * 360 pixeles';
+export const SugerenciaImagenConfig: string = 'Tamaño máximo permitido 600 KB';
 export const SinRegistros: string = 'No hay registros';
 export const TitleEliminar: string = 'Confirmación Eliminar';
 export const MsgEliminar: string = '¿Seguro desea eliminar el registro?';
@@ -51,19 +58,61 @@ export const AlertError = () => {
   };
 };
 
-export const DateFormat = () => {
-  return (fecha: Date): string => {
-    let pipe = new DatePipe('en-US');
-    return pipe.transform(fecha, FormatoFecha)!;
+export const AlertSuccess = () => {
+  return (titulo: string, html: string) => {
+    Swal.fire({
+      title: titulo,
+      html: html,
+      icon: 'success',
+      confirmButtonText: 'Aceptar',
+      buttonsStyling: false,
+      customClass: {
+        confirmButton: 'btn btn-outline-success normal',
+      },
+    });
   };
 };
 
 export const DateFormatInput = () => {
   return (fecha: string): string => {
     let date = new Date(fecha);
-    let pipe = new DatePipe('en-US');
-    return pipe.transform(date, FormatoFechaInput)!;
+    if (date.getFullYear() > 1900) {
+      let pipe = new DatePipe('en-US');
+      return pipe.transform(date, FormatoFechaInput)!;
+    } else {
+      return '';
+    }
   };
+};
+
+export const DateCompare = () => {
+  return (fecha: Date): string => {
+    let date = new Date(fecha);
+    if (date.getFullYear() > 1900) {
+      let pipe = new DatePipe('en-US');
+      return pipe.transform(fecha, FormatoFecha)!;
+    } else {
+      return 'N/A';
+    }
+  };
+};
+
+export const FormatTiempo = () => {
+  return (milisegundos: number): string => {
+    const segundosTotales = Math.floor(milisegundos / 1000);
+    const horas = Math.floor(segundosTotales / 3600);
+    const minutos = Math.floor((segundosTotales % 3600) / 60);
+    const segundos = segundosTotales % 60;
+
+    let duracion = `${AgregarCeros(horas)}:${AgregarCeros(
+      minutos
+    )}:${AgregarCeros(segundos)}`;
+    return duracion;
+  };
+};
+
+const AgregarCeros = (valor: number): string => {
+  return valor < 10 ? `0${valor}` : `${valor}`;
 };
 
 export const ChangeRoute = () => {
@@ -98,6 +147,15 @@ export const SetUpsert = () => {
   return (isUpsert: boolean, msg: string) => {
     Upsert = isUpsert;
     UpsertMsg = msg;
+  };
+};
+
+export const ReproducirSonido = () => {
+  return (archivo: string) => {
+    let audio = new Audio();
+    audio.src = archivo;
+    audio.load();
+    audio.play();
   };
 };
 

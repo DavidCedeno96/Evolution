@@ -108,7 +108,7 @@ namespace WebApiRest.Controllers
             {
                 if (imagenes[i] != null && response.Error == 0)
                 {                    
-                    response = VF.ValidarArchivo(_env, imagenes[i], "jpg/jpeg/png", nombreCarpeta);
+                    response = VF.ValidarArchivo(_env, imagenes[i], "jpg/jpeg/png", nombreCarpeta, 600);
                     rutasImages.Add(WC.GetRutaImagen(_env, imagenes[i].FileName, nombreCarpeta));
 
                     configuracion[i].Valor = imagenes[i].FileName;
@@ -151,6 +151,6 @@ namespace WebApiRest.Controllers
             }                   
 
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }
+        }        
     }
 }

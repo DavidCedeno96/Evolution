@@ -97,8 +97,10 @@ create table Nivel(
 	imagen varchar(50),
 	estado int default 1,
 	fechaCreacion datetime default getdate(),
-	fechaModificacion datetime default getdate()
+	fechaModificacion datetime default getdate(),
+	posicion int default 0 unique not null
 );
+
 
 create table Usuario_Nivel(
 	idUsuario uniqueidentifier references Usuario(idUsuario) not null,
@@ -248,7 +250,8 @@ create table Reto(
 	idTipoReto uniqueidentifier references TipoReto(idTipoReto) not null,
 	idComportamiento uniqueidentifier references ComportamientoPregunta(idComportamiento) not null,
 	fechaCreacion datetime default getdate(),
-	fechaModificacion datetime default getdate()
+	fechaModificacion datetime default getdate(),
+	criterioMinimo int default 100 NOT NULL
 );
 
 create table Pregunta(
@@ -273,11 +276,13 @@ create table Opcion(
 create table Usuario_Reto(
 	idReto uniqueidentifier references Reto(idReto) not null,
 	idUsuario uniqueidentifier references Usuario(idUsuario) not null,
-	puntos int default 0,
-	tiempo int default 0,
-	vidas int default 0,
+	puntos int default 0 not null,
+	tiempo int default 0 not null,
+	vidas int default 0 not null,
 	fechaCreacion datetime default getdate(),
-	fechaModificacion datetime default getdate()
+	fechaModificacion datetime default getdate(),
+	completado int default 0 not null,
+	fechaAsignacion datetime default getdate()
 );
 
 create table Puzzle(

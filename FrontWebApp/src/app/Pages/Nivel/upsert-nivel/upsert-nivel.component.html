@@ -5,7 +5,7 @@
     </h5>
     <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
       <div class="row g-3">
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-6">
           <label for="niv-nom" class="form-label">Nombre*</label>
           <input
             type="text"
@@ -17,10 +17,7 @@
             formControlName="nombre"
             id="niv-nom"
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('nombre')?.errors"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('nombre')?.hasError('maxlength')"
@@ -41,7 +38,40 @@
             </span>
           </div>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-3">
+          <label for="niv-nom" class="form-label">Posición</label>
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('posicion')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="posicion"
+            id="niv-nom"
+          />
+          <div class="invalid-feedback">
+            <span
+              class="d-block"
+              *ngIf="formulario.get('posicion')?.hasError('min')"
+            >
+              Mínimo 0
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('posicion')?.hasError('pattern')"
+            >
+              Solo se permiten números
+            </span>
+            <span
+              class="d-block"
+              *ngIf="formulario.get('posicion')?.hasError('required')"
+            >
+              Campo obligatorio
+            </span>
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
           <label for="niv-puntnec" class="form-label">Puntos Necesarios*</label>
           <input
             type="text"
@@ -53,10 +83,7 @@
             formControlName="puntosNecesarios"
             id="niv-puntnec"
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('puntosNecesarios')?.errors"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('puntosNecesarios')?.hasError('min')"
@@ -93,13 +120,10 @@
             }}"
             formControlName="descripcion"
             cols="30"
-            rows="6"
+            rows="7"
             id="niv-desc"
           ></textarea>
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('descripcion')?.errors"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('descripcion')?.hasError('maxlength')"
@@ -125,10 +149,11 @@
             accept=".jpg, .jpeg, .png"
             (change)="onFileSelected($event)"
           />
-          <div class="invalid-feedback" *ngIf="errorArchivo">
-            El tamaño del archivo no puede superar los 600 KB.
+          <div class="invalid-feedback">
+            El tamaño del archivo no puede superar los 200 KB.
           </div>
           <div class="text-center text-md-start">
+            <small class="d-block">{{ sugerenciaImagen }} </small>
             <img
               *ngIf="!selectedImage"
               [src]="getImage(nivel.imagen, 'nivel', 'default-nivel.jpg')"

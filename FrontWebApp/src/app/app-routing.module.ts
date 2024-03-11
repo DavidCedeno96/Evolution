@@ -32,6 +32,8 @@ import { UserMedallaComponent } from './Pages/Medalla/user-medalla/user-medalla.
 import { UserNivelComponent } from './Pages/Nivel/user-nivel/user-nivel.component';
 import { UserRecompensaComponent } from './Pages/Recompensa/user-recompensa/user-recompensa.component';
 import { HomeComponent } from './Pages/home/home.component';
+import { AsigUserRetoComponent } from './Pages/Reto/asig-user-reto/asig-user-reto.component';
+import { RedSocialComponent } from './Pages/red-social/red-social.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -157,6 +159,11 @@ const routes: Routes = [
     canActivate: [authGuardPlayer],
   },
   {
+    path: 'asig-user-reto',
+    component: AsigUserRetoComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
     path: 'view-pregunta',
     component: ViewPreguntaComponent,
     canActivate: [authGuardAdmin],
@@ -167,9 +174,14 @@ const routes: Routes = [
     canActivate: [authGuardAdmin],
   },
   {
+    path: 'red-social',
+    component: RedSocialComponent,
+    canActivate: [authGuardPlayer],
+  },
+  {
     path: 'config',
     component: ConfiguracionComponent,
-    //canActivate: [authGuardAdmin],
+    canActivate: [authGuardAdmin],
   },
 ];
 

@@ -65,6 +65,71 @@ namespace WebApiRest.Data
             return list;
         }
 
+        public async Task<RedSocialList_comentarios> GetRedSocialList_comentarios(int estado)
+        {
+
+            RedSocialList_comentarios list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_RedSocial", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@estado", estado);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    Usuario_RedSocialList comentarioList = await GetUsuario_RedSocialList(new Guid(dr["idRed"].ToString()));
+
+                    list.Lista.Add(new RedSocial_ComentarioList()
+                    {
+                        RedSocial = new RedSocial()
+                        {
+                            IdRed = new Guid(dr["idRed"].ToString()),                            
+                            Descripcion = dr["descripcion"].ToString(),                            
+                            Imagen = dr["imagen"].ToString(),                            
+                            FechaPublicacion = Convert.ToDateTime(dr["fechaPublicacion"].ToString()),
+                            TotalLikes = Convert.ToInt32(dr["totalLikes"].ToString()),
+                            TotalComents = Convert.ToInt32(dr["totalComents"].ToString()),
+                            Estado = Convert.ToInt32(dr["estado"].ToString()),
+                            FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                            FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                        },
+                        ComentarioList = comentarioList.Lista
+                    });
+                }
+
+                list.Info = WC.GetSatisfactorio();
+                list.Error = 0;
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+
+        }
+
         public async Task<Usuario_RedSocialList> GetUsuario_RedSocialList(Guid idRedSocial)
         {
             Usuario_RedSocialList list = new()

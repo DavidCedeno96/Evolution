@@ -31,6 +31,8 @@ export class AppComponent implements OnInit, AfterContentInit {
 
   load: boolean = false;
   showNavbar: boolean = false;
+  subMenu: number = 0;
+  activeSubMenu: boolean = false;
   url: string = '';
 
   userName: string = '';
@@ -155,7 +157,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     if (selectedImage.size > ImgSizeMax) {
       this.alertError(
         TitleErrorForm,
-        'El tamaño del archivo no puede superar los 600 KB.'
+        'El tamaño del archivo no puede superar los 200 KB.'
       );
     } else {
       if (selectedImage.size > 0) {
@@ -218,6 +220,15 @@ export class AppComponent implements OnInit, AfterContentInit {
     setTimeout(() => {
       this.load = false;
     }, 400);
+  }
+
+  openSumMenu(item: number) {
+    if (this.subMenu !== item) {
+      this.subMenu = item;
+      this.activeSubMenu = true;
+    } else {
+      this.activeSubMenu = !this.activeSubMenu;
+    }
   }
 
   cerrarSesion() {

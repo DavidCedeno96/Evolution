@@ -6,7 +6,6 @@ import { Noticia } from 'src/app/Models/Noticia';
 import { Reto } from 'src/app/Models/Reto';
 import {
   AlertError,
-  DateFormat,
   GetImage,
   Loading,
   MsgError,
@@ -23,7 +22,6 @@ export class HomeUserComponent implements OnInit {
   load = Loading();
   alertError = AlertError();
   getImage = GetImage();
-  dateFormat = DateFormat();
 
   retosCompletados: number = 0;
   medallasConseguidas: number = 0;
@@ -42,7 +40,7 @@ export class HomeUserComponent implements OnInit {
   }
 
   cargarData() {
-    this.homeService.getJugadorList().subscribe({
+    this.homeService.getUserList().subscribe({
       next: (data: any) => {
         let {
           miNivel,

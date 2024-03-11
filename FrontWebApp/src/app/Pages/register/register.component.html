@@ -227,17 +227,20 @@
           <input
             type="text"
             class="form-control {{
-              formulario.get('codigoRegistro')?.errors && verErrorsInputs
+              (formulario.get('codigoRegistro')?.errors && verErrorsInputs) ||
+              error
                 ? 'is-invalid'
                 : ''
             }}"
             formControlName="codigoRegistro"
             id="codreg"
+            (input)="error = 0"
           />
           <div
             class="invalid-feedback"
-            *ngIf="formulario.get('codigoRegistro')?.errors"
+            *ngIf="formulario.get('codigoRegistro')?.errors || error"
           >
+            <span *ngIf="error">El código de registro esta incorrecto </span>
             <span
               *ngIf="formulario.get('codigoRegistro')?.hasError('maxlength')"
               >Máximo 50 caracteres</span
@@ -312,10 +315,11 @@
             (change)="onFileSelected($event)"
           />
           <div class="invalid-feedback" *ngIf="errorArchivo">
-            El tamaño del archivo no puede superar los 600 KB.
+            El tamaño del archivo no puede superar los 200 KB.
           </div>
         </div>
         <div class="col-12 text-center text-md-start">
+          <small class="d-block">{{ sugerenciaImagen }} </small>
           <img
             *ngIf="!selectedFoto"
             src="assets/img/default/default-user.jpg"

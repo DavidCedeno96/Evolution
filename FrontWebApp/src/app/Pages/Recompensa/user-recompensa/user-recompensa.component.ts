@@ -43,7 +43,7 @@ export class UserRecompensaComponent implements OnInit, AfterViewInit {
     descripcion: '',
     imagen: '',
     cantDisponible: 0,
-    cantCanje: 0,
+    cantCanje: 0, // Son los Créditos requeridos
     totalUsuarios: 0,
     estado: 0,
   };

@@ -16,6 +16,7 @@ import {
   Loading,
   MsgError,
   MsgErrorForm,
+  SugerenciaImagen,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
@@ -37,6 +38,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
   loading = Loading();
   dateFormatInput = DateFormatInput();
   caracterInvalid = CaracterInvalid();
+  sugerenciaImagen = SugerenciaImagen;
 
   type: string = '';
   titulo: string = '';
@@ -66,7 +68,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
     totalComents: 0,
   };
 
-  categoria: Categoria[] = [];
+  categorias: Categoria[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -170,7 +172,17 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
     this.adicionalServicio.getListNoticia(1).subscribe({
       next: (data: any) => {
         let { categoriaNoticiaList } = data.response;
-        this.categoria = categoriaNoticiaList.lista;
+        this.categorias = categoriaNoticiaList.lista;
+
+        if (this.type === 'crear') {
+          var categoria = this.categorias.filter((obj) => {
+            return obj.nombre === 'General';
+          });
+
+          this.formulario.patchValue({
+            idCategoria: categoria[0].idCategoria,
+          });
+        }
       },
       error: (e) => {
         console.error(e);

@@ -11,7 +11,9 @@ import { ComportamientoPregunta, TipoReto } from 'src/app/Models/Adicional';
 import { Reto } from 'src/app/Models/Reto';
 import {
   AlertError,
+  DateCompare,
   DateFormatInput,
+  FormatTiempo,
   GetImage,
   ImgSizeMax,
   Loading,
@@ -20,6 +22,7 @@ import {
   ObjectInvalid,
   TitleError,
   TitleErrorForm,
+  SugerenciaImagen,
 } from 'src/app/Utils/Constants';
 import {
   CaracterInvalid,
@@ -38,9 +41,14 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   loading = Loading();
+  formatTiempo = FormatTiempo();
   dateFormatInput = DateFormatInput();
-  objectInvalid = ObjectInvalid();
+  dateCompare = DateCompare();
+  //objectInvalid = ObjectInvalid();
   caracterInvalid = CaracterInvalid();
+  sugerenciaImagen = SugerenciaImagen;
+
+  sectionIndex: number = 0;
 
   type: string = '';
   titulo: string = '';
@@ -67,11 +75,13 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     puntosRecompensa: 0,
     creditosObtenidos: 0,
     instrucciones: '',
+    criterioMinimo: 0,
     imagen: '',
     idTipoReto: '',
     tipoReto: '',
     idComportamiento: '',
-    comportamiento: '',
+    comportamientoPregunta: '',
+    totalPreguntas: 0,
     estado: 0,
   };
 
@@ -95,23 +105,25 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
           Validators.pattern(exp_invalidos),
         ],
       ],
-      fechaApertura: [this.reto.fechaApertura, [this.objectInvalid]],
-      fechaCierre: [this.reto.fechaCierre, [this.objectInvalid]],
+      idTipoReto: [this.reto.idTipoReto, [Validators.required]],
+      fechaApertura: [this.reto.fechaApertura],
+      fechaCierre: [this.reto.fechaCierre],
       vidas: [
         this.reto.vidas,
         [
           Validators.required,
-          Validators.min(1),
+          Validators.min(0),
           Validators.max(10),
           Validators.pattern(exp_numeros),
         ],
       ],
+      tiempo_h: [''],
       tiempo_ms: [
         this.reto.tiempo_ms,
         [
           Validators.required,
-          Validators.min(10000), // 10 segundos
-          Validators.max(300000), // 5 minutos
+          Validators.min(300000), // 5 minutos
+          Validators.max(7200000), // 2 horas
           Validators.pattern(exp_numeros),
         ],
       ],
@@ -133,13 +145,21 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
           Validators.pattern(exp_numeros),
         ],
       ],
+      criterioMinimo: [
+        this.reto.criterioMinimo,
+        [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(100),
+          Validators.pattern(exp_numeros),
+        ],
+      ],
       instrucciones: [
         this.reto.instrucciones,
         [Validators.maxLength(300), this.caracterInvalid],
       ],
       imagen: [this.reto.imagen],
 
-      idTipoReto: [this.reto.idTipoReto, [Validators.required]],
       idComportamiento: [this.reto.idComportamiento, [Validators.required]],
     });
   }
@@ -159,7 +179,7 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       this.type = params['type'];
       let idReto = params['reto'];
-      if (idReto === '' && this.type === 'editar') {
+      if ((idReto === '' && this.type === 'editar') || !params['type']) {
         history.back();
       }
       switch (this.type) {
@@ -192,6 +212,9 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
 
           this.reto = reto;
           this.formulario.patchValue(reto);
+          this.formulario.patchValue({
+            tiempo_h: this.formatTiempo(reto.tiempo_ms),
+          });
         } else {
           history.back();
         }
@@ -231,7 +254,6 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     if (this.formulario.valid && !this.errorArchivo) {
       this.verErrorsInputs = false;
       this.reto = this.formulario.value;
-      //console.log('GUARDANDO ......');
 
       this.loading(true, false);
       switch (this.type) {
@@ -264,7 +286,6 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
         if (error === 0) {
           this.router.navigate(['/view-reto']);
         } else if (campo !== '') {
-          console.log('Cambpo', campo);
           this.error = error;
           this.campo = campo;
           this.info = info;
@@ -314,8 +335,15 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     let formData = new FormData();
     formData.append('idReto', this.reto.idReto);
     formData.append('nombre', this.reto.nombre.trim());
-    formData.append('fechaApertura', this.reto.fechaApertura.toString());
-    formData.append('fechaCierre', this.reto.fechaCierre.toString());
+
+    this.reto.fechaApertura instanceof Date || this.reto.fechaApertura === ''
+      ? formData.append('fechaApertura', '1800-01-01')
+      : formData.append('fechaApertura', this.reto.fechaApertura);
+
+    this.reto.fechaCierre instanceof Date || this.reto.fechaCierre === ''
+      ? formData.append('fechaCierre', '1800-01-01')
+      : formData.append('fechaCierre', this.reto.fechaCierre);
+
     formData.append('vidas', this.reto.vidas.toString().trim());
     formData.append('tiempo_ms', this.reto.tiempo_ms.toString().trim());
     formData.append(
@@ -326,6 +354,7 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
       'creditosObtenidos',
       this.reto.creditosObtenidos.toString().trim()
     );
+    formData.append('criterioMinimo', this.reto.criterioMinimo.toString());
     formData.append('instrucciones', this.reto.instrucciones.trim());
     formData.append('idTipoReto', this.reto.idTipoReto.trim());
     formData.append('idComportamiento', this.reto.idComportamiento.trim());
@@ -354,5 +383,82 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
       reader.readAsDataURL(this.selectedImage);
     }
     console.log(this.selectedImage.name, this.previewImage);
+  }
+
+  setSection(index: number, tipo: string) {
+    /* console.log(this.formulario.valid);
+    console.log(this.formulario.value); */
+    let error: boolean = false;
+
+    if (tipo === 'siguiente') {
+      switch (index) {
+        case 1: {
+          this.formulario.get('nombre')?.errors ||
+          this.formulario.get('idTipoReto')?.errors
+            ? (error = true)
+            : (error = false);
+          break;
+        }
+        case 2: {
+          this.formulario.get('vidas')?.errors ||
+          this.formulario.get('puntosRecompensa')?.errors ||
+          this.formulario.get('creditosObtenidos')?.errors ||
+          this.formulario.get('tiempo_ms')?.errors ||
+          this.formulario.get('criterioMinimo')?.errors
+            ? (error = true)
+            : (error = false);
+          break;
+        }
+      }
+
+      if (error) {
+        this.verErrorsInputs = true;
+        this.alertError(TitleErrorForm, MsgErrorForm);
+      } else {
+        this.verErrorsInputs = false;
+        this.sectionIndex = index;
+      }
+    } else if (tipo === 'anterior') {
+      this.sectionIndex = index;
+    } else if ('nav') {
+      this.formulario.get('nombre')?.errors ||
+      this.formulario.get('idTipoReto')?.errors ||
+      this.formulario.get('vidas')?.errors ||
+      this.formulario.get('puntosRecompensa')?.errors ||
+      this.formulario.get('creditosObtenidos')?.errors ||
+      this.formulario.get('tiempo_ms')?.errors ||
+      this.formulario.get('criterioMinimo')?.errors
+        ? (error = true)
+        : (error = false);
+
+      if (error) {
+        this.verErrorsInputs = true;
+        this.alertError(TitleErrorForm, MsgErrorForm);
+      } else {
+        this.verErrorsInputs = false;
+        this.sectionIndex = index;
+      }
+    }
+  }
+
+  setTiempo() {
+    let hora = this.formulario.get(['tiempo_h'])?.value;
+    const partesHora = hora.split(':');
+
+    const horas = parseInt(partesHora[0], 10) * 3600 * 1000; // Convertir horas a milisegundos
+    const minutos = parseInt(partesHora[1], 10) * 60 * 1000; // Convertir minutos a milisegundos
+    const segundos = parseInt(partesHora[2], 10) * 1000; // Convertir segundos a milisegundos
+
+    const totalMilisegundos = horas + minutos + segundos;
+
+    this.formulario.patchValue({
+      tiempo_ms: totalMilisegundos,
+    });
+
+    console.log(
+      typeof this.formulario.get(['tiempo_h'])?.value,
+      this.formulario.get(['tiempo_h'])?.value,
+      totalMilisegundos
+    );
   }
 }

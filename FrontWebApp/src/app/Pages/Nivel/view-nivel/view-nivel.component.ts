@@ -49,6 +49,7 @@ export class ViewNivelComponent implements OnInit {
     {
       idNivel: '',
       nombre: '',
+      posicion: 0,
       descripcion: '',
       puntosNecesarios: 0,
       imagen: '',

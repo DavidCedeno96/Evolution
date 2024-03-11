@@ -15,17 +15,18 @@
 
       <div class="col-12">
         <h4>Instrucciones</h4>
-        <p>
+        <p *ngIf="!reto.instrucciones">
           Contesta correctamente las preguntas para ganar puntos y avanza rápido
-          para llegar primero a la meta. Tienes
-          <strong>{{ reto.tiempo_ms }} ms</strong> por pregunta, ¡Diviértete!
+          para llegar primero a la meta. Tienes un tiempo total de
+          <strong>{{ formatTiempo_ms }} </strong>
+          {{ getTypeTime() }} ¡Diviértete!
+        </p>
+        <p *ngIf="reto.instrucciones">
+          {{ reto.instrucciones }}
         </p>
       </div>
       <div class="col-12 text-center text-md-end d-grid d-md-block">
-        <button
-          class="btn btn-primary icon"
-          (click)="changeRoute('/juego-reto', { reto: reto.idReto })"
-        >
+        <button class="btn btn-primary icon" (click)="comenzar(reto.idReto)">
           <div class="icon-text buton">
             <mat-icon svgIcon="gamepad"></mat-icon><span>Comenzar</span>
           </div>

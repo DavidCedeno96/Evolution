@@ -9,6 +9,7 @@ import {
   Loading,
   MsgError,
   MsgErrorForm,
+  SugerenciaImagen,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
@@ -29,6 +30,7 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   caracterInvalid = CaracterInvalid();
+  sugerenciaImagen = SugerenciaImagen;
 
   type: string = '';
   titulo: string = '';
@@ -47,6 +49,7 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
   nivel: Nivel = {
     idNivel: '7c8c2672-2233-486a-a184-f0b51eb4a331',
     nombre: '',
+    posicion: 0,
     descripcion: '',
     puntosNecesarios: 0,
     imagen: '',
@@ -69,6 +72,14 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
           Validators.required,
           Validators.maxLength(20),
           Validators.pattern(exp_invalidos),
+        ],
+      ],
+      posicion: [
+        this.nivel.posicion,
+        [
+          Validators.required,
+          Validators.min(0),
+          Validators.pattern(exp_numeros),
         ],
       ],
       descripcion: [
@@ -234,6 +245,7 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
     let formData = new FormData();
     formData.append('idNivel', this.nivel.idNivel);
     formData.append('nombre', this.nivel.nombre.trim());
+    formData.append('posicion', this.nivel.posicion.toString());
     formData.append('descripcion', this.nivel.descripcion.trim());
     formData.append('puntosNecesarios', this.nivel.puntosNecesarios.toString());
 

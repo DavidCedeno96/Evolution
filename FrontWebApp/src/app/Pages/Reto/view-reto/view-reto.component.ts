@@ -6,7 +6,7 @@ import { Reto } from 'src/app/Models/Reto';
 import {
   AlertError,
   ChangeRoute,
-  DateFormat,
+  DateCompare,
   GetImage,
   Loading,
   MsgEliminar,
@@ -31,7 +31,7 @@ export class ViewRetoComponent implements OnInit {
   loading = Loading();
   changeRoute = ChangeRoute();
   getImage = GetImage();
-  dateFormat = DateFormat();
+  dateCompare = DateCompare();
 
   info: string = '';
 
@@ -49,11 +49,13 @@ export class ViewRetoComponent implements OnInit {
       puntosRecompensa: 0,
       creditosObtenidos: 0,
       instrucciones: '',
+      criterioMinimo: 0,
       imagen: '',
       idTipoReto: '',
       tipoReto: '',
       idComportamiento: '',
-      comportamiento: '',
+      comportamientoPregunta: '',
+      totalPreguntas: 0,
       estado: 0,
     },
   ];

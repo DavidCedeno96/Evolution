@@ -1,0 +1,18 @@
+.imageRedonda {
+  width: 60px;
+  height: 60px;
+  border-radius: 160px;
+  border: 1px solid #dbdbdb;
+  object-fit: cover;
+  object-position: center;
+}
+
+.imgRedonda-ranking {
+  width: 40px;
+  height: 40px;
+  padding: 1px;
+  border-radius: 160px;
+  border: 1px solid #dbdbdb;
+  object-fit: cover;
+  object-position: center;
+}

@@ -4,7 +4,7 @@ export interface Recompensa {
   descripcion: string;
   imagen: string;
   cantDisponible: number;
-  cantCanje: number;
+  cantCanje: number; //Son los Créditos Requeridos
   totalUsuarios: number;
   estado: number;
 }

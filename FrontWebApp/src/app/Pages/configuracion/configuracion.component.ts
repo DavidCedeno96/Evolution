@@ -14,11 +14,12 @@ import { ConfigInicio, Configuracion } from 'src/app/Models/Configuracion';
 import {
   AlertError,
   GetImage,
-  ImgSizeMax,
+  ImgSizeMaxConfig,
   Loading,
   MsgError,
   MsgErrorForm,
   MsgOk,
+  SugerenciaImagenConfig,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
@@ -43,6 +44,8 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   getImage = GetImage();
+
+  sugerenciaImagen = SugerenciaImagenConfig;
   configIndex: number = 0;
   configIndexInicio: number = 0;
 
@@ -174,7 +177,15 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
     });
 
     this.formCodigoRegistro = formBuilder.group({
-      llave: [''],
+      llave: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(50),
+          Validators.pattern(exp_invalidos),
+        ],
+      ],
     });
   }
 
@@ -197,7 +208,7 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
     this.configIndexInicio = index;
     this.configInicioItems.forEach((item) => {
       item.idRol = rol;
-      item.color = '#dcdcdc';
+      item.color = '#FAFAFA';
     });
   }
 
@@ -673,32 +684,36 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
   }
 
   updateCodigo() {
-    this.loading(true, false);
-    this.setDataCodigo();
-    this.configuracionService.update(this.configLlave[0]).subscribe({
-      next: (data: any) => {
-        let { info, error } = data.response;
-        if (error === 0) {
-          this.messageService.add({
-            severity: 'success',
-            summary: MsgOk,
-            detail: 'Configuración Guardada',
-          });
-        } else {
-          this.alertError(TitleErrorForm, info);
-        }
-        this.loading(false, false);
-      },
-      error: (e) => {
-        console.error(e);
-        if (e.status === 401 || e.status === 403) {
-          this.router.navigate(['/']);
-        } else {
-          this.alertError(TitleError, MsgError);
+    if (this.formCodigoRegistro.valid) {
+      this.loading(true, false);
+      this.setDataCodigo();
+      this.configuracionService.update(this.configLlave[0]).subscribe({
+        next: (data: any) => {
+          let { info, error } = data.response;
+          if (error === 0) {
+            this.messageService.add({
+              severity: 'success',
+              summary: MsgOk,
+              detail: 'Configuración Guardada',
+            });
+          } else {
+            this.alertError(TitleErrorForm, info);
+          }
           this.loading(false, false);
-        }
-      },
-    });
+        },
+        error: (e) => {
+          console.error(e);
+          if (e.status === 401 || e.status === 403) {
+            this.router.navigate(['/']);
+          } else {
+            this.alertError(TitleError, MsgError);
+            this.loading(false, false);
+          }
+        },
+      });
+    } else {
+      this.alertError(TitleErrorForm, MsgErrorForm);
+    }
   }
 
   onFileSelected(event: Event, tipo: string) {
@@ -708,7 +723,7 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
       case 'login': {
         this.imgLogin = selectedImage;
 
-        if (selectedImage.size > ImgSizeMax) {
+        if (selectedImage.size > ImgSizeMaxConfig) {
           this.errorImgLogin = true;
         } else {
           this.errorImgLogin = false;
@@ -726,7 +741,7 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
       case 'header': {
         this.imgHeader = selectedImage;
 
-        if (selectedImage.size > ImgSizeMax) {
+        if (selectedImage.size > ImgSizeMaxConfig) {
           this.errorImgHeader = true;
         } else {
           this.errorImgHeader = false;
@@ -744,7 +759,7 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
       case 'footer': {
         this.imgFooter = selectedImage;
 
-        if (selectedImage.size > ImgSizeMax) {
+        if (selectedImage.size > ImgSizeMaxConfig) {
           this.errorImgFooter = true;
         } else {
           this.errorImgFooter = false;

@@ -411,6 +411,27 @@ namespace WebApiRest.Utilities
             return result;
         }
 
+        //RedSocial
+        public static Response ValidarUsuarioRedSocial(Usuario_RedSocial usuarioRedSocial)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(usuarioRedSocial.Comentario, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "comentario";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
         //Configuracion
         public static Response ValidarConfiguracion(Configuracion configuracion)
         {
@@ -461,7 +482,7 @@ namespace WebApiRest.Utilities
         }
 
         // archivos
-        public static Response ValidarArchivo(IWebHostEnvironment _env, IFormFile archivo, string tipos, string nombreCarpeta)
+        public static Response ValidarArchivo(IWebHostEnvironment _env, IFormFile archivo, string tipos, string nombreCarpeta, int pesoMaximoKB = 200)
         {
             Response result = new();
             bool validForm = true;
@@ -499,7 +520,7 @@ namespace WebApiRest.Utilities
                 validForm = false;
             }
 
-            if (archivo.Length > 600 * 1024)
+            if (archivo.Length > pesoMaximoKB * 1024)
             {
                 result.Error = 1;
                 result.Info = WC.GetErrorTamanoArchivo();

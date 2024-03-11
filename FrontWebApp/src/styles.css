@@ -262,6 +262,17 @@ mat-icon.is-5 {
   }
 }
 
+/****** IMAGEN CIRCULAR ******/
+.imgRedonda {
+  padding: 4px;
+  width: 80px;
+  height: 80px;
+  border-radius: 160px;
+  border: 1px solid #dbdbdb;
+  object-fit: cover;
+  object-position: center;
+}
+
 /****** POINTER ******/
 .pointer {
   cursor: pointer;

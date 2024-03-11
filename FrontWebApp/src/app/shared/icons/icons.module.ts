@@ -38,6 +38,12 @@ export class IconModule {
       )
     );
     this._matIconRegistry.addSvgIcon(
+      'categoria',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/categoria.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
       'podio',
       this._domZanitizer.bypassSecurityTrustResourceUrl(
         'assets/icons/podio.svg'

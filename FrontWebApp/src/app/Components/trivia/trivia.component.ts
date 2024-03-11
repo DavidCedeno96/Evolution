@@ -1,16 +1,25 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Pregunta, PreguntaOpciones } from 'src/app/Models/Pregunta';
+import { PreguntaOpciones } from 'src/app/Models/Pregunta';
 import { Reto, Usuario_Reto } from 'src/app/Models/Reto';
+import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
+  AlertSuccess,
+  DateCompare,
+  FormatTiempo,
   Loading,
   MsgError,
+  ReproducirSonido,
+  SoundQuizCorrect,
+  SoundQuizIncorrect,
+  SoundQuizVictory,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { PreguntaService } from 'src/app/services/pregunta.service';
 import { RetoService } from 'src/app/services/reto.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-trivia',
@@ -20,6 +29,10 @@ import { RetoService } from 'src/app/services/reto.service';
 export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
   load = Loading();
   alertError = AlertError();
+  alertSuccess = AlertSuccess();
+  dateCompare = DateCompare();
+  formatTiempo = FormatTiempo();
+  reproducirSonido = ReproducirSonido();
 
   preguntaActual: number = 0;
   nextText: string = 'Siguiente';
@@ -29,14 +42,16 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedIndex: number = 0;
 
   idReto: string = '';
-  vidas: number[] = [];
+  retoConVidas: boolean = false;
+  vidas: number[] = [1];
   muertes: number[] = [];
   tiempoRestante: number = 0;
+  formatTiempoRestante: string = '';
   tiempoTotal: number = 0;
   termporizador: any;
   contador: any;
-  puntosPorPregunta: number = 0;
-  puntajeTotal: number = 0;
+  porcentajePorPregunta: number = 0;
+  porcentajeTotal: number = 0;
 
   reto: Reto = {
     idReto: '',
@@ -48,14 +63,17 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
     puntosRecompensa: 0,
     creditosObtenidos: 0,
     instrucciones: '',
+    criterioMinimo: 0,
     imagen: '',
     idTipoReto: '',
     tipoReto: '',
     idComportamiento: '',
-    comportamiento: '',
+    comportamientoPregunta: '',
+    totalPreguntas: 0,
     estado: 0,
   };
 
+  randomPreguntaOpciones: PreguntaOpciones[] = [];
   preguntaOpciones: PreguntaOpciones[] = [
     {
       pregunta: {
@@ -97,7 +115,8 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private preguntaServicio: PreguntaService,
-    private retoService: RetoService
+    private retoService: RetoService,
+    private usuarioService: UsuarioService
   ) {}
 
   ngOnInit(): void {
@@ -107,11 +126,12 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.load(true, false);
     this.cargarReto();
-    //    this.iniciarTiempo();
   }
 
   ngOnDestroy(): void {
     clearInterval(this.termporizador); // detiene el termporizador
+    clearInterval(this.contador);
+    this.usuarioService.startWatching();
   }
 
   getRouteParams() {
@@ -124,15 +144,41 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   cargarReto() {
-    this.retoService.getItem(-1, this.idReto).subscribe({
+    this.retoService.getUsuario_RetoByIdUsuarioYIdReto(this.idReto).subscribe({
       next: (data: any) => {
-        let { error, reto } = data.response;
+        let { error, ur } = data.response;
         if (error === 0) {
-          this.reto = reto;
-          this.vidas = Array(reto.vidas).fill(1);
-          this.cargarPreguntas();
+          this.reto = ur.reto;
+
+          let estado: number = 1;
+          let fechaHoy = new Date();
+          fechaHoy.setHours(0, 0, 0, 0);
+
+          if (
+            new Date(ur.reto.fechaApertura) >= fechaHoy &&
+            this.dateCompare(ur.reto.fechaApertura) !== 'N/A'
+          ) {
+            estado = 0;
+          }
+          if (
+            new Date(ur.reto.fechaCierre) < fechaHoy &&
+            this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
+          ) {
+            estado = 0;
+          }
+
+          if (estado === 0 || ur.reto.totalPreguntas < 1) {
+            this.router.navigate(['/user-reto']);
+          } else {
+            if (ur.reto.vidas > 0) {
+              this.retoConVidas = true;
+              this.vidas = Array(ur.reto.vidas).fill(1);
+            }
+
+            this.cargarPreguntas();
+          }
         } else {
-          history.back();
+          this.router.navigate(['/user-reto']);
           this.load(false, false);
         }
       },
@@ -152,9 +198,19 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (data: any) => {
         let { error, info, list } = data.response;
         if (error === 0) {
-          this.preguntaOpciones = list;
-          this.puntosPorPregunta = this.reto.puntosRecompensa / list.length;
-          this.iniciarContador();
+          if (this.reto.comportamientoPregunta === 'Aleatorio') {
+            this.randomPreguntaOpciones = list;
+            this.reordenarListaRandom();
+            this.preguntaOpciones = this.randomPreguntaOpciones;
+          } else {
+            this.preguntaOpciones = list;
+          }
+          this.porcentajePorPregunta = 100 / list.length;
+          this.formatTiempoRestante = this.formatTiempo(this.tiempoRestante);
+          this.iniciarTemporizador();
+          this.iniciarTiempo();
+
+          this.usuarioService.clearWatching();
         } else {
           this.alertError(TitleErrorForm, info);
         }
@@ -172,13 +228,28 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  next() {
-    clearInterval(this.termporizador);
+  reordenarListaRandom(): void {
+    for (let i = this.randomPreguntaOpciones.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.randomPreguntaOpciones[i], this.randomPreguntaOpciones[j]] = [
+        this.randomPreguntaOpciones[j],
+        this.randomPreguntaOpciones[i],
+      ];
+    }
+  }
+
+  siguientePregunta() {
+    //clearInterval(this.termporizador);
+    this.pauseTemporizador();
+    if (this.opCorrecta) {
+      this.reproducirSonido(SoundQuizCorrect);
+    } else {
+      this.reproducirSonido(SoundQuizIncorrect);
+    }
 
     if (this.preguntaActual === this.preguntaOpciones.length - 1) {
       this.opCalificacion(true, false);
       setTimeout(() => {
-        //this.opCalificacion(false, true);
         this.finalizarTrivia();
       }, 2500);
     }
@@ -190,7 +261,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
           this.finalizarTrivia();
         } else {
           this.preguntaActual += 1;
-          this.iniciarContador();
+          this.iniciarTemporizador();
         }
 
         this.opCalificacion(false, true);
@@ -232,30 +303,35 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (btn_Op) {
-      this.validarPregunta();
+      if (this.opCorrecta) {
+        this.porcentajeTotal += this.porcentajePorPregunta;
+      } else if (this.retoConVidas) {
+        this.vidas.pop();
+        this.muertes.push(1);
+      }
     }
   }
 
-  validarPregunta() {
-    if (!this.opCorrecta) {
-      this.vidas.pop();
-      this.muertes.push(1);
-    } else {
-      this.puntajeTotal += this.puntosPorPregunta;
-    }
-  }
-
-  iniciarContador() {
+  iniciarTemporizador() {
     this.tiempoRestante = this.reto.tiempo_ms;
     this.termporizador = setInterval(() => {
       this.tiempoRestante -= 1000;
+      this.formatTiempoRestante = this.formatTiempo(this.tiempoRestante);
+      //console.log(this.tiempoRestante);
       if (this.tiempoRestante == 1000) {
         this.nextButonDisable = true;
       } else if (this.tiempoRestante < 1) {
-        this.next();
         clearInterval(this.termporizador); // detiene el termporizador
+        clearInterval(this.contador); // detiene el contador
+        this.finalizarTrivia();
+        //this.siguientePregunta();
       }
     }, 1000); // Actualiza cada segundo
+  }
+
+  pauseTemporizador() {
+    this.reto.tiempo_ms = this.tiempoRestante;
+    clearInterval(this.termporizador);
   }
 
   iniciarTiempo() {
@@ -268,21 +344,30 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
     this.load(true, false);
     clearInterval(this.termporizador); // detiene el termporizador
     clearInterval(this.contador); // detiene el contador
-    /* console.log('puntaje total', this.puntajeTotal); */
+
     console.log('FINALIZANDO TRIVIA');
-
-    let usuario_reto: Usuario_Reto = {
-      idReto: this.reto.idReto,
-      idUsuario: '7c8c2672-2233-486a-a184-f0b51eb4a331',
-      puntos: this.puntajeTotal,
-      tiempo: this.tiempoTotal,
-      vidas: this.vidas.length,
-    };
-
-    this.retoService.createUsuario_Reto(usuario_reto).subscribe({
+    this.retoService.updateUsuario_reto(this.setData()).subscribe({
       next: (data: any) => {
         let { error, info } = data.response;
         if (error === 0) {
+          this.reproducirSonido(SoundQuizVictory);
+
+          this.alertSuccess(
+            'Reto Terminado',
+            `      
+            <span class="d-block">Puntos Obtenidos: ${
+              this.porcentajeTotal >= this.reto.criterioMinimo
+                ? this.reto.puntosRecompensa
+                : 0
+            }</span>
+            <span class="d-block">Créditos Obtenidos: ${
+              this.porcentajeTotal >= this.reto.criterioMinimo
+                ? this.reto.creditosObtenidos
+                : 0
+            }</span>
+            `
+          );
+
           this.router.navigate(['/user-reto']);
         } else {
           this.alertError(TitleErrorForm, info); //MsgErrorForm
@@ -299,5 +384,69 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       },
     });
+  }
+
+  setData(): Usuario_Reto {
+    let usuarioReto: Usuario_Reto;
+    let usuario: Usuario;
+    let reto: Reto;
+
+    usuario = {
+      idUsuario: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+      nombre: '',
+      apellido: '',
+      correo: '',
+      id: '',
+      celular: '',
+      foto: '',
+      idRol: '',
+      rol: '',
+      idPais: '',
+      idCiudad: '',
+      ciudad: '',
+      idEmpresa: '',
+      empresa: '',
+      idArea: '',
+      area: '',
+      contrasena: '',
+      puntos: 0,
+      creditos: 0,
+      estado: 0,
+    };
+
+    reto = {
+      idReto: this.idReto,
+      nombre: '',
+      fechaApertura: new Date(),
+      fechaCierre: new Date(),
+      vidas: 0,
+      tiempo_ms: 0,
+      puntosRecompensa: 0,
+      creditosObtenidos: 0,
+      instrucciones: '',
+      criterioMinimo: 0,
+      imagen: '',
+      idTipoReto: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+      tipoReto: '',
+      idComportamiento: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+      comportamientoPregunta: '',
+      estado: 0,
+      totalPreguntas: 0,
+    };
+
+    usuarioReto = {
+      usuario: usuario,
+      reto: reto,
+      puntos:
+        this.porcentajeTotal >= this.reto.criterioMinimo
+          ? this.reto.puntosRecompensa
+          : 0,
+      tiempo: this.tiempoTotal,
+      vidas: this.retoConVidas ? this.vidas.length : -1,
+      totalRetos: 0,
+      completado: 1,
+    };
+
+    return usuarioReto!;
   }
 }

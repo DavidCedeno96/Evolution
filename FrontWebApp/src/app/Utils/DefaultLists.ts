@@ -35,7 +35,7 @@ export const ConfigInicioList: ConfigInicio[] = [
   },
   {
     idConfigInicio: '7c8c2672-2233-486a-a184-f0b51eb4a331',
-    nombre: 'Mis Medallas',
+    nombre: 'Mis medallas',
     indice: 0,
     estado: 0,
     idRol: '',
@@ -43,15 +43,7 @@ export const ConfigInicioList: ConfigInicio[] = [
   },
   {
     idConfigInicio: '7c8c2672-2233-486a-a184-f0b51eb4a331',
-    nombre: 'Últimos retos terminados',
-    indice: 0,
-    estado: 0,
-    idRol: '',
-    color: '',
-  },
-  {
-    idConfigInicio: '7c8c2672-2233-486a-a184-f0b51eb4a331',
-    nombre: 'Usuarios más activos',
+    nombre: 'Mis últimos retos terminados',
     indice: 0,
     estado: 0,
     idRol: '',
@@ -75,7 +67,15 @@ export const ConfigInicioList: ConfigInicio[] = [
   },
   {
     idConfigInicio: '7c8c2672-2233-486a-a184-f0b51eb4a331',
-    nombre: 'Retos asignados',
+    nombre: 'Mis retos asignados',
+    indice: 0,
+    estado: 0,
+    idRol: '',
+    color: '',
+  },
+  {
+    idConfigInicio: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    nombre: 'Ranking por puntos',
     indice: 0,
     estado: 0,
     idRol: '',

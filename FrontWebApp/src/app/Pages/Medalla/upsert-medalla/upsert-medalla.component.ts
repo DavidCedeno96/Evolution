@@ -10,6 +10,7 @@ import {
   Loading,
   MsgError,
   MsgErrorForm,
+  SugerenciaImagen,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
@@ -30,6 +31,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   caracterInvalid = CaracterInvalid();
+  sugerenciaImagen = SugerenciaImagen;
 
   type: string = '';
   titulo: string = '';

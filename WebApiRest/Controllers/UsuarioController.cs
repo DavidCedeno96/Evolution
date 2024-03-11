@@ -196,7 +196,14 @@ namespace WebApiRest.Controllers
                 usuario.Contrasena = WC.GenerarContrasena();
             }            
 
-            if (response.Error == 0 && responseConfig.Error == 0)
+            if(responseConfig.Error > 0)
+            {
+                response.Info = responseConfig.Info;
+                response.Error = 1;
+                response.Campo = "llave";
+            }
+
+            if (response.Error == 0)
             {
                 usuario.IdRol = "jug";
                 response = await data.CreateUsuario(usuario);

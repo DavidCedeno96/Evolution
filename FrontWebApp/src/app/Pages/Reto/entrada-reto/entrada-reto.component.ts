@@ -1,7 +1,14 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Reto } from 'src/app/Models/Reto';
-import { ChangeRoute, GetImage, Loading } from 'src/app/Utils/Constants';
+import {
+  AlertError,
+  ChangeRoute,
+  DateCompare,
+  FormatTiempo,
+  GetImage,
+  Loading,
+} from 'src/app/Utils/Constants';
 import { RetoService } from 'src/app/services/reto.service';
 
 @Component({
@@ -12,8 +19,12 @@ import { RetoService } from 'src/app/services/reto.service';
 export class EntradaRetoComponent implements OnInit, AfterViewInit {
   load = Loading();
   getImage = GetImage();
+  alertError = AlertError();
   changeRoute = ChangeRoute();
+  dateCompare = DateCompare();
+  formatTiempo = FormatTiempo();
 
+  formatTiempo_ms: string = '';
   id: string = '';
 
   reto: Reto = {
@@ -26,11 +37,13 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
     puntosRecompensa: 0,
     creditosObtenidos: 0,
     instrucciones: '',
+    criterioMinimo: 0,
     imagen: '',
     idTipoReto: '',
     tipoReto: '',
     idComportamiento: '',
-    comportamiento: '',
+    comportamientoPregunta: '',
+    totalPreguntas: 0,
     estado: 0,
   };
 
@@ -60,11 +73,34 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
   }
 
   cargarData(idReto: string) {
-    this.retoService.getItem(-1, idReto).subscribe({
+    this.retoService.getUsuario_RetoByIdUsuarioYIdReto(idReto).subscribe({
       next: (data: any) => {
-        let { error, reto } = data.response;
+        let { error, ur } = data.response;
         if (error === 0) {
-          this.reto = reto;
+          this.reto = ur.reto;
+
+          let estado: number = 1;
+          let fechaHoy = new Date();
+          fechaHoy.setHours(0, 0, 0, 0);
+
+          if (
+            new Date(ur.reto.fechaApertura) >= fechaHoy &&
+            this.dateCompare(ur.reto.fechaApertura) !== 'N/A'
+          ) {
+            estado = 0;
+          }
+          if (
+            new Date(ur.reto.fechaCierre) < fechaHoy &&
+            this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
+          ) {
+            estado = 0;
+          }
+
+          if (estado === 0) {
+            this.router.navigate(['/user-reto']);
+          } else {
+            this.formatTiempo_ms = this.formatTiempo(ur.reto.tiempo_ms);
+          }
         } else {
           history.back();
         }
@@ -79,5 +115,23 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
         }
       },
     });
+  }
+
+  getTypeTime(): string {
+    if (this.reto.tiempo_ms >= 3600000 && this.reto.tiempo_ms < 7200000) {
+      return 'hora';
+    } else if (this.reto.tiempo_ms >= 7200000) {
+      return 'horas';
+    } else {
+      return 'minutos';
+    }
+  }
+
+  comenzar(idReto: string) {
+    if (this.reto.totalPreguntas > 0) {
+      this.changeRoute('/juego-reto', { reto: idReto });
+    } else {
+      this.alertError('Error', 'El reto no tiene preguntas');
+    }
   }
 }

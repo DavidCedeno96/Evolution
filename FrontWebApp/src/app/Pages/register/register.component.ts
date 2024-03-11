@@ -1,18 +1,15 @@
-import {
-  Component,
-  OnInit,
-  Renderer2,
-  ElementRef,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Area, Ciudad, Empresa, Pais } from 'src/app/Models/Adicional';
 import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
+  ImgSizeMax,
   Loading,
   MsgError,
+  MsgErrorForm,
+  SugerenciaImagen,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
@@ -24,7 +21,6 @@ import {
 } from 'src/app/Utils/RegularExpressions';
 import { AdicionalService } from 'src/app/services/adicional.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -35,6 +31,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   contrasenaInvalid = ContrasenaInvalid();
+  sugerenciaImagen = SugerenciaImagen;
 
   verPassword: boolean = false;
   verErrorsInputs: boolean = false;
@@ -145,7 +142,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.loading(false, false);
+    this.loading(true, false);
     this.cargarView();
   }
 
@@ -161,14 +158,13 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         } else {
           this.alertError(TitleErrorForm, info); //MsgErrorForm
         }
+        this.loading(false, false);
       },
       error: (e) => {
         console.error(e);
-        if (e.status === 401 || e.status === 403) {
-          this.router.navigate(['/']);
-        } else {
-          this.alertError(TitleError, MsgError);
-        }
+        this.router.navigate(['/']);
+        this.loading(false, false);
+        this.alertError(TitleError, MsgError);
       },
     });
   }
@@ -184,11 +180,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       },
       error: (e) => {
         console.error(e);
-        if (e.status === 401 || e.status === 403) {
-          this.router.navigate(['/']);
-        } else {
-          this.alertError(TitleError, MsgError);
-        }
+        this.router.navigate(['/']);
+        this.loading(false, false);
+        this.alertError(TitleError, MsgError);
       },
     });
   }
@@ -199,44 +193,33 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
     this.numClicksSave += 1;
     if (this.formulario.valid) {
+      this.loading(true, false);
       this.verErrorsInputs = false;
-
       this.usuarioServicio.register(this.getFormData()).subscribe({
         next: (data: any) => {
           let { campo, error, info } = data.response;
           if (error === 0) {
             this.router.navigate(['/']);
-          } else if (campo !== '') {
+          } else if (campo) {
             this.error = error;
             this.campo = campo;
             this.info = info;
-            this.alertError(TitleErrorForm, info); //MsgErrorForm
+            this.alertError(TitleErrorForm, MsgErrorForm);
+          } else {
+            this.alertError(TitleErrorForm, info);
           }
           this.loading(false, false);
         },
         error: (e) => {
           console.error(e);
-          if (e.status === 401 || e.status === 403) {
-            this.router.navigate(['/']);
-          } else {
-            this.alertError(TitleError, MsgError);
-            this.loading(false, false);
-          }
+          this.router.navigate(['/']);
+          this.loading(false, false);
+          this.alertError(TitleError, MsgError);
         },
       });
     } else {
       this.verErrorsInputs = true;
-
-      Swal.fire({
-        title: 'Error',
-        text: 'Hay errores en los campos, por favor revisa e intantalo nuevamente.',
-        icon: 'error',
-        confirmButtonText: 'Aceptar',
-        buttonsStyling: false,
-        customClass: {
-          confirmButton: 'btn btn-outline-success normal',
-        },
-      });
+      this.alertError(TitleErrorForm, MsgErrorForm);
     }
   }
 
@@ -280,7 +263,13 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   onFileSelected(event: Event) {
     this.selectedFoto = (event.target as HTMLInputElement).files![0];
-    this.errorArchivo = false;
+
+    if (this.selectedFoto.size > ImgSizeMax) {
+      this.errorArchivo = true;
+    } else {
+      this.errorArchivo = false;
+    }
+
     if (this.selectedFoto.size > 0) {
       let reader = new FileReader();
       reader.onload = (e: any) => {

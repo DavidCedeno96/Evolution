@@ -13,6 +13,7 @@ import {
   SetUpsert,
   TitleError,
   TitleErrorForm,
+  SugerenciaImagen,
 } from 'src/app/Utils/Constants';
 import {
   ContrasenaInvalid,
@@ -34,6 +35,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
   loading = Loading();
   contrasenaInvalid = ContrasenaInvalid();
   setUpsert = SetUpsert();
+  sugerenciaImagen = SugerenciaImagen;
 
   type: string = '';
   titulo: string = '';

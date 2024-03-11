@@ -17,10 +17,7 @@
             formControlName="nombre"
             id="med-nom"
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('nombre')?.errors"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('nombre')?.hasError('maxlength')"
@@ -56,10 +53,7 @@
             <option *ngFor="let item of condicion" [value]="item.idCondicion">
               {{ item.nombre }}
             </option>
-            <div
-              class="invalid-feedback"
-              *ngIf="formulario.get('idCondicion')?.errors"
-            >
+            <div class="invalid-feedback">
               <span
                 class="d-block"
                 *ngIf="formulario.get('idCondicion')?.hasError('required')"
@@ -79,13 +73,10 @@
             }}"
             formControlName="descripcion"
             cols="30"
-            rows="6"
+            rows="7"
             id="med-desc"
           ></textarea>
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('descripcion')?.errors"
-          >
+          <div class="invalid-feedback">
             <span
               class="d-block"
               *ngIf="formulario.get('descripcion')?.hasError('maxlength')"
@@ -111,10 +102,11 @@
             accept=".jpg, .jpeg, .png"
             (change)="onFileSelected($event)"
           />
-          <div class="invalid-feedback" *ngIf="errorArchivo">
-            El tamaño del archivo no puede superar los 600 KB.
+          <div class="invalid-feedback">
+            El tamaño del archivo no puede superar los 200 KB.
           </div>
           <div class="text-center text-md-start">
+            <small class="d-block">{{ sugerenciaImagen }} </small>
             <img
               *ngIf="!selectedImage"
               [src]="getImage(medalla.imagen, 'medalla', 'default-medalla.jpg')"

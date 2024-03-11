@@ -9,6 +9,7 @@ import {
   Loading,
   MsgError,
   MsgErrorForm,
+  SugerenciaImagen,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
@@ -29,6 +30,7 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   caracterInvalid = CaracterInvalid();
+  sugerenciaImagen = SugerenciaImagen;
 
   type: string = '';
   titulo: string = '';
@@ -50,7 +52,7 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
     descripcion: '',
     imagen: '',
     cantDisponible: 0,
-    cantCanje: 0,
+    cantCanje: 0, //Son los Creditos Requeridos
     totalUsuarios: 0,
     estado: 0,
   };
@@ -85,6 +87,7 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
         ],
       ],
       cantCanje: [
+        //Son los Creditos Requeridos
         this.recompensa.cantCanje,
         [
           Validators.required,

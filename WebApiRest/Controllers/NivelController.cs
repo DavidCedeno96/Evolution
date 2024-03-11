@@ -171,13 +171,14 @@ namespace WebApiRest.Controllers
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
-
-
         [HttpPost]
         [Route("createUsuarioNivel")]
-        [Authorize(Roles = "adm,sadm")]
+        [Authorize]
         public async Task<IActionResult> CreateUsuarioNivel([FromBody] Usuario_Nivel usuarioNivel)
         {
+            string userId = User.FindFirst("id").Value;
+            usuarioNivel.IdUsuario = new Guid(userId);
+
             Response response = await data.CreateUsuario_Nivel(usuarioNivel);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }

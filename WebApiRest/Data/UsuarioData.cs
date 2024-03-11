@@ -325,6 +325,8 @@ namespace WebApiRest.Data
                         IdEmpresa = dr["idEmpresa"].ToString(),
                         Empresa = dr["empresa"].ToString(),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
+                        Puntos = Convert.ToInt32(dr["puntos"].ToString()),
+                        Creditos = Convert.ToInt32(dr["creditos"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     };

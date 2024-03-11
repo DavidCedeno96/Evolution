@@ -25,11 +25,11 @@ export class HomeService {
     });
   }
 
-  getListByRol(idRol: string): Observable<any> {
+  getUserList(): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
-    return this.http.get<any>(`${this.apiURL}/list/${idRol}`, {
+    return this.http.get<any>(`${this.apiURL}/user`, {
       headers: headers,
     });
   }
@@ -48,23 +48,5 @@ export class HomeService {
         headers: headers,
       }
     );
-  }
-
-  getJugadorList(): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
-    });
-    return this.http.get<any>(`${this.apiURL}/jugador`, {
-      headers: headers,
-    });
-  }
-
-  getAdminList(): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
-    });
-    return this.http.get<any>(`${this.apiURL}/admin`, {
-      headers: headers,
-    });
   }
 }

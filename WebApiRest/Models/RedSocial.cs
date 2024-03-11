@@ -37,5 +37,20 @@
         public string Info { get; set; }
         public int Error { get; set; }
         public List<Usuario_RedSocial> Lista { get; set; }
-    }    
+    }
+
+    public class RedSocial_ComentarioList
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public RedSocial RedSocial { get; set; }
+        public List<Usuario_RedSocial> ComentarioList { get; set; }
+    }
+
+    public class RedSocialList_comentarios
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public List<RedSocial_ComentarioList> Lista { get; set; }
+    }
 }

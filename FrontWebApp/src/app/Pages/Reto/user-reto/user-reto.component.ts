@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Reto } from 'src/app/Models/Reto';
+import { Reto, Usuario_Reto } from 'src/app/Models/Reto';
 import {
   AlertError,
   ChangeRoute,
-  DateFormat,
+  DateCompare,
   GetImage,
   Loading,
   MsgError,
@@ -23,7 +23,7 @@ export class UserRetoComponent implements OnInit {
   changeRoute = ChangeRoute();
   alertError = AlertError();
   getImage = GetImage();
-  dateFormat = DateFormat();
+  dateCompare = DateCompare();
   load = Loading();
 
   first: number = 0;
@@ -35,7 +35,7 @@ export class UserRetoComponent implements OnInit {
 
   auxRetos: Reto[] = [];
   retos: Reto[] = [
-    {
+    /* {
       idReto: '',
       nombre: '',
       fechaApertura: new Date(),
@@ -45,13 +45,15 @@ export class UserRetoComponent implements OnInit {
       puntosRecompensa: 0,
       creditosObtenidos: 0,
       instrucciones: '',
+      criterioMinimo: 0,
       imagen: '',
       idTipoReto: '',
       tipoReto: '',
       idComportamiento: '',
-      comportamiento: '',
+      comportamientoPregunta: '',
+      totalPreguntas: 0,
       estado: 0,
-    },
+    }, */
   ];
 
   constructor(
@@ -70,17 +72,35 @@ export class UserRetoComponent implements OnInit {
   }
 
   cargarData() {
-    this.retoService.getList(-1).subscribe({
+    this.retoService.getUsuario_RetoByIdUsuario().subscribe({
       next: (data: any) => {
+        console.log(data);
         let { error, info, lista } = data.response;
         if (error === 0) {
-          lista.forEach((item: Reto) => {
-            if (new Date(item.fechaCierre) < new Date()) {
-              item.estado = 0;
+          /* let retos: Reto[] = [] */
+
+          let fechaHoy = new Date();
+          fechaHoy.setHours(0, 0, 0, 0);
+
+          lista.forEach((ur: Usuario_Reto) => {
+            if (
+              new Date(ur.reto.fechaApertura) >= fechaHoy &&
+              this.dateCompare(ur.reto.fechaApertura) !== 'N/A'
+            ) {
+              ur.reto.estado = 0;
             }
+            if (
+              new Date(ur.reto.fechaCierre) < fechaHoy &&
+              this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
+            ) {
+              ur.reto.estado = 0;
+            }
+            this.retos.push(ur.reto);
+            this.auxRetos.push(ur.reto);
           });
-          this.retos = lista;
-          this.auxRetos = lista;
+
+          /* this.retos = retos;
+          this.auxRetos = retos; */
         } else {
           this.alertError(TitleErrorForm, info);
         }
@@ -109,11 +129,33 @@ export class UserRetoComponent implements OnInit {
   }
 
   getBuscar(texto: string) {
-    this.retoService.getBuscarList(texto).subscribe({
+    this.retoService.getBuscarUsuario_RetoByIdUsuario(texto).subscribe({
       next: (data: any) => {
         let { error, info, lista } = data.response;
         if (error === 0) {
-          this.retos = lista;
+          /* let retos: Reto[] = [] */
+          this.retos = [];
+
+          let fechaHoy = new Date();
+          fechaHoy.setHours(0, 0, 0, 0);
+
+          lista.forEach((ur: Usuario_Reto) => {
+            if (
+              new Date(ur.reto.fechaApertura) >= fechaHoy &&
+              this.dateCompare(ur.reto.fechaApertura) !== 'N/A'
+            ) {
+              ur.reto.estado = 0;
+            }
+            if (
+              new Date(ur.reto.fechaCierre) < fechaHoy &&
+              this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
+            ) {
+              ur.reto.estado = 0;
+            }
+            this.retos.push(ur.reto);
+          });
+
+          /* this.retos = retos; */
         } else {
           this.retos = [];
           this.info = info;
@@ -133,7 +175,7 @@ export class UserRetoComponent implements OnInit {
 
   defaultList(event: Event) {
     let text = (event.target as HTMLInputElement).value;
-    if (!text) {
+    if (!text.trim()) {
       this.retos = this.auxRetos;
     }
   }
