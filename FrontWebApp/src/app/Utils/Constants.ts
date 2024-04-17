@@ -8,22 +8,26 @@ import Swal from 'sweetalert2';
 export const servicioURL: string = 'http://192.168.100.91:8087';
 //export const servicioURL: string = 'http://localhost:49090';
 
+export const playMoveUrl: string = 'https://www.google.com';
+
 export const ImgSizeMax: number = 200 * 1024;
-export const ImgSizeMaxConfig: number = 600 * 1024;
+export const ImgSizeMaxConfig: number = 350 * 1024;
+export const ImgWidthMax: number = 360;
+export const ImgHeightMax: number = 360;
 export const SoundQuizCorrect: string = 'assets/sounds/QuizCorrect.wav';
 export const SoundQuizIncorrect: string = 'assets/sounds/QuizWrong.wav';
 export const SoundQuizVictory: string = 'assets/sounds/Victory.mp3';
 export const FormatoFecha: string = 'dd/MM/yyyy';
 export const FormatoFechaInput: string = 'yyyy-MM-dd';
 export const SugerenciaImagen: string =
-  'Tamaño máximo permitido 200 KB, se recomienda 360 * 360 pixeles';
-export const SugerenciaImagenConfig: string = 'Tamaño máximo permitido 600 KB';
+  'Dimensiones máximas 360x360 píxeles y 200 KB. Formatos JPG y PNG.';
 export const SinRegistros: string = 'No hay registros';
 export const TitleEliminar: string = 'Confirmación Eliminar';
 export const MsgEliminar: string = '¿Seguro desea eliminar el registro?';
 export const MsgElimindo: string = 'Registro eliminado';
 export const MsgEditado: string = 'Registro actualizado';
 export const MsgFormatoDescargado: string = 'Formato descargado';
+export const MsgArchivoDescargado: string = 'Archivo descargado';
 export const MsgOk: string = 'Proceso ejecutado';
 export const MsgActivado: string = 'Registro Activado';
 export const MsgDesactivado: string = 'Registro Desactivado';
@@ -39,6 +43,11 @@ export const MsgError: string =
 export const MsgErrorConexion: string =
   'Ha ocurrido un error en la conexión, intentalo más tarde o recarga la página';
 
+export const HtmlLicencias: string =
+  '<a style="display: block; margin-top: 10px;" href="' +
+  playMoveUrl +
+  '" target="_blank">Comprar más licencias</a>';
+
 export var UpsertMsg: string = '';
 export var Upsert: boolean = false;
 
@@ -47,27 +56,42 @@ export const AlertError = () => {
   return (titulo: string, msg: string) => {
     Swal.fire({
       title: titulo,
-      text: msg,
+      html: msg,
       icon: 'error',
       confirmButtonText: 'Aceptar',
       buttonsStyling: false,
       customClass: {
-        confirmButton: 'btn btn-outline-success normal',
+        confirmButton: 'btn btn-outline-secondary normal',
       },
     });
   };
 };
 
 export const AlertSuccess = () => {
-  return (titulo: string, html: string) => {
+  return (titulo: string, msg: string) => {
     Swal.fire({
       title: titulo,
-      html: html,
+      html: msg,
       icon: 'success',
       confirmButtonText: 'Aceptar',
       buttonsStyling: false,
       customClass: {
-        confirmButton: 'btn btn-outline-success normal',
+        confirmButton: 'btn btn-outline-secondary normal',
+      },
+    });
+  };
+};
+
+export const AlertWarning = () => {
+  return (titulo: string, msg: string) => {
+    Swal.fire({
+      title: titulo,
+      html: msg,
+      icon: 'warning',
+      confirmButtonText: 'Aceptar',
+      buttonsStyling: false,
+      customClass: {
+        confirmButton: 'btn btn-outline-secondary normal',
       },
     });
   };
@@ -115,6 +139,18 @@ const AgregarCeros = (valor: number): string => {
   return valor < 10 ? `0${valor}` : `${valor}`;
 };
 
+export const GetTypeTime = () => {
+  return (milisegundos: number): string => {
+    if (milisegundos >= 3600000 && milisegundos < 7200000) {
+      return 'hora';
+    } else if (milisegundos >= 7200000) {
+      return 'horas';
+    } else {
+      return 'minutos';
+    }
+  };
+};
+
 export const ChangeRoute = () => {
   const router = inject(Router);
   return (ruta: string, params: object) => {
@@ -123,11 +159,24 @@ export const ChangeRoute = () => {
 };
 
 export const GetImage = () => {
-  return (image: string, directorio: string, defaultImage: string): string => {
+  return (
+    image: string,
+    serverDirectorio: string,
+    defaultImage: string
+  ): string => {
     if (image !== 'N/A' && image !== '') {
-      return `${servicioURL}/Content/Images/${directorio}/${image}`;
+      return `${servicioURL}/Content/Images/${serverDirectorio}/${image}`;
     }
     return `assets/img/default/${defaultImage}`;
+  };
+};
+
+export const GetArchivo = () => {
+  return (archivo: string, serverDirectorio: string): string => {
+    if (archivo !== 'N/A' && archivo !== '') {
+      return `${servicioURL}/Content/Archivos/${serverDirectorio}/${archivo}`;
+    }
+    return 'N/A';
   };
 };
 
@@ -161,7 +210,7 @@ export const ReproducirSonido = () => {
 
 export const Loading = () => {
   const loading = document.getElementById('loading');
-  return (visible: boolean, none: boolean) => {
+  return (visible: boolean, none: boolean, tiempo: number = 500) => {
     if (loading) {
       if (none) {
         loading.classList.add('hidden');
@@ -172,7 +221,7 @@ export const Loading = () => {
       } else {
         setTimeout(() => {
           loading.classList.add('hidden');
-        }, 500);
+        }, tiempo);
       }
     }
   };

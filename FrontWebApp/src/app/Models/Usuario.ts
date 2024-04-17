@@ -9,6 +9,7 @@ export interface Usuario {
   idRol: string;
   rol: string;
   idPais: string;
+  pais: string;
   idCiudad: string;
   ciudad: string;
   idEmpresa: string;

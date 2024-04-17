@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using System.Data;
 using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;
@@ -58,6 +60,85 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idNivel)
         {
             NivelItem response = await data.GetNivel(estado, idNivel);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("reporte/nivel/{estado}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Report([FromRoute] int estado)
+        {
+            Response response = new();
+            DataTable dt = new();
+
+            string hora = WC.GetHoraActual(DateTime.Now);
+            string nombreArchivo = $"Niveles{hora}.xls";
+            string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, nombreCarpeta);
+
+            WC.EliminarArchivosAntiguos(_env, nombreCarpeta, "Niveles");
+
+            dt.Columns.Add("NOMBRE", typeof(string));
+            dt.Columns.Add("DESCRIPCIÓN", typeof(string));
+            dt.Columns.Add("PUNTOS NECESARIOS", typeof(int));            
+            dt.Columns.Add("CANTIDAD DE USUARIOS", typeof(int));
+            dt.Columns.Add("FECHA DE CREACIÓN", typeof(DateTime));
+
+            NivelList responseNiveles = await data.GetNivelList(estado);
+
+            if (responseNiveles.Error == 0)
+            {
+                if (responseNiveles.Lista.Count > 0)
+                {
+                    foreach (var item in responseNiveles.Lista)
+                    {
+                        DataRow row = dt.NewRow();
+                        row[0] = item.Nombre;
+                        row[1] = item.Descripcion;
+                        row[2] = item.PuntosNecesarios;                        
+                        row[3] = item.TotalUsuarios;
+                        row[4] = item.FechaCreacion;
+                        dt.Rows.Add(row);
+                    }
+
+                    HSSFWorkbook workbook = new();
+                    ISheet hoja = workbook.CreateSheet("Salas");
+                    IRow headerRow = hoja.CreateRow(0);
+
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        headerRow.CreateCell(i).SetCellValue(dt.Columns[i].ColumnName);
+                    }
+
+                    for (int rowIndex = 0; rowIndex < dt.Rows.Count; rowIndex++)
+                    {
+                        IRow dataRow = hoja.CreateRow(rowIndex + 1);
+
+                        for (int columnIndex = 0; columnIndex < dt.Columns.Count; columnIndex++)
+                        {
+                            dataRow.CreateCell(columnIndex).SetCellValue(dt.Rows[rowIndex][columnIndex].ToString());
+                        }
+                    }
+
+                    //Aqui crea el archivo
+                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
+                    workbook.Write(fileStream);
+                    fileStream.Dispose();
+
+                    response.Info = nombreArchivo;
+                    response.Error = 0;
+                }
+                else
+                {
+                    response.Info = "La lista esta vacia";
+                    response.Error = 1;
+                }
+            }
+            else
+            {
+                response.Info = response.Info;
+                response.Error = 1;
+            }
+
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 

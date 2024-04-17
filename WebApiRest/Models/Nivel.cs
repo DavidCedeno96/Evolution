@@ -3,8 +3,7 @@
     public class Nivel
     {
         public Guid IdNivel { get; set; }
-        public string Nombre { get; set; }
-        public int Posicion { get; set; }
+        public string Nombre { get; set; }        
         public string Descripcion { get; set; }
         public int PuntosNecesarios { get; set; }
         public string Imagen { get; set; }
@@ -34,8 +33,9 @@
         public Guid IdUsuario { get; set; }
         public Guid IdNivel { get; set; }
         public string Nombre { get; set; }
-        public int Posicion { get; set; } = 0;
+        public int Puntos { get; set; } = 0;
         public string Imagen { get; set; }
+        public string Descripcion { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
     }

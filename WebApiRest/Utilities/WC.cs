@@ -1,5 +1,10 @@
 ﻿using System.Text;
-using System.Security.Cryptography;
+using System.Drawing;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit.Text;
+using MimeKit;
+using WebApiRest.Models;
 
 namespace WebApiRest.Utilities
 {
@@ -8,10 +13,10 @@ namespace WebApiRest.Utilities
     public static class WC
     {
         private static readonly string satisfactorio = "Satisfactorio";
+        private static readonly string correoEnviado = "El correo se envió satisfactoriamente";
         private static readonly string error = "Ha ocurrido un error, intentalo más tarde";
         private static readonly string archivoExistente = "El archivo ya existe";        
-        private static readonly string errorArchivo = "Tipo de archivo no permitido";
-        private static readonly string errorTamanoArchivo = "El tamaño del archivo no puede superar los 200 KB.";
+        private static readonly string errorArchivo = "Tipo de archivo no permitido";        
         private static readonly string errorLogin = "Usuario no encontrado";        
         private static readonly string errorLetrasNumeros = "Solo se permiten letras y números";
         private static readonly string errorLetras = "Solo se permiten letras";
@@ -19,6 +24,7 @@ namespace WebApiRest.Utilities
         private static readonly string errorCorreo = "Ingrese un correo válido";
         private static readonly string errorCelular = "Solo se permiten números y debe ser de 10 dígitos";
         private static readonly string errorClave = "Debe tener al menos 5 caracteres de longitud, contener al menos un número, contener al menos una letra mayúscula, contener al menos una letra minúscula o solo los siguientes caracteres #@_-.";
+        private static readonly string errorEstado = "Estado Incorrecto";
         private static readonly string invalid = "Tiene cacarteres invalidos";
         private static readonly string max50 = "Máximo 50 caracteres";        
 
@@ -43,6 +49,27 @@ namespace WebApiRest.Utilities
             return "";
         }
 
+        public static Size GetImageDimensions(IFormFile file)
+        {
+            if (file != null)
+            {
+                if(!GetArchivoPermitido("jpg/jpeg/png", file.Name))
+                {
+                    using var stream = file.OpenReadStream();
+                    using var image = SixLabors.ImageSharp.Image.Load(stream);
+                    return new Size(image.Width, image.Height);
+                }
+                else
+                {
+                    return new Size(0, 0);
+                }
+            }
+            else
+            {
+                return new Size(0, 0);  
+            }
+        }
+
         public static byte[] GetBytes(string texto)
         {
             if (!string.IsNullOrEmpty(texto))
@@ -59,7 +86,7 @@ namespace WebApiRest.Utilities
                 return Encoding.UTF8.GetString(byteArray);
             }
             return "";
-        }
+        }                
 
         public static string GetHoraActual(DateTime dateTime)
         {
@@ -140,6 +167,39 @@ namespace WebApiRest.Utilities
             return new string(password);
         }
 
+        public static async Task<Response> EnviarMail(CorreoEnvio correoEnvio, string correoUsuario, string asunto, string body) // EL body SI SE PUEDE PONER UN HTML EN UN STRING
+        {
+            Response response = new();
+            MimeMessage message = new();
+            SmtpClient smtpClient = new();                   
+
+            message.From.Add(MailboxAddress.Parse(GetTrim(correoEnvio.Correo)));
+            message.To.Add(MailboxAddress.Parse(GetTrim(correoUsuario)));
+            message.Subject = asunto;
+            message.Body = new TextPart(TextFormat.Html) { Text = body };
+
+            try
+            {
+                await smtpClient.ConnectAsync(correoEnvio.Host, correoEnvio.Puerto, SecureSocketOptions.StartTls);
+                await smtpClient.AuthenticateAsync(correoEnvio.Correo, correoEnvio.Password);
+                await smtpClient.SendAsync(message);
+
+                response.Info = correoEnviado;
+                response.Error = 0;
+            }
+            catch (Exception ex)
+            {
+                response.Info = ex.Message;
+                response.Error = 1;
+            }
+            finally
+            {
+                await smtpClient.DisconnectAsync(true);
+            }
+
+            return response;
+        }
+
         public static string GetSatisfactorio()
         {
             return satisfactorio;
@@ -155,11 +215,7 @@ namespace WebApiRest.Utilities
         public static string GetErrorArchivo()
         {
             return errorArchivo;
-        }
-        public static string GetErrorTamanoArchivo()
-        {
-            return errorTamanoArchivo;
-        }
+        }      
         public static string GetArchivoExistente()
         {
             return archivoExistente;
@@ -187,6 +243,10 @@ namespace WebApiRest.Utilities
         public static string GetErrorClave()
         {
             return errorClave;
+        }
+        public static string GetErrorEstado()
+        {
+            return errorEstado;
         }
         public static string GetInvalid()
         {

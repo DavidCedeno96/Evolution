@@ -43,6 +43,7 @@ namespace WebApiRest.Data
                         TotalUsuarios = Convert.ToInt32(dr["totalUsuarios"].ToString()),
                         IdCondicion = new Guid(dr["idCondicion"].ToString()),
                         Condicion = dr["condicion"].ToString(),
+                        NumCondicion = Convert.ToInt32(dr["numCondicion"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
@@ -100,6 +101,7 @@ namespace WebApiRest.Data
                         TotalUsuarios = Convert.ToInt32(dr["totalUsuarios"].ToString()),
                         IdCondicion = new Guid(dr["idCondicion"].ToString()),
                         Condicion = dr["condicion"].ToString(),
+                        NumCondicion = Convert.ToInt32(dr["numCondicion"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
@@ -212,6 +214,7 @@ namespace WebApiRest.Data
                         TotalUsuarios = Convert.ToInt32(dr["totalUsuarios"].ToString()),
                         IdCondicion = new Guid(dr["idCondicion"].ToString()),
                         Condicion = dr["condicion"].ToString(),
+                        NumCondicion = Convert.ToInt32(dr["numCondicion"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
@@ -249,7 +252,8 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(medalla.Nombre));
             cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(medalla.Descripcion));
             cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(medalla.Imagen));
-            cmd.Parameters.AddWithValue("@idCondicion", medalla.IdCondicion);            
+            cmd.Parameters.AddWithValue("@idCondicion", medalla.IdCondicion);
+            cmd.Parameters.AddWithValue("@numCondicion", medalla.NumCondicion);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -292,6 +296,7 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(medalla.Descripcion));
             cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(medalla.Imagen));
             cmd.Parameters.AddWithValue("@idCondicion", medalla.IdCondicion);
+            cmd.Parameters.AddWithValue("@numCondicion", medalla.NumCondicion);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;

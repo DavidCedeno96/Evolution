@@ -1,7 +1,6 @@
 export interface Nivel {
   idNivel: string;
   nombre: string;
-  posicion: number;
   descripcion: string;
   puntosNecesarios: number;
   imagen: string;

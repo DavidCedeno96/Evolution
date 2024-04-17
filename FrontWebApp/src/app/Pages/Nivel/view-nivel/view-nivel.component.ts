@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -6,19 +12,24 @@ import { Nivel } from 'src/app/Models/Nivel';
 import {
   AlertError,
   ChangeRoute,
+  GetArchivo,
   GetImage,
   Loading,
+  MsgArchivoDescargado,
   MsgEliminar,
   MsgElimindo,
   MsgError,
   MsgErrorArchivo,
   MsgFormatoDescargado,
   MsgOk,
+  SetUpsert,
   SinRegistros,
   TitleEliminar,
   TitleError,
   TitleErrorArchivo,
   TitleErrorForm,
+  Upsert,
+  UpsertMsg,
 } from 'src/app/Utils/Constants';
 import { NivelService } from 'src/app/services/nivel.service';
 
@@ -28,11 +39,13 @@ import { NivelService } from 'src/app/services/nivel.service';
   styleUrls: ['./view-nivel.component.css'],
   providers: [ConfirmationService, MessageService],
 })
-export class ViewNivelComponent implements OnInit {
+export class ViewNivelComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   changeRoute = ChangeRoute();
   getImage = GetImage();
+  getArchivo = GetArchivo();
 
   @ViewChild('closeModal') closeModal!: ElementRef;
   @ViewChild('valueArchivo') valueArchivo!: ElementRef;
@@ -49,7 +62,6 @@ export class ViewNivelComponent implements OnInit {
     {
       idNivel: '',
       nombre: '',
-      posicion: 0,
       descripcion: '',
       puntosNecesarios: 0,
       imagen: '',
@@ -74,6 +86,19 @@ export class ViewNivelComponent implements OnInit {
   ngOnInit(): void {
     this.loading(true, false);
     this.cargarData();
+  }
+
+  ngAfterViewInit(): void {
+    if (Upsert) {
+      setTimeout(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: MsgOk,
+          detail: UpsertMsg,
+        });
+        this.setUpsert(false, '');
+      }, 100);
+    }
   }
 
   cargarData() {
@@ -153,7 +178,7 @@ export class ViewNivelComponent implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: MsgOk,
-              detail: 'Preguntas creadas',
+              detail: 'Niveles creados',
             });
           } else {
             this.errorArchivo = true;
@@ -177,7 +202,7 @@ export class ViewNivelComponent implements OnInit {
     }
   }
 
-  exportArchivo() {
+  descargarArchivo() {
     this.loading(true, false);
     this.nivelServicio.getArchivo().subscribe({
       next: (data: Blob) => {
@@ -197,6 +222,44 @@ export class ViewNivelComponent implements OnInit {
         console.log(e);
       },
     });
+  }
+
+  exportarArchivo() {
+    if (this.auxNivel.length) {
+      this.loading(true, false);
+      this.nivelServicio.reporteNivel(-1).subscribe({
+        next: (data: any) => {
+          let { info, error } = data.response;
+          if (error === 0) {
+            let url = this.getArchivo(info, 'Nivel');
+            const element = document.createElement('a');
+            element.download = `Niveles.xls`;
+            element.href = url;
+            element.click();
+
+            this.messageService.add({
+              severity: 'success',
+              summary: MsgOk,
+              detail: MsgArchivoDescargado,
+            });
+          } else {
+            this.alertError(TitleErrorArchivo, info);
+          }
+          this.loading(false, false, 1000);
+        },
+        error: (e) => {
+          console.error(e);
+          if (e.status === 401 || e.status === 403) {
+            this.router.navigate(['/']);
+          } else {
+            this.loading(false, false);
+            this.alertError(TitleErrorArchivo, MsgErrorArchivo);
+          }
+        },
+      });
+    } else {
+      this.alertError(TitleErrorArchivo, SinRegistros);
+    }
   }
 
   onFileSelected(event: Event) {
@@ -243,7 +306,7 @@ export class ViewNivelComponent implements OnInit {
 
   defaultList(event: Event) {
     let text = (event.target as HTMLInputElement).value;
-    if (!text) {
+    if (!text.trim()) {
       this.nivel = this.auxNivel;
     }
   }

@@ -1,3 +1,4 @@
+import { Equipo } from './Equipo';
 import { Usuario } from './Usuario';
 
 export interface Reto {
@@ -18,6 +19,9 @@ export interface Reto {
   comportamientoPregunta: string;
   estado: number;
   totalPreguntas: number;
+  usuariosAsignados: number;
+  equiposAsignados: number;
+  enEquipo: number;
 }
 
 export interface Usuario_Reto {
@@ -27,5 +31,15 @@ export interface Usuario_Reto {
   tiempo: number;
   vidas: number;
   totalRetos: number;
+  posicion: number;
   completado: number;
+  tieneEquipo: number;
+  fechaCreacion: Date;
+  fechaModificacion: Date;
+}
+
+export interface Equipo_Reto {
+  equipo: Equipo;
+  reto: Reto;
+  totalUsuarios: number;
 }

@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -6,19 +12,26 @@ import { Recompensa } from 'src/app/Models/Recompensa';
 import {
   AlertError,
   ChangeRoute,
+  GetArchivo,
   GetImage,
   Loading,
+  MsgActivado,
+  MsgArchivoDescargado,
+  MsgDesactivado,
   MsgEliminar,
   MsgElimindo,
   MsgError,
   MsgErrorArchivo,
   MsgFormatoDescargado,
   MsgOk,
+  SetUpsert,
   SinRegistros,
   TitleEliminar,
   TitleError,
   TitleErrorArchivo,
   TitleErrorForm,
+  Upsert,
+  UpsertMsg,
 } from 'src/app/Utils/Constants';
 import { RecompensaService } from 'src/app/services/recompensa.service';
 
@@ -28,11 +41,13 @@ import { RecompensaService } from 'src/app/services/recompensa.service';
   styleUrls: ['./view-recompensa.component.css'],
   providers: [ConfirmationService, MessageService],
 })
-export class ViewRecompensaComponent implements OnInit {
+export class ViewRecompensaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   changeRoute = ChangeRoute();
   getImage = GetImage();
+  getArchivo = GetArchivo();
 
   @ViewChild('closeModal') closeModal!: ElementRef;
   @ViewChild('valueArchivo') valueArchivo!: ElementRef;
@@ -45,18 +60,19 @@ export class ViewRecompensaComponent implements OnInit {
   formulario!: FormGroup;
   auxRecompensas: Recompensa[] = [];
 
-  recompensas: Recompensa[] = [
-    {
-      idRecompensa: '',
-      nombre: '',
-      descripcion: '',
-      imagen: '',
-      cantDisponible: 0,
-      cantCanje: 0, // Son los Créditos Requeridos
-      totalUsuarios: 0,
-      estado: 0,
-    },
-  ];
+  recompensas: Recompensa[] = [];
+  recompensa: Recompensa = {
+    idRecompensa: '',
+    nombre: '',
+    descripcion: '',
+    imagen: '',
+    cantDisponible: 0,
+    cantCanje: 0, // Son los Créditos Requeridos
+    totalUsuarios: 0,
+    idCategoria: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    categoria: '',
+    estado: 0,
+  };
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -73,6 +89,19 @@ export class ViewRecompensaComponent implements OnInit {
   ngOnInit(): void {
     this.loading(true, false);
     this.cargarData();
+  }
+
+  ngAfterViewInit(): void {
+    if (Upsert) {
+      setTimeout(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: MsgOk,
+          detail: UpsertMsg,
+        });
+        this.setUpsert(false, '');
+      }, 100);
+    }
   }
 
   cargarData() {
@@ -111,7 +140,7 @@ export class ViewRecompensaComponent implements OnInit {
   }
 
   getBuscar(texto: string) {
-    this.recompensaServicio.getBuscarList(texto).subscribe({
+    this.recompensaServicio.getBuscarList(texto, '').subscribe({
       next: (data: any) => {
         let { error, info, lista } = data.response;
         if (error === 0) {
@@ -152,7 +181,7 @@ export class ViewRecompensaComponent implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: MsgOk,
-              detail: 'Preguntas creadas',
+              detail: 'Recompensas creadas',
             });
           } else {
             this.errorArchivo = true;
@@ -176,7 +205,7 @@ export class ViewRecompensaComponent implements OnInit {
     }
   }
 
-  exportArchivo() {
+  descargarArchivo() {
     this.loading(true, false);
     this.recompensaServicio.getArchivo().subscribe({
       next: (data: Blob) => {
@@ -198,10 +227,79 @@ export class ViewRecompensaComponent implements OnInit {
     });
   }
 
+  exportarArchivo() {
+    if (this.auxRecompensas.length) {
+      this.loading(true, false);
+      this.recompensaServicio.reporteRecompensa(-1).subscribe({
+        next: (data: any) => {
+          let { info, error } = data.response;
+          if (error === 0) {
+            let url = this.getArchivo(info, 'Recompensa');
+            const element = document.createElement('a');
+            element.download = `Recompensas.xls`;
+            element.href = url;
+            element.click();
+
+            this.messageService.add({
+              severity: 'success',
+              summary: MsgOk,
+              detail: MsgArchivoDescargado,
+            });
+          } else {
+            this.alertError(TitleErrorArchivo, info);
+          }
+          this.loading(false, false, 1000);
+        },
+        error: (e) => {
+          console.error(e);
+          if (e.status === 401 || e.status === 403) {
+            this.router.navigate(['/']);
+          } else {
+            this.loading(false, false);
+            this.alertError(TitleErrorArchivo, MsgErrorArchivo);
+          }
+        },
+      });
+    } else {
+      this.alertError(TitleErrorArchivo, SinRegistros);
+    }
+  }
+
   onFileSelected(event: Event) {
     this.selectedFile = (event.target as HTMLInputElement).files![0];
     this.errorArchivo = false;
     console.log(this.selectedFile.name);
+  }
+
+  setEstado(idRecompensa: string, estado: number) {
+    this.loading(true, false);
+    this.recompensa.idRecompensa = idRecompensa;
+    this.recompensa.estado = estado;
+
+    this.recompensaServicio.updateEstado(this.recompensa).subscribe({
+      next: (data: any) => {
+        let { error, info } = data.response;
+        if (error === 0) {
+          this.cargarData();
+          this.messageService.add({
+            severity: 'success',
+            summary: MsgOk,
+            detail: estado ? MsgActivado : MsgDesactivado,
+          });
+        } else {
+          this.alertError(TitleErrorForm, info);
+        }
+        this.loading(false, false);
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+        }
+      },
+    });
   }
 
   confirmEliminar(id: string) {
@@ -242,7 +340,7 @@ export class ViewRecompensaComponent implements OnInit {
 
   defaultList(event: Event) {
     let text = (event.target as HTMLInputElement).value;
-    if (!text) {
+    if (!text.trim()) {
       this.recompensas = this.auxRecompensas;
     }
   }

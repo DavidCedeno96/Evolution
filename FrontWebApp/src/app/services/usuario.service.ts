@@ -24,6 +24,15 @@ export class UsuarioService {
     });
   }
 
+  reporteUsuarios(estado: number): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.get<any>(`${this.apiURL}/reporte/usuario/${estado}`, {
+      headers: headers,
+    });
+  }
+
   getList(estado: number): Observable<Usuario[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.getToken()}`,
@@ -69,6 +78,15 @@ export class UsuarioService {
     });
   }
 
+  updateUser(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.put<FormData>(`${this.apiURL}/updateUser`, formData, {
+      headers: headers,
+    });
+  }
+
   updateByFoto(formData: FormData): Observable<FormData> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.getToken()}`,
@@ -85,6 +103,19 @@ export class UsuarioService {
     return this.http.put<Usuario>(`${this.apiURL}/updateEstado`, usuario, {
       headers: headers,
     });
+  }
+
+  updateEstadoByCorreosIds(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.put<FormData>(
+      `${this.apiURL}/massAction/updateEstado`,
+      formData,
+      {
+        headers: headers,
+      }
+    );
   }
 
   register(formData: FormData): Observable<FormData> {
@@ -107,6 +138,28 @@ export class UsuarioService {
 
   registerView(): Observable<any> {
     return this.http.get<any>(`${this.apiURL}/registerView`);
+  }
+
+  sedEmail_register(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.post<FormData>(
+      `${this.apiURL}/sendEmail/register`,
+      formData,
+      {
+        headers: headers,
+      }
+    );
+  }
+
+  registerUser(token: string, any: any): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<any>(`${this.apiURL}/ActivateUser`, any, {
+      headers: headers,
+    });
   }
 
   loginUsuario(usuario: Usuario): Observable<Usuario> {
@@ -162,9 +215,13 @@ export class UsuarioService {
     let nombre = '';
 
     if (this.loggedIn()) {
-      let token = this.getToken();
-      const decodeToken = this.helper.decodeToken(token!);
-      nombre = decodeToken.nombre;
+      if (localStorage.getItem('userName')) {
+        nombre = localStorage.getItem('userName')!;
+      } else {
+        let token = this.getToken();
+        const decodeToken = this.helper.decodeToken(token!);
+        nombre = decodeToken.nombre;
+      }
     } else {
       this.router.navigate(['/']);
     }
@@ -215,14 +272,14 @@ export class UsuarioService {
   }
 
   startWatching() {
-    console.log('Start', this.tiempoDeInactividad);
+    console.log('Start');
     this.resetTimer();
     document.addEventListener('mousemove', () => this.resetTimer());
     document.addEventListener('keydown', () => this.resetTimer());
   }
 
   clearWatching() {
-    console.log('Stop', this.tiempoDeInactividad);
+    console.log('Stop');
     clearTimeout(this.timeoutId);
   }
 }

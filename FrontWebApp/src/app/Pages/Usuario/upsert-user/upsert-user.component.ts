@@ -14,6 +14,9 @@ import {
   TitleError,
   TitleErrorForm,
   SugerenciaImagen,
+  ImgWidthMax,
+  ImgHeightMax,
+  HtmlLicencias,
 } from 'src/app/Utils/Constants';
 import {
   ContrasenaInvalid,
@@ -64,6 +67,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
     idRol: '',
     rol: '',
     idPais: '',
+    pais: '',
     idCiudad: '',
     ciudad: '',
     idEmpresa: '',
@@ -116,6 +120,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
         this.usuario.id,
         [
           Validators.required,
+          Validators.minLength(3),
           Validators.maxLength(20),
           Validators.pattern(exp_invalidos),
         ],
@@ -263,6 +268,8 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
         if (error === 0) {
           this.setUpsert(true, 'Registro Creado');
           this.router.navigate(['/view-user']);
+        } else if (error === 2) {
+          this.alertError(TitleErrorForm, info + HtmlLicencias);
         } else if (campo !== '') {
           this.error = error;
           this.campo = campo;
@@ -348,20 +355,32 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
   onFileSelected(event: Event) {
     this.selectedFoto = (event.target as HTMLInputElement).files![0];
 
-    if (this.selectedFoto.size > ImgSizeMax) {
-      this.errorArchivo = true;
-    } else {
-      this.errorArchivo = false;
-    }
-
-    if (this.selectedFoto.size > 0) {
+    if (this.selectedFoto) {
       let reader = new FileReader();
       reader.onload = (e: any) => {
-        this.previewFoto = e.target.result;
+        let img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          let w = (img as HTMLImageElement).width;
+          let h = (img as HTMLImageElement).height;
+
+          if (
+            this.selectedFoto.size > ImgSizeMax ||
+            w > ImgWidthMax ||
+            h > ImgHeightMax
+          ) {
+            this.errorArchivo = true;
+          } else {
+            this.errorArchivo = false;
+          }
+        };
+
+        this.previewFoto = img.src;
       };
       reader.readAsDataURL(this.selectedFoto);
+
+      console.log(this.selectedFoto.name);
     }
-    console.log(this.selectedFoto.name, this.previewFoto);
   }
 
   selectedPais(event: Event) {

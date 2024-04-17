@@ -1,183 +1,233 @@
-<div class="my-3 my-md-5">
-  <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
-    <h5 class="my-5 text-center txt text-primary text-uppercase">retos</h5>
-    <div class="row g-3 mb-4">
-      <div class="col-6 col-md-auto d-grid d-md-block">
-        <a
-          class="btn btn-primary icon"
-          (click)="changeRoute('/upsert-reto', { type: 'crear' })"
-        >
-          <div class="icon-text buton">
-            <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
-          </div>
-        </a>
-      </div>
-    </div>
-    <!-- buscador -->
-    <form
-      class="d-md-flex w-100"
-      [formGroup]="formulario"
-      (ngSubmit)="submitBuscar()"
-    >
-      <div class="input-group flex-grow-1 me-md-3 mb-3 mb-md-0">
-        <span class="icon-left">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </span>
-        <input
-          type="text"
-          class="form-control icon"
-          placeholder="Buscar..."
-          formControlName="buscar"
-          (input)="defaultList($event)"
-        />
-      </div>
-      <div class="d-grid">
-        <button type="submit" class="btn btn-success">Buscar</button>
-      </div>
-    </form>
-    <!-- Fin buscador -->
-
-    <!-- Items -->
-    <div class="mb-2 mb-md-4">
-      <p-dataView
-        #dv
-        [value]="retos"
-        [rows]="10"
-        [paginator]="true"
-        [emptyMessage]="info"
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">retos</h5>
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-auto d-grid d-md-block">
+      <a
+        class="btn btn-primary icon"
+        (click)="changeRoute('/upsert-reto', { type: 'crear' })"
       >
-        <ng-template let-reto pTemplate="listItem">
-          <div class="col-12">
-            <div class="p-4 gap-4">
-              <div class="row g-3 text-center text-md-start align-items-center">
-                <div class="col-12 col-md-auto">
-                  <img
-                    class="img-thumbnail"
-                    [src]="getImage(reto.imagen, 'reto', 'default-reto.jpg')"
-                    width="100px"
-                    [alt]="reto.imagen"
-                  />
+        <div class="icon-text buton">
+          <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
+        </div>
+      </a>
+    </div>
+  </div>
+  <!-- buscador -->
+  <form
+    class="d-md-flex w-100"
+    [formGroup]="formulario"
+    (ngSubmit)="submitBuscar()"
+  >
+    <div class="input-group flex-grow-1 me-md-3 mb-3 mb-md-0">
+      <span class="icon-left">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control icon"
+        placeholder="Buscar..."
+        formControlName="buscar"
+        (input)="defaultList($event)"
+      />
+    </div>
+    <div class="d-grid">
+      <button type="submit" class="btn btn-secondary">Buscar</button>
+    </div>
+  </form>
+  <!-- Fin buscador -->
+
+  <!-- Items -->
+  <div class="mb-2 mb-md-4">
+    <p-dataView
+      #dv
+      [value]="retos"
+      [rows]="10"
+      [paginator]="true"
+      [emptyMessage]="info"
+    >
+      <ng-template let-reto pTemplate="listItem">
+        <div class="col-12">
+          <div class="p-4 gap-4">
+            <div class="row g-3 text-center text-md-start align-items-center">
+              <div class="col-12 col-md-auto">
+                <img
+                  class="img-thumbnail"
+                  [src]="getImage(reto.imagen, 'reto', 'default-reto.jpg')"
+                  width="100"
+                  [alt]="reto.imagen"
+                />
+              </div>
+              <div class="col-12 col-md-4">
+                <h5 class="txt text-secondary">
+                  {{ reto.nombre }}
+                </h5>
+                <div class="flex align-items-center gap-3">
+                  <span class="d-block txt text-primary">
+                    {{ reto.tipoReto }}
+                  </span>
+                  <small class="d-block" *ngIf="reto.enEquipo">
+                    Reto en Equipo
+                  </small>
+                  <small class="d-block" *ngIf="!reto.enEquipo">
+                    Reto Individual
+                  </small>
+                  <span
+                    class="d-block fw-semibold {{
+                      reto.estado ? 'text-success' : 'text-danger'
+                    }}"
+                  >
+                    {{ reto.estado ? "Activo" : "Desactivado" }}
+                  </span>
                 </div>
-                <div class="col-12 col-md-4">
-                  <h5 class="txt text-secondary">
-                    {{ reto.nombre }}
-                  </h5>
-                  <div class="flex align-items-center gap-3">
-                    <span class="d-block">
-                      {{ reto.tipoReto }}
+                <div class="flex align-items-center gap-3">
+                  <strong>Fecha de apertura:</strong>
+                  <span class="text-truncate">
+                    {{ dateCompare(reto.fechaApertura) }}
+                  </span>
+                </div>
+                <div class="flex align-items-center gap-3">
+                  <strong>Fecha de cierre:</strong>
+                  <span class="text-truncate">
+                    {{ dateCompare(reto.fechaCierre) }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-3">
+                <div class="flex align-items-center gap-3">
+                  <div>
+                    <strong>Vidas:</strong>
+                    <span class="">
+                      {{ reto.vidas }}
                     </span>
                   </div>
-                  <div class="flex align-items-center gap-3">
-                    <strong>Fecha de apertura:</strong>
-                    <span class="text-truncate">
-                      {{ dateCompare(reto.fechaApertura) }}
+                  <div>
+                    <strong>Tiempo máximo:</strong>
+                    <span class="">
+                      {{ formatTiempo(reto.tiempo_ms) }}
+                      {{ getTypeTime(reto.tiempo_ms) }}
                     </span>
                   </div>
-                  <div class="flex align-items-center gap-3">
-                    <strong>Fecha de cierre:</strong>
-                    <span class="text-truncate">
-                      {{ dateCompare(reto.fechaCierre) }}
+                  <div>
+                    <strong>Puntos de Recompensa:</strong>
+                    <span class="">
+                      {{ reto.puntosRecompensa }}
                     </span>
                   </div>
-                </div>
+                  <div>
+                    <strong>Créditos Obtenidos:</strong>
+                    <span class="">
+                      {{ reto.creditosObtenidos }}
+                    </span>
+                  </div>
 
-                <div class="col-12 col-md-3">
-                  <div class="flex align-items-center gap-3">
-                    <div>
-                      <strong>Vidas:</strong>
-                      <span class="">
-                        {{ reto.vidas }}
-                      </span>
-                    </div>
-                    <div>
-                      <strong>Tiempo máximo:</strong>
-                      <span class=""> {{ reto.tiempo_ms }} ms </span>
-                    </div>
-                    <div>
-                      <strong>Puntos de Recompensa:</strong>
-                      <span class="">
-                        {{ reto.puntosRecompensa }}
-                      </span>
-                    </div>
-                    <div>
-                      <strong>Creditos Obtenidos:</strong>
-                      <span class="">
-                        {{ reto.creditosObtenidos }}
-                      </span>
-                    </div>
-
-                    <div class="text-truncate">
-                      <strong>Preguntas:</strong>
-                      <span> {{ reto.totalPreguntas }} </span>
-                    </div>
+                  <div class="text-truncate">
+                    <strong>Cantidad de Preguntas:</strong>
+                    <span> {{ reto.totalPreguntas }} </span>
+                  </div>
+                  <div class="text-truncate" *ngIf="!reto.enEquipo">
+                    <strong>Usuarios Asignados:</strong>
+                    <span> {{ reto.usuariosAsignados }} </span>
+                  </div>
+                  <div class="text-truncate" *ngIf="reto.enEquipo">
+                    <strong>Equipos Asignados:</strong>
+                    <span> {{ reto.equiposAsignados }} </span>
                   </div>
                 </div>
+              </div>
 
-                <div class="col-12 col-md-1 col-lg-2 text-md-end">
-                  <div class="dropdown">
-                    <button
-                      class="btn btn-secondary normal only-icon"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <div class="icon-text buton">
-                        <mat-icon svgIcon="rueda-dentada"></mat-icon>
-                      </div>
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a
-                          class="dropdown-item pointer"
-                          (click)="
-                            changeRoute('/upsert-reto', {
-                              type: 'editar',
-                              reto: reto.idReto
-                            })
-                          "
-                          ><i class="fa-regular fa-pen-to-square me-2"></i
-                          >Editar</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item pointer"
-                          (click)="
-                            changeRoute('/asig-user-reto', {
-                              reto: reto.idReto
-                            })
-                          "
-                          ><i class="fa-regular fa-user me-2"></i>Asignar
-                          Usuarios</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item pointer"
-                          (click)="
-                            changeRoute('/view-pregunta', {
-                              reto: reto.idReto
-                            })
-                          "
-                          ><i class="fa-solid fa-question me-2"></i>Preguntas</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item pointer"
-                          (click)="confirmEliminar(reto.idReto)"
-                          ><i class="fa-solid fa-trash-can me-2"></i>Eliminar</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
+              <div class="col-12 col-md-1 col-lg-2 text-md-end">
+                <div class="dropdown">
+                  <button
+                    class="btn btn-tertiary normal only-icon"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <div class="icon-text buton">
+                      <mat-icon svgIcon="rueda-dentada"></mat-icon>
+                    </div>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a
+                        class="dropdown-item pointer"
+                        (click)="
+                          changeRoute('/upsert-reto', {
+                            type: 'editar',
+                            reto: reto.idReto
+                          })
+                        "
+                        ><i class="fa-regular fa-pen-to-square me-2"></i
+                        >Editar</a
+                      >
+                    </li>
+                    <li *ngIf="!reto.enEquipo">
+                      <a
+                        class="dropdown-item pointer"
+                        (click)="
+                          changeRoute('/asig-user-reto', {
+                            reto: reto.idReto
+                          })
+                        "
+                        ><i class="fa-regular fa-user me-2"></i>Asignar
+                        Usuarios</a
+                      >
+                    </li>
+                    <li *ngIf="reto.enEquipo">
+                      <a
+                        class="dropdown-item pointer"
+                        (click)="
+                          changeRoute('/asig-equipo-reto', {
+                            reto: reto.idReto
+                          })
+                        "
+                      >
+                        <i class="fa-solid fa-users me-2"></i>Asignar Equipos</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item pointer"
+                        (click)="
+                          changeRoute('/view-pregunta', {
+                            reto: reto.idReto
+                          })
+                        "
+                        ><i class="fa-solid fa-question me-2"></i>Preguntas</a
+                      >
+                    </li>
+
+                    <li *ngIf="!reto.estado">
+                      <a
+                        class="dropdown-item pointer text-success"
+                        (click)="setEstado(reto.idReto, 1)"
+                        ><i class="fa-solid fa-power-off me-2"></i>Activar
+                      </a>
+                    </li>
+
+                    <li *ngIf="reto.estado">
+                      <a
+                        class="dropdown-item pointer text-danger"
+                        (click)="setEstado(reto.idReto, 0)"
+                        ><i class="fa-solid fa-power-off me-2"></i>Desactivar
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item pointer"
+                        (click)="confirmEliminar(reto.idReto)"
+                        ><i class="fa-solid fa-trash-can me-2"></i>Eliminar</a
+                      >
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-        </ng-template>
-      </p-dataView>
-    </div>
+        </div>
+      </ng-template>
+    </p-dataView>
   </div>
 </div>
 
@@ -186,7 +236,7 @@
   <ng-template pTemplate="footer">
     <button
       type="button"
-      class="btn btn-secondary me-2"
+      class="btn btn-tertiary me-2"
       pButton
       label="Cancelar"
       (click)="cd.reject()"
@@ -194,7 +244,7 @@
     <button
       type="button"
       pButton
-      class="btn btn-danger"
+      class="btn btn-primary"
       label="Aceptar"
       (click)="cd.accept()"
     ></button>

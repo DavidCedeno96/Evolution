@@ -1,0 +1,227 @@
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">
+    Asignar equipos a retos
+  </h5>
+
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-auto d-grid d-md-block">
+      <button
+        class="btn btn-primary icon"
+        data-bs-toggle="modal"
+        data-bs-target="#asignarequipos"
+      >
+        <div class="icon-text buton">
+          <mat-icon svgIcon="agregar"></mat-icon><span>Asignar Equipos</span>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal Asignar -->
+  <div
+    class="modal fade"
+    id="asignarequipos"
+    tabindex="-1"
+    aria-labelledby="asignarEquipos_retos"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-scrollable">
+      <form class="modal-content" (ngSubmit)="submitEquipo()">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="asignarEquipos_retos">
+            Asignar Equipo
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            #closeModalAsignar
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="card text-center mt-3" *ngIf="!equipos.length">
+            <div class="card-body">
+              <span class="d-block">{{ sinRegistros }}</span>
+              <a data-bs-dismiss="modal" routerLink="/view-equipo"
+                >Ir a equipos</a
+              >
+            </div>
+          </div>
+
+          <div class="card mt-3" *ngIf="equipos.length">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" *ngFor="let item of equipos">
+                <div class="row g-3 text-center text-md-start">
+                  <div class="col-12 col-md-auto align-self-center">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [id]="item.idEquipo"
+                      (input)="selectEquipo(item.idEquipo)"
+                    />
+                  </div>
+                  <label
+                    class="col-12 col-md-auto align-self-center"
+                    [htmlFor]="item.idEquipo"
+                  >
+                    <img
+                      src="assets/img/default/default-equipo.png"
+                      class="img-thumbnail"
+                      width="50"
+                      alt="..."
+                    />
+                  </label>
+                  <label
+                    class="col-12 col-md-8 align-self-center"
+                    [htmlFor]="item.idEquipo"
+                  >
+                    <div class="d-md-flex justify-content-between">
+                      <h6 class="me-2 txt text-secondary text-truncate">
+                        {{ item.nombre }}
+                      </h6>
+                      <small
+                        class="card-text {{
+                          item.estado ? 'text-success' : 'text-danger'
+                        }}"
+                      >
+                        {{ item.estado ? "Activo" : "Desactivado" }}
+                      </small>
+                    </div>
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            value="asignar"
+            [disabled]="!equiposIds.length"
+          >
+            Asignar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Fin Modal -->
+
+  <!-- Items -->
+  <div class="mb-2 mb-md-4">
+    <p-dataView
+      #dv
+      [value]="equipoReto"
+      [rows]="10"
+      [paginator]="true"
+      [emptyMessage]="info"
+    >
+      <ng-template let-er pTemplate="listItem">
+        <div class="col-12">
+          <div class="p-4 gap-4">
+            <div class="row g-3 text-center text-md-start align-items-center">
+              <div class="col-12 col-md-auto">
+                <img
+                  class="img-thumbnail"
+                  [src]="
+                    getImage(er.equipo.imagen, 'equipo', 'default-equipo.png')
+                  "
+                  width="100"
+                  alt="equipo"
+                />
+              </div>
+              <div class="col-12 col-md-4">
+                <h5 class="txt text-secondary">
+                  {{ er.equipo.nombre }}
+                </h5>
+                <div class="flex align-items-center gap-3">
+                  <span
+                    class="d-block fw-semibold {{
+                      er.equipo.estado ? 'text-success' : 'text-danger'
+                    }}"
+                  >
+                    {{ er.equipo.estado ? "Activo" : "Desactivado" }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-3">
+                <div class="flex align-items-center gap-3">
+                  <div>
+                    <strong>Cantidad Usuarios:</strong>
+                    <span class="">
+                      {{ er.totalUsuarios }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-1 col-lg-2 text-md-end">
+                <a
+                  class="pointer txt text-tertiary"
+                  (click)="confirmEliminar(er.reto.idReto, er.equipo.idEquipo)"
+                  ><i class="fa-solid fa-trash-can me-2"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
+  </div>
+</div>
+
+<p-toast [styleClass]="'col-10 col-md-6 col-lg-3'"></p-toast>
+<p-confirmDialog #cd [styleClass]="'col-10 col-md-4'">
+  <ng-template pTemplate="footer">
+    <button
+      type="button"
+      class="btn btn-tertiary me-2"
+      pButton
+      label="Cancelar"
+      (click)="cd.reject()"
+    ></button>
+    <button
+      type="button"
+      pButton
+      class="btn btn-primary"
+      label="Aceptar"
+      (click)="cd.accept()"
+    ></button>
+  </ng-template>
+</p-confirmDialog>
+
+<p-dialog
+  header="Equipos asignados al reto"
+  [(visible)]="modal"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '50vw' }"
+>
+  <div class="card mt-4 mt-lg-0">
+    <ul class="list-group list-group-flush">
+      <li
+        *ngFor="let item of responseList"
+        class="list-group-item d-flex justify-content-between {{
+          item.error ? 'text-danger' : 'text-success'
+        }}"
+      >
+        <div class="text-break">
+          <span class="d-block fw-semibold">{{ item.id }}</span>
+          <small class="d-block" *ngIf="item.error">{{ item.info }}</small>
+          <small class="d-block" *ngIf="!item.error"
+            >Equipo asignado al reto</small
+          >
+        </div>
+        <div class="d-none d-md-block align-self-center">
+          <i class="fa-regular fa-circle-check" *ngIf="!item.error"></i>
+          <i class="fa-regular fa-circle-xmark" *ngIf="item.error"></i>
+        </div>
+      </li>
+    </ul>
+  </div>
+</p-dialog>

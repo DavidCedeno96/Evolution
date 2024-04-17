@@ -8,6 +8,7 @@ import {
 } from 'src/app/Models/Noticia';
 import {
   AlertError,
+  GetImage,
   Loading,
   MsgError,
   TitleError,
@@ -25,6 +26,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class UserNoticiaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
+  getImage = GetImage();
 
   idUsuario: string = '';
   verErrorsInputs: boolean = false;
@@ -149,5 +151,14 @@ export class UserNoticiaComponent implements OnInit, AfterViewInit {
     auxList = lista.comentarioList.filter((item) => item.comentario.trim());
 
     return auxList;
+  }
+
+  onNavigate(url: string) {
+    let protocolo = 'https://';
+    if (url.includes(protocolo)) {
+      window.open(url, '_blank');
+    } else {
+      window.open(protocolo + url, '_blank');
+    }
   }
 }

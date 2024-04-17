@@ -1,0 +1,67 @@
+<div class="shadow-lg bg-white px-4 py-2 pt-4 pt-lg-5 px-lg-5 rounded">
+  <form class="row g-3 mb-4" [formGroup]="formulario" (ngSubmit)="update()">
+    <div class="col-12">
+      <label for="codRerUser" class="form-label"
+        >Código de registro de usuario</label
+      >
+      <input
+        type="text"
+        class="form-control {{
+          formulario.get('llave')?.errors ? 'is-invalid' : ''
+        }}"
+        formControlName="llave"
+        id="codRerUser"
+      />
+      <div class="invalid-feedback">
+        <span
+          class="d-block"
+          *ngIf="formulario.get('llave')?.hasError('minlength')"
+        >
+          Mínimo 5 caracteres
+        </span>
+        <span
+          class="d-block"
+          *ngIf="formulario.get('llave')?.hasError('maxlength')"
+        >
+          Máximo hasta 50 caracteres
+        </span>
+        <span
+          class="d-block"
+          *ngIf="formulario.get('llave')?.hasError('pattern')"
+        >
+          Caracteres invalidos
+        </span>
+        <span
+          class="d-block"
+          *ngIf="formulario.get('llave')?.hasError('required')"
+        >
+          Campo obligatorio
+        </span>
+      </div>
+    </div>
+
+    <div class="col-12 form-check form-switch ms-2 mb-4">
+      <input
+        class="form-check-input {{
+          formulario.get('view')?.errors ? 'is-invalid' : ''
+        }}"
+        type="checkbox"
+        role="switch"
+        id="view-reg-user"
+        [checked]="formulario.get('view')?.value"
+        (change)="setView()"
+      />
+      <label class="form-check-label" for="view-reg-user"
+        >Permitir registro</label
+      >
+    </div>
+
+    <div class="d-grid d-md-block text-md-end">
+      <button type="submit" class="btn btn-primary">
+        Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
+      </button>
+    </div>
+  </form>
+</div>
+
+<p-toast [styleClass]="'col-10 col-md-6 col-lg-3'"></p-toast>

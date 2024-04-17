@@ -12,10 +12,13 @@ import {
   AlertError,
   DateFormatInput,
   GetImage,
+  ImgHeightMax,
   ImgSizeMax,
+  ImgWidthMax,
   Loading,
   MsgError,
   MsgErrorForm,
+  SetUpsert,
   SugerenciaImagen,
   TitleError,
   TitleErrorForm,
@@ -36,6 +39,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   dateFormatInput = DateFormatInput();
   caracterInvalid = CaracterInvalid();
   sugerenciaImagen = SugerenciaImagen;
@@ -229,6 +233,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Creado');
           this.router.navigate(['/view-noticia']);
         } else if (campo !== '') {
           this.error = error;
@@ -255,6 +260,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Actualizado');
           this.router.navigate(['/view-noticia']);
         } else if (campo !== '') {
           this.error = error;
@@ -298,23 +304,35 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
   onFileSelected(event: Event) {
     this.selectedImage = (event.target as HTMLInputElement).files![0];
 
-    if (this.selectedImage.size > ImgSizeMax) {
-      this.errorArchivo = true;
-    } else {
-      this.errorArchivo = false;
-    }
-
-    if (this.selectedImage.size > 0) {
+    if (this.selectedImage) {
       let reader = new FileReader();
       reader.onload = (e: any) => {
-        this.previewImage = e.target.result;
+        let img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          let w = (img as HTMLImageElement).width;
+          let h = (img as HTMLImageElement).height;
+
+          if (
+            this.selectedImage.size > ImgSizeMax ||
+            w > ImgWidthMax ||
+            h > ImgHeightMax
+          ) {
+            this.errorArchivo = true;
+          } else {
+            this.errorArchivo = false;
+          }
+        };
+
+        this.previewImage = img.src;
       };
       reader.readAsDataURL(this.selectedImage);
+
+      console.log(this.selectedImage.name);
     }
-    console.log(this.selectedImage.name, this.previewImage);
   }
 
-  objectType(control: AbstractControl): { [key: string]: boolean } | null {
+  /* objectType(control: AbstractControl): { [key: string]: boolean } | null {
     const value = control.value;
 
     if (value instanceof Date) {
@@ -322,5 +340,5 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
     }
 
     return null;
-  }
+  } */
 }

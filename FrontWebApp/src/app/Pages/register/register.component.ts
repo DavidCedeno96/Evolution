@@ -5,7 +5,10 @@ import { Area, Ciudad, Empresa, Pais } from 'src/app/Models/Adicional';
 import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
+  AlertSuccess,
+  ImgHeightMax,
   ImgSizeMax,
+  ImgWidthMax,
   Loading,
   MsgError,
   MsgErrorForm,
@@ -29,15 +32,20 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
+  alertSuccess = AlertSuccess();
   loading = Loading();
   contrasenaInvalid = ContrasenaInvalid();
   sugerenciaImagen = SugerenciaImagen;
+
+  modalCodigo: boolean = false;
 
   verPassword: boolean = false;
   verErrorsInputs: boolean = false;
   numClicksSave: number = 0;
 
   formulario!: FormGroup;
+  frmCodigo!: FormGroup;
+
   selectedFoto!: File;
   previewFoto: string = '';
   errorArchivo: boolean = false;
@@ -64,6 +72,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     idRol: '',
     rol: '',
     idPais: '',
+    pais: '',
     idCiudad: '',
     ciudad: '',
     idEmpresa: '',
@@ -107,6 +116,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         this.usuario.id,
         [
           Validators.required,
+          Validators.minLength(3),
           Validators.maxLength(20),
           Validators.pattern(exp_invalidos),
         ],
@@ -125,6 +135,14 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       ],
 
       foto: [this.usuario.foto],
+
+      idPais: [this.usuario.idPais],
+      idCiudad: [this.usuario.idCiudad],
+      idEmpresa: [this.usuario.idEmpresa],
+      idArea: [this.usuario.idArea],
+    });
+
+    this.frmCodigo = this.formBuilder.group({
       codigoRegistro: [
         '',
         [
@@ -133,11 +151,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
           Validators.pattern(exp_invalidos),
         ],
       ],
-
-      idPais: [this.usuario.idPais],
-      idCiudad: [this.usuario.idCiudad],
-      idEmpresa: [this.usuario.idEmpresa],
-      idArea: [this.usuario.idArea],
     });
   }
 
@@ -154,8 +167,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         let { info, error } = data.response;
         if (error === 0) {
           localStorage.setItem('token', info);
+          this.usuarioServicio.startWatching();
           this.cargarAdicionales();
         } else {
+          this.router.navigate(['/login']);
           this.alertError(TitleErrorForm, info); //MsgErrorForm
         }
         this.loading(false, false);
@@ -187,26 +202,56 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     });
   }
 
-  register() {
+  dialogCodigo() {
     /* console.log(this.formulario.valid);
     console.log(this.formulario.value); */
 
     this.numClicksSave += 1;
     if (this.formulario.valid) {
+      this.usuario = this.formulario.value;
+      this.error = 0;
+      this.verErrorsInputs = false;
+      this.modalCodigo = true;
+    } else {
+      this.verErrorsInputs = true;
+      this.alertError(TitleErrorForm, MsgErrorForm);
+    }
+  }
+
+  register() {
+    if (this.frmCodigo.valid) {
       this.loading(true, false);
       this.verErrorsInputs = false;
-      this.usuarioServicio.register(this.getFormData()).subscribe({
+      this.usuarioServicio.sedEmail_register(this.getFormData()).subscribe({
         next: (data: any) => {
           let { campo, error, info } = data.response;
+          this.error = error;
+          this.campo = campo;
+          this.info = info;
           if (error === 0) {
+            this.modalCodigo = false;
+            this.alertSuccess(
+              'Correo enviado',
+              `<div>
+                <h6>
+                  Hemos enviado un enlace para activar tu cuenta a tu correo
+                  electrónico.
+                </h6>
+                <span class="d-block">Tiempo de duración del enlace 5 minutos</span>
+                <small>Si no recibiste el correo revisa el correo no deseado</small>
+              </div>`
+            );
             this.router.navigate(['/']);
-          } else if (campo) {
-            this.error = error;
-            this.campo = campo;
-            this.info = info;
-            this.alertError(TitleErrorForm, MsgErrorForm);
-          } else {
+          } else if (error === 1) {
+            this.modalCodigo = false;
             this.alertError(TitleErrorForm, info);
+          } else if (error === 2) {
+            this.modalCodigo = false;
+            this.alertError(
+              TitleErrorForm,
+              info +
+                '<span style="display: block">Contactate con el Administrador</span>'
+            );
           }
           this.loading(false, false);
         },
@@ -214,29 +259,29 @@ export class RegisterComponent implements OnInit, AfterViewInit {
           console.error(e);
           this.router.navigate(['/']);
           this.loading(false, false);
-          this.alertError(TitleError, MsgError);
+          //this.alertError(TitleError, MsgError);
         },
       });
     } else {
       this.verErrorsInputs = true;
-      this.alertError(TitleErrorForm, MsgErrorForm);
+      //this.alertError(TitleErrorForm, MsgErrorForm);
     }
   }
 
   getFormData(): FormData {
     let formData = new FormData();
+    const url = window.location;
+
     formData.append('nombre', this.usuario.nombre.trim());
     formData.append('apellido', this.usuario.apellido.trim());
     formData.append('correo', this.usuario.correo.trim());
     formData.append('id', this.usuario.id.trim());
-    formData.append('celular', this.usuario.celular.trim());
     formData.append('idRol', 'jug');
     formData.append(
       'codigoRegistro',
-      this.formulario.get(['codigoRegistro'])?.value
+      this.frmCodigo.get(['codigoRegistro'])?.value
     );
-    formData.append('idCiudad', this.usuario.idCiudad);
-    formData.append('idArea', this.usuario.idArea);
+    formData.append('urlVistaActivarUsuario', `${url.origin}/login?user=`);
     if (this.usuario.contrasena) {
       formData.append('contrasena', this.usuario.contrasena);
     } else {
@@ -264,20 +309,30 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   onFileSelected(event: Event) {
     this.selectedFoto = (event.target as HTMLInputElement).files![0];
 
-    if (this.selectedFoto.size > ImgSizeMax) {
-      this.errorArchivo = true;
-    } else {
-      this.errorArchivo = false;
-    }
-
-    if (this.selectedFoto.size > 0) {
+    if (this.selectedFoto) {
       let reader = new FileReader();
       reader.onload = (e: any) => {
-        this.previewFoto = e.target.result;
+        let img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          let w = (img as HTMLImageElement).width;
+          let h = (img as HTMLImageElement).height;
+
+          if (
+            this.selectedFoto.size > ImgSizeMax ||
+            w > ImgWidthMax ||
+            h > ImgHeightMax
+          ) {
+            this.errorArchivo = true;
+          } else {
+            this.errorArchivo = false;
+          }
+        };
+
+        this.previewFoto = img.src;
       };
       reader.readAsDataURL(this.selectedFoto);
     }
-    console.log(this.selectedFoto.name, this.previewFoto);
   }
 
   selectedPais(event: Event) {

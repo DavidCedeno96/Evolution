@@ -12,13 +12,17 @@ import { ConfiguracionService } from './services/configuracion.service';
 import {
   AlertError,
   GetImage,
+  ImgHeightMax,
   ImgSizeMax,
+  ImgWidthMax,
   MsgError,
   MsgErrorConexion,
   TitleError,
   TitleErrorForm,
 } from './Utils/Constants';
 import { Configuracion } from './Models/Configuracion';
+import { GetBreadcrumb, GetNavItemPills } from './Utils/DefaultLists';
+import { Links } from './Models/Links';
 
 @Component({
   selector: 'app-root',
@@ -28,9 +32,13 @@ import { Configuracion } from './Models/Configuracion';
 export class AppComponent implements OnInit, AfterContentInit {
   alertError = AlertError();
   getImage = GetImage();
+  getBreadcrumb = GetBreadcrumb();
+  getNavItemPills = GetNavItemPills();
 
   load: boolean = false;
   showNavbar: boolean = false;
+  breadcrumbList: Links[] = [];
+  pillsList: Links[] = [];
   subMenu: number = 0;
   activeSubMenu: boolean = false;
   url: string = '';
@@ -57,11 +65,18 @@ export class AppComponent implements OnInit, AfterContentInit {
         next: (data: any) => {
           this.url = data.url;
 
+          this.breadcrumbList = this.getBreadcrumb(this.url);
+          this.pillsList = this.getNavItemPills(this.url);
+
           if (this.url === '/') {
             this.router.navigate(['/login']);
           }
 
-          if (this.url.includes('/login') || this.url.includes('/register')) {
+          if (
+            this.url.includes('/login') ||
+            this.url.includes('/register') ||
+            this.url.includes('/activate-user')
+          ) {
             this.showNavbar = false;
           } else {
             this.showNavbar = true;
@@ -112,6 +127,9 @@ export class AppComponent implements OnInit, AfterContentInit {
           this.imgHeader = imagenes[1].valor;
           this.imgFooter = imagenes[2].valor;
 
+          this.changeFavicon(
+            this.getImage(imagenes[2].valor, 'Config', 'default-logoD.png')
+          );
           this.setImageLogin();
         } else {
           this.alertError(TitleErrorForm, info);
@@ -125,7 +143,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     });
   }
 
-  menuItemActive(urls: string): string {
+  setItemActive(urls: string): string {
     let listUrls: string[] = urls.split(',');
     let active: string = '';
 
@@ -154,23 +172,36 @@ export class AppComponent implements OnInit, AfterContentInit {
   onFileSelected(event: Event) {
     let selectedImage = (event.target as HTMLInputElement).files![0];
 
-    if (selectedImage.size > ImgSizeMax) {
-      this.alertError(
-        TitleErrorForm,
-        'El tamaño del archivo no puede superar los 200 KB.'
-      );
-    } else {
-      if (selectedImage.size > 0) {
-        let reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.previewFoto = e.target.result;
+    if (selectedImage) {
+      let reader = new FileReader();
+      reader.onload = (e: any) => {
+        let img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          let w = (img as HTMLImageElement).width;
+          let h = (img as HTMLImageElement).height;
+
+          if (
+            selectedImage.size > ImgSizeMax ||
+            w > ImgWidthMax ||
+            h > ImgHeightMax
+          ) {
+            this.alertError(
+              TitleErrorForm,
+              'El tamaño del archivo no puede superar los 200 KB.'
+            );
+          } else {
+            this.previewFoto = img.src;
+
+            this.load = true;
+            setTimeout(() => {
+              this.cambiarFotoUser(selectedImage);
+            }, 600);
+          }
         };
-        reader.readAsDataURL(selectedImage);
-        this.load = true;
-        this.cambiarFotoUser(selectedImage);
-      }
+      };
+      reader.readAsDataURL(selectedImage);
     }
-    console.log(selectedImage.name, this.previewFoto);
   }
 
   cambiarFotoUser(foto: File) {
@@ -183,11 +214,16 @@ export class AppComponent implements OnInit, AfterContentInit {
         let { error, info } = data.response;
         if (error === 0) {
           localStorage.setItem('foto', foto.name);
+          if (this.url.includes('/profile-user')) {
+            this.router.navigate(['/home']);
+          } else {
+            this.load = false;
+          }
         } else {
           this.alertError(TitleErrorForm, info); //MsgErrorForm
           localStorage.removeItem('foto');
+          this.load = false;
         }
-        this.load = false;
       },
       error: (e) => {
         console.error(e);
@@ -222,13 +258,37 @@ export class AppComponent implements OnInit, AfterContentInit {
     }, 400);
   }
 
-  openSumMenu(item: number) {
+  /* openSumMenu(item: number) {
     if (this.subMenu !== item) {
       this.subMenu = item;
       this.activeSubMenu = true;
     } else {
       this.activeSubMenu = !this.activeSubMenu;
     }
+  } */
+
+  changeFavicon(url: string) {
+    const link = document.createElement('link');
+    link.rel = 'icon';
+    link.type = 'image/png';
+    link.href = url;
+    document.head.appendChild(link);
+  }
+
+  getSingleUrl(): string {
+    return this.url.split('?')[0];
+  }
+
+  getIsUrl(url: string): boolean {
+    if (this.url.includes(url)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  back() {
+    history.back();
   }
 
   cerrarSesion() {

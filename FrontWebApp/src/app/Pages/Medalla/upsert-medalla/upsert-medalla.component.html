@@ -1,137 +1,184 @@
-<div class="my-3 my-md-5">
-  <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
-    <h5 class="my-5 text-center txt text-primary text-uppercase">
-      {{ titulo }}
-    </h5>
-    <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
-      <div class="row g-3">
-        <div class="col-12 col-md-8">
-          <label for="med-nom" class="form-label">Nombre*</label>
-          <input
-            type="text"
-            class="form-control {{
-              formulario.get('nombre')?.errors && verErrorsInputs
-                ? 'is-invalid'
-                : ''
-            }}"
-            formControlName="nombre"
-            id="med-nom"
-          />
-          <div class="invalid-feedback">
-            <span
-              class="d-block"
-              *ngIf="formulario.get('nombre')?.hasError('maxlength')"
-            >
-              Máximo 30 caracteres
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('nombre')?.hasError('pattern')"
-            >
-              Contiene caracteres inválidos
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('nombre')?.hasError('required')"
-            >
-              Campo obligatorio
-            </span>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <label for="med-cond" class="form-label">Condicion*</label>
-          <select
-            class="form-select {{
-              formulario.get('idCondicion')?.errors && verErrorsInputs
-                ? 'is-invalid'
-                : ''
-            }}"
-            formControlName="idCondicion"
-            id="med-cond"
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">
+    {{ titulo }}
+  </h5>
+  <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
+    <div class="row g-3">
+      <div class="col-12 col-md-4">
+        <label for="med-nom" class="form-label">Nombre*</label>
+        <input
+          type="text"
+          class="form-control {{
+            formulario.get('nombre')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="nombre"
+          id="med-nom"
+        />
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formulario.get('nombre')?.hasError('maxlength')"
           >
-            <option value="">Seleccione...</option>
-            <option *ngFor="let item of condicion" [value]="item.idCondicion">
-              {{ item.nombre }}
-            </option>
-            <div class="invalid-feedback">
-              <span
-                class="d-block"
-                *ngIf="formulario.get('idCondicion')?.hasError('required')"
-              >
-                Campo obligatorio
-              </span>
-            </div>
-          </select>
-        </div>
-        <div class="col-12 col-md-4">
-          <label for="med-desc" class="form-label">Descripción</label>
-          <textarea
-            class="form-control {{
-              formulario.get('descripcion')?.errors && verErrorsInputs
-                ? 'is-invalid'
-                : ''
-            }}"
-            formControlName="descripcion"
-            cols="30"
-            rows="7"
-            id="med-desc"
-          ></textarea>
-          <div class="invalid-feedback">
-            <span
-              class="d-block"
-              *ngIf="formulario.get('descripcion')?.hasError('maxlength')"
-            >
-              Máximo 250 caracteres
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('descripcion')?.hasError('caracterInvalid')"
-            >
-              Contiene caracteres inválidos
-            </span>
-          </div>
-        </div>
-        <div class="col-12 col-md-8">
-          <label for="med-imagen" class="form-label">Imagen</label>
-          <input
-            type="file"
-            class="form-control mb-2 {{
-              errorArchivo && verErrorsInputs ? 'is-invalid' : ''
-            }}"
-            id="med-imagen"
-            accept=".jpg, .jpeg, .png"
-            (change)="onFileSelected($event)"
-          />
-          <div class="invalid-feedback">
-            El tamaño del archivo no puede superar los 200 KB.
-          </div>
-          <div class="text-center text-md-start">
-            <small class="d-block">{{ sugerenciaImagen }} </small>
-            <img
-              *ngIf="!selectedImage"
-              [src]="getImage(medalla.imagen, 'medalla', 'default-medalla.jpg')"
-              class="img-thumbnail"
-              width="110"
-              alt="medalla"
-            />
-            <img
-              *ngIf="selectedImage"
-              [src]="previewImage"
-              class="img-thumbnail"
-              width="110"
-              alt="medalla"
-            />
-          </div>
-        </div>
-        <div class="col-12 mt-4 text-end d-grid d-md-block">
-          <button type="submit" class="btn btn-success mb-3 mb-md-0 me-md-2">
-            <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
-          </button>
-          <a class="btn btn-secondary" routerLink="/view-medalla">
-            <i class="fa-solid fa-angle-left me-2"></i>Cancelar
-          </a>
+            Máximo 30 caracteres
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('nombre')?.hasError('pattern')"
+          >
+            Contiene caracteres inválidos
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('nombre')?.hasError('required')"
+          >
+            Campo obligatorio
+          </span>
         </div>
       </div>
-    </form>
-  </div>
+      <div class="col-12 col-md-4">
+        <label for="med-cond" class="form-label">Condición*</label>
+        <select
+          class="form-select {{
+            formulario.get('idCondicion')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="idCondicion"
+          id="med-cond"
+        >
+          <option value="">Seleccione...</option>
+          <option *ngFor="let item of condicion" [value]="item.idCondicion">
+            {{ item.nombre }}
+          </option>
+        </select>
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formulario.get('idCondicion')?.hasError('required')"
+          >
+            Campo obligatorio
+          </span>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="med-cant" class="form-label">Cantidad*</label>
+        <i
+          class="fa-regular fa-circle-question ms-1"
+          matTooltip="Es la cantidad de acuerdo a la condición seleccionada"
+          [matTooltipPosition]="'right'"
+        ></i>
+        <input
+          type="text"
+          class="form-control {{
+            formulario.get('numCondicion')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="numCondicion"
+          id="med-cant"
+        />
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formulario.get('numCondicion')?.hasError('min')"
+          >
+            Mínimo 1
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('numCondicion')?.hasError('max')"
+          >
+            Máximo hasta 1000
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('numCondicion')?.hasError('pattern')"
+          >
+            Solo se permiten números
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('numCondicion')?.hasError('required')"
+          >
+            Campo obligatorio
+          </span>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="med-desc" class="form-label">Descripción</label>
+        <textarea
+          class="form-control {{
+            formulario.get('descripcion')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="descripcion"
+          cols="30"
+          rows="7"
+          id="med-desc"
+        ></textarea>
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formulario.get('descripcion')?.hasError('maxlength')"
+          >
+            Máximo 250 caracteres
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('descripcion')?.hasError('caracterInvalid')"
+          >
+            Contiene caracteres inválidos
+          </span>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
+        <label for="med-imagen" class="form-label">Imagen</label>
+        <input
+          type="file"
+          class="form-control mb-2 {{
+            errorArchivo && verErrorsInputs ? 'is-invalid' : ''
+          }}"
+          id="med-imagen"
+          accept=".jpg, .jpeg, .png"
+          (change)="onFileSelected($event)"
+        />
+        <div class="invalid-feedback">
+          El archivo no puede superar los 360x360 píxeles y los 200 KB.
+        </div>
+        <div class="text-center text-md-start">
+          <small
+            class="d-block {{
+              errorArchivo && verErrorsInputs ? 'd-none' : ''
+            }}"
+            >{{ sugerenciaImagen }}
+          </small>
+          <img
+            *ngIf="!selectedImage"
+            [src]="getImage(medalla.imagen, 'medalla', 'default-medalla.jpg')"
+            class="img-thumbnail"
+            width="110"
+            alt="medalla"
+          />
+          <img
+            *ngIf="selectedImage"
+            [src]="previewImage"
+            class="img-thumbnail"
+            width="110"
+            alt="medalla"
+          />
+        </div>
+      </div>
+      <div class="col-12 mt-4 text-end d-grid d-md-block">
+        <button type="submit" class="btn btn-primary mb-3 mb-md-0 me-md-2">
+          <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
+        </button>
+        <a class="btn btn-tertiary" routerLink="/view-medalla">
+          <i class="fa-solid fa-angle-left me-2"></i>Cancelar
+        </a>
+      </div>
+    </div>
+  </form>
 </div>

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Nivel } from 'src/app/Models/Nivel';
 import {
   AlertError,
+  DateCompare,
   GetImage,
   Loading,
   MsgError,
@@ -20,6 +21,7 @@ export class UserNivelComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   loading = Loading();
+  dateCompare = DateCompare();
 
   niveles: Nivel[] = [];
 

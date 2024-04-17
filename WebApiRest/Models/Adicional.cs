@@ -8,7 +8,8 @@
         public AreaList AreaList { get; set; }
         public TipoRetoList TipoRetoList { get; set; }
         public ComportPreguntaList ComportPreguntaList { get; set; }
-        public CategoriaNoticiaList CategoriaNoticiaList { get; set; }
+        public CategoriaList CategoriaNoticiaList { get; set; }
+        public CategoriaList CategoriaRecompensaList { get; set; }
         public CondicionList CondicionList { get; set; }
     }
 }

@@ -1,14 +1,19 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Categoria } from 'src/app/Models/Adicional';
 import { Recompensa } from 'src/app/Models/Recompensa';
 import {
   AlertError,
   GetImage,
+  HtmlLicencias,
+  ImgHeightMax,
   ImgSizeMax,
+  ImgWidthMax,
   Loading,
   MsgError,
   MsgErrorForm,
+  SetUpsert,
   SugerenciaImagen,
   TitleError,
   TitleErrorForm,
@@ -18,6 +23,7 @@ import {
   exp_invalidos,
   exp_numeros,
 } from 'src/app/Utils/RegularExpressions';
+import { AdicionalService } from 'src/app/services/adicional.service';
 import { RecompensaService } from 'src/app/services/recompensa.service';
 
 @Component({
@@ -29,6 +35,7 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   caracterInvalid = CaracterInvalid();
   sugerenciaImagen = SugerenciaImagen;
 
@@ -54,13 +61,18 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
     cantDisponible: 0,
     cantCanje: 0, //Son los Creditos Requeridos
     totalUsuarios: 0,
+    idCategoria: '',
+    categoria: '',
     estado: 0,
   };
+
+  categorias: Categoria[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private recompensaServicio: RecompensaService,
+    private adicionalServicio: AdicionalService,
     private formBuilder: FormBuilder
   ) {
     this.formulario = this.formBuilder.group({
@@ -96,6 +108,8 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
           Validators.pattern(exp_numeros),
         ],
       ],
+
+      idCategoria: [this.recompensa.idCategoria, [Validators.required]],
 
       imagen: [this.recompensa.imagen],
     });
@@ -135,6 +149,35 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
           break;
         }
       }
+    });
+
+    this.cargarAdicionales();
+  }
+
+  cargarAdicionales() {
+    this.adicionalServicio.getListRecompensa(1).subscribe({
+      next: (data: any) => {
+        let { categoriaRecompensaList } = data.response;
+        this.categorias = categoriaRecompensaList.lista;
+
+        if (this.type === 'crear') {
+          var categoria = this.categorias.filter((obj) => {
+            return obj.nombre === 'General';
+          });
+
+          this.formulario.patchValue({
+            idCategoria: categoria[0].idCategoria,
+          });
+        }
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+        }
+      },
     });
   }
 
@@ -195,7 +238,10 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Creado');
           this.router.navigate(['/view-recompensa']);
+        } else if (error === 2) {
+          this.alertError(TitleErrorForm, info + HtmlLicencias);
         } else if (campo !== '') {
           this.error = error;
           this.campo = campo;
@@ -221,6 +267,7 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Actualizado');
           this.router.navigate(['/view-recompensa']);
         } else if (campo !== '') {
           this.error = error;
@@ -246,6 +293,7 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
     let formData = new FormData();
     formData.append('idRecompensa', this.recompensa.idRecompensa);
     formData.append('nombre', this.recompensa.nombre.trim());
+    formData.append('idCategoria', this.recompensa.idCategoria.trim());
     formData.append('descripcion', this.recompensa.descripcion.trim());
     formData.append(
       'cantDisponible',
@@ -263,19 +311,31 @@ export class UpsertRecompensaComponent implements OnInit, AfterViewInit {
   onFileSelected(event: Event) {
     this.selectedImage = (event.target as HTMLInputElement).files![0];
 
-    if (this.selectedImage.size > ImgSizeMax) {
-      this.errorArchivo = true;
-    } else {
-      this.errorArchivo = false;
-    }
-
-    if (this.selectedImage.size > 0) {
+    if (this.selectedImage) {
       let reader = new FileReader();
       reader.onload = (e: any) => {
-        this.previewImage = e.target.result;
+        let img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          let w = (img as HTMLImageElement).width;
+          let h = (img as HTMLImageElement).height;
+
+          if (
+            this.selectedImage.size > ImgSizeMax ||
+            w > ImgWidthMax ||
+            h > ImgHeightMax
+          ) {
+            this.errorArchivo = true;
+          } else {
+            this.errorArchivo = false;
+          }
+        };
+
+        this.previewImage = img.src;
       };
       reader.readAsDataURL(this.selectedImage);
+
+      console.log(this.selectedImage.name);
     }
-    console.log(this.selectedImage.name, this.previewImage);
   }
 }

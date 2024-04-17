@@ -1,273 +1,282 @@
-<div class="my-3 my-md-5">
-  <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
-    <h5 class="my-5 text-center txt text-primary text-uppercase">usuarios</h5>
-    <div class="row g-3 mb-4">
-      <div class="col-6 col-md-auto d-grid d-md-block">
-        <a
-          class="btn btn-primary icon"
-          (click)="changeRoute('/upsert-user', { type: 'crear' })"
-        >
-          <div class="icon-text buton">
-            <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-6 d-grid d-md-block">
-        <button
-          class="btn btn-tertiary icon"
-          data-bs-toggle="modal"
-          data-bs-target="#importUserModal"
-        >
-          <div class="icon-text buton">
-            <mat-icon svgIcon="importar"></mat-icon><span>Importar</span>
-          </div>
-        </button>
-      </div>
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">usuarios</h5>
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-auto d-grid d-md-block">
+      <a
+        class="btn btn-primary icon"
+        (click)="changeRoute('/upsert-user', { type: 'crear' })"
+      >
+        <div class="icon-text buton">
+          <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
+        </div>
+      </a>
     </div>
+    <div class="col-6 col-md-auto d-grid d-md-block">
+      <button
+        class="btn btn-secondary icon"
+        data-bs-toggle="modal"
+        data-bs-target="#importUserModal"
+      >
+        <div class="icon-text buton">
+          <mat-icon svgIcon="importar"></mat-icon><span>Importar</span>
+        </div>
+      </button>
+    </div>
+    <div class="col-6 col-md-auto d-grid d-md-block">
+      <button class="btn btn-secondary icon" (click)="exportarArchivo()">
+        <div class="icon-text buton">
+          <mat-icon svgIcon="exportar"></mat-icon><span>Exportar</span>
+        </div>
+      </button>
+    </div>
+    <div class="col-6 col-md-6 d-grid d-md-block">
+      <a class="btn btn-tertiary icon" routerLink="/mass-actions-user">
+        <div class="icon-text buton">
+          <mat-icon svgIcon="accionMasiva"></mat-icon
+          ><span>Acciones masivas</span>
+        </div>
+      </a>
+    </div>
+  </div>
 
-    <!-- Modal -->
-    <div
-      class="modal fade"
-      id="importUserModal"
-      tabindex="-1"
-      aria-labelledby="importUserModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="importUserModalLabel">
-              Importar Usuarios
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              #closeModal
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-2">
-              <strong>Instrucciones:</strong>
-              <ol>
-                <li>
-                  Descargar el formato (archivo excel).
-                  <button
-                    class="btn btn-primary btn-sm mx-2 px-4"
-                    (click)="exportArchivo()"
-                  >
-                    Descargar
-                  </button>
-                </li>
-                <li>Los campos con (*) son obligatorios</li>
-                <li>
-                  En los campos Nombre y Apellido, Correo, Id único y Celular no
-                  deben de repetirse porque son campos únicos
-                </li>
-                <li>
-                  La contraseña Debe tener 5 caracteres de longitud y máximo 20,
-                  una letra minúscula, mayúscula, un número, sin espacios y solo
-                  los siguientes caracteres @.-_#$
-                </li>
-                <li>
-                  En los campos de Ciudad, Empresa y Area tiene que estar bien
-                  escrito tal como se creó en la configuración, caso contrario
-                  no se guardará la Ciudad o Area
-                </li>
-                <li>
-                  No se aceptan los caracteres &#60;, &#62; en ningún campo
-                </li>
-                <li>
-                  Si no se cumplen las instrucciones mencionadas no se guardará
-                  el usuario
-                </li>
-              </ol>
-            </div>
-            <form class="row g-3 mb-3">
-              <div class="col-12">
-                <label for="archivoExcel" class="form-label ms-2 fw-medium"
-                  >Archivo*</label
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="importUserModal"
+    tabindex="-1"
+    aria-labelledby="importUserModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="importUserModalLabel">
+            Importar Usuarios
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            #closeModal
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2">
+            <strong>Instrucciones:</strong>
+            <ol>
+              <li>
+                Descargar el formato (archivo excel).
+                <button
+                  class="btn btn-secondary btn-sm mx-2 px-4"
+                  (click)="descargarArchivo()"
                 >
-                <input
-                  type="file"
-                  class="form-control {{ errorArchivo ? 'is-invalid' : '' }}"
-                  id="archivoExcel"
-                  #valueArchivo
-                  accept=".xlsx"
-                  (change)="onFileSelected($event)"
-                />
-                <div class="invalid-feedback">{{ info }}</div>
-              </div>
-            </form>
+                  Descargar
+                </button>
+              </li>
+              <li>Los campos con (*) son obligatorios</li>
+              <li>
+                En los campos Nombre y Apellido, Correo, Id único y Celular no
+                deben de repetirse porque son campos únicos
+              </li>
+              <li>
+                La contraseña Debe tener 5 caracteres de longitud y máximo 20,
+                una letra minúscula, mayúscula, un número, sin espacios y solo
+                los siguientes caracteres @.-_#$
+              </li>
+              <li>
+                En los campos de Ciudad, Empresa y Area tiene que estar bien
+                escrito tal como se creó en la configuración, caso contrario no
+                se guardará la Ciudad o Area
+              </li>
+              <li>No se aceptan los caracteres &#60;, &#62; en ningún campo</li>
+              <li>
+                Si no se cumplen las instrucciones mencionadas no se guardará el
+                usuario
+              </li>
+            </ol>
           </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-success"
-              (click)="importArchivo()"
-            >
-              Guardar
-            </button>
-          </div>
+          <form class="row g-3 mb-3">
+            <div class="col-12">
+              <label for="archivoExcel" class="form-label ms-2 fw-medium"
+                >Archivo*</label
+              >
+              <input
+                type="file"
+                class="form-control {{ errorArchivo ? 'is-invalid' : '' }}"
+                id="archivoExcel"
+                #valueArchivo
+                accept=".xlsx"
+                (change)="onFileSelected($event)"
+              />
+              <div class="invalid-feedback">{{ info }}</div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="importArchivo()"
+          >
+            <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
+          </button>
         </div>
       </div>
     </div>
-    <!-- Fin Modal -->
+  </div>
+  <!-- Fin Modal -->
 
-    <!-- buscador -->
-    <form
-      class="d-md-flex w-100"
-      [formGroup]="formulario"
-      (ngSubmit)="submitBuscar()"
+  <!-- buscador -->
+  <form
+    class="d-md-flex w-100"
+    [formGroup]="formulario"
+    (ngSubmit)="submitBuscar()"
+  >
+    <div class="input-group flex-grow-1 me-md-3 mb-3 mb-md-0">
+      <span class="icon-left">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control icon"
+        placeholder="Buscar..."
+        formControlName="buscar"
+        (input)="defaultList($event)"
+      />
+    </div>
+    <div class="d-grid">
+      <button type="submit" class="btn btn-secondary">Buscar</button>
+    </div>
+  </form>
+  <!-- Fin buscador -->
+
+  <!-- Usuarios -->
+  <div class="mb-2 mb-md-4">
+    <p-dataView
+      #dv
+      [value]="usuarios"
+      [rows]="10"
+      [paginator]="true"
+      [emptyMessage]="info"
     >
-      <div class="input-group flex-grow-1 me-md-3 mb-3 mb-md-0">
-        <span class="icon-left">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </span>
-        <input
-          type="text"
-          class="form-control icon"
-          placeholder="Buscar..."
-          formControlName="buscar"
-          (input)="defaultList($event)"
-        />
-      </div>
-      <div class="d-grid">
-        <button type="submit" class="btn btn-success">Buscar</button>
-      </div>
-    </form>
-    <!-- Fin buscador -->
-
-    <!-- Usuarios -->
-    <div class="mb-2 mb-md-4">
-      <p-dataView
-        #dv
-        [value]="usuarios"
-        [rows]="10"
-        [paginator]="true"
-        [emptyMessage]="info"
-      >
-        <ng-template let-usuario pTemplate="listItem">
-          <div class="col-12">
-            <div class="p-4 gap-4">
-              <div class="row g-3 text-center text-md-start align-items-center">
-                <div class="col-12 col-md-auto">
-                  <img
-                    class="img-thumbnail"
-                    [src]="
-                      getImage(usuario.foto, 'usuario', 'default-user.jpg')
-                    "
-                    width="100px"
-                    [alt]="usuario.imagen"
-                  />
+      <ng-template let-usuario pTemplate="listItem">
+        <div class="col-12">
+          <div class="p-4 gap-4">
+            <div class="row g-3 text-center text-md-start align-items-center">
+              <div class="col-12 col-md-auto">
+                <img
+                  class="img-thumbnail"
+                  [src]="getImage(usuario.foto, 'usuario', 'default-user.jpg')"
+                  width="100px"
+                  [alt]="usuario.imagen"
+                />
+              </div>
+              <div class="col-12 col-md-4">
+                <h5 class="txt text-secondary text-truncate">
+                  {{ usuario.nombre }} {{ usuario.apellido }}
+                </h5>
+                <div class="flex align-items-center gap-3">
+                  <span class="d-block text-truncate">
+                    {{ usuario.correo }}
+                  </span>
+                  <span class="d-block text-truncate">
+                    {{ usuario.id }}
+                  </span>
+                  <span
+                    class="d-block fw-semibold {{
+                      usuario.estado ? 'text-success' : 'text-danger'
+                    }}"
+                  >
+                    {{ usuario.estado ? "Activo" : "Desactivado" }}
+                  </span>
                 </div>
-                <div class="col-12 col-md-4">
-                  <h5 class="txt text-secondary text-truncate">
-                    {{ usuario.nombre }} {{ usuario.apellido }}
-                  </h5>
-                  <div class="flex align-items-center gap-3">
-                    <span class="d-block text-truncate">
-                      {{ usuario.correo }}
+              </div>
+
+              <div class="col-12 col-md-4">
+                <div class="flex align-items-center gap-3">
+                  <div>
+                    <strong>Celular:</strong>
+                    <span class="">
+                      {{ usuario.celular }}
                     </span>
-                    <span class="d-block text-truncate">
-                      {{ usuario.id }}
+                  </div>
+                  <div>
+                    <strong>Ciudad:</strong>
+                    <span class="">
+                      {{ usuario.ciudad }}
                     </span>
+                  </div>
+                  <div>
+                    <strong>Area:</strong>
+                    <span class="">
+                      {{ usuario.area }}
+                    </span>
+                  </div>
+                  <div>
+                    <strong>Rol:</strong>
                     <span
-                      class="d-block {{
-                        usuario.estado ? 'text-success' : 'text-danger'
+                      class="{{
+                        usuario.idRol === 'adm'
+                          ? 'txt text-primary'
+                          : 'txt text-tertiary'
                       }}"
                     >
-                      {{ usuario.estado ? "Activado" : "Desactivado" }}
+                      {{ usuario.rol }}
                     </span>
                   </div>
                 </div>
+              </div>
 
-                <div class="col-12 col-md-4">
-                  <div class="flex align-items-center gap-3">
-                    <div>
-                      <strong>Celular:</strong>
-                      <span class="">
-                        {{ usuario.celular }}
-                      </span>
+              <div class="col-12 col-md-1 col-lg-2 text-md-end">
+                <div class="dropdown">
+                  <button
+                    class="btn btn-tertiary normal only-icon"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <div class="icon-text buton">
+                      <mat-icon svgIcon="rueda-dentada"></mat-icon>
                     </div>
-                    <div>
-                      <strong>Ciudad:</strong>
-                      <span class="">
-                        {{ usuario.ciudad }}
-                      </span>
-                    </div>
-                    <div>
-                      <strong>Area:</strong>
-                      <span class="">
-                        {{ usuario.area }}
-                      </span>
-                    </div>
-                    <div>
-                      <strong>Rol:</strong>
-                      <span
-                        class="{{
-                          usuario.idRol === 'adm'
-                            ? 'text-warning'
-                            : 'text-primary'
-                        }}"
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a
+                        class="dropdown-item pointer"
+                        (click)="
+                          changeRoute('/upsert-user', {
+                            type: 'editar',
+                            usuario: usuario.idUsuario
+                          })
+                        "
+                        ><i class="fa-regular fa-pen-to-square me-2"></i
+                        >Editar</a
                       >
-                        {{ usuario.rol }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-1 col-lg-2 text-md-end">
-                  <div class="dropdown">
-                    <button
-                      class="btn btn-secondary normal only-icon"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <div class="icon-text buton">
-                        <mat-icon svgIcon="rueda-dentada"></mat-icon>
-                      </div>
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a
-                          class="dropdown-item pointer"
-                          (click)="
-                            changeRoute('/upsert-user', {
-                              type: 'editar',
-                              usuario: usuario.idUsuario
-                            })
-                          "
-                          ><i class="fa-regular fa-pen-to-square me-2"></i
-                          >Editar</a
-                        >
-                      </li>
-                      <li *ngIf="usuario.estado">
-                        <a
-                          class="dropdown-item pointer text-danger"
-                          (click)="setEstado(usuario.idUsuario, 0)"
-                          ><i class="fa-solid fa-user-slash me-2"></i
-                          >Desactivar</a
-                        >
-                      </li>
-                      <li *ngIf="!usuario.estado">
-                        <a
-                          class="dropdown-item pointer text-success"
-                          (click)="setEstado(usuario.idUsuario, 1)"
-                          ><i class="fa-solid fa-user-check me-2"></i>Activar</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
+                    </li>
+                    <li *ngIf="usuario.estado">
+                      <a
+                        class="dropdown-item pointer text-danger"
+                        (click)="setEstado(usuario.idUsuario, 0)"
+                        ><i class="fa-solid fa-user-slash me-2"></i
+                        >Desactivar</a
+                      >
+                    </li>
+                    <li *ngIf="!usuario.estado">
+                      <a
+                        class="dropdown-item pointer text-success"
+                        (click)="setEstado(usuario.idUsuario, 1)"
+                        ><i class="fa-solid fa-user-check me-2"></i>Activar</a
+                      >
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-        </ng-template>
-      </p-dataView>
-    </div>
+        </div>
+      </ng-template>
+    </p-dataView>
   </div>
 </div>
 

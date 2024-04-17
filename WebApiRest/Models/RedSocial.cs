@@ -4,6 +4,10 @@
     {
         public Guid IdRed { get; set; }
         public string Descripcion { get; set; }
+        public string Usuario { get; set; }
+        public string Foto { get; set; }
+        public string Tipo { get; set; }
+        public string Dir { get; set; }
         public string Imagen { get; set; }
         public int Estado { get; set; }
         public DateTime FechaPublicacion { get; set; }

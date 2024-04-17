@@ -14,6 +14,13 @@
         public DateTime FechaModificacion { get; set; }
     }
 
+    public class ConfiguracionItem
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public Configuracion Configuracion { get; set; }
+    }
+
     public class ConfiguracionList
     {
         public string Info { get; set; }

@@ -26,6 +26,12 @@ export class IconModule {
       )
     );
     this._matIconRegistry.addSvgIcon(
+      'trabajo-en-equipo',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/trabajo-en-equipo.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
       'gamepad',
       this._domZanitizer.bypassSecurityTrustResourceUrl(
         'assets/icons/gamepad.svg'
@@ -85,6 +91,18 @@ export class IconModule {
       'importar',
       this._domZanitizer.bypassSecurityTrustResourceUrl(
         'assets/icons/importar.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
+      'exportar',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/exportar.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
+      'accionMasiva',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/varita-magica.svg'
       )
     );
 

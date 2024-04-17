@@ -9,9 +9,9 @@ namespace WebApiRest.Data
     {
         private readonly Conexion conexion = new();
 
-        public async Task<CategoriaNoticiaList> GetCategoriaNoticiaList(int estado)
+        public async Task<CategoriaList> GetCategoriaNoticiaList(int estado)
         {
-            CategoriaNoticiaList list = new()
+            CategoriaList list = new()
             {
                 Lista = new()
             };
@@ -34,7 +34,7 @@ namespace WebApiRest.Data
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
-                    list.Lista.Add(new CategoriaNoticia()
+                    list.Lista.Add(new Categoria()
                     {
                         IdCategoria = new Guid(dr["idCategoria"].ToString()),
                         Nombre = dr["nombre"].ToString(),                        
@@ -62,9 +62,9 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<CategoriaNoticiaList> GetCategoriaNoticiaList(string buscar)
+        public async Task<CategoriaList> GetCategoriaNoticiaList(string buscar)
         {
-            CategoriaNoticiaList list = new()
+            CategoriaList list = new()
             {
                 Lista = new()
             };
@@ -87,7 +87,7 @@ namespace WebApiRest.Data
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 while (await dr.ReadAsync())
                 {
-                    list.Lista.Add(new CategoriaNoticia()
+                    list.Lista.Add(new Categoria()
                     {
                         IdCategoria = new Guid(dr["idCategoria"].ToString()),
                         Nombre = dr["nombre"].ToString(),
@@ -115,9 +115,9 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<CategoriaNoticiaItem> GetCategoriaNoticia(int estado, Guid idCategoria)
+        public async Task<CategoriaItem> GetCategoriaNoticia(int estado, Guid idCategoria)
         {
-            CategoriaNoticiaItem item = new();
+            CategoriaItem item = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
@@ -139,7 +139,7 @@ namespace WebApiRest.Data
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 if (await dr.ReadAsync())
                 {
-                    item.CategoriaNoticia = new CategoriaNoticia()
+                    item.CategoriaNoticia = new Categoria()
                     {
                         IdCategoria = new Guid(dr["idCategoria"].ToString()),
                         Nombre = dr["nombre"].ToString(),
@@ -168,7 +168,7 @@ namespace WebApiRest.Data
             return item;
         }
 
-        public async Task<Response> CreateCategoriaNoticia(CategoriaNoticia categoriaNoticia)
+        public async Task<Response> CreateCategoriaNoticia(Categoria categoriaNoticia)
         {
             Response response = new();
 
@@ -207,7 +207,7 @@ namespace WebApiRest.Data
             return response;
         }
 
-        public async Task<Response> UpdateCategoriaNoticia(CategoriaNoticia categoriaNoticia)
+        public async Task<Response> UpdateCategoriaNoticia(Categoria categoriaNoticia)
         {
             Response response = new();
 

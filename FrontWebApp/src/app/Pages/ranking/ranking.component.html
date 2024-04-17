@@ -1,0 +1,78 @@
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">ranking</h5>
+  <form class="row g-3 mb-4" [formGroup]="formulario" (ngSubmit)="filtrar()">
+    <div class="col-12 col-md-6">
+      <label for="r-area" class="form-label">Area</label>
+      <select
+        class="form-select"
+        id="r-area"
+        formControlName="idArea"
+        (change)="filtrar()"
+      >
+        <option value="">Seleccione...</option>
+        <option *ngFor="let item of area" [value]="item.idArea">
+          {{ item.nombre }}
+        </option>
+      </select>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="r-ciudad" class="form-label">Ciudad</label>
+      <select
+        class="form-select"
+        id="r-ciudad"
+        formControlName="idCiudad"
+        (change)="filtrar()"
+      >
+        <option value="">Seleccione...</option>
+        <option *ngFor="let item of ciudad" [value]="item.idCiudad">
+          {{ item.nombre }}
+        </option>
+      </select>
+    </div>
+    <!-- <div class="col-12 d-grid d-md-block">
+      <button type="submit" class="btn btn-secondary mb-3 mb-md-0 me-md-2">
+        <i class="fa-solid fa-magnifying-glass me-2"></i>buscar
+      </button>
+    </div> -->
+  </form>
+
+  <div class="my-4" *ngIf="!usuariosRanking.length">
+    {{ info }}
+  </div>
+
+  <div class="table-responsive mb-4" *ngIf="usuariosRanking.length">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col">Usuario</th>
+          <th scope="col">Area</th>
+          <th scope="col">Ciudad</th>
+          <th scope="col">Puntos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let ur of usuariosRanking; index as i"
+          [ngClass]="
+            idUsuario === ur.usuario.idUsuario ? 'table-secondary' : ''
+          "
+        >
+          <th>{{ ur.posicion }}</th>
+          <td>
+            <img
+              [src]="getImage(ur.usuario.foto, 'usuario', 'default-user.jpg')"
+              class="imgRedonda-ranking me-2"
+              alt="user"
+            />
+          </td>
+          <td>{{ ur.usuario.nombre }} {{ ur.usuario.apellido }}</td>
+          <td>{{ ur.usuario.area }}</td>
+          <td>{{ ur.usuario.ciudad }}</td>
+          <td>{{ ur.puntos }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

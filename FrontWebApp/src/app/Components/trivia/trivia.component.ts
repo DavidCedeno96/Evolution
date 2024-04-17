@@ -6,6 +6,7 @@ import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
   AlertSuccess,
+  ChangeRoute,
   DateCompare,
   FormatTiempo,
   Loading,
@@ -33,6 +34,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
   dateCompare = DateCompare();
   formatTiempo = FormatTiempo();
   reproducirSonido = ReproducirSonido();
+  changeRoute = ChangeRoute();
 
   preguntaActual: number = 0;
   nextText: string = 'Siguiente';
@@ -70,6 +72,9 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
     idComportamiento: '',
     comportamientoPregunta: '',
     totalPreguntas: 0,
+    usuariosAsignados: 0,
+    equiposAsignados: 0,
+    enEquipo: 0,
     estado: 0,
   };
 
@@ -167,7 +172,11 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
             estado = 0;
           }
 
-          if (estado === 0 || ur.reto.totalPreguntas < 1) {
+          if (
+            estado === 0 ||
+            ur.reto.totalPreguntas < 1 ||
+            ur.reto.completado === 1
+          ) {
             this.router.navigate(['/user-reto']);
           } else {
             if (ur.reto.vidas > 0) {
@@ -352,23 +361,30 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
         if (error === 0) {
           this.reproducirSonido(SoundQuizVictory);
 
+          let msjPuntosCreditos = `<span class="d-block">Puntos Obtenidos: ${
+            this.porcentajeTotal >= this.reto.criterioMinimo
+              ? this.reto.puntosRecompensa
+              : 0
+          }</span>
+          <span class="d-block">Créditos Obtenidos: ${
+            this.porcentajeTotal >= this.reto.criterioMinimo
+              ? this.reto.creditosObtenidos
+              : 0
+          }</span>
+          `;
+
+          let msjPuntos = `<span class="d-block">Puntos Obtenidos: ${
+            this.porcentajeTotal >= this.reto.criterioMinimo
+              ? this.reto.puntosRecompensa
+              : 0
+          }</span>`;
+
           this.alertSuccess(
             'Reto Terminado',
-            `      
-            <span class="d-block">Puntos Obtenidos: ${
-              this.porcentajeTotal >= this.reto.criterioMinimo
-                ? this.reto.puntosRecompensa
-                : 0
-            }</span>
-            <span class="d-block">Créditos Obtenidos: ${
-              this.porcentajeTotal >= this.reto.criterioMinimo
-                ? this.reto.creditosObtenidos
-                : 0
-            }</span>
-            `
+            this.reto.creditosObtenidos ? msjPuntosCreditos : msjPuntos
           );
 
-          this.router.navigate(['/user-reto']);
+          this.changeRoute('/fin-reto', { reto: this.idReto });
         } else {
           this.alertError(TitleErrorForm, info); //MsgErrorForm
         }
@@ -402,6 +418,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
       idRol: '',
       rol: '',
       idPais: '',
+      pais: '',
       idCiudad: '',
       ciudad: '',
       idEmpresa: '',
@@ -432,6 +449,9 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
       comportamientoPregunta: '',
       estado: 0,
       totalPreguntas: 0,
+      usuariosAsignados: 0,
+      equiposAsignados: 0,
+      enEquipo: 0,
     };
 
     usuarioReto = {
@@ -445,6 +465,10 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
       vidas: this.retoConVidas ? this.vidas.length : -1,
       totalRetos: 0,
       completado: 1,
+      posicion: 0,
+      tieneEquipo: 0,
+      fechaCreacion: new Date(),
+      fechaModificacion: new Date(),
     };
 
     return usuarioReto!;

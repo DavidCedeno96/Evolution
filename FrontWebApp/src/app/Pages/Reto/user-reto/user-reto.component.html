@@ -1,5 +1,4 @@
 <div>
-  <h4 class="text-uppercase">Retos</h4>
   <!-- buscador -->
   <form
     class="d-md-flex w-100 mb-4"
@@ -19,50 +18,69 @@
       />
     </div>
     <div class="d-grid">
-      <button type="submit" class="btn btn-success">Buscar</button>
+      <button type="submit" class="btn btn-secondary">Buscar</button>
     </div>
   </form>
   <!-- Fin buscador -->
 
-  <div *ngIf="!retos.length">{{ info }}</div>
+  <div *ngIf="!ur.length">{{ info }}</div>
+
   <div class="row g-3 mb-4">
     <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of paginatedItems()">
       <div
         class="shadow-lg p-3 mb-2 bg-body rounded pointer"
-        (click)="entrarReto(item.idReto, item.estado)"
+        (click)="entrarReto(item)"
       >
-        <div class="row g-3 align-items-center">
+        <div class="row g-3">
           <div class="col-3 text-center">
             <img
-              [src]="getImage(item.imagen, 'retro', 'default-reto.jpg')"
+              [src]="getImage(item.reto.imagen, 'retro', 'default-reto.jpg')"
               class="img-thumbnail"
               width="100"
-              alt="{{ item.nombre }}"
+              alt="{{ item.reto.nombre }}"
             />
           </div>
-          <div class="col-9">
-            <div class="d-flex justify-content-between align-items-center">
-              <span class="txt text-primary fw-semibold text-truncate me-2">{{
-                item.nombre
-              }}</span>
-              <span
-                class="badge {{
-                  item.estado ? 'text-bg-success' : 'text-bg-danger'
-                }}"
-                >{{ item.estado ? "Activado" : "Desactivado" }}</span
-              >
-            </div>
-            <small class="text-black-50 fw-semibold d-block">{{
-              item.tipoReto
+          <div class="col-9 col-xl-6">
+            <span class="txt text-secondary fw-semibold me-2">{{
+              item.reto.nombre
+            }}</span>
+            <small class="d-block fw-semibold txt text-primary">{{
+              item.reto.tipoReto
             }}</small>
+            <small class="d-block" *ngIf="item.reto.enEquipo">
+              Reto en Equipo
+            </small>
+            <small class="d-block" *ngIf="!item.reto.enEquipo">
+              Reto Individual
+            </small>
             <div>
-              <small class="fw-semibold me-1">Activo desde:</small>
-              <small>{{ dateCompare(item.fechaApertura) }}</small>
+              <small class="fw-semibold me-1">Abierto desde:</small>
+              <small>{{ dateCompare(item.reto.fechaApertura) }}</small>
             </div>
             <div>
-              <small class="fw-semibold me-1">Activo hasta:</small>
-              <small>{{ dateCompare(item.fechaCierre) }}</small>
+              <small class="fw-semibold me-1">Abierto hasta:</small>
+              <small>{{ dateCompare(item.reto.fechaCierre) }}</small>
             </div>
+          </div>
+          <div class="col-12 col-xl-3 text-end">
+            <span
+              class="badge {{
+                item.completado ? 'text-bg-success' : 'text-bg-warning'
+              }} me-2 m-xl-0"
+              >{{ item.completado ? "Completado" : "Pendiente" }}</span
+            >
+            <span
+              class="badge {{
+                item.reto.estado ? 'text-bg-success' : 'text-bg-danger'
+              }} me-2 m-xl-0"
+              >{{ item.reto.estado ? "Activo" : "Desactivado" }}</span
+            >
+            <span
+              class="badge {{
+                getEstadoFecha(item.reto) ? 'text-bg-success' : 'text-bg-danger'
+              }} me-2 m-xl-0"
+              >{{ getEstadoFecha(item.reto) ? "Abierto" : "Cerrado" }}</span
+            >
           </div>
         </div>
       </div>

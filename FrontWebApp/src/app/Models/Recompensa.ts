@@ -6,6 +6,8 @@ export interface Recompensa {
   cantDisponible: number;
   cantCanje: number; //Son los Créditos Requeridos
   totalUsuarios: number;
+  idCategoria: string;
+  categoria: string;
   estado: number;
 }
 

@@ -19,11 +19,14 @@ import {
   MsgErrorArchivo,
   MsgFormatoDescargado,
   MsgOk,
+  SetUpsert,
   SinRegistros,
   TitleEliminar,
   TitleError,
   TitleErrorArchivo,
   TitleErrorForm,
+  Upsert,
+  UpsertMsg,
 } from 'src/app/Utils/Constants';
 import { PreguntaService } from 'src/app/services/pregunta.service';
 
@@ -36,6 +39,7 @@ import { PreguntaService } from 'src/app/services/pregunta.service';
 export class ViewPreguntaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   changeRoute = ChangeRoute();
 
   @ViewChild('closeModal') closeModal!: ElementRef;
@@ -88,6 +92,16 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.loading(true, false);
     this.cargarData();
+    if (Upsert) {
+      setTimeout(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: MsgOk,
+          detail: UpsertMsg,
+        });
+        this.setUpsert(false, '');
+      }, 100);
+    }
   }
 
   getRouteParams() {
@@ -113,12 +127,11 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
         this.loading(false, false);
       },
       error: (e) => {
-        console.error(e);
+        console.error(e, e.status);
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          history.back();
         }
       },
     });
@@ -268,7 +281,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
 
   defaultList(event: Event) {
     let text = (event.target as HTMLInputElement).value;
-    if (!text) {
+    if (!text.trim()) {
       this.preguntaOpciones = this.auxPreguntaOpciones;
     }
   }

@@ -22,6 +22,15 @@ export class NivelService {
     });
   }
 
+  reporteNivel(estado: number): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<any>(`${this.apiURL}/reporte/nivel/${estado}`, {
+      headers: headers,
+    });
+  }
+
   getList(estado: number): Observable<Nivel[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,

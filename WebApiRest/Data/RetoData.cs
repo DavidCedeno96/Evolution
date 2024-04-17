@@ -54,6 +54,9 @@ namespace WebApiRest.Data
                         CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
+                        UsuariosAsignados = Convert.ToInt32(dr["usuariosAsignados"].ToString()),
+                        EquiposAsignados = Convert.ToInt32(dr["equiposAsignados"].ToString()),
+                        EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     });
@@ -121,6 +124,9 @@ namespace WebApiRest.Data
                         CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
+                        UsuariosAsignados = Convert.ToInt32(dr["usuariosAsignados"].ToString()),
+                        EquiposAsignados = Convert.ToInt32(dr["equiposAsignados"].ToString()),
+                        EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     });
@@ -192,14 +198,14 @@ namespace WebApiRest.Data
                             ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
                             CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                             Estado = Convert.ToInt32(dr["estado"].ToString()),
-                            TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
-                            FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
-                            FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                            TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),                            
+                            EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
                         },
                         Usuario = new Usuario()
                         {                            
                             IdUsuario = new Guid(dr["idUsuario"].ToString()),
-                        },                                                
+                        },              
+                        Completado = Convert.ToInt32(dr["completado"].ToString()),
                         Puntos = Convert.ToInt32(dr["puntos"].ToString()),                        
                         Tiempo = Convert.ToInt32(dr["tiempo"].ToString()),                        
                         Vidas = Convert.ToInt32(dr["vidas"].ToString()),                        
@@ -259,7 +265,7 @@ namespace WebApiRest.Data
                             Nombre = dr["nombre"].ToString(),
                             FechaApertura = Convert.ToDateTime(dr["fechaApetura"].ToString()),
                             FechaCierre = Convert.ToDateTime(dr["fechaCierre"].ToString()),
-                            Vidas = Convert.ToInt32(dr["vidas"].ToString()),
+                            Vidas = Convert.ToInt32(dr["retoVidas"].ToString()),
                             Tiempo_ms = Convert.ToInt32(dr["tiempo_ms"].ToString()),
                             PuntosRecompensa = Convert.ToInt32(dr["puntosRecompensa"].ToString()),
                             CreditosObtenidos = Convert.ToInt32(dr["creditosObtenidos"].ToString()),
@@ -271,14 +277,14 @@ namespace WebApiRest.Data
                             ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
                             CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                             Estado = Convert.ToInt32(dr["estado"].ToString()),
-                            TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
-                            FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
-                            FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                            TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),                            
+                            EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),                           
                         },
                         Usuario = new Usuario()
                         {
                             IdUsuario = new Guid(dr["idUsuario"].ToString()),
                         },
+                        Completado = Convert.ToInt32(dr["completado"].ToString()),
                         Puntos = Convert.ToInt32(dr["puntos"].ToString()),
                         Tiempo = Convert.ToInt32(dr["tiempo"].ToString()),
                         Vidas = Convert.ToInt32(dr["vidas"].ToString()),
@@ -353,14 +359,14 @@ namespace WebApiRest.Data
                             ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
                             CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                             Estado = Convert.ToInt32(dr["estado"].ToString()),
-                            TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
-                            FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
-                            FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                            TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),                            
+                            EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
                         },
                         Usuario = new Usuario()
                         {
                             IdUsuario = new Guid(dr["idUsuario"].ToString()),
                         },
+                        Completado = Convert.ToInt32(dr["completado"].ToString()),
                         Puntos = Convert.ToInt32(dr["puntos"].ToString()),
                         Tiempo = Convert.ToInt32(dr["tiempo"].ToString()),
                         Vidas = Convert.ToInt32(dr["vidas"].ToString()),
@@ -387,7 +393,7 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<Usuario_RetoList> GetUsuarioRetoList()
+        public async Task<Usuario_RetoList> GetUsuarioRetoPuntosList(Guid idUsuario, int top)
         {
             Usuario_RetoList list = new()
             {
@@ -399,7 +405,10 @@ namespace WebApiRest.Data
             SqlCommand cmd = new("sp_B_Usuario_RetoSumaPuntos", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
-            };            
+            };
+
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+            cmd.Parameters.AddWithValue("@top", top);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -419,10 +428,66 @@ namespace WebApiRest.Data
                             IdUsuario = new Guid(dr["idUsuario"].ToString()),
                             Nombre = dr["nombre"].ToString(),
                             Apellido = dr["apellido"].ToString(),
+                            IdArea = dr["idArea"].ToString(),
+                            Area = dr["area"].ToString(),
+                            IdCiudad = dr["idCiudad"].ToString(),
+                            Ciudad = dr["ciudad"].ToString(),
                             Foto = dr["foto"].ToString(),
                         },
                         Puntos = Convert.ToInt32(dr["puntos"].ToString()),
-                        Tiempo = Convert.ToInt32(dr["tiempo"].ToString()),                        
+                        Tiempo = Convert.ToInt32(dr["tiempo"].ToString()),
+                        Posicion = Convert.ToInt32(dr["posicion"].ToString()),
+                    });
+                }
+
+                list.Info = WC.GetSatisfactorio();
+                list.Error = 0;
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+        }
+
+        public async Task<ChartPuntosList> GetUsuarioRetoPuntosChartList(Guid idUsuario)
+        {
+            ChartPuntosList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_Usuario_RetoPtosMesesAños", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    list.Lista.Add(new ChartPuntos()
+                    {
+                        Puntos = Convert.ToInt32(dr["puntos"].ToString()),
+                        Mes = Convert.ToInt32(dr["mes"].ToString()),
+                        Año = Convert.ToInt32(dr["año"].ToString()),
                     });
                 }
 
@@ -509,6 +574,67 @@ namespace WebApiRest.Data
             return list;
         }
 
+        public async Task<Equipo_RetoList> GetEquiposByReto(int estado, Guid idReto)
+        {
+            Equipo_RetoList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_Equipo_RetoByIdReto", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idReto", idReto);
+            cmd.Parameters.AddWithValue("@estado", estado);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    list.Lista.Add(new Equipo_Reto()
+                    {
+                        Equipo = new Equipo()
+                        {
+                            IdEquipo = new Guid(dr["idEquipo"].ToString()),
+                            Nombre = dr["nombre"].ToString(),
+                            Imagen = dr["imagen"].ToString(),
+                            Estado = Convert.ToInt32(dr["estado"].ToString()),
+                        },
+                        Reto = new Reto()
+                        {
+                            IdReto = new Guid(dr["idReto"].ToString()),
+                        },
+                        TotalUsuarios = Convert.ToInt32(dr["totalUsuarios"].ToString()),
+                    });
+                }
+
+                list.Info = WC.GetSatisfactorio();
+                list.Error = 0;
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+        }
+
         public async Task<RetoItem> GetReto(int estado, Guid idReto)
         {
             RetoItem item = new();
@@ -551,7 +677,8 @@ namespace WebApiRest.Data
                         ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
                         CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                         TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
-                        Estado = Convert.ToInt32(dr["estado"].ToString()),
+                        Estado = Convert.ToInt32(dr["estado"].ToString()),                        
+                        EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     };
@@ -597,6 +724,7 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(reto.Imagen));
             cmd.Parameters.AddWithValue("@idTipoReto", reto.IdTipoReto);
             cmd.Parameters.AddWithValue("@idComportamiento", reto.IdComportamiento);
+            cmd.Parameters.AddWithValue("@enEquipo", reto.EnEquipo);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -615,6 +743,46 @@ namespace WebApiRest.Data
             {
                 response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
                 response.Error = 1;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+        }
+
+        public async Task<Response> CreateEquipoReto(Guid idReto, Guid idEquipo)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_C_Equipo_Reto", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idEquipo", idEquipo);
+            cmd.Parameters.AddWithValue("@idReto", idReto);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+                response.Id = cmd.Parameters["@id"].Value.ToString();
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
+                response.Id = null;
             }
             finally
             {
@@ -646,7 +814,7 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@instrucciones", WC.GetTrim(reto.Instrucciones));
             cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(reto.Imagen));
             cmd.Parameters.AddWithValue("@idTipoReto", reto.IdTipoReto);
-            cmd.Parameters.AddWithValue("@idComportamiento", reto.IdComportamiento);
+            cmd.Parameters.AddWithValue("@idComportamiento", reto.IdComportamiento);            
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -717,21 +885,18 @@ namespace WebApiRest.Data
             return response;
         }
 
-        public async Task<Response> CreateUsuarioReto(Usuario_Reto usuarioReto)
+        public async Task<Response> UpdateRetoByEstado(Reto reto)
         {
             Response response = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-            SqlCommand cmd = new("sp_C_Usuario_Reto", sqlConnection)
+            SqlCommand cmd = new("sp_U_RetoByEstado", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@correo", WC.GetTrim(usuarioReto.Usuario.Correo));
-            cmd.Parameters.AddWithValue("@idReto", usuarioReto.Reto.IdReto);
-            cmd.Parameters.AddWithValue("@puntos", usuarioReto.Puntos);
-            cmd.Parameters.AddWithValue("@tiempo", usuarioReto.Tiempo);
-            cmd.Parameters.AddWithValue("@vidas", usuarioReto.Vidas);
+            cmd.Parameters.AddWithValue("@idReto", reto.IdReto);
+            cmd.Parameters.AddWithValue("@estado", reto.Estado);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -750,6 +915,88 @@ namespace WebApiRest.Data
             {
                 response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
                 response.Error = 1;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+
+        }
+
+        public async Task<Response> CreateUsuarioReto(Usuario_Reto usuarioReto)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_C_Usuario_Reto", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@correo", WC.GetTrim(usuarioReto.Usuario.Correo));
+            cmd.Parameters.AddWithValue("@idReto", usuarioReto.Reto.IdReto);
+            cmd.Parameters.AddWithValue("@tieneEquipo", usuarioReto.TieneEquipo);            
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+        }
+
+        public async Task<Response> CreateUsuarioReto(Guid idReto, string correo_id)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_C_Usuario_RetoByCorreoIds", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@correo_id", WC.GetTrim(correo_id));
+            cmd.Parameters.AddWithValue("@idReto", idReto);            
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+                response.Id = cmd.Parameters["@id"].Value.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
+                response.Id = null;
             }
             finally
             {
@@ -809,6 +1056,45 @@ namespace WebApiRest.Data
 
             cmd.Parameters.AddWithValue("@idReto", idReto);
             cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+        }
+
+        public async Task<Response> DeleteEquipoReto(Guid idReto, Guid idEquipo) 
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_D_Equipo_Reto", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idReto", idReto);
+            cmd.Parameters.AddWithValue("@idEquipo", idEquipo);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;

@@ -1,6 +1,4 @@
 import {
-  AfterContentInit,
-  AfterViewChecked,
   AfterViewInit,
   Component,
   ElementRef,
@@ -14,9 +12,11 @@ import { MessageService } from 'primeng/api';
 import {
   AlertError,
   ChangeRoute,
+  GetArchivo,
   GetImage,
   Loading,
   MsgActivado,
+  MsgArchivoDescargado,
   MsgDesactivado,
   MsgError,
   MsgErrorArchivo,
@@ -43,6 +43,7 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
   loading = Loading();
   changeRoute = ChangeRoute();
   getImage = GetImage();
+  getArchivo = GetArchivo();
   setUpsert = SetUpsert();
 
   @ViewChild('closeModal') closeModal!: ElementRef;
@@ -54,6 +55,7 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
   info: string = '';
 
   formulario!: FormGroup;
+
   auxUsuarios: Usuario[] = [];
   usuarios: Usuario[] = [];
   usuario: Usuario = {
@@ -67,6 +69,7 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
     idRol: '',
     rol: '',
     idPais: '',
+    pais: '',
     idCiudad: '',
     ciudad: '',
     idEmpresa: '',
@@ -215,7 +218,7 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
     }
   }
 
-  exportArchivo() {
+  descargarArchivo() {
     this.loading(true, false);
     this.usuarioServicio.getArchivo().subscribe({
       next: (data: Blob) => {
@@ -237,6 +240,44 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
         this.loading(false, false);
       },
     });
+  }
+
+  exportarArchivo() {
+    if (this.auxUsuarios.length) {
+      this.loading(true, false);
+      this.usuarioServicio.reporteUsuarios(-1).subscribe({
+        next: (data: any) => {
+          let { info, error } = data.response;
+          if (error === 0) {
+            let url = this.getArchivo(info, 'Usuario');
+            const element = document.createElement('a');
+            element.download = `Usuarios.xls`;
+            element.href = url;
+            element.click();
+
+            this.messageService.add({
+              severity: 'success',
+              summary: MsgOk,
+              detail: MsgArchivoDescargado,
+            });
+          } else {
+            this.alertError(TitleErrorArchivo, info);
+          }
+          this.loading(false, false, 1000);
+        },
+        error: (e) => {
+          console.error(e);
+          if (e.status === 401 || e.status === 403) {
+            this.router.navigate(['/']);
+          } else {
+            this.loading(false, false);
+            this.alertError(TitleErrorArchivo, MsgErrorArchivo);
+          }
+        },
+      });
+    } else {
+      this.alertError(TitleErrorArchivo, SinRegistros);
+    }
   }
 
   setEstado(idUsuario: string, estado: number) {
@@ -272,7 +313,7 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
 
   defaultList(event: Event) {
     let text = (event.target as HTMLInputElement).value;
-    if (!text) {
+    if (!text.trim()) {
       this.usuarios = this.auxUsuarios;
     }
   }

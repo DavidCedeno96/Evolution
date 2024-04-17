@@ -1,0 +1,104 @@
+<div class="col-12 col-md-8 col-lg-5 col-xl-4 mx-md-auto">
+  <div
+    class="shadow-lg p-3 mb-5 bg-body rounded"
+    *ngFor="let item of redSocial_reaccion"
+  >
+    <div
+      class="mb-3 pointer"
+      (click)="
+        changeRoute('/red-user', {
+          red: item.redSocial.idRed
+        })
+      "
+    >
+      <img
+        [src]="getImage(item.redSocial.foto, 'usuario', 'default-user.jpg')"
+        class="imgRedonda me-2"
+        alt="user"
+      />
+      <span
+        ><span class="link-primary">{{ item.redSocial.usuario }}</span>
+        {{ item.redSocial.descripcion }} {{ item.redSocial.tipo }}
+      </span>
+    </div>
+    <div class="card">
+      <img
+        [src]="
+          getImage(
+            item.redSocial.imagen,
+            item.redSocial.dir,
+            'default-redesSocial.png'
+          )
+        "
+        class="card-img-top"
+        alt="..."
+      />
+      <div class="card-body">
+        <h5 class="card-title">
+          <i
+            class="fa-regular fa-thumbs-up me-2 fs-5 pointer"
+            type="button"
+            (click)="addReaccion('like', item)"
+          ></i>
+          <i class="fa-regular fa-comments me-1 fs-5"></i>
+        </h5>
+        <p class="card-text">
+          <span class="text-black-50 d-block"
+            >{{ item.redSocial.totalLikes }} me gusta</span
+          >
+          <span class="text-black-50 d-block"
+            >{{ item.redSocial.totalComents }} comentarios</span
+          >
+        </p>
+        <hr class="hr-text" data-content="Comentarios" />
+        <form
+          class="d-flex align-items-center mb-3"
+          [formGroup]="formulario"
+          (ngSubmit)="addReaccion('comentario', item)"
+        >
+          <input
+            type="text"
+            class="form-control me-md-4 {{
+              formulario.get('comentario')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="comentario"
+            placeholder="Escribe tu comentario"
+          />
+          <button type="submit" class="btn link-primary text-decoration-none">
+            comentar
+          </button>
+        </form>
+        <div
+          class="text-danger p-0 mb-3"
+          *ngIf="formulario.get('comentario')?.errors && verErrorsInputs"
+        >
+          <small
+            class="d-block"
+            *ngIf="formulario.get('comentario')?.hasError('maxlength')"
+          >
+            Máximo 250 caracteres
+          </small>
+          <small
+            class="d-block"
+            *ngIf="formulario.get('comentario')?.hasError('pattern')"
+          >
+            Contiene caracteres inválidos
+          </small>
+        </div>
+        <div class="box-comentarios" *ngIf="item.comentarioList.length">
+          <div class="mb-3" *ngFor="let ob of getComentarios(item)">
+            <!-- <img
+              src="assets/img/default/default-user.jpg"
+              class="imgRedonda me-2"
+              alt="user"
+            /> -->
+            <span>{{ ob.usuario }}</span>
+            <small class="d-block">{{ ob.comentario }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

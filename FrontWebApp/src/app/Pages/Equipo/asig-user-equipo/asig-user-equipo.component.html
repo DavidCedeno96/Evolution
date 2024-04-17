@@ -1,0 +1,245 @@
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">
+    Asignar usuarios a equipos
+  </h5>
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-auto d-grid d-md-block">
+      <button
+        class="btn btn-primary icon"
+        data-bs-toggle="modal"
+        data-bs-target="#asignarusuarios"
+      >
+        <div class="icon-text buton">
+          <mat-icon svgIcon="agregar"></mat-icon><span>Asignar Usuario</span>
+        </div>
+      </button>
+    </div>
+    <div class="col-6 col-md-6 d-grid d-md-block">
+      <button
+        class="btn btn-secondary icon"
+        (click)="
+          changeRoute('/mass-actions-asig-user-equipo', {
+            equipo: idEquipo
+          })
+        "
+      >
+        <div class="icon-text buton">
+          <mat-icon svgIcon="accionMasiva"></mat-icon
+          ><span>Acciones masivas</span>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal Asignar -->
+  <div
+    class="modal fade"
+    id="asignarusuarios"
+    tabindex="-1"
+    aria-labelledby="asignarUsuarios_equipos"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-scrollable">
+      <form
+        class="modal-content"
+        [formGroup]="formulario"
+        (ngSubmit)="submitForm($event)"
+      >
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="asignarUsuarios_equipos">
+            Asignar Usuario
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            #closeModalAsignar
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-md-flex w-100">
+            <div class="input-group flex-grow-1 me-md-3 mb-3 mb-md-0">
+              <span class="icon-left">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control icon"
+                placeholder="Buscar usuario..."
+                formControlName="buscar"
+                (input)="defaultList($event)"
+              />
+            </div>
+            <div class="d-grid">
+              <button
+                type="submit"
+                class="btn btn-secondary"
+                value="buscar"
+                [disabled]="formulario.get('buscar')?.errors"
+              >
+                Buscar
+              </button>
+            </div>
+          </div>
+
+          <div class="card text-center mt-3" *ngIf="error">
+            <div class="card-body">
+              <span>{{ info }}</span>
+            </div>
+          </div>
+
+          <div class="card mt-3" *ngIf="usuarios.length">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" *ngFor="let item of usuarios">
+                <div class="row g-3 text-center text-md-start">
+                  <div class="col-12 col-md-auto align-self-center">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      [id]="item.idUsuario"
+                      (input)="selectUsuario(item.correo)"
+                    />
+                  </div>
+                  <label
+                    class="col-12 col-md-auto align-self-center"
+                    [htmlFor]="item.idUsuario"
+                  >
+                    <img
+                      [src]="getImage(item.foto, 'usuario', 'default-user.jpg')"
+                      class="imageRedonda me-2"
+                      alt="..."
+                    />
+                  </label>
+                  <label class="col-12 col-md-8" [htmlFor]="item.idUsuario">
+                    <div class="d-md-flex justify-content-between">
+                      <h6 class="me-2 txt text-secondary">
+                        {{ item.nombre }} {{ item.apellido }}
+                      </h6>
+                      <small
+                        class="card-text {{
+                          item.estado ? 'text-success' : 'text-danger'
+                        }}"
+                      >
+                        {{ item.estado ? "Activado" : "Desactivado" }}
+                      </small>
+                    </div>
+                    <small class="txt text-tertiary">
+                      {{ item.correo }}
+                    </small>
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            value="asignar"
+            [disabled]="formulario.get('correo')?.errors"
+          >
+            Asignar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Fin Modal -->
+
+  <!-- Usuarios -->
+  <div class="mb-2 mb-md-4">
+    <p-dataView
+      #dv
+      [value]="usuarioEquipo"
+      [rows]="10"
+      [paginator]="true"
+      [emptyMessage]="sinRegistros"
+    >
+      <ng-template let-ue pTemplate="listItem">
+        <div class="col-12">
+          <div class="p-4 gap-4">
+            <div class="row g-3 text-center text-md-start align-items-center">
+              <div class="col-12 col-md-auto">
+                <img
+                  class="img-thumbnail"
+                  [src]="
+                    getImage(ue.usuario.foto, 'usuario', 'default-user.jpg')
+                  "
+                  width="100px"
+                  [alt]="ue.usuario.imagen"
+                />
+              </div>
+              <div class="col-12 col-md-4">
+                <h5 class="txt text-secondary text-truncate">
+                  {{ ue.usuario.nombre }}
+                  {{ ue.usuario.apellido }}
+                </h5>
+                <div class="flex align-items-center gap-3">
+                  <span class="d-block text-truncate">
+                    {{ ue.usuario.correo }}
+                  </span>
+                  <span
+                    class="d-block fw-semibold {{
+                      ue.usuario.estado ? 'text-success' : 'text-danger'
+                    }}"
+                  >
+                    {{ ue.usuario.estado ? "Activado" : "Desactivado" }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-4">
+                <div class="flex align-items-center gap-3">
+                  <div>
+                    <strong>Rol:</strong>
+                    <span
+                      class="{{
+                        ue.usuario.idRol === 'adm'
+                          ? 'txt text-primary'
+                          : 'txt text-tertiary'
+                      }}"
+                    >
+                      {{ ue.usuario.rol }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-1 col-lg-2 text-md-end">
+                <a
+                  class="pointer txt text-tertiary"
+                  (click)="
+                    confirmEliminar(ue.equipo.idEquipo, ue.usuario.idUsuario)
+                  "
+                  ><i class="fa-solid fa-trash-can me-2"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
+  </div>
+</div>
+
+<p-toast [styleClass]="'col-10 col-md-6 col-lg-3'"></p-toast>
+<p-confirmDialog #cd [styleClass]="'col-10 col-md-4'">
+  <ng-template pTemplate="footer">
+    <button
+      type="button"
+      class="btn btn-tertiary me-2"
+      pButton
+      label="Cancelar"
+      (click)="cd.reject()"
+    ></button>
+    <button
+      type="button"
+      pButton
+      class="btn btn-primary"
+      label="Aceptar"
+      (click)="cd.accept()"
+    ></button>
+  </ng-template>
+</p-confirmDialog>

@@ -1,45 +1,48 @@
 <div class="row g-3 mt-md-5">
   <div class="col-12 col-md-6" *ngFor="let item of configInicioItems">
-    <div class="shadow-lg bg-white p-4 px-lg-5 rounded">
-      <h5 class="mb-3 text-center txt text-primary">
-        {{ item.nombre }}
-      </h5>
+    <div class="shadow-lg bg-white rounded">
+      <div class="bg bg-primary rounded-top p-1 p-md-2 text-center">
+        <span class="txt text-white fs-5">
+          {{ item.nombre }}
+        </span>
+      </div>
 
-      <div *ngIf="item.nombre === 'Resumen General'">
-        <div class="p-4 px-lg-5 rounded">
-          <div class="row g-3 text-center">
-            <div class="col-12 col-md-4">
-              <h2 class="txt text-primary">
-                {{ resumenG.retosCompletados }}
-              </h2>
-              <span class="txt text-secondary">Retos Completados</span>
-            </div>
-            <div class="col-12 col-md-4">
-              <h2 class="txt text-primary">
-                {{ resumenG.medallasConseguidas }}
-              </h2>
-              <span class="txt text-secondary">Medallas Conseguidas</span>
-            </div>
-            <div class="col-12 col-md-4">
-              <h2 class="txt text-primary">
-                {{ resumenG.recomensasReclamadas }}
-              </h2>
-              <span class="txt text-secondary">Recompensas Reclamadas</span>
+      <div class="p-4 px-lg-5">
+        <div *ngIf="item.nombre === 'Resumen general'">
+          <div class="p-4 px-lg-5 rounded">
+            <div class="row g-3 text-center">
+              <div class="col-12 col-lg-4">
+                <h2 class="txt text-secondary">
+                  {{ resumenG.retosCompletados }}
+                </h2>
+                <span>Retos Completados</span>
+              </div>
+              <div class="col-12 col-lg-4">
+                <h2 class="txt text-secondary">
+                  {{ resumenG.medallasConseguidas }}
+                </h2>
+                <span>Medallas Conseguidas</span>
+              </div>
+              <div class="col-12 col-lg-4">
+                <h2 class="txt text-secondary">
+                  {{ resumenG.recomensasReclamadas }}
+                </h2>
+                <span>Recompensas Reclamadas</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div *ngIf="item.nombre === 'Nivel de Experiencia'">
-        <div>
-          <div class="rounded-pill p-2 bg-menu-item">
+        <div *ngIf="item.nombre === 'Nivel de Experiencia'">
+          <div class="card p-3 mb-3">
             <div class="d-flex">
               <img
                 *ngIf="miNivel.length"
                 [src]="
                   getImage(miNivel[0].imagen, 'nivel', 'default-nivel.jpg')
                 "
-                class="imageRedonda me-2"
+                class="img-thumbnail me-2"
+                width="60"
                 alt="nivel"
               />
               <img
@@ -49,7 +52,7 @@
                 alt="nivel"
               />
               <div class="col-10 pe-5 p-xl-2 align-self-center">
-                <div class="d-flex justify-content-between text-white">
+                <div class="d-flex justify-content-between">
                   <span *ngIf="miNivel.length">{{ miNivel[0].nombre }}</span>
                   <span *ngIf="!miNivel.length">Nivel 0</span>
                   <span class="text-truncate"
@@ -57,200 +60,376 @@
                     {{ nivelProx.puntosNecesarios }}</span
                   >
                 </div>
-                <div class="progress">
+                <div class="progress border border-black">
                   <div
-                    class="progress-bar"
+                    class="progress-bar bg bg-secondary"
                     role="progressbar"
                     aria-label="Success example"
                     [style.width]="porcentajeNivel + '%'"
-                    aria-valuenow="25"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
                   >
                     <span *ngIf="porcentajeNivel > 9">
                       {{ porcentajeNivel }}%
                     </span>
                   </div>
-                  <span class="text-dark ms-2" *ngIf="porcentajeNivel < 10"
+                  <span
+                    class="text-dark ms-2 d-flex align-items-center"
+                    *ngIf="porcentajeNivel < 10"
                     >{{ porcentajeNivel }}%</span
                   >
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div *ngIf="item.nombre === 'Usuarios más activos'">
-        <div class="text-center col-12 mb-3" *ngIf="!usuariosActivos.length">
-          <span>Sin usuarios más activos</span>
-        </div>
-        <div class="row g-3 d-flex justify-content-center text-center">
-          <div class="col-4 col-lg-3" *ngFor="let user of usuariosActivos">
-            <img
-              [src]="getImage(user.foto, 'usuario', 'default-user.jpg')"
-              class="imgRedonda me-2"
-              width="80px"
-              alt="user"
-            />
-            <small class="text-truncate d-block"
-              >{{ user.nombre }} {{ user.apellido }}</small
-            >
+          <div class="d-grid d-lg-block">
+            <button type="button" class="btn btn-secondary btn-sm">
+              Perfil de red social
+            </button>
           </div>
         </div>
-      </div>
 
-      <div *ngIf="item.nombre === 'Noticias'">
-        <div class="text-center col-12" *ngIf="!noticias.length">
-          <span>Sin noticias</span>
+        <div *ngIf="item.nombre === 'Usuarios más activos'">
+          <div class="text-center col-12 mb-3" *ngIf="!usuariosActivos.length">
+            <span>Sin usuarios más activos</span>
+          </div>
+          <div
+            class="row g-3 d-flex justify-content-center text-center mb-3 {{
+              usuariosActivos.length > 3 ? 'justify-content-lg-between' : ''
+            }}"
+          >
+            <div class="col-4 col-lg-2" *ngFor="let user of usuariosActivos">
+              <img
+                [src]="getImage(user.foto, 'usuario', 'default-user.jpg')"
+                class="imgRedonda"
+                alt="user"
+              />
+              <small class="text-truncate d-block"
+                >{{ user.nombre }} {{ user.apellido }}</small
+              >
+            </div>
+          </div>
+
+          <!-- <div class="d-grid d-lg-block">
+            <button
+              *ngIf="usuariosActivos.length"
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="irAVista('usuario')"
+            >
+              Ver todos los usuarios
+            </button>
+          </div> -->
         </div>
 
-        <div class="overflow-auto pe-2" style="max-height: 150px">
-          <div class="card mb-2" *ngFor="let noticia of noticias">
-            <div class="card-body d-flex justify-content-between">
-              <div class="col-5 col-lg-7 col-xl-8 text-truncate">
-                {{ noticia.titular }}
-              </div>
-              <div class="col-6 col-lg-4 col-xl-3">
-                <div class="row g-3">
-                  <div class="col-6 text-end text-truncate">
-                    <i class="fa-regular fa-thumbs-up me-1"></i
-                    >{{ noticia.totalLikes }}
-                  </div>
-                  <div class="col-6 text-start text-truncate">
-                    <i class="fa-regular fa-comments me-1"></i
-                    >{{ noticia.totalComents }}
+        <div *ngIf="item.nombre === 'Noticias'">
+          <div class="text-center col-12" *ngIf="!noticias.length">
+            <span>Sin noticias</span>
+          </div>
+
+          <div
+            class="pe-2 mb-2 {{ noticias.length > 3 ? 'overflow-auto' : '' }}"
+            style="max-height: 190px"
+          >
+            <div class="card mb-2" *ngFor="let noticia of noticias">
+              <div class="card-body d-flex justify-content-between">
+                <div class="col-5 col-lg-7 col-xl-8 text-truncate">
+                  {{ noticia.titular }}
+                </div>
+                <div class="col-6 col-lg-4 col-xl-3">
+                  <div class="row g-3">
+                    <div class="col-6 text-end text-truncate">
+                      <i class="fa-regular fa-thumbs-up me-1"></i
+                      >{{ noticia.totalLikes }}
+                    </div>
+                    <div class="col-6 text-start text-truncate">
+                      <i class="fa-regular fa-comments me-1"></i
+                      >{{ noticia.totalComents }}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div *ngIf="item.nombre === 'Puntos alcanzados'">
-        <div>
-          <canvas #canvas>{{ chart }}</canvas>
-        </div>
-      </div>
-
-      <div *ngIf="item.nombre === 'Recompensas más reclamadas'">
-        <div class="text-center col-12 mb-3" *ngIf="!recompensas.length">
-          <span>Sin recompensas</span>
-        </div>
-
-        <div class="row g-3 d-flex justify-content-center text-center">
-          <div class="col-4 col-lg-3" *ngFor="let recompensa of recompensas">
-            <img
-              [src]="
-                getImage(
-                  recompensa.imagen,
-                  'recompensa',
-                  'default-recompensa.jpg'
-                )
-              "
-              class="rounded-circle img-thumbnail me-2"
-              width="80"
-              alt="recompensa"
-            />
-            <small class="text-truncate d-block">{{ recompensa.nombre }}</small>
+          <div class="d-grid d-lg-block">
+            <button
+              *ngIf="noticias.length"
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="irAVista('noticia')"
+            >
+              Ver todas las noticias
+            </button>
           </div>
         </div>
-      </div>
 
-      <div *ngIf="item.nombre === 'Mis medallas'">
-        <div class="text-center col-12 mb-3" *ngIf="!medallas.length">
-          <span>Sin medallas</span>
-        </div>
-
-        <div class="row g-3 d-flex justify-content-center text-center">
-          <div class="col-4 col-lg-3" *ngFor="let medalla of medallas">
-            <img
-              [src]="getImage(medalla.imagen, 'medalla', 'default-medalla.jpg')"
-              class="rounded-circle img-thumbnail me-2"
-              width="80"
-              alt="medalla"
-            />
-            <small class="text-truncate d-block">{{ medalla.nombre }}</small>
+        <div
+          *ngIf="
+            item.nombre === 'Puntos de experiencia' ||
+            item.nombre === 'Mi evolución'
+          "
+        >
+          <div class="text-center col-12 mb-3" *ngIf="!auxMeses.length">
+            <span>Sin puntos</span>
+          </div>
+          <div *ngIf="auxMeses.length">
+            <canvas #canvas>{{ chart }}</canvas>
           </div>
         </div>
-      </div>
 
-      <div *ngIf="item.nombre === 'Mis últimos retos terminados'">
-        <div class="text-center col-12" *ngIf="!retosTerminados.length">
-          <span>Sin retos</span>
+        <div *ngIf="item.nombre === 'Recompensas más reclamadas'">
+          <div class="text-center col-12 mb-3" *ngIf="!recompensas.length">
+            <span>Sin recompensas</span>
+          </div>
+
+          <div
+            class="row g-3 d-flex justify-content-center text-center mb-3 {{
+              recompensas.length > 3 ? 'justify-content-lg-between' : ''
+            }}"
+          >
+            <div class="col-4 col-lg-2" *ngFor="let recompensa of recompensas">
+              <img
+                [src]="
+                  getImage(
+                    recompensa.imagen,
+                    'recompensa',
+                    'default-recompensa.jpg'
+                  )
+                "
+                class="rounded-circle img-thumbnail me-2"
+                width="80"
+                alt="recompensa"
+              />
+              <small class="text-truncate d-block">{{
+                recompensa.nombre
+              }}</small>
+            </div>
+          </div>
+
+          <div class="d-grid d-lg-block">
+            <button
+              *ngIf="recompensas.length"
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="irAVista('recompensa')"
+            >
+              Ver todas las recompensas
+            </button>
+          </div>
         </div>
 
-        <table class="table" *ngIf="retosTerminados.length">
-          <thead>
-            <tr>
-              <th scope="col">Nombre</th>
-              <th scope="col">Tipo</th>
-              <th scope="col">Puntos</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let ur of retosTerminados">
-              <td>{{ ur.reto.nombre }}</td>
-              <td>{{ ur.reto.tipoReto }}</td>
-              <td>{{ ur.reto.puntosRecompensa }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <div *ngIf="item.nombre === 'Mis medallas'">
+          <div class="text-center col-12 mb-3" *ngIf="!medallas.length">
+            <span>Sin medallas</span>
+          </div>
 
-      <div *ngIf="item.nombre === 'Ranking por puntos'">
-        <div class="text-center col-12" *ngIf="!usuariosRanking.length">
-          <span>Sin ranking</span>
+          <div
+            class="row g-3 d-flex justify-content-center text-center mb-3 {{
+              medallas.length > 3 ? 'justify-content-lg-between' : ''
+            }}"
+          >
+            <div class="col-4 col-lg-2" *ngFor="let medalla of medallas">
+              <img
+                [src]="
+                  getImage(medalla.imagen, 'medalla', 'default-medalla.jpg')
+                "
+                class="rounded-circle img-thumbnail me-2"
+                width="80"
+                alt="medalla"
+              />
+              <small class="text-truncate d-block">{{ medalla.nombre }}</small>
+            </div>
+          </div>
+
+          <div class="d-grid d-lg-block">
+            <button
+              *ngIf="medallas.length"
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="irAVista('medalla')"
+            >
+              Ver todas las medallas
+            </button>
+          </div>
         </div>
 
-        <table class="table align-middle" *ngIf="usuariosRanking.length">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col"></th>
-              <th scope="col">Usuario</th>
-              <th scope="col">Puntos</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let ur of usuariosRanking; index as i">
-              <th>{{ i + 1 }}</th>
-              <td>
-                <img
-                  [src]="
-                    getImage(ur.usuario.foto, 'usuario', 'default-user.jpg')
+        <div *ngIf="item.nombre === 'Retos completados'">
+          <div class="text-center col-12" *ngIf="!retosTerminados.length">
+            <span>Sin retos</span>
+          </div>
+
+          <table class="table mb-3" *ngIf="retosTerminados.length">
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Fecha de finalización</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ur of retosTerminados">
+                <td>{{ ur.reto.nombre }}</td>
+                <td>{{ ur.reto.tipoReto }}</td>
+                <td>{{ ur.fechaModificacion | date : "dd-LL-yyyy" }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="d-grid d-lg-block" *ngIf="retosTerminados.length">
+            <button
+              class="btn btn-secondary btn-sm"
+              (click)="irAVista('retos')"
+            >
+              Ver todos los retos
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="item.nombre === 'Ranking por puntos'">
+          <div class="text-center col-12" *ngIf="!usuariosRanking.length">
+            <span>Sin ranking</span>
+          </div>
+
+          <div class="table-responsive" *ngIf="usuariosRanking.length">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                  <th scope="col">Usuario</th>
+                  <th scope="col">Puntos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let ur of usuariosRanking; index as i"
+                  [ngClass]="
+                    usuario.idUsuario === ur.usuario.idUsuario
+                      ? 'table-secondary'
+                      : ''
                   "
-                  class="imgRedonda-ranking me-2"
-                  alt="user"
-                />
-              </td>
-              <td>{{ ur.usuario.puntos }}</td>
-              <td>{{ ur.usuario.nombre }} {{ ur.usuario.apellido }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                >
+                  <th>{{ ur.posicion }}</th>
+                  <td>
+                    <img
+                      [src]="
+                        getImage(ur.usuario.foto, 'usuario', 'default-user.jpg')
+                      "
+                      class="imgRedonda-ranking me-2"
+                      alt="user"
+                    />
+                  </td>
+                  <td>{{ ur.usuario.nombre }} {{ ur.usuario.apellido }}</td>
+                  <td>{{ ur.puntos }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-      <div *ngIf="item.nombre === 'Mis retos asignados'">
-        <div class="text-center col-12" *ngIf="!retosAsignados.length">
-          <span>Sin retos asignados</span>
+          <div class="d-grid d-lg-block">
+            <button
+              *ngIf="usuariosRanking.length"
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="irAVista('ranking')"
+            >
+              Ver ranking completo
+            </button>
+          </div>
         </div>
 
-        <div class="card">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item" *ngFor="let ur of retosAsignados">
-              <div class="d-flex justify-content-between">
-                <span>{{ ur.reto.nombre }}</span>
+        <div *ngIf="item.nombre === 'Mis retos asignados'">
+          <div class="text-center col-12" *ngIf="!retosAsignados.length">
+            <span>Sin retos asignados</span>
+          </div>
+
+          <div class="card mb-3">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" *ngFor="let ur of retosAsignados">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="col-6">{{ ur.reto.nombre }}</span>
+                  <div class="text-end text-md-start">
+                    <span
+                      class="badge {{
+                        ur.completado ? 'text-bg-success' : 'text-bg-warning'
+                      }} me-2"
+                      >{{ ur.completado ? "Completado" : "Pendiente" }}</span
+                    >
+                    <span
+                      class="badge {{
+                        getEstadoFecha(ur.reto)
+                          ? 'text-bg-success'
+                          : 'text-bg-danger'
+                      }} me-2"
+                      >{{
+                        getEstadoFecha(ur.reto) ? "Abierto" : "Cerrado"
+                      }}</span
+                    >
+                    <span
+                      class="badge {{
+                        ur.reto.estado ? 'text-bg-success' : 'text-bg-danger'
+                      }}"
+                      >{{ ur.reto.estado ? "Activo" : "Desactivado" }}</span
+                    >
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="d-grid d-lg-block">
+            <button
+              class="btn btn-secondary btn-sm"
+              (click)="irAVista('retos')"
+            >
+              Ver todos los retos
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="item.nombre === 'Uso del plan'">
+          <div class="text-center col-12" *ngIf="!licencias.length">
+            <span>Sin estadísticas</span>
+          </div>
+
+          <div class="mb-3" *ngFor="let li of licencias; index as i">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fs-5">
+                {{ li.nombre }}
+              </span>
+              <small class="me-3"
+                >{{ li.cantUsada }} de
+                {{ li.cantMax < 0 ? "ilimitado" : li.cantMax }}</small
+              >
+            </div>
+            <div class="me-3">
+              <div class="progress">
+                <div
+                  class="progress-bar bg bg-primary"
+                  role="progressbar"
+                  aria-label="Example with label"
+                  [style.width]="li.porcentajeUso + '%'"
+                >
+                  <span *ngIf="li.porcentajeUso > 9">
+                    {{ li.porcentajeUso }}%
+                  </span>
+                </div>
                 <span
-                  class="badge {{
-                    ur.reto.estado ? 'text-bg-success' : 'text-bg-danger'
-                  }}"
-                  >{{ ur.reto.estado ? "Activado" : "Desactivado" }}</span
+                  class="text-dark ms-2 d-flex align-items-center"
+                  *ngIf="li.porcentajeUso < 10"
+                  >{{ li.porcentajeUso }}%</span
                 >
               </div>
-            </li>
-          </ul>
+            </div>
+          </div>
+          <div class="d-grid d-lg-block">
+            <a
+              class="btn btn-secondary btn-sm"
+              [href]="playMoveUrl"
+              target="_blank"
+            >
+              Cambiar de plan
+            </a>
+          </div>
         </div>
       </div>
     </div>

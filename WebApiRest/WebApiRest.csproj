@@ -18,15 +18,32 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.25" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NPOI" Version="2.6.2" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="wwwroot\Content\Archivos\Nivel\_default.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Content\Archivos\Recompensa\_default.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Content\Archivos\Usuario\_default.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\Content\Images\Config\_default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Content\Images\Default\default-logoDM.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Content\Images\Equipo\_default.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\Content\Images\Medalla\_default.png">
@@ -53,11 +70,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\Content\Archivos\Usuario\" />
     <Folder Include="wwwroot\Content\Images\Medalla\" />
     <Folder Include="wwwroot\Content\Images\Config\" />
+    <Folder Include="wwwroot\Content\Images\Default\" />
+    <Folder Include="wwwroot\Content\Images\Equipo\" />
     <Folder Include="wwwroot\Content\Images\Reto\" />
     <Folder Include="wwwroot\Content\Images\Nivel\" />
-    <Folder Include="wwwroot\Content\Archivos\" />
   </ItemGroup>
 
 </Project>

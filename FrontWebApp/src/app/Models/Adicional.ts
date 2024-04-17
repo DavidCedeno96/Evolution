@@ -65,6 +65,7 @@ export interface Adicional {
   areaList: Area[];
   tipoRetoList: TipoReto[];
   comportPregList: ComportamientoPregunta[];
-  categoriaList: Categoria[];
+  categoriaNoticiaList: Categoria[];
+  categoriaRecompensaList: Categoria[];
   condicionList: Condicion[];
 }

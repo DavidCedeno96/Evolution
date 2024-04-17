@@ -1,0 +1,64 @@
+<div class="shadow-lg bg-white px-4 py-5 px-lg-5 rounded">
+  <div class="text-center mb-4">
+    <h5 class="txt text-primary text-uppercase my-4">
+      Perfil de usuario
+      <a class="txt text-primary" routerLink="/profile-user/edit">
+        <i class="fa-regular fa-pen-to-square ms-2 pointer"></i>
+      </a>
+    </h5>
+
+    <img
+      [src]="getImage(usuario.foto, 'usuario', 'default-user.jpg')"
+      class="imageRedonda"
+      alt="User"
+    />
+    <div class="my-2">
+      <h5 class="d-block txt text-secondary fw-semibold">
+        {{ usuario.nombre }} {{ usuario.apellido }}
+      </h5>
+      <span class="d-block">{{ usuario.correo }}</span>
+      <span
+        class="d-block {{
+          usuario.idRol === 'adm' ? 'txt text-primary' : 'txt text-tertiary'
+        }}"
+        >{{ usuario.rol }}</span
+      >
+    </div>
+  </div>
+
+  <div class="row g-3 col-md-8 mx-auto text-center">
+    <div class="col-12 col-md-6">
+      <span class="d-block txt text-secondary fw-semibold"
+        >Número de identificación
+        <i
+          class="fa-regular fa-circle-question ms-1"
+          matTooltip="Cédula, pasaporte o id único de usuario"
+          [matTooltipPosition]="'right'"
+        ></i
+      ></span>
+      <small>{{ usuario.id }}</small>
+    </div>
+    <div class="col-12 col-md-6">
+      <span class="d-block txt text-secondary fw-semibold">Celular</span>
+      <small>{{ usuario.celular ? usuario.celular : "N/A" }}</small>
+    </div>
+    <div class="col-12 col-md-6">
+      <span class="d-block txt text-secondary fw-semibold">Pais</span>
+      <small>{{ usuario.pais ? usuario.pais : "N/A" }}</small>
+    </div>
+    <div class="col-12 col-md-6">
+      <span class="d-block txt text-secondary fw-semibold">Ciudad</span>
+      <small>{{ usuario.ciudad ? usuario.ciudad : "N/A" }}</small>
+    </div>
+    <div class="col-12 col-md-6">
+      <span class="d-block txt text-secondary fw-semibold">Empresa</span>
+      <small>{{ usuario.empresa ? usuario.empresa : "N/A" }}</small>
+    </div>
+    <div class="col-12 col-md-6">
+      <span class="d-block txt text-secondary fw-semibold">Area</span>
+      <small>{{ usuario.area ? usuario.area : "N/A" }}</small>
+    </div>
+  </div>
+</div>
+
+<p-toast [styleClass]="'col-10 col-md-6 col-lg-3'"></p-toast>

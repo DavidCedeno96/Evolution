@@ -1,9 +1,9 @@
 <div class="container my-3 my-md-5">
-  <div class="shadow-lg bg-white px-4 py-2 pt-md-5 px-lg-5 rounded">
+  <div class="shadow-lg bg-white px-4 py-3 pt-md-5 px-lg-5 rounded">
     <h5 class="mb-5 text-center txt text-primary">REGISTRARSE</h5>
-    <form class="mb-3" [formGroup]="formulario" (ngSubmit)="register()">
+    <form class="mb-3" [formGroup]="formulario" (ngSubmit)="dialogCodigo()">
       <div class="row g-3">
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-6 col-lg-4">
           <label for="nombre" class="form-label">Nombre*</label>
           <input
             type="text"
@@ -39,7 +39,7 @@
             </span>
           </div>
         </div>
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-6 col-lg-4">
           <label for="apellido" class="form-label">Apellido*</label>
           <input
             type="text"
@@ -75,8 +75,13 @@
             </span>
           </div>
         </div>
-        <div class="col-12 col-md-3">
-          <label for="idU" class="form-label">Id único*</label>
+        <div class="col-12 col-md-5 col-lg-4">
+          <label for="idU" class="form-label">Número de identificación* </label
+          ><i
+            class="fa-regular fa-circle-question ms-1"
+            matTooltip="Puede ser la cédula, pasaporte o id único de usuario"
+            [matTooltipPosition]="'right'"
+          ></i>
           <input
             type="text"
             class="form-control {{
@@ -88,6 +93,12 @@
             id="idU"
           />
           <div class="invalid-feedback" *ngIf="formulario.get('id')?.errors">
+            <span
+              class="d-block"
+              *ngIf="formulario.get('id')?.hasError('minlength')"
+            >
+              Mínimo 3 caracteres
+            </span>
             <span
               class="d-block"
               *ngIf="formulario.get('id')?.hasError('maxlength')"
@@ -108,7 +119,7 @@
             </span>
           </div>
         </div>
-        <div class="col-12 col-md-3">
+        <!-- <div class="col-12 col-md-3">
           <label for="celular" class="form-label">Celular</label>
           <input
             type="text"
@@ -134,8 +145,8 @@
               >Solo se permiten números</span
             >
           </div>
-        </div>
-        <div class="col-12 col-md-4">
+        </div> -->
+        <div class="col-12 col-md-7 col-lg-8">
           <label for="correo" class="form-label">Correo electrónico*</label>
           <input
             type="email"
@@ -171,7 +182,7 @@
             </span>
           </div>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-12 col-lg-4">
           <label for="contrasena" class="form-label">Contraseña</label>
           <div class="input-group">
             <input
@@ -222,42 +233,7 @@
           </div>
         </div>
 
-        <div class="col-12 col-md-4">
-          <label for="codreg" class="form-label">Código Registro*</label>
-          <input
-            type="text"
-            class="form-control {{
-              (formulario.get('codigoRegistro')?.errors && verErrorsInputs) ||
-              error
-                ? 'is-invalid'
-                : ''
-            }}"
-            formControlName="codigoRegistro"
-            id="codreg"
-            (input)="error = 0"
-          />
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('codigoRegistro')?.errors || error"
-          >
-            <span *ngIf="error">El código de registro esta incorrecto </span>
-            <span
-              *ngIf="formulario.get('codigoRegistro')?.hasError('maxlength')"
-              >Máximo 50 caracteres</span
-            >
-            <span
-              class="d-block"
-              *ngIf="formulario.get('codigoRegistro')?.hasError('pattern')"
-            >
-              Contiene caracteres inválidos
-            </span>
-            <span *ngIf="formulario.get('codigoRegistro')?.hasError('required')"
-              >Campo obligatorio</span
-            >
-          </div>
-        </div>
-
-        <div class="col-12 col-md-6">
+        <!-- <div class="col-12 col-md-6">
           <label for="pais" class="form-label">Pais</label>
           <select
             class="form-select"
@@ -270,8 +246,9 @@
               {{ item.nombre }}
             </option>
           </select>
-        </div>
-        <div class="col-12 col-md-6" *ngIf="auxCiudad.length">
+        </div> -->
+
+        <!-- <div class="col-12 col-md-6" *ngIf="auxCiudad.length">
           <label for="ciudad" class="form-label">Ciudad</label>
           <select class="form-select" id="ciudad" formControlName="idCiudad">
             <option value="">Seleccione...</option>
@@ -279,8 +256,9 @@
               {{ item.nombre }}
             </option>
           </select>
-        </div>
-        <div class="col-12 col-md-6">
+        </div> -->
+
+        <!-- <div class="col-12 col-md-6">
           <label for="empresa" class="form-label">Empresa</label>
           <select
             class="form-select"
@@ -293,8 +271,9 @@
               {{ item.nombre }}
             </option>
           </select>
-        </div>
-        <div class="col-12 col-md-6" *ngIf="auxArea.length">
+        </div> -->
+
+        <!-- <div class="col-12 col-md-6" *ngIf="auxArea.length">
           <label for="area" class="form-label">Area</label>
           <select class="form-select" id="area" formControlName="idArea">
             <option value="">Seleccione...</option>
@@ -302,8 +281,9 @@
               {{ item.nombre }}
             </option>
           </select>
-        </div>
-        <div class="col-12">
+        </div> -->
+
+        <!-- <div class="col-12">
           <label for="foto" class="form-label">Foto</label>
           <input
             type="file"
@@ -317,8 +297,9 @@
           <div class="invalid-feedback" *ngIf="errorArchivo">
             El tamaño del archivo no puede superar los 200 KB.
           </div>
-        </div>
-        <div class="col-12 text-center text-md-start">
+        </div> -->
+
+        <!-- <div class="col-12 text-center text-md-start">
           <small class="d-block">{{ sugerenciaImagen }} </small>
           <img
             *ngIf="!selectedFoto"
@@ -334,12 +315,12 @@
             width="130"
             alt="usuario"
           />
-        </div>
+        </div> -->
         <div class="col-12 mt-4 text-end d-grid d-md-block">
-          <button type="submit" class="btn btn-success mb-3 mb-md-0 me-md-2">
+          <button type="submit" class="btn btn-primary mb-3 mb-md-0 me-md-2">
             <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
           </button>
-          <a class="btn btn-secondary" routerLink="/view-user">
+          <a class="btn btn-tertiary" routerLink="/view-user">
             <i class="fa-solid fa-angle-left me-2"></i>Cancelar
           </a>
         </div>
@@ -347,3 +328,56 @@
     </form>
   </div>
 </div>
+
+<p-dialog
+  header="Código de registro"
+  [(visible)]="modalCodigo"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <form [formGroup]="frmCodigo" (ngSubmit)="register()">
+    <div class="row g-3 mt-2 mt-lg-0">
+      <div class="col-12">
+        <label for="codreg" class="form-label"
+          >Ingrese el código de registro enviado por el administrador*</label
+        >
+        <input
+          type="text"
+          class="form-control {{
+            (frmCodigo.get('codigoRegistro')?.errors && verErrorsInputs) ||
+            error
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="codigoRegistro"
+          id="codreg"
+          (input)="error = 0"
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="frmCodigo.get('codigoRegistro')?.errors || error"
+        >
+          <span *ngIf="error">El código de registro esta incorrecto </span>
+          <span *ngIf="frmCodigo.get('codigoRegistro')?.hasError('maxlength')"
+            >Máximo 50 caracteres</span
+          >
+          <span
+            class="d-block"
+            *ngIf="frmCodigo.get('codigoRegistro')?.hasError('pattern')"
+          >
+            Contiene caracteres inválidos
+          </span>
+          <span *ngIf="frmCodigo.get('codigoRegistro')?.hasError('required')"
+            >Campo obligatorio</span
+          >
+        </div>
+      </div>
+      <div class="col-12 mt-4 text-end d-grid d-md-block">
+        <button type="submit" class="btn btn-primary mb-3 mb-md-0 me-md-2">
+          <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
+        </button>
+      </div>
+    </div>
+  </form>
+</p-dialog>

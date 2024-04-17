@@ -1,0 +1,323 @@
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">
+    Editar perfil de usuario
+  </h5>
+  <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
+    <div class="row g-3">
+      <div class="col-12 col-lg-7">
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <label for="nombre" class="form-label">Nombre*</label>
+            <input
+              type="text"
+              class="form-control {{
+                formulario.get('nombre')?.errors && verErrorsInputs
+                  ? 'is-invalid'
+                  : ''
+              }}"
+              formControlName="nombre"
+              id="nombre"
+            />
+            <div class="invalid-feedback">
+              <span
+                class="d-block"
+                *ngIf="formulario.get('nombre')?.hasError('maxlength')"
+              >
+                Máximo 23 caracteres
+              </span>
+              <span
+                class="d-block"
+                *ngIf="formulario.get('nombre')?.hasError('pattern')"
+              >
+                Solo se permiten letras
+              </span>
+              <span
+                class="d-block"
+                *ngIf="formulario.get('nombre')?.hasError('required')"
+              >
+                Campo obligatorio
+              </span>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="apellido" class="form-label">Apellido*</label>
+            <input
+              type="text"
+              class="form-control {{
+                formulario.get('apellido')?.errors && verErrorsInputs
+                  ? 'is-invalid'
+                  : ''
+              }}"
+              formControlName="apellido"
+              id="apellido"
+            />
+            <div class="invalid-feedback">
+              <span
+                class="d-block"
+                *ngIf="formulario.get('apellido')?.hasError('maxlength')"
+              >
+                Máximo 23 caracteres
+              </span>
+              <span
+                class="d-block"
+                *ngIf="formulario.get('apellido')?.hasError('pattern')"
+              >
+                Solo se permiten letras
+              </span>
+              <span
+                class="d-block"
+                *ngIf="formulario.get('apellido')?.hasError('required')"
+              >
+                Campo obligatorio
+              </span>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="idU" class="form-label">Número de identificación*</label
+            ><i
+              class="fa-regular fa-circle-question ms-1"
+              matTooltip="Puede ser la cédula, pasaporte o id único de usuario"
+              [matTooltipPosition]="'right'"
+            ></i>
+            <input
+              type="text"
+              class="form-control {{
+                formulario.get('id')?.errors && verErrorsInputs
+                  ? 'is-invalid'
+                  : ''
+              }}"
+              formControlName="id"
+              id="idU"
+            />
+            <div class="invalid-feedback">
+              <span
+                class="d-block"
+                *ngIf="formulario.get('id')?.hasError('minlength')"
+              >
+                Mínimo 3 caracteres
+              </span>
+              <span
+                class="d-block"
+                *ngIf="formulario.get('id')?.hasError('maxlength')"
+              >
+                Máximo 20 caracteres
+              </span>
+              <span
+                class="d-block"
+                *ngIf="formulario.get('id')?.hasError('required')"
+              >
+                Campo obligatorio
+              </span>
+              <span
+                class="d-block"
+                *ngIf="formulario.get('id')?.hasError('pattern')"
+              >
+                Contiene caracteres inválidos
+              </span>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="celular" class="form-label">Celular</label>
+            <input
+              type="text"
+              class="form-control {{
+                formulario.get('celular')?.errors && verErrorsInputs
+                  ? 'is-invalid'
+                  : ''
+              }}"
+              formControlName="celular"
+              id="celular"
+            />
+            <div class="invalid-feedback">
+              <span *ngIf="formulario.get('celular')?.hasError('maxlength')"
+                >Máximo 15 caracteres</span
+              >
+              <span *ngIf="formulario.get('celular')?.hasError('minlength')"
+                >Minimo 10 caracteres</span
+              >
+              <span *ngIf="formulario.get('celular')?.hasError('pattern')"
+                >Solo se permiten números</span
+              >
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="correo" class="form-label">Correo electrónico*</label>
+            <input
+              type="email"
+              class="form-control {{
+                formulario.get('correo')?.errors && verErrorsInputs
+                  ? 'is-invalid'
+                  : ''
+              }}"
+              formControlName="correo"
+              id="correo"
+            />
+            <div class="invalid-feedback">
+              <span
+                class="d-block"
+                *ngIf="formulario.get('correo')?.hasError('maxlength')"
+              >
+                Máximo 60 caracteres
+              </span>
+              <span
+                class="d-block"
+                *ngIf="formulario.get('correo')?.hasError('required')"
+              >
+                Campo obligatorio
+              </span>
+              <span
+                class="d-block"
+                *ngIf="formulario.get('correo')?.hasError('email')"
+              >
+                Correo incorrecto
+              </span>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="contrasena" class="form-label">Contraseña</label>
+            <div class="input-group">
+              <input
+                class="form-control {{
+                  formulario.get('contrasena')?.errors && verErrorsInputs
+                    ? 'is-invalid'
+                    : ''
+                }}"
+                type="{{ verPassword ? 'text' : 'password' }}"
+                formControlName="contrasena"
+                id="contrasena"
+              />
+              <span
+                class="toggle-password {{
+                  (formulario.get('contrasena')?.errors && numClicksSave > 0) ||
+                  (error && campo === 'clave')
+                    ? 'error'
+                    : ''
+                }}"
+                (click)="togglePassword()"
+              >
+                <i class="fas fa-eye" *ngIf="!verPassword"></i>
+                <i class="fas fa-eye-slash" *ngIf="verPassword"></i>
+              </span>
+              <div class="invalid-feedback">
+                <span
+                  *ngIf="formulario.get('contrasena')?.hasError('maxlength')"
+                  >Máximo 60 caracteres</span
+                >
+                <span
+                  class="position-absolute text-danger shadow-lg card p-2"
+                  *ngIf="
+                    formulario.get('contrasena')?.hasError('contrasenaInvalid')
+                  "
+                  >Debe tener 5 caracteres de longitud y máximo 20, una letra
+                  minúscula, mayúscula, un número, sin espacios y solo los
+                  siguientes caracteres @.-_#$</span
+                >
+                <span
+                  *ngIf="
+                    formulario.get('contrasena')?.hasError('contrasenaInvalid')
+                  "
+                  >error</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="pais" class="form-label">Pais</label>
+            <select
+              class="form-select"
+              id="pais"
+              formControlName="idPais"
+              (change)="selectedPais($event)"
+            >
+              <option value="">Seleccione...</option>
+              <option *ngFor="let item of pais" [value]="item.idPais">
+                {{ item.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="col-12 col-md-6" *ngIf="auxCiudad.length">
+            <label for="ciudad" class="form-label">Ciudad</label>
+            <select class="form-select" id="ciudad" formControlName="idCiudad">
+              <option value="">Seleccione...</option>
+              <option *ngFor="let item of auxCiudad" [value]="item.idCiudad">
+                {{ item.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="col-12 col-md-6">
+            <label for="empresa" class="form-label">Empresa</label>
+            <select
+              class="form-select"
+              id="empresa"
+              formControlName="idEmpresa"
+              (change)="selectedEmpresa($event)"
+            >
+              <option value="">Seleccione...</option>
+              <option *ngFor="let item of empresa" [value]="item.idEmpresa">
+                {{ item.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="col-12 col-md-6" *ngIf="auxArea.length">
+            <label for="area" class="form-label">Area</label>
+            <select class="form-select" id="area" formControlName="idArea">
+              <option value="">Seleccione...</option>
+              <option *ngFor="let item of auxArea" [value]="item.idArea">
+                {{ item.nombre }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-5">
+        <div>
+          <label for="foto" class="form-label">Foto</label>
+          <input
+            type="file"
+            class="form-control {{
+              errorArchivo && verErrorsInputs ? 'is-invalid' : ''
+            }}"
+            id="foto"
+            accept=".jpg, .jpeg, .png"
+            (change)="onFileSelected($event)"
+          />
+          <div class="invalid-feedback">
+            El archivo no puede superar los 360x360 píxeles y los 200 KB.
+          </div>
+        </div>
+        <div class="m-2">
+          <small
+            class="d-block mb-2 {{
+              errorArchivo && verErrorsInputs ? 'd-none' : ''
+            }}"
+            >{{ sugerenciaImagen }}
+          </small>
+        </div>
+        <div class="text-center">
+          <img
+            *ngIf="!selectedFoto"
+            [src]="getImage(usuario.foto, 'usuario', 'default-user.jpg')"
+            class="img-thumbnail"
+            width="130"
+            alt="usuario"
+          />
+          <img
+            *ngIf="selectedFoto"
+            [src]="previewFoto"
+            class="img-thumbnail"
+            width="130"
+            alt="usuario"
+          />
+        </div>
+      </div>
+      <div class="col-12 mt-4 text-end d-grid d-md-block">
+        <button type="submit" class="btn btn-primary mb-3 mb-md-0 me-md-2">
+          <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
+        </button>
+        <a class="btn btn-tertiary" routerLink="/profile-user">
+          <i class="fa-solid fa-angle-left me-2"></i>Cancelar
+        </a>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { Categoria } from 'src/app/Models/Adicional';
 import {
   AlertError,
   ChangeRoute,
   Loading,
   MsgError,
+  MsgOk,
+  SetUpsert,
   SinRegistros,
   TitleError,
   TitleErrorForm,
+  Upsert,
+  UpsertMsg,
 } from 'src/app/Utils/Constants';
 import { CategoriaNoticiaService } from 'src/app/services/categoria-noticia.service';
 
@@ -17,10 +22,12 @@ import { CategoriaNoticiaService } from 'src/app/services/categoria-noticia.serv
   selector: 'app-view-categoria',
   templateUrl: './view-categoria.component.html',
   styleUrls: ['./view-categoria.component.css'],
+  providers: [MessageService],
 })
-export class ViewCategoriaComponent implements OnInit {
+export class ViewCategoriaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   changeRoute = ChangeRoute();
 
   info: string = '';
@@ -39,8 +46,8 @@ export class ViewCategoriaComponent implements OnInit {
   ];
 
   constructor(
-    /* private confirmationService: ConfirmationService,
-    private messageService: MessageService, */
+    /* private confirmationService: ConfirmationService,*/
+    private messageService: MessageService,
     private categoriaServicio: CategoriaNoticiaService,
     private router: Router,
     private formBuilder: FormBuilder
@@ -53,6 +60,19 @@ export class ViewCategoriaComponent implements OnInit {
   ngOnInit(): void {
     this.loading(true, false);
     this.cargarData();
+  }
+
+  ngAfterViewInit(): void {
+    if (Upsert) {
+      setTimeout(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: MsgOk,
+          detail: UpsertMsg,
+        });
+        this.setUpsert(false, '');
+      }, 100);
+    }
   }
 
   cargarData() {

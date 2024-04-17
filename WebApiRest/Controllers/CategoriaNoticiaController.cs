@@ -17,7 +17,7 @@ namespace WebApiRest.Controllers
         [Authorize(Roles = "adm,sadm")]
         public async Task<IActionResult> GetList([FromRoute] int estado)
         {
-            CategoriaNoticiaList response = await data.GetCategoriaNoticiaList(estado);
+            CategoriaList response = await data.GetCategoriaNoticiaList(estado);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -26,7 +26,7 @@ namespace WebApiRest.Controllers
         [Authorize(Roles = "adm,sadm")]
         public async Task<IActionResult> Buscar([FromRoute] string texto)
         {
-            CategoriaNoticiaList response = await data.GetCategoriaNoticiaList(texto);
+            CategoriaList response = await data.GetCategoriaNoticiaList(texto);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -35,14 +35,14 @@ namespace WebApiRest.Controllers
         [Authorize(Roles = "adm,sadm")]
         public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idCategoria)
         {
-            CategoriaNoticiaItem response = await data.GetCategoriaNoticia(estado, idCategoria);
+            CategoriaItem response = await data.GetCategoriaNoticia(estado, idCategoria);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Create([FromBody] CategoriaNoticia categoriaNoticia)
+        public async Task<IActionResult> Create([FromBody] Categoria categoriaNoticia)
         {
             Response response = VF.ValidarCategoriaNoticia(categoriaNoticia);
 
@@ -57,7 +57,7 @@ namespace WebApiRest.Controllers
         [HttpPut]
         [Route("update")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Update([FromBody] CategoriaNoticia categoriaNoticia)
+        public async Task<IActionResult> Update([FromBody] Categoria categoriaNoticia)
         {
             Response response = VF.ValidarCategoriaNoticia(categoriaNoticia);
 

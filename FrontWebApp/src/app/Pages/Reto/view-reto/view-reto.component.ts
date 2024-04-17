@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -7,16 +7,23 @@ import {
   AlertError,
   ChangeRoute,
   DateCompare,
+  FormatTiempo,
   GetImage,
+  GetTypeTime,
   Loading,
+  MsgActivado,
+  MsgDesactivado,
   MsgEliminar,
   MsgElimindo,
   MsgError,
   MsgOk,
+  SetUpsert,
   SinRegistros,
   TitleEliminar,
   TitleError,
   TitleErrorForm,
+  Upsert,
+  UpsertMsg,
 } from 'src/app/Utils/Constants';
 import { RetoService } from 'src/app/services/reto.service';
 
@@ -26,39 +33,44 @@ import { RetoService } from 'src/app/services/reto.service';
   styleUrls: ['./view-reto.component.css'],
   providers: [ConfirmationService, MessageService],
 })
-export class ViewRetoComponent implements OnInit {
+export class ViewRetoComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   changeRoute = ChangeRoute();
   getImage = GetImage();
   dateCompare = DateCompare();
+  formatTiempo = FormatTiempo();
+  getTypeTime = GetTypeTime();
 
   info: string = '';
 
   formulario!: FormGroup;
-  auxRetos: Reto[] = [];
 
-  retos: Reto[] = [
-    {
-      idReto: '',
-      nombre: '',
-      fechaApertura: new Date(),
-      fechaCierre: new Date(),
-      vidas: 0,
-      tiempo_ms: 0,
-      puntosRecompensa: 0,
-      creditosObtenidos: 0,
-      instrucciones: '',
-      criterioMinimo: 0,
-      imagen: '',
-      idTipoReto: '',
-      tipoReto: '',
-      idComportamiento: '',
-      comportamientoPregunta: '',
-      totalPreguntas: 0,
-      estado: 0,
-    },
-  ];
+  auxRetos: Reto[] = [];
+  retos: Reto[] = [];
+  reto: Reto = {
+    idReto: '',
+    nombre: '',
+    fechaApertura: new Date(),
+    fechaCierre: new Date(),
+    vidas: 0,
+    tiempo_ms: 0,
+    puntosRecompensa: 0,
+    creditosObtenidos: 0,
+    instrucciones: '',
+    criterioMinimo: 0,
+    imagen: '',
+    idTipoReto: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    tipoReto: '',
+    idComportamiento: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    comportamientoPregunta: '',
+    totalPreguntas: 0,
+    usuariosAsignados: 0,
+    equiposAsignados: 0,
+    enEquipo: 0,
+    estado: 0,
+  };
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -75,6 +87,19 @@ export class ViewRetoComponent implements OnInit {
   ngOnInit(): void {
     this.loading(true, false);
     this.cargarData();
+  }
+
+  ngAfterViewInit(): void {
+    if (Upsert) {
+      setTimeout(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: MsgOk,
+          detail: UpsertMsg,
+        });
+        this.setUpsert(false, '');
+      }, 100);
+    }
   }
 
   cargarData() {
@@ -135,6 +160,37 @@ export class ViewRetoComponent implements OnInit {
     });
   }
 
+  setEstado(idReto: string, estado: number) {
+    this.loading(true, false);
+    this.reto.idReto = idReto;
+    this.reto.estado = estado;
+
+    this.retoServicio.updateEstado(this.reto).subscribe({
+      next: (data: any) => {
+        let { error, info } = data.response;
+        if (error === 0) {
+          this.cargarData();
+          this.messageService.add({
+            severity: 'success',
+            summary: MsgOk,
+            detail: estado ? MsgActivado : MsgDesactivado,
+          });
+        } else {
+          this.alertError(TitleErrorForm, info);
+        }
+        this.loading(false, false);
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+        }
+      },
+    });
+  }
+
   confirmEliminar(id: string) {
     this.confirmationService.confirm({
       message: MsgEliminar,
@@ -173,7 +229,7 @@ export class ViewRetoComponent implements OnInit {
 
   defaultList(event: Event) {
     let text = (event.target as HTMLInputElement).value;
-    if (!text) {
+    if (!text.trim()) {
       this.retos = this.auxRetos;
     }
   }

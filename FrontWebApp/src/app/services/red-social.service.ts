@@ -16,16 +16,22 @@ export class RedSocialService {
     private usuarioServicio: UsuarioService
   ) {}
 
-  getListAndComents(estado: number): Observable<RedSocial_Reaccion[]> {
+  getListAndComents(): Observable<RedSocial_Reaccion[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
-    return this.http.get<RedSocial_Reaccion[]>(
-      `${this.apiURL}/listByComents/${estado}`,
-      {
-        headers: headers,
-      }
-    );
+    return this.http.get<RedSocial_Reaccion[]>(`${this.apiURL}/listByComents`, {
+      headers: headers,
+    });
+  }
+
+  getListUser(idRed: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<any>(`${this.apiURL}/user/${idRed}`, {
+      headers: headers,
+    });
   }
 
   createReaccion(

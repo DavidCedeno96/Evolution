@@ -13,13 +13,13 @@ import { Area, Ciudad, Empresa, Pais } from 'src/app/Models/Adicional';
 import { ConfigInicio, Configuracion } from 'src/app/Models/Configuracion';
 import {
   AlertError,
+  AlertWarning,
   GetImage,
   ImgSizeMaxConfig,
   Loading,
   MsgError,
   MsgErrorForm,
   MsgOk,
-  SugerenciaImagenConfig,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
@@ -33,6 +33,7 @@ import { PaisService } from 'src/app/services/pais.service';
 import { ConfigInicioList } from 'src/app/Utils/DefaultLists';
 import { HomeService } from 'src/app/services/home.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Notificacion } from 'src/app/Models/Notificacion';
 
 @Component({
   selector: 'app-configuracion',
@@ -42,10 +43,10 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class ConfiguracionComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
+  alertWarning = AlertWarning();
   loading = Loading();
   getImage = GetImage();
 
-  sugerenciaImagen = SugerenciaImagenConfig;
   configIndex: number = 0;
   configIndexInicio: number = 0;
 
@@ -54,12 +55,17 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
   tipoCampo: string = '';
   tipoSubmitCampo: string = '';
 
+  estaGuardadoInicio: boolean = true;
+  hayCambiosImages: boolean = false;
+
   errorImgLogin: boolean = false;
   errorImgHeader: boolean = false;
   errorImgFooter: boolean = false;
 
   verErrorsInputsImage: boolean = false;
   verErrorsInputsCampo: boolean = false;
+
+  verMarcaConfigAvanzada: boolean = false;
 
   idUsuario: string = '';
 
@@ -81,7 +87,8 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
   formCampos!: FormGroup;
   formCodigoRegistro!: FormGroup;
 
-  configInicioItems: ConfigInicio[] = ConfigInicioList;
+  auxConfigInicioItems: ConfigInicio[] = ConfigInicioList;
+  configInicioItems: ConfigInicio[] = [];
   configInicioItemsJug: ConfigInicio[] = [];
   configInicioItemsAdm: ConfigInicio[] = [];
   configColores: Configuracion[] = [];
@@ -125,6 +132,25 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
     estado: 0,
   };
 
+  /* notificacionList: Notificacion[] = [
+    {
+      idNotificacion: '1',
+      nombre: 'Notificar a los usuarios cuando ganan una medalla',
+      estado: 0,
+      msjPersonalizado: 'hola',
+      tieneNum: 0,
+      num: 0,
+    },
+    {
+      idNotificacion: '2',
+      nombre: 'Notificar a los usuarios cuando se les agregaron a un reto',
+      estado: 0,
+      msjPersonalizado: '',
+      tieneNum: 0,
+      num: 0,
+    },
+  ]; */
+
   constructor(
     private el: ElementRef,
     private messageService: MessageService,
@@ -153,15 +179,18 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
     });
 
     this.formColor = this.formBuilder.group({
-      bandaSuperior: [''],
-      encabezado: [''],
-      piePagina: [''],
+      primario: [''],
+      secundario: [''],
+      terciario: [''],
       botonPrimario: [''],
       botonSecundario: [''],
       botonTerciario: [''],
-      botonGuardado: [''],
       textoPrimario: [''],
       textoSecundario: [''],
+      textoTerciario: [''],
+      bandaSuperior: [''],
+      encabezado: [''],
+      piePagina: [''],
       cargaSuperior: [''],
       cargaInferior: [''],
       menuItem: [''],
@@ -205,11 +234,19 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
   }
 
   configInicio(index: number, rol: string) {
-    this.configIndexInicio = index;
-    this.configInicioItems.forEach((item) => {
-      item.idRol = rol;
-      item.color = '#FAFAFA';
-    });
+    if (this.estaGuardadoInicio) {
+      this.configIndexInicio = index;
+
+      this.configInicioItems = this.auxConfigInicioItems.filter((item) => {
+        item.color = '#FAFAFA';
+        return item.idRol === rol;
+      });
+    } else {
+      this.alertWarning(
+        'Advertencia',
+        'Cambios no guardados, por favor guarde los cambios antes de proceder'
+      );
+    }
   }
 
   cargarConfig() {
@@ -230,21 +267,24 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
           });
 
           this.formColor.patchValue({
-            bandaSuperior: this.configColores[0].valor,
-            encabezado: this.configColores[1].valor,
-            piePagina: this.configColores[2].valor,
+            primario: this.configColores[0].valor,
+            secundario: this.configColores[1].valor,
+            terciario: this.configColores[2].valor,
             botonPrimario: this.configColores[3].valor,
             botonSecundario: this.configColores[4].valor,
             botonTerciario: this.configColores[5].valor,
-            botonGuardado: this.configColores[6].valor,
-            textoPrimario: this.configColores[7].valor,
-            textoSecundario: this.configColores[8].valor,
-            cargaSuperior: this.configColores[9].valor,
-            cargaInferior: this.configColores[10].valor,
-            menuItem: this.configColores[11].valor,
-            menuItemHover: this.configColores[12].valor,
-            textoMenuItem: this.configColores[13].valor,
-            textoMenuItemActive: this.configColores[14].valor,
+            textoPrimario: this.configColores[6].valor,
+            textoSecundario: this.configColores[7].valor,
+            textoTerciario: this.configColores[8].valor,
+            bandaSuperior: this.configColores[9].valor,
+            encabezado: this.configColores[10].valor,
+            piePagina: this.configColores[11].valor,
+            cargaSuperior: this.configColores[12].valor,
+            cargaInferior: this.configColores[13].valor,
+            menuItem: this.configColores[14].valor,
+            menuItemHover: this.configColores[15].valor,
+            textoMenuItem: this.configColores[16].valor,
+            textoMenuItemActive: this.configColores[17].valor,
           });
 
           this.formImages.patchValue({
@@ -299,7 +339,7 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
               this.configInicioItemsAdm.push(item);
             }
           });
-          this.configInicio(0, 'jug');
+          this.configInicio(1, 'adm');
         } else {
           this.alertError(TitleErrorForm, info);
         }
@@ -669,6 +709,7 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
         } else {
           this.alertError(TitleErrorForm, info);
         }
+        this.estaGuardadoInicio = true;
         this.loading(false, false);
       },
       error: (e) => {
@@ -716,8 +757,16 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onFileSelected(event: Event, tipo: string) {
+  onFileSelected(
+    event: Event,
+    tipo: string,
+    widthMax: number,
+    heightMax: number
+  ) {
     let selectedImage = (event.target as HTMLInputElement).files![0];
+    if (selectedImage) {
+      this.hayCambiosImages = true;
+    }
 
     switch (tipo) {
       case 'login': {
@@ -741,34 +790,59 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
       case 'header': {
         this.imgHeader = selectedImage;
 
-        if (selectedImage.size > ImgSizeMaxConfig) {
+        if (selectedImage && selectedImage.size > ImgSizeMaxConfig) {
           this.errorImgHeader = true;
         } else {
           this.errorImgHeader = false;
         }
 
-        if (selectedImage.size > 0) {
+        if (selectedImage) {
           let reader = new FileReader();
           reader.onload = (e: any) => {
-            this.previewHeader = e.target.result;
+            let img = new Image();
+            img.src = e.target.result;
+            img.onload = () => {
+              let w = (img as HTMLImageElement).width;
+              let h = (img as HTMLImageElement).height;
+
+              if (w > widthMax || h > heightMax) {
+                this.errorImgHeader = true;
+              } else {
+                this.errorImgHeader = false;
+              }
+            };
+            this.previewHeader = img.src;
           };
           reader.readAsDataURL(this.imgHeader);
         }
+
         break;
       }
       case 'footer': {
         this.imgFooter = selectedImage;
 
-        if (selectedImage.size > ImgSizeMaxConfig) {
+        if (selectedImage && selectedImage.size > ImgSizeMaxConfig) {
           this.errorImgFooter = true;
         } else {
           this.errorImgFooter = false;
         }
 
-        if (selectedImage.size > 0) {
+        if (selectedImage) {
           let reader = new FileReader();
           reader.onload = (e: any) => {
-            this.previewFooter = e.target.result;
+            let img = new Image();
+            img.src = e.target.result;
+            img.onload = () => {
+              let w = (img as HTMLImageElement).width;
+              let h = (img as HTMLImageElement).height;
+
+              if (w > widthMax || h > heightMax) {
+                this.errorImgFooter = true;
+              } else {
+                this.errorImgFooter = false;
+              }
+            };
+            this.previewFooter = img.src;
           };
           reader.readAsDataURL(this.imgFooter);
         }
@@ -776,7 +850,7 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
       }
     }
 
-    console.log(selectedImage.name);
+    //console.log(selectedImage.name);
   }
 
   setDataCampo() {
@@ -815,25 +889,28 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
   }
 
   setDataColor() {
-    this.configColores[0].valor = this.formColor.get(['bandaSuperior'])?.value;
-    this.configColores[1].valor = this.formColor.get(['encabezado'])?.value;
-    this.configColores[2].valor = this.formColor.get(['piePagina'])?.value;
+    this.configColores[0].valor = this.formColor.get(['primario'])?.value;
+    this.configColores[1].valor = this.formColor.get(['secundario'])?.value;
+    this.configColores[2].valor = this.formColor.get(['terciario'])?.value;
     this.configColores[3].valor = this.formColor.get(['botonPrimario'])?.value;
     this.configColores[4].valor = this.formColor.get([
       'botonSecundario',
     ])?.value;
     this.configColores[5].valor = this.formColor.get(['botonTerciario'])?.value;
-    this.configColores[6].valor = this.formColor.get(['botonGuardado'])?.value;
-    this.configColores[7].valor = this.formColor.get(['textoPrimario'])?.value;
-    this.configColores[8].valor = this.formColor.get([
+    this.configColores[6].valor = this.formColor.get(['textoPrimario'])?.value;
+    this.configColores[7].valor = this.formColor.get([
       'textoSecundario',
     ])?.value;
-    this.configColores[9].valor = this.formColor.get(['cargaSuperior'])?.value;
-    this.configColores[10].valor = this.formColor.get(['cargaInferior'])?.value;
-    this.configColores[11].valor = this.formColor.get(['menuItem'])?.value;
-    this.configColores[12].valor = this.formColor.get(['menuItemHover'])?.value;
-    this.configColores[13].valor = this.formColor.get(['textoMenuItem'])?.value;
-    this.configColores[14].valor = this.formColor.get([
+    this.configColores[8].valor = this.formColor.get(['textoTerciario'])?.value;
+    this.configColores[9].valor = this.formColor.get(['bandaSuperior'])?.value;
+    this.configColores[10].valor = this.formColor.get(['encabezado'])?.value;
+    this.configColores[11].valor = this.formColor.get(['piePagina'])?.value;
+    this.configColores[12].valor = this.formColor.get(['cargaSuperior'])?.value;
+    this.configColores[13].valor = this.formColor.get(['cargaInferior'])?.value;
+    this.configColores[14].valor = this.formColor.get(['menuItem'])?.value;
+    this.configColores[15].valor = this.formColor.get(['menuItemHover'])?.value;
+    this.configColores[16].valor = this.formColor.get(['textoMenuItem'])?.value;
+    this.configColores[17].valor = this.formColor.get([
       'textoMenuItemActive',
     ])?.value;
 
@@ -847,14 +924,61 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
     this.configLlave[0].idUsuario = this.idUsuario;
   }
 
-  cambiarColor(e: Event, propiedad: string) {
+  cambiarPropiedad(e: Event, propiedad: string) {
     let selectedValue = (e.target as HTMLInputElement).value;
     let hostElement = this.el.nativeElement;
     hostElement.style.setProperty(propiedad, selectedValue);
   }
 
+  cambiarColor(e: Event, tipo: string) {
+    let selectedValue = (e.target as HTMLInputElement).value;
+    switch (tipo) {
+      case 'primario': {
+        this.cambiarPropiedad(e, '--BotonPrimario');
+        this.cambiarPropiedad(e, '--TextoPrimario');
+        this.cambiarPropiedad(e, '--Loading1');
+        this.cambiarPropiedad(e, '--BgMenuItem');
+        this.formColor.patchValue({
+          botonPrimario: selectedValue,
+          textoPrimario: selectedValue,
+          bandaSuperior: selectedValue,
+          cargaSuperior: selectedValue,
+          menuItem: selectedValue,
+        });
+        break;
+      }
+      case 'secundario': {
+        this.cambiarPropiedad(e, '--BotonSecundario');
+        this.cambiarPropiedad(e, '--TextoSecundario');
+        this.cambiarPropiedad(e, '--Loading2');
+        this.formColor.patchValue({
+          botonSecundario: selectedValue,
+          textoSecundario: selectedValue,
+          encabezado: selectedValue,
+          cargaInferior: selectedValue,
+          textoMenuItem: selectedValue,
+        });
+        break;
+      }
+      case 'terciario': {
+        this.cambiarPropiedad(e, '--BotonTerciario');
+        this.cambiarPropiedad(e, '--TextoTerciario');
+        this.cambiarPropiedad(e, '--BgMenuItem-hover');
+        this.formColor.patchValue({
+          botonTerciario: selectedValue,
+          textoTerciario: selectedValue,
+          piePagina: selectedValue,
+          menuItemHover: selectedValue,
+        });
+        break;
+      }
+    }
+    console.log(selectedValue, tipo);
+  }
+
   agregarItemInicio(item: ConfigInicio) {
     let itemAgregado: boolean = false;
+    this.estaGuardadoInicio = true;
 
     if (item.idRol === 'jug') {
       itemAgregado =
@@ -864,6 +988,7 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
 
       if (!itemAgregado) {
         this.configInicioItemsJug.push(item);
+        this.estaGuardadoInicio = false;
       }
     } else if (item.idRol === 'adm') {
       itemAgregado =
@@ -873,12 +998,14 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
 
       if (!itemAgregado) {
         this.configInicioItemsAdm.push(item);
+        this.estaGuardadoInicio = false;
       }
     }
   }
 
   quitarItemInicio(item: ConfigInicio) {
     let itemAgregado: boolean = false;
+    this.estaGuardadoInicio = false;
 
     if (item.idRol === 'jug') {
       itemAgregado =
@@ -906,6 +1033,8 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
   }
 
   onItemDrop(event: CdkDragDrop<ConfigInicio[]>): void {
+    this.estaGuardadoInicio = false;
+
     if (this.configIndexInicio === 0) {
       moveItemInArray(
         this.configInicioItemsJug,
@@ -935,5 +1064,31 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
       )
     );
     return Math.round(newIndex);
+  }
+
+  setColorItemAgregado(item: ConfigInicio): boolean {
+    let itemAgregado: boolean = false;
+    switch (this.configIndexInicio) {
+      case 0: {
+        this.configInicioItemsJug.forEach((ob) => {
+          if (item.nombre === ob.nombre) {
+            itemAgregado = true;
+          }
+        });
+        break;
+      }
+      case 1: {
+        this.configInicioItemsAdm.forEach((ob) => {
+          if (item.nombre === ob.nombre) {
+            itemAgregado = true;
+          }
+        });
+        break;
+      }
+      default: {
+        itemAgregado = false;
+      }
+    }
+    return itemAgregado;
   }
 }

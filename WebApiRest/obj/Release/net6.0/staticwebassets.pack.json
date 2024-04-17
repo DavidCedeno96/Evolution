@@ -1,8 +1,28 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Archivos\\Nivel\\_default.xlsx",
+      "PackagePath": "staticwebassets\\Content\\Archivos\\Nivel\\_default.xlsx"
+    },
+    {
+      "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Archivos\\Recompensa\\_default.xlsx",
+      "PackagePath": "staticwebassets\\Content\\Archivos\\Recompensa\\_default.xlsx"
+    },
+    {
+      "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Archivos\\Usuario\\_default.xlsx",
+      "PackagePath": "staticwebassets\\Content\\Archivos\\Usuario\\_default.xlsx"
+    },
+    {
       "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Config\\_default.png",
       "PackagePath": "staticwebassets\\Content\\Images\\Config\\_default.png"
+    },
+    {
+      "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Default\\default-logoDM.png",
+      "PackagePath": "staticwebassets\\Content\\Images\\Default\\default-logoDM.png"
+    },
+    {
+      "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Equipo\\_default.png",
+      "PackagePath": "staticwebassets\\Content\\Images\\Equipo\\_default.png"
     },
     {
       "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Medalla\\_default.png",
@@ -23,6 +43,10 @@
     {
       "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Reto\\_default.png",
       "PackagePath": "staticwebassets\\Content\\Images\\Reto\\_default.png"
+    },
+    {
+      "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Usuario\\BYRON.PNG",
+      "PackagePath": "staticwebassets\\Content\\Images\\Usuario\\BYRON.PNG"
     },
     {
       "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Usuario\\_default.png",

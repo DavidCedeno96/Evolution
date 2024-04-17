@@ -24,6 +24,12 @@
   background: #999;
 }
 
+.dropdown-menu .dropdown-item:active {
+  background-color: var(--BotonTerciario) !important;
+  font-weight: bold !important;
+  color: #fff !important;
+}
+
 .menu a {
   display: block;
   padding: 10px;

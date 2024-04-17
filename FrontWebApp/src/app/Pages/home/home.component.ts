@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { Chart, ChartType } from 'chart.js/auto';
 import { ConfigInicio } from 'src/app/Models/Configuracion';
+import { Licencia } from 'src/app/Models/Licencia';
 import { Medalla } from 'src/app/Models/Medalla';
 import { Nivel, Usuario_Nivel } from 'src/app/Models/Nivel';
 import { Noticia } from 'src/app/Models/Noticia';
@@ -18,12 +19,14 @@ import { Reto, Usuario_Reto } from 'src/app/Models/Reto';
 import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
+  ChangeRoute,
   DateCompare,
   GetImage,
   Loading,
   MsgError,
   TitleError,
   TitleErrorForm,
+  playMoveUrl,
 } from 'src/app/Utils/Constants';
 import { HomeService } from 'src/app/services/home.service';
 import { NivelService } from 'src/app/services/nivel.service';
@@ -39,6 +42,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   loading = Loading();
   getImage = GetImage();
   dateCompare = DateCompare();
+  changeRoute = ChangeRoute();
+  playMoveUrl = playMoveUrl;
 
   @ViewChildren('canvas') canvas!: QueryList<ElementRef>;
 
@@ -57,6 +62,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     idRol: '',
     rol: '',
     idPais: '',
+    pais: '',
     idCiudad: '',
     ciudad: '',
     idEmpresa: '',
@@ -83,7 +89,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   nivelProx: Nivel = {
     idNivel: '',
     nombre: '',
-    posicion: 0,
     descripcion: '',
     puntosNecesarios: 100,
     imagen: '',
@@ -97,6 +102,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   recompensas: Recompensa[] = [];
   usuariosRanking: Usuario_Reto[] = [];
   retosAsignados: Usuario_Reto[] = [];
+  licencias: Licencia[] = [];
 
   indexMesesChart: number = 0;
   auxMeses: string[] = [];
@@ -156,6 +162,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   cargarData() {
     this.homeService.getUserList().subscribe({
       next: (data: any) => {
+        //console.log(data);
         let { error, info, lista } = data.response;
         if (error === 0) {
           let datasetList: any[] = [];
@@ -175,25 +182,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.nivelProx = lista[9];
             this.tieneNivelProx = true;
           }
-          this.recompensas = lista[10];
-          this.usuariosRanking = lista[11];
-          this.retosAsignados = lista[12];
-          this.porcentajeNivel = lista[13];
-
-          this.retosAsignados.forEach((item: Usuario_Reto) => {
-            if (
-              new Date(item.reto.fechaApertura) >= fechaHoy &&
-              this.dateCompare(item.reto.fechaApertura) !== 'N/A'
-            ) {
-              item.reto.estado = 0;
-            }
-            if (
-              new Date(item.reto.fechaCierre) < fechaHoy &&
-              this.dateCompare(item.reto.fechaCierre) !== 'N/A'
-            ) {
-              item.reto.estado = 0;
-            }
-          });
+          this.porcentajeNivel = lista[10];
+          this.recompensas = lista[11];
+          this.usuariosRanking = lista[12];
+          this.retosAsignados = lista[13];
+          this.licencias = lista[14];
 
           datasetList.forEach((item: any) => {
             if (item.data.length > this.indexMesesChart) {
@@ -238,6 +231,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
           data,
           options: {
             responsive: true,
+            scales: {
+              y: {
+                display: true,
+                title: {
+                  display: true,
+                  text: 'Puntos',
+                },
+              },
+            },
           },
         });
         i += 1;
@@ -254,5 +256,68 @@ export class HomeComponent implements OnInit, AfterViewInit {
     };
 
     return un!;
+  }
+
+  irAVista(vista: string) {
+    switch (vista) {
+      case 'noticia': {
+        if (this.usuario.idRol === 'adm' || this.usuario.idRol === 'sadm') {
+          this.changeRoute('/view-noticia', {});
+        } else {
+          this.changeRoute('/user-noticia', {});
+        }
+        break;
+      }
+      case 'recompensa': {
+        if (this.usuario.idRol === 'adm' || this.usuario.idRol === 'sadm') {
+          this.changeRoute('/view-recompensa', {});
+        } else {
+          this.changeRoute('/user-recompensa', {});
+        }
+        break;
+      }
+      case 'usuario': {
+        if (this.usuario.idRol === 'adm' || this.usuario.idRol === 'sadm') {
+          this.changeRoute('/view-user', {});
+        }
+        break;
+      }
+      case 'medalla': {
+        if (this.usuario.idRol === 'adm' || this.usuario.idRol === 'sadm') {
+          this.changeRoute('/view-medalla', {});
+        } else {
+          this.changeRoute('/user-medalla', {});
+        }
+        break;
+      }
+      case 'retos': {
+        if (this.usuario.idRol === 'adm' || this.usuario.idRol === 'sadm') {
+          this.changeRoute('/view-reto', {});
+        } else {
+          this.changeRoute('/user-reto', {});
+        }
+        break;
+      }
+      case 'ranking': {
+        this.changeRoute('/ranking', {});
+        break;
+      }
+    }
+  }
+
+  getEstadoFecha(reto: Reto): number {
+    let fechaHoy = new Date();
+    fechaHoy.setHours(0, 0, 0, 0);
+
+    if (
+      (new Date(reto.fechaApertura) >= fechaHoy &&
+        this.dateCompare(reto.fechaApertura) !== 'N/A') ||
+      (new Date(reto.fechaCierre) < fechaHoy &&
+        this.dateCompare(reto.fechaCierre) !== 'N/A')
+    ) {
+      return 0;
+    } else {
+      return 1;
+    }
   }
 }

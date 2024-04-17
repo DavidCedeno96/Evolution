@@ -6,7 +6,6 @@ import { authGuardAdmin, authGuardPlayer } from './auth.guard';
 import { LoginComponent } from './Pages/login/login.component';
 import { RegisterComponent } from './Pages/register/register.component';
 import { HomeAdminComponent } from './Pages/home-admin/home-admin.component';
-import { ConfiguracionComponent } from './Pages/configuracion/configuracion.component';
 import { ViewUserComponent } from './Pages/Usuario/view-user/view-user.component';
 import { UpsertUserComponent } from './Pages/Usuario/upsert-user/upsert-user.component';
 import { ViewNoticiaComponent } from './Pages/Noticia/view-noticia/view-noticia.component';
@@ -33,7 +32,27 @@ import { UserNivelComponent } from './Pages/Nivel/user-nivel/user-nivel.componen
 import { UserRecompensaComponent } from './Pages/Recompensa/user-recompensa/user-recompensa.component';
 import { HomeComponent } from './Pages/home/home.component';
 import { AsigUserRetoComponent } from './Pages/Reto/asig-user-reto/asig-user-reto.component';
-import { RedSocialComponent } from './Pages/red-social/red-social.component';
+import { RedSocialComponent } from './Pages/RedSocial/red-social/red-social.component';
+import { RankingComponent } from './Pages/ranking/ranking.component';
+import { NotificacionComponent } from './Pages/Config/notificacion/notificacion.component';
+import { InicioComponent } from './Pages/Config/inicio/inicio.component';
+import { UpsertNotificacionComponent } from './Pages/Config/upsert-notificacion/upsert-notificacion.component';
+import { ProfileUserComponent } from './Pages/Usuario/profile-user/profile-user.component';
+import { MassActionsUserComponent } from './Pages/Usuario/mass-actions-user/mass-actions-user.component';
+import { MassActionsAsigUserRetoComponent } from './Pages/Reto/mass-actions-asig-user-reto/mass-actions-asig-user-reto.component';
+import { MarcaComponent } from './Pages/Config/marca/marca.component';
+import { CamposComponent } from './Pages/Config/campos/campos.component';
+import { RegistroComponent } from './Pages/Config/registro/registro.component';
+import { RedUserComponent } from './Pages/RedSocial/red-user/red-user.component';
+import { ProfileUserEditComponent } from './Pages/Usuario/profile-user-edit/profile-user-edit.component';
+import { ViewEquipoComponent } from './Pages/Equipo/view-equipo/view-equipo.component';
+import { UpsertEquipoComponent } from './Pages/Equipo/upsert-equipo/upsert-equipo.component';
+import { AsigUserEquipoComponent } from './Pages/Equipo/asig-user-equipo/asig-user-equipo.component';
+import { MassActionsAsigUserEquipoComponent } from './Pages/Equipo/mass-actions-asig-user-equipo/mass-actions-asig-user-equipo.component';
+import { AsigEquipoRetoComponent } from './Pages/Reto/asig-equipo-reto/asig-equipo-reto.component';
+import { FinRetoComponent } from './Pages/Reto/fin-reto/fin-reto.component';
+import { ViewCategoriaRecompensaComponent } from './Pages/Recompensa/view-categoria-recompensa/view-categoria-recompensa.component';
+import { UpsertCategoriaRecompensaComponent } from './Pages/Recompensa/upsert-categoria-recompensa/upsert-categoria-recompensa.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -54,6 +73,36 @@ const routes: Routes = [
     canActivate: [authGuardPlayer],
   },
   {
+    path: 'profile-user',
+    component: ProfileUserComponent,
+    canActivate: [authGuardPlayer],
+  },
+  {
+    path: 'profile-user/edit',
+    component: ProfileUserEditComponent,
+    canActivate: [authGuardPlayer],
+  },
+  {
+    path: 'view-equipo',
+    component: ViewEquipoComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'upsert-equipo',
+    component: UpsertEquipoComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'asig-user-equipo',
+    component: AsigUserEquipoComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'mass-actions-asig-user-equipo',
+    component: MassActionsAsigUserEquipoComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
     path: 'view-user',
     component: ViewUserComponent,
     canActivate: [authGuardAdmin],
@@ -61,6 +110,11 @@ const routes: Routes = [
   {
     path: 'upsert-user',
     component: UpsertUserComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'mass-actions-user',
+    component: MassActionsUserComponent,
     canActivate: [authGuardAdmin],
   },
   {
@@ -96,6 +150,16 @@ const routes: Routes = [
   {
     path: 'upsert-recompensa',
     component: UpsertRecompensaComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'view-categoria-recompensa',
+    component: ViewCategoriaRecompensaComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'upsert-categoria-recompensa',
+    component: UpsertCategoriaRecompensaComponent,
     canActivate: [authGuardAdmin],
   },
   {
@@ -159,8 +223,23 @@ const routes: Routes = [
     canActivate: [authGuardPlayer],
   },
   {
+    path: 'fin-reto',
+    component: FinRetoComponent,
+    canActivate: [authGuardPlayer],
+  },
+  {
     path: 'asig-user-reto',
     component: AsigUserRetoComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'asig-equipo-reto',
+    component: AsigEquipoRetoComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'mass-actions-asig-user-reto',
+    component: MassActionsAsigUserRetoComponent,
     canActivate: [authGuardAdmin],
   },
   {
@@ -179,8 +258,43 @@ const routes: Routes = [
     canActivate: [authGuardPlayer],
   },
   {
-    path: 'config',
-    component: ConfiguracionComponent,
+    path: 'red-user',
+    component: RedUserComponent,
+    canActivate: [authGuardPlayer],
+  },
+  {
+    path: 'ranking',
+    component: RankingComponent,
+    canActivate: [authGuardPlayer],
+  },
+  {
+    path: 'config/inicio',
+    component: InicioComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'config/notification',
+    component: NotificacionComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'config/upsert-notificacion',
+    component: UpsertNotificacionComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'config/marca',
+    component: MarcaComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'config/campos',
+    component: CamposComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'config/registro',
+    component: RegistroComponent,
     canActivate: [authGuardAdmin],
   },
 ];

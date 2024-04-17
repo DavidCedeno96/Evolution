@@ -10,6 +10,7 @@
         public int TotalUsuarios { get; set; }
         public Guid IdCondicion { get; set; }
         public string Condicion { get; set; }
+        public int NumCondicion { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
     }

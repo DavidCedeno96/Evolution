@@ -8,7 +8,7 @@ namespace WebApiRest.Utilities
     public static class Hasher
     {        
 
-        private static readonly string secretKey = "K38#vQUjVK%ooTQyEU23A#BC&jBQcm";
+        private static readonly string secretKey = "K38#vQUjVK%ooTQyEU23A#BC&jBQcm10";
 
         // Encriptar
         public static async Task<string> Encrypt(string text)
@@ -56,7 +56,7 @@ namespace WebApiRest.Utilities
 
         private static byte[] GenerateRandomIV()
         {
-            Aes aes = Aes.Create();
+            using Aes aes = Aes.Create();
             aes.GenerateIV();
             return aes.IV;
         }

@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -20,6 +24,7 @@ namespace WebApiRest.Controllers
         readonly CiudadData dataCiudad = new();
         readonly AreaData dataArea = new();
         readonly ConfiguracionData dataConfig = new();
+        readonly CorreoEnvioData dataCorreoEnvio = new();        
 
         readonly Settings settings = new();        
 
@@ -57,31 +62,141 @@ namespace WebApiRest.Controllers
         {
             UsuarioItem response = await data.GetUsuario(estado, idUsuario);
             return StatusCode(StatusCodes.Status200OK, new { response});
-        }
+        }        
 
         [HttpGet]
         [Route("registerView")]
-        public IActionResult RegisterView()
+        public async Task<IActionResult> RegisterView()
         {
             Response response = new();
-            string date = DateTime.Now.ToString();
+            ConfiguracionItem config = await dataConfig.GetConfiguracion("registro");
 
-            var keyBytes = Encoding.ASCII.GetBytes(settings.SecretKey);
-            var claims = new ClaimsIdentity();                        
-            claims.AddClaim(new Claim("exp_date", date));
-            claims.AddClaim(new Claim("defaultUser", "jugador"));
-            var tokenDescriptor = new SecurityTokenDescriptor
+            if(config.Error == 0)
             {
-                Subject = claims,
-                Expires = DateTime.UtcNow.AddMinutes(10), //Tiempo de expiracion del token en minutos
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
-            };
+                if(config.Configuracion.Valor == "1")
+                {
+                    string date = DateTime.Now.ToString();
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenConfig = tokenHandler.CreateToken(tokenDescriptor);
-            string tokenCreado = tokenHandler.WriteToken(tokenConfig);
-            response.Info = tokenCreado;
-            response.Error = 0;
+                    var keyBytes = Encoding.ASCII.GetBytes(settings.SecretKey);
+                    var claims = new ClaimsIdentity();                        
+                    claims.AddClaim(new Claim("exp_date", date));
+                    claims.AddClaim(new Claim("defaultUser", "jugador"));
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = claims,
+                        Expires = DateTime.UtcNow.AddMinutes(10), //Tiempo de expiracion del token en minutos
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
+                    };
+
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var tokenConfig = tokenHandler.CreateToken(tokenDescriptor);
+                    string tokenCreado = tokenHandler.WriteToken(tokenConfig);
+                    response.Info = tokenCreado;
+                    response.Error = 0;
+                }
+                else
+                {
+                    response.Info = "No se permite el registro por que el administrador lo tiene deshabilitado";
+                    response.Error = 1;
+                }
+            } 
+            else
+            {
+                response.Info = config.Info; 
+                response.Error = 1;
+            }
+
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("reporte/usuario/{estado}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Report([FromRoute] int estado)
+        {
+            Response response = new();
+            DataTable dt = new();
+
+            string hora = WC.GetHoraActual(DateTime.Now);
+            string nombreArchivo = $"Usuarios{hora}.xls";
+            string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, nombreCarpeta);
+
+            WC.EliminarArchivosAntiguos(_env, nombreCarpeta, "Usuarios");
+
+            dt.Columns.Add("NOMBRE", typeof(string));
+            dt.Columns.Add("APELLIDO", typeof(string));
+            dt.Columns.Add("CORREO ELECTRÓNICO", typeof(string));
+            dt.Columns.Add("ID ÚNICO", typeof(string));
+            dt.Columns.Add("CELULAR", typeof(string));
+            dt.Columns.Add("ROL", typeof(string));
+            dt.Columns.Add("PAIS", typeof(string));
+            dt.Columns.Add("CIUDAD", typeof(string));
+            dt.Columns.Add("EMPRESA", typeof(string));
+            dt.Columns.Add("ÁREA", typeof(string));
+            dt.Columns.Add("FECHA DE CREACIÓN", typeof(DateTime));
+
+            UsuarioList responseUsers = await data.GetUsuarioList(estado);
+
+            if (responseUsers.Error == 0)
+            {
+                if (responseUsers.Lista.Count > 0)
+                {
+                    foreach (var item in responseUsers.Lista)
+                    {
+                        DataRow row = dt.NewRow();
+                        row[0] = item.Nombre;
+                        row[1] = item.Apellido;
+                        row[2] = item.Correo;
+                        row[3] = item.Id;
+                        row[4] = item.Celular;
+                        row[5] = item.Rol;
+                        row[6] = item.Pais;
+                        row[7] = item.Ciudad;
+                        row[8] = item.Empresa;
+                        row[9] = item.Area;
+                        row[10] = item.FechaCreacion;
+                        dt.Rows.Add(row);
+                    }
+
+                    HSSFWorkbook workbook = new();
+                    ISheet hoja = workbook.CreateSheet("Salas");
+                    IRow headerRow = hoja.CreateRow(0);
+
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        headerRow.CreateCell(i).SetCellValue(dt.Columns[i].ColumnName);
+                    }
+
+                    for (int rowIndex = 0; rowIndex < dt.Rows.Count; rowIndex++)
+                    {
+                        IRow dataRow = hoja.CreateRow(rowIndex + 1);
+
+                        for (int columnIndex = 0; columnIndex < dt.Columns.Count; columnIndex++)
+                        {
+                            dataRow.CreateCell(columnIndex).SetCellValue(dt.Rows[rowIndex][columnIndex].ToString());
+                        }
+                    }
+
+                    //Aqui crea el archivo
+                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
+                    workbook.Write(fileStream);
+                    fileStream.Dispose();
+
+                    response.Info = nombreArchivo;
+                    response.Error = 0;
+                }
+                else
+                {
+                    response.Info = "La lista esta vacia";
+                    response.Error = 1;
+                }
+            }
+            else
+            {
+                response.Info = response.Info;
+                response.Error = 1;
+            }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
@@ -168,56 +283,104 @@ namespace WebApiRest.Controllers
             }            
 
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }
+        }               
 
         [HttpPost]
-        [Route("register")]
+        [Route("sendEmail/register")]
         [Authorize]
-        public async Task<IActionResult> Register([FromForm] IFormFile archivo, [FromForm] Usuario usuario, [FromForm] string codigoRegistro)
+        public async Task<IActionResult> SendEmail([FromForm] Usuario usuario, [FromForm] string codigoRegistro, [FromForm] string urlVistaActivarUsuario)
         {
             Response response = VF.ValidarUsuario(usuario);
-            ConfiguracionList responseConfig = await dataConfig.GetConfiguracionList(codigoRegistro);
-            string rutaArchivo = "";
+            Response responseUser = await data.GetUsuario(usuario, codigoRegistro);
+            CorreoEnvioItem responseCorreoEnvio = await dataCorreoEnvio.GetCorreoEnvio();
 
-            if (archivo != null && response.Error == 0)
+            if (responseUser.Error > 0)
             {
-                response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
-                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
-
-                usuario.Foto = archivo.FileName.Trim();
+                response = responseUser;                
             }
-            else
+
+            if (responseCorreoEnvio.Error > 0)
             {
-                usuario.Foto = "";
+                response.Info = responseCorreoEnvio.Info;
+                response.Error = 1;
+                response.Campo = "correo de envio (admin)";
             }
 
             if (string.IsNullOrEmpty(usuario.Contrasena))
             {
                 usuario.Contrasena = WC.GenerarContrasena();
-            }            
-
-            if(responseConfig.Error > 0)
-            {
-                response.Info = responseConfig.Info;
-                response.Error = 1;
-                response.Campo = "llave";
             }
 
             if (response.Error == 0)
             {
                 usuario.IdRol = "jug";
-                response = await data.CreateUsuario(usuario);
-                if (response.Error == 0 && !rutaArchivo.Equals(""))
+                string jsonUser = JsonConvert.SerializeObject(usuario);
+
+                string date = DateTime.Now.ToString();
+
+                var keyBytes = Encoding.ASCII.GetBytes(settings.SecretKey);
+                var claims = new ClaimsIdentity();
+                claims.AddClaim(new Claim("exp_date", date));
+                claims.AddClaim(new Claim("tempUser", jsonUser));
+                var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    //Aqui creamos una nueva imagen
-                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
-                    await archivo.CopyToAsync(fileStream);
-                    await fileStream.DisposeAsync();
+                    Subject = claims,
+                    Expires = DateTime.UtcNow.AddMinutes(5), //Tiempo de expiracion del token en minutos
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
+                };
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenConfig = tokenHandler.CreateToken(tokenDescriptor);
+                string tokenCreado = tokenHandler.WriteToken(tokenConfig);
+
+                string imgaen = responseCorreoEnvio.CorreoEnvio.Imagen;
+                string url = responseCorreoEnvio.CorreoEnvio.Url;
+                string colorPri = responseCorreoEnvio.CorreoEnvio.ColorPrimario;
+                string colorSec = responseCorreoEnvio.CorreoEnvio.ColorSecundario;
+                string colorTer = responseCorreoEnvio.CorreoEnvio.ColorTerciario;
+
+                if (!imgaen.Equals("N/A"))
+                {
+                    url += $"/Content/Images/Config/{imgaen}";
+                }
+                else
+                {
+                    url += "/Content/Images/Default/default-logoDM.png";
+                }
+
+                string urlActivacion = urlVistaActivarUsuario + tokenCreado;
+
+                response = await WC.EnviarMail(responseCorreoEnvio.CorreoEnvio, usuario.Correo, "Bienvenido a Play Move", Html.GetRegisterUser(url, colorPri, colorSec, colorTer, urlActivacion, usuario.Correo, usuario.Contrasena));
+
+                if(response.Error > 0)
+                {
+                    response.Info = "El correo electrónico de envio del administrador esta incorrecto, contactate con el administrador";
                 }
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
+
+        [HttpPost]
+        [Route("ActivateUser")]
+        [Authorize]
+        public async Task<IActionResult> ActivarUsuario()
+        {
+            string tempUser = User.FindFirst("tempUser").Value;
+
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(tempUser);
+
+            usuario.IdRol = "jug";
+            Response response = VF.ValidarUsuario(usuario);
+
+            if(response.Error == 0)
+            {
+                response = await data.CreateUsuario(usuario);
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
 
         [HttpPut]
         [Route("update")]
@@ -272,8 +435,11 @@ namespace WebApiRest.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateUser([FromForm] IFormFile archivo, [FromForm] Usuario usuario)
         {
+
             Response response = VF.ValidarUsuario(usuario);
             string rutaArchivo = "";
+            string userId = User.FindFirst("id").Value;
+            string userIdRol = User.FindFirst(ClaimTypes.Role).Value;
 
             if (archivo != null && response.Error == 0)
             {
@@ -289,7 +455,8 @@ namespace WebApiRest.Controllers
 
             if (response.Error == 0)
             {
-                usuario.IdRol = "jug";
+                usuario.IdUsuario = new Guid(userId);
+                usuario.IdRol = userIdRol;
                 response = await data.UpdateUsuario(usuario);
                 if (response.Error == 0 && !rutaArchivo.Equals(""))
                 {
@@ -376,6 +543,22 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> Update([FromBody] Usuario usuario)
         {
             Response response = await data.UpdateUsuarioByEstado(usuario);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpPut]
+        [Route("massAction/updateEstado")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Update([FromForm] int estado, [FromForm] string jsonList)
+        {
+            List<string> listaCorreosIds = JsonConvert.DeserializeObject<List<string>>(jsonList);
+            List<Response> response = new();
+
+            foreach (string item in listaCorreosIds)
+            {                
+                response.Add(await data.UpdateUsuarioByEstado(estado, item));
+            }
+
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 

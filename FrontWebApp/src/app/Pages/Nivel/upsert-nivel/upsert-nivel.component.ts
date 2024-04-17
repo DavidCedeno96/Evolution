@@ -5,10 +5,13 @@ import { Nivel } from 'src/app/Models/Nivel';
 import {
   AlertError,
   GetImage,
+  ImgHeightMax,
   ImgSizeMax,
+  ImgWidthMax,
   Loading,
   MsgError,
   MsgErrorForm,
+  SetUpsert,
   SugerenciaImagen,
   TitleError,
   TitleErrorForm,
@@ -29,6 +32,7 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   caracterInvalid = CaracterInvalid();
   sugerenciaImagen = SugerenciaImagen;
 
@@ -49,7 +53,6 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
   nivel: Nivel = {
     idNivel: '7c8c2672-2233-486a-a184-f0b51eb4a331',
     nombre: '',
-    posicion: 0,
     descripcion: '',
     puntosNecesarios: 0,
     imagen: '',
@@ -72,14 +75,6 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
           Validators.required,
           Validators.maxLength(20),
           Validators.pattern(exp_invalidos),
-        ],
-      ],
-      posicion: [
-        this.nivel.posicion,
-        [
-          Validators.required,
-          Validators.min(0),
-          Validators.pattern(exp_numeros),
         ],
       ],
       descripcion: [
@@ -194,6 +189,7 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Creado');
           this.router.navigate(['/view-nivel']);
         } else if (campo !== '') {
           this.error = error;
@@ -220,6 +216,7 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Actualizado');
           this.router.navigate(['/view-nivel']);
         } else if (campo !== '') {
           this.error = error;
@@ -245,7 +242,6 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
     let formData = new FormData();
     formData.append('idNivel', this.nivel.idNivel);
     formData.append('nombre', this.nivel.nombre.trim());
-    formData.append('posicion', this.nivel.posicion.toString());
     formData.append('descripcion', this.nivel.descripcion.trim());
     formData.append('puntosNecesarios', this.nivel.puntosNecesarios.toString());
 
@@ -259,19 +255,31 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
   onFileSelected(event: Event) {
     this.selectedImage = (event.target as HTMLInputElement).files![0];
 
-    if (this.selectedImage.size > ImgSizeMax) {
-      this.errorArchivo = true;
-    } else {
-      this.errorArchivo = false;
-    }
-
-    if (this.selectedImage.size > 0) {
+    if (this.selectedImage) {
       let reader = new FileReader();
       reader.onload = (e: any) => {
-        this.previewImage = e.target.result;
+        let img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          let w = (img as HTMLImageElement).width;
+          let h = (img as HTMLImageElement).height;
+
+          if (
+            this.selectedImage.size > ImgSizeMax ||
+            w > ImgWidthMax ||
+            h > ImgHeightMax
+          ) {
+            this.errorArchivo = true;
+          } else {
+            this.errorArchivo = false;
+          }
+        };
+
+        this.previewImage = img.src;
       };
       reader.readAsDataURL(this.selectedImage);
+
+      console.log(this.selectedImage.name);
     }
-    console.log(this.selectedImage.name, this.previewImage);
   }
 }

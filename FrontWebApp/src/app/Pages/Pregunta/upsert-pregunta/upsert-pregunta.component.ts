@@ -8,6 +8,7 @@ import {
   Loading,
   MsgError,
   MsgErrorForm,
+  SetUpsert,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
@@ -23,6 +24,7 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   changeRoute = ChangeRoute();
   loading = Loading();
+  setUpsert = SetUpsert();
 
   auxIdPregunta: string = '';
   auxOpcionList: Opcion[] = [];
@@ -183,6 +185,7 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Creado');
           this.changeRoute('/view-pregunta', { reto: this.idReto });
         } else if (campo !== '') {
           this.error = error;
@@ -209,6 +212,7 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Actualizado');
           this.changeRoute('/view-pregunta', { reto: this.idReto });
         } else if (campo !== '') {
           this.error = error;

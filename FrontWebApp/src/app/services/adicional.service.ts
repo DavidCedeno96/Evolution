@@ -43,6 +43,15 @@ export class AdicionalService {
     });
   }
 
+  getListRecompensa(estado: number): Observable<Adicional> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<Adicional>(`${this.apiURL}/recompensa/${estado}`, {
+      headers: headers,
+    });
+  }
+
   getListMedalla(estado: number): Observable<Adicional> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,

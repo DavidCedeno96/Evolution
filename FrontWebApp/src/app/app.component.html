@@ -52,6 +52,62 @@
 </nav>
 <!-- End NavBar -->
 
+<!-- Ruta de Navegación (Migaja de pan)-->
+<div class="container my-3" *ngIf="breadcrumbList.length">
+  <div class="shadow-sm bg-white p-3 rounded d-flex align-items-center">
+    <nav style="--bs-breadcrumb-divider: '»'" aria-label="breadcrumb">
+      <ol class="breadcrumb p-0 m-0">
+        <li *ngFor="let item of breadcrumbList" class="breadcrumb-item">
+          <a
+            class="txt text-primary text-decoration-none"
+            *ngIf="item.url != url && item.estado === 1"
+            [routerLink]="item.url"
+            >{{ item.nombre }}</a
+          >
+
+          <span
+            class="text-black-50"
+            *ngIf="item.url == url && item.estado === 1"
+            >{{ item.nombre }}</span
+          >
+
+          <a
+            class="txt text-primary text-decoration-none pointer"
+            *ngIf="item.url != getSingleUrl() && item.estado === 0"
+            (click)="back()"
+            >{{ item.nombre }}
+          </a>
+
+          <span
+            class="text-black-50"
+            *ngIf="item.url == getSingleUrl() && item.estado === 0"
+            >{{ item.nombre }}
+          </span>
+
+          <span class="text-black-50" *ngIf="item.estado === -1"
+            >{{ item.nombre }}
+          </span>
+        </li>
+      </ol>
+    </nav>
+  </div>
+</div>
+<!-- End Ruta de Navegación (Migaja de pan)-->
+
+<!-- Pags nav pills -->
+<div class="container" *ngIf="pillsList.length">
+  <ul class="nav nav-pills m-0">
+    <li class="nav-item" *ngFor="let item of pillsList">
+      <a
+        class="nav-link {{ item.url == url ? 'active' : '' }}"
+        [routerLink]="item.url"
+        >{{ item.nombre }}</a
+      >
+    </li>
+  </ul>
+</div>
+<!-- End Pags nav pills -->
+
 <!-- Menu -->
 <div
   class="offcanvas offcanvas-start"
@@ -86,11 +142,14 @@
       </div>
       <div class="col-6 lh-sm">
         <span class="d-block">{{ userName }}</span>
-        <label
+        <a routerLink="/profile-user" data-bs-dismiss="offcanvas"
+          ><small>Perfil de usuario</small></a
+        >
+        <!-- <label
           class="link-primary text-decoration-underline pointer"
           for="camfotouser"
           ><small>Cambiar Foto</small></label
-        >
+        > -->
         <input
           type="file"
           class="d-none"
@@ -109,7 +168,7 @@
   <hr class="hr-text" data-content="O" />
   <div class="menu">
     <a
-      [class]="menuItemActive('/home')"
+      [class]="setItemActive('/home')"
       data-bs-dismiss="offcanvas"
       routerLink="/home"
     >
@@ -118,7 +177,7 @@
       </div>
     </a>
     <a
-      [class]="menuItemActive('/view-user')"
+      [class]="setItemActive('/view-user')"
       data-bs-dismiss="offcanvas"
       routerLink="/view-user"
       *ngIf="idRol === 'adm'"
@@ -128,7 +187,17 @@
       </div>
     </a>
     <a
-      [class]="menuItemActive('/view-reto,/user-reto')"
+      [class]="setItemActive('/view-equipo')"
+      data-bs-dismiss="offcanvas"
+      routerLink="/view-equipo"
+      *ngIf="idRol === 'adm'"
+    >
+      <div class="icon-text">
+        <mat-icon svgIcon="trabajo-en-equipo"></mat-icon><span>Equipos</span>
+      </div>
+    </a>
+    <a
+      [class]="setItemActive('/view-reto,/user-reto')"
       data-bs-dismiss="offcanvas"
       [routerLink]="getUrlByRol('/view-reto', '/user-reto')"
     >
@@ -137,9 +206,19 @@
       </div>
     </a>
 
-    <div class="menu-container">
+    <a
+      [class]="setItemActive('/view-noticia,/user-noticia')"
+      data-bs-dismiss="offcanvas"
+      [routerLink]="getUrlByRol('/view-noticia', '/user-noticia')"
+    >
+      <div class="icon-text">
+        <mat-icon svgIcon="periodico"></mat-icon><span>Noticias</span>
+      </div>
+    </a>
+
+    <!-- <div class="menu-container">
       <a
-        [class]="menuItemActive('/view-noticia,/user-noticia')"
+        [class]="setItemActive('/view-noticia,/user-noticia')"
         data-bs-dismiss="offcanvas"
         [routerLink]="getUrlByRol('/view-noticia', '/user-noticia')"
       >
@@ -157,7 +236,7 @@
         *ngIf="activeSubMenu && idRol === 'adm'"
         (click)="openSumMenu(1)"
       ></i>
-    </div>
+    </div> -->
 
     <div *ngIf="subMenu === 1 && activeSubMenu">
       <a
@@ -170,7 +249,7 @@
     </div>
 
     <a
-      [class]="menuItemActive('/view-recompensa,/user-recompensa')"
+      [class]="setItemActive('/view-recompensa,/user-recompensa')"
       data-bs-dismiss="offcanvas"
       [routerLink]="getUrlByRol('/view-recompensa', '/user-recompensa')"
     >
@@ -179,7 +258,7 @@
       </div>
     </a>
     <a
-      [class]="menuItemActive('/view-nivel,/user-nivel')"
+      [class]="setItemActive('/view-nivel,/user-nivel')"
       data-bs-dismiss="offcanvas"
       [routerLink]="getUrlByRol('/view-nivel', '/user-nivel')"
     >
@@ -188,7 +267,7 @@
       </div>
     </a>
     <a
-      [class]="menuItemActive('/view-medalla,/user-medalla')"
+      [class]="setItemActive('/view-medalla,/user-medalla')"
       data-bs-dismiss="offcanvas"
       [routerLink]="getUrlByRol('/view-medalla', '/user-medalla')"
     >
@@ -197,7 +276,7 @@
       </div>
     </a>
     <a
-      [class]="menuItemActive('/redSocial')"
+      [class]="setItemActive('/redSocial')"
       data-bs-dismiss="offcanvas"
       routerLink="/red-social"
     >
@@ -206,9 +285,9 @@
       </div>
     </a>
     <a
-      [class]="menuItemActive('/config')"
+      [class]="setItemActive('/config/inicio')"
       data-bs-dismiss="offcanvas"
-      routerLink="/config"
+      routerLink="/config/inicio"
       *ngIf="idRol === 'adm'"
     >
       <div class="icon-text">

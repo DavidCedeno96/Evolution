@@ -1,12 +1,6 @@
 .form-check-input {
-  border-color: #7a7a7a;
-  box-shadow: none;
   width: 25px;
   height: 25px;
-}
-
-.form-check-input.is-invalid {
-  border-color: #f10909;
 }
 
 .selec-op {

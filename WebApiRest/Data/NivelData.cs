@@ -38,8 +38,7 @@ namespace WebApiRest.Data
                     list.Lista.Add(new Nivel()
                     {
                         IdNivel = new Guid(dr["idNivel"].ToString()),
-                        Nombre = dr["nombre"].ToString(),
-                        Posicion = Convert.ToInt32(dr["posicion"].ToString()),
+                        Nombre = dr["nombre"].ToString(),                        
                         Descripcion = dr["descripcion"].ToString(),
                         PuntosNecesarios = Convert.ToInt32(dr["puntosNecesarios"].ToString()),                        
                         Imagen = dr["imagen"].ToString(),
@@ -95,8 +94,7 @@ namespace WebApiRest.Data
                     list.Lista.Add(new Nivel()
                     {
                         IdNivel = new Guid(dr["idNivel"].ToString()),
-                        Nombre = dr["nombre"].ToString(),
-                        Posicion = Convert.ToInt32(dr["posicion"].ToString()),
+                        Nombre = dr["nombre"].ToString(),                        
                         Descripcion = dr["descripcion"].ToString(),
                         PuntosNecesarios = Convert.ToInt32(dr["puntosNecesarios"].ToString()),
                         Imagen = dr["imagen"].ToString(),
@@ -125,17 +123,17 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<NivelItem> GetNivel(int posicion)
+        public async Task<NivelItem> GetNivel(int puntos)
         {
             NivelItem item = new();
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
-            SqlCommand cmd = new("sp_B_NivelByNextPos", sqlConnection)
+            SqlCommand cmd = new("sp_B_NivelByNextPuntos", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };
-            cmd.Parameters.AddWithValue("@posicion", posicion);
+            cmd.Parameters.AddWithValue("@puntos", puntos);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -150,8 +148,7 @@ namespace WebApiRest.Data
                     item.Nivel = new Nivel()
                     {
                         IdNivel = new Guid(dr["idNivel"].ToString()),
-                        Nombre = dr["nombre"].ToString(),
-                        Posicion = Convert.ToInt32(dr["posicion"].ToString()),
+                        Nombre = dr["nombre"].ToString(),                        
                         Descripcion = dr["descripcion"].ToString(),
                         PuntosNecesarios = Convert.ToInt32(dr["puntosNecesarios"].ToString()),
                         Imagen = dr["imagen"].ToString(),
@@ -211,7 +208,8 @@ namespace WebApiRest.Data
                         IdNivel = new Guid(dr["idNivel"].ToString()),
                         Nombre = dr["nombre"].ToString(),
                         Imagen = dr["imagen"].ToString(), 
-                        Posicion = Convert.ToInt32(dr["posicion"].ToString()),
+                        Puntos = Convert.ToInt32(dr["puntosNecesarios"].ToString()),
+                        Descripcion = dr["descripcion"].ToString(),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     });
@@ -262,8 +260,7 @@ namespace WebApiRest.Data
                     item.Nivel = new Nivel()
                     {
                         IdNivel = new Guid(dr["idNivel"].ToString()),
-                        Nombre = dr["nombre"].ToString(),
-                        Posicion = Convert.ToInt32(dr["posicion"].ToString()),
+                        Nombre = dr["nombre"].ToString(),                        
                         Descripcion = dr["descripcion"].ToString(),
                         PuntosNecesarios = Convert.ToInt32(dr["puntosNecesarios"].ToString()),
                         Imagen = dr["imagen"].ToString(),
@@ -302,8 +299,7 @@ namespace WebApiRest.Data
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(nivel.Nombre));
-            cmd.Parameters.AddWithValue("@posicion", nivel.Posicion);
+            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(nivel.Nombre));            
             cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(nivel.Descripcion));
             cmd.Parameters.AddWithValue("@puntosNecesarios", nivel.PuntosNecesarios);
             cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(nivel.Imagen));
@@ -345,8 +341,7 @@ namespace WebApiRest.Data
             };
 
             cmd.Parameters.AddWithValue("@idNivel", nivel.IdNivel);
-            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(nivel.Nombre));
-            cmd.Parameters.AddWithValue("@posicion", nivel.Posicion);
+            cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(nivel.Nombre));            
             cmd.Parameters.AddWithValue("@descripcion", WC.GetTrim(nivel.Descripcion));
             cmd.Parameters.AddWithValue("@puntosNecesarios", nivel.PuntosNecesarios);
             cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(nivel.Imagen));

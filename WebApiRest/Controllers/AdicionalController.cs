@@ -16,6 +16,7 @@ namespace WebApiRest.Controllers
         readonly TipoRetoData tipoRetoData = new();
         readonly ComportPreguntaData comportPreguntaData = new();
         readonly CategoriaNoticiaData categoriaNoticiaData = new();
+        readonly CategoriaRecompensaData categoriaRecompensaData = new();
         readonly CondicionData condicionData = new();
 
         [HttpGet]
@@ -60,6 +61,20 @@ namespace WebApiRest.Controllers
 
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
+
+        [HttpGet]
+        [Route("recompensa/{estado}")]
+        [Authorize]
+        public async Task<IActionResult> Recompensa([FromRoute] int estado)
+        {
+            Adicional response = new()
+            {
+                CategoriaRecompensaList = await categoriaRecompensaData.GetCategoriaRecompensaList(estado),
+            };
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
 
         [HttpGet]
         [Route("medalla/{estado}")]

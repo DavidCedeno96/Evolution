@@ -1,158 +1,156 @@
-<div class="my-3 my-md-5">
-  <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
-    <h5 class="my-5 text-center txt text-primary text-uppercase">noticias</h5>
-    <div class="row g-3 mb-4">
-      <div class="col-6 col-md-auto d-grid d-md-block">
-        <a
-          class="btn btn-primary icon"
-          (click)="changeRoute('/upsert-noticia', { type: 'crear' })"
-        >
-          <div class="icon-text buton">
-            <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
-          </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-5 d-grid d-md-block">
-        <a class="btn btn-secondary" routerLink="/view-categoria-noticia"
-          >Categoría</a
-        >
-      </div>
-    </div>
-    <!-- buscador -->
-    <form
-      class="d-md-flex w-100"
-      [formGroup]="formulario"
-      (ngSubmit)="submitBuscar()"
-    >
-      <div class="input-group flex-grow-1 me-md-3 mb-3 mb-md-0">
-        <span class="icon-left">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </span>
-        <input
-          type="text"
-          class="form-control icon"
-          placeholder="Buscar..."
-          formControlName="buscar"
-          (input)="defaultList($event)"
-        />
-      </div>
-      <div class="d-grid">
-        <button type="submit" class="btn btn-success">Buscar</button>
-      </div>
-    </form>
-    <!-- Fin buscador -->
-
-    <!-- Noticias -->
-    <div class="mb-2 mb-md-4">
-      <p-dataView
-        #dv
-        [value]="noticias"
-        [rows]="10"
-        [paginator]="true"
-        [emptyMessage]="info"
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">noticias</h5>
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-auto d-grid d-md-block">
+      <a
+        class="btn btn-primary icon"
+        (click)="changeRoute('/upsert-noticia', { type: 'crear' })"
       >
-        <ng-template let-noticia pTemplate="listItem">
-          <div class="col-12">
-            <div class="p-4 gap-4">
-              <div class="row g-3 text-center text-md-start align-items-center">
-                <div class="col-12 col-md-auto">
-                  <img
-                    class="img-thumbnail"
-                    [src]="
-                      getImage(noticia.imagen, 'noticia', 'default-noticia.jpg')
-                    "
-                    width="150px"
-                    [alt]="noticia.imagen"
-                  />
+        <div class="icon-text buton">
+          <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
+        </div>
+      </a>
+    </div>
+    <div class="col-6 col-md-5 d-grid d-md-block">
+      <a class="btn btn-secondary" routerLink="/view-categoria-noticia"
+        >Categoría</a
+      >
+    </div>
+  </div>
+  <!-- buscador -->
+  <form
+    class="d-md-flex w-100"
+    [formGroup]="formulario"
+    (ngSubmit)="submitBuscar()"
+  >
+    <div class="input-group flex-grow-1 me-md-3 mb-3 mb-md-0">
+      <span class="icon-left">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control icon"
+        placeholder="Buscar..."
+        formControlName="buscar"
+        (input)="defaultList($event)"
+      />
+    </div>
+    <div class="d-grid">
+      <button type="submit" class="btn btn-secondary">Buscar</button>
+    </div>
+  </form>
+  <!-- Fin buscador -->
+
+  <!-- Noticias -->
+  <div class="mb-2 mb-md-4">
+    <p-dataView
+      #dv
+      [value]="noticias"
+      [rows]="10"
+      [paginator]="true"
+      [emptyMessage]="info"
+    >
+      <ng-template let-noticia pTemplate="listItem">
+        <div class="col-12">
+          <div class="p-4 gap-4">
+            <div class="row g-3 text-center text-md-start align-items-center">
+              <div class="col-12 col-md-auto">
+                <img
+                  class="img-thumbnail"
+                  [src]="
+                    getImage(noticia.imagen, 'noticia', 'default-noticia.jpg')
+                  "
+                  width="100"
+                  [alt]="noticia.imagen"
+                />
+              </div>
+              <div class="col-12 col-md-4">
+                <h5 class="txt text-secondary">
+                  {{ noticia.titular }}
+                </h5>
+                <div class="flex align-items-center gap-3">
+                  <span class="d-block text-truncate">
+                    {{ noticia.descripcion }}
+                  </span>
+                  <small class="d-block text-truncate">
+                    {{ dateCompare(noticia.fechaPublicacion) }}
+                  </small>
                 </div>
-                <div class="col-12 col-md-4">
-                  <h5 class="txt text-secondary">
-                    {{ noticia.titular }}
-                  </h5>
-                  <div class="flex align-items-center gap-3">
-                    <span class="d-block text-truncate">
-                      {{ noticia.descripcion }}
+              </div>
+
+              <div class="col-12 col-md-3">
+                <div class="flex align-items-center gap-3">
+                  <div>
+                    <strong>Categoria:</strong>
+                    <span class="">
+                      {{ noticia.categoria }}
                     </span>
-                    <small class="d-block text-truncate">
-                      {{ dateCompare(noticia.fechaPublicacion) }}
-                    </small>
                   </div>
-                </div>
-
-                <div class="col-12 col-md-3">
-                  <div class="flex align-items-center gap-3">
-                    <div>
-                      <strong>Categoria:</strong>
-                      <span class="">
-                        {{ noticia.categoria }}
-                      </span>
-                    </div>
-                    <div>
-                      <strong>Likes:</strong>
-                      <span class="">
-                        {{ noticia.totalLikes }}
-                      </span>
-                    </div>
-                    <div>
-                      <strong>Comentarios:</strong>
-                      <span class="">
-                        {{ noticia.totalComents }}
-                      </span>
-                    </div>
-                    <div class="text-truncate" *ngIf="noticia.url">
-                      <strong>Url:</strong>
-                      <a
-                        class="link-opacity-100 pointer"
-                        (click)="onNavigate(noticia.url)"
-                      >
-                        {{ noticia.url }}
-                      </a>
-                    </div>
+                  <div>
+                    <strong>Likes:</strong>
+                    <span class="">
+                      {{ noticia.totalLikes }}
+                    </span>
                   </div>
-                </div>
-
-                <div class="col-12 col-md-1 col-lg-2 text-md-end">
-                  <div class="dropdown">
-                    <button
-                      class="btn btn-secondary normal only-icon"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
+                  <div>
+                    <strong>Comentarios:</strong>
+                    <span class="">
+                      {{ noticia.totalComents }}
+                    </span>
+                  </div>
+                  <div class="text-truncate" *ngIf="noticia.url">
+                    <strong>Url:</strong>
+                    <a
+                      class="link-opacity-100 pointer"
+                      (click)="onNavigate(noticia.url)"
                     >
-                      <div class="icon-text buton">
-                        <mat-icon svgIcon="rueda-dentada"></mat-icon>
-                      </div>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-start">
-                      <li>
-                        <a
-                          class="dropdown-item pointer"
-                          (click)="
-                            changeRoute('/upsert-noticia', {
-                              type: 'editar',
-                              noticia: noticia.idNoticia
-                            })
-                          "
-                          ><i class="fa-regular fa-pen-to-square me-2"></i
-                          >Editar</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          class="dropdown-item pointer"
-                          (click)="confirmEliminar(noticia.idNoticia)"
-                          ><i class="fa-solid fa-trash-can me-2"></i>Eliminar</a
-                        >
-                      </li>
-                    </ul>
+                      {{ noticia.url }}
+                    </a>
                   </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-1 col-lg-2 text-md-end">
+                <div class="dropdown">
+                  <button
+                    class="btn btn-tertiary normal only-icon"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <div class="icon-text buton">
+                      <mat-icon svgIcon="rueda-dentada"></mat-icon>
+                    </div>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-start">
+                    <li>
+                      <a
+                        class="dropdown-item pointer"
+                        (click)="
+                          changeRoute('/upsert-noticia', {
+                            type: 'editar',
+                            noticia: noticia.idNoticia
+                          })
+                        "
+                        ><i class="fa-regular fa-pen-to-square me-2"></i
+                        >Editar</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item pointer"
+                        (click)="confirmEliminar(noticia.idNoticia)"
+                        ><i class="fa-solid fa-trash-can me-2"></i>Eliminar</a
+                      >
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-        </ng-template>
-      </p-dataView>
-    </div>
+        </div>
+      </ng-template>
+    </p-dataView>
   </div>
 </div>
 
@@ -161,7 +159,7 @@
   <ng-template pTemplate="footer">
     <button
       type="button"
-      class="btn btn-secondary me-2"
+      class="btn btn-tertiary me-2"
       pButton
       label="Cancelar"
       (click)="cd.reject()"
@@ -169,7 +167,7 @@
     <button
       type="button"
       pButton
-      class="btn btn-danger"
+      class="btn btn-primary"
       label="Aceptar"
       (click)="cd.accept()"
     ></button>

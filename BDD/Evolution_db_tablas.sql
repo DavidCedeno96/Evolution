@@ -8,6 +8,38 @@ create table Constants(
 	fechaModificacion datetime default getdate()
 );
 
+create table Licencia(	
+	idLicencia uniqueidentifier primary key default newid(),
+	tabla varchar(60) unique not null,
+	nombre varchar(60) unique not null,
+	cantidadMaxima int not null,	
+	estado int default 1,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+);
+
+create table Notificacion(	
+	idNotificacion uniqueidentifier primary key default newid(),	
+	nombre varchar(160) unique not null,
+	estado int default 0 not null,
+	msgPersonalizado varchar(350),
+	descripcion varchar(60),
+	numDesc int default 0 not null,	
+	enviarCorreo int default 0 not null,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+);
+
+create table CorreoEnvio(	
+	idCorreo uniqueidentifier primary key default newid(),	
+	correo varchar(60) unique not null,
+	clave varbinary(MAX) not null,
+	puerto int default 587 not null,
+	host varchar(60) unique not null,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+);
+
 create table Rol(
 	idRol varchar(9) primary key,
 	nombre varchar(20) unique not null,
@@ -93,14 +125,12 @@ create table Nivel(
 	idNivel uniqueidentifier primary key default newid(),
 	nombre varchar(20) not null,
 	descripcion varchar(250),
-	puntosNecesarios int not null,
+	puntosNecesarios int unique not null,
 	imagen varchar(50),
 	estado int default 1,
 	fechaCreacion datetime default getdate(),
-	fechaModificacion datetime default getdate(),
-	posicion int default 0 unique not null
+	fechaModificacion datetime default getdate(),	
 );
-
 
 create table Usuario_Nivel(
 	idUsuario uniqueidentifier references Usuario(idUsuario) not null,
@@ -159,6 +189,15 @@ create table Usuario_Noticia(
 	fechaModificacion datetime default getdate()
 );
 
+create table CategoriaRecompensa (
+	idCategoria uniqueidentifier primary key default newid(),
+	nombre varchar(50) unique not null,
+	descripcion varchar(250),
+	estado int default 1,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+);
+
 create table Recompensa(
 	idRecompensa uniqueidentifier primary key default newid(),
 	nombre varchar(60) not null,
@@ -167,6 +206,7 @@ create table Recompensa(
 	cantDisponible int default 0,
 	cantCanje int default 0,
 	estado int default 1,	
+	idCategoria uniqueidentifier references CategoriaRecompensa(idCategoria) not null,
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate()
 );
@@ -195,7 +235,8 @@ create table Medalla(
 	estado int default 1,	
 	idCondicion uniqueidentifier references Condicion(idCondicion) not null,
 	fechaCreacion datetime default getdate(),
-	fechaModificacion datetime default getdate()
+	fechaModificacion datetime default getdate(),
+	numCondicion int default 1 not null
 );
 
 create table Usuario_Medalla(
@@ -212,7 +253,7 @@ create table Configuracion(
 	nombre varchar(30) unique not null,
 	valor varchar(50),
 	descripcion varchar(250),
-	idUsuario uniqueidentifier references Usuario(idUsuario) not null,	
+	idUsuario uniqueidentifier references Usuario(idUsuario),	
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate()
 );
@@ -251,8 +292,26 @@ create table Reto(
 	idComportamiento uniqueidentifier references ComportamientoPregunta(idComportamiento) not null,
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate(),
-	criterioMinimo int default 100 NOT NULL
+	criterioMinimo int default 100 NOT NULL,
+	enEquipo int default 0 not null
 );
+
+create table Equipo(
+	idEquipo uniqueidentifier primary key default newid(),
+	nombre varchar(60) unique not null,
+	imagen varchar(50),
+	descripcion varchar(250),
+	estado int default 1,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate(),
+)
+
+create table Usuario_Equipo(
+	idEquipo uniqueidentifier references Equipo(idEquipo) not null,
+	idUsuario uniqueidentifier references Usuario(idUsuario) unique not null,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate(),
+)
 
 create table Pregunta(
 	idPregunta uniqueidentifier primary key default newid(),
@@ -282,7 +341,8 @@ create table Usuario_Reto(
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate(),
 	completado int default 0 not null,
-	fechaAsignacion datetime default getdate()
+	fechaAsignacion datetime default getdate(),
+	tieneEquipo int default 0 not null
 );
 
 create table Puzzle(

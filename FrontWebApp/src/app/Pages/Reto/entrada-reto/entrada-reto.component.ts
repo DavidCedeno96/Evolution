@@ -7,6 +7,7 @@ import {
   DateCompare,
   FormatTiempo,
   GetImage,
+  GetTypeTime,
   Loading,
 } from 'src/app/Utils/Constants';
 import { RetoService } from 'src/app/services/reto.service';
@@ -23,6 +24,7 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
   changeRoute = ChangeRoute();
   dateCompare = DateCompare();
   formatTiempo = FormatTiempo();
+  getTypeTime = GetTypeTime();
 
   formatTiempo_ms: string = '';
   id: string = '';
@@ -44,6 +46,9 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
     idComportamiento: '',
     comportamientoPregunta: '',
     totalPreguntas: 0,
+    usuariosAsignados: 0,
+    equiposAsignados: 0,
+    enEquipo: 0,
     estado: 0,
   };
 
@@ -75,6 +80,8 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
   cargarData(idReto: string) {
     this.retoService.getUsuario_RetoByIdUsuarioYIdReto(idReto).subscribe({
       next: (data: any) => {
+        console.log(data);
+
         let { error, ur } = data.response;
         if (error === 0) {
           this.reto = ur.reto;
@@ -93,6 +100,9 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
             new Date(ur.reto.fechaCierre) < fechaHoy &&
             this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
           ) {
+            estado = 0;
+          }
+          if (ur.reto.completado === 1) {
             estado = 0;
           }
 
@@ -115,16 +125,6 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
         }
       },
     });
-  }
-
-  getTypeTime(): string {
-    if (this.reto.tiempo_ms >= 3600000 && this.reto.tiempo_ms < 7200000) {
-      return 'hora';
-    } else if (this.reto.tiempo_ms >= 7200000) {
-      return 'horas';
-    } else {
-      return 'minutos';
-    }
   }
 
   comenzar(idReto: string) {

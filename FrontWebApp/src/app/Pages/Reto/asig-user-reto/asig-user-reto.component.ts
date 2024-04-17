@@ -12,21 +12,20 @@ import { Reto, Usuario_Reto } from 'src/app/Models/Reto';
 import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
+  ChangeRoute,
   GetImage,
   Loading,
   MsgEliminar,
   MsgElimindo,
   MsgError,
-  MsgErrorArchivo,
-  MsgFormatoDescargado,
   MsgOk,
   SinRegistros,
   TitleEliminar,
   TitleError,
-  TitleErrorArchivo,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { RetoService } from 'src/app/services/reto.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-asig-user-reto',
@@ -38,19 +37,17 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
   loading = Loading();
   alertError = AlertError();
   getImage = GetImage();
+  changeRoute = ChangeRoute();
   sinRegistros = SinRegistros;
 
   @ViewChild('closeModalAsignar') closeModalAsignar!: ElementRef;
-  @ViewChild('closeModalImportar') closeModalImportar!: ElementRef;
-  @ViewChild('valueArchivo') valueArchivo!: ElementRef;
 
   idReto: string = '';
   info: string = '';
+  error: number = 0;
   verErrorsInputs: boolean = false;
 
-  selectedFile: File | null = null;
-  errorArchivo: boolean = false;
-
+  usuarios: Usuario[] = [];
   usuarioReto: Usuario_Reto[] = [];
 
   formulario!: FormGroup;
@@ -58,15 +55,17 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
+    private usuarioServicio: UsuarioService,
     private route: ActivatedRoute,
     private router: Router,
     private retoServicio: RetoService,
     private formBuilder: FormBuilder
   ) {
     this.formulario = this.formBuilder.group({
+      buscar: ['', [Validators.required]],
       correo: [
         '',
-        [Validators.required, Validators.maxLength(60), Validators.email],
+        [Validators.required, Validators.maxLength(99), Validators.email],
       ],
     });
   }
@@ -105,84 +104,74 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          history.back();
         }
       },
     });
   }
 
-  onFileSelected(event: Event) {
-    this.selectedFile = (event.target as HTMLInputElement).files![0];
-    this.errorArchivo = false;
-    console.log(this.selectedFile.name);
-  }
-
-  importArchivo() {
-    if (this.selectedFile) {
-      this.loading(true, false);
-      this.errorArchivo = false;
-
-      const formData = new FormData();
-      formData.append('archivo', this.selectedFile);
-
-      this.retoServicio.enviarArchivo(formData, this.idReto).subscribe({
-        next: (data: any) => {
-          const { info, error } = data.response;
-          this.info = info;
-          if (error === 0) {
-            this.errorArchivo = false;
-            this.limpiarCampos();
-            this.cargarData();
-            this.messageService.add({
-              severity: 'success',
-              summary: MsgOk,
-              detail: 'Usuarios asignados al reto',
-            });
-          } else {
-            this.errorArchivo = true;
-          }
-          this.loading(false, false);
-        },
-        error: (e) => {
-          this.limpiarCampos();
-          console.error(e);
-          if (e.status === 401 || e.status === 403) {
-            this.router.navigate(['/']);
-          } else {
-            this.loading(false, false);
-            this.alertError(TitleErrorArchivo, MsgErrorArchivo);
-          }
-        },
-      });
-    } else {
-      this.errorArchivo = true;
-      this.info = 'Ingrese un archivo en formato .xlsx';
+  submitForm(event: any) {
+    const botonClickeado = event.submitter.value;
+    switch (botonClickeado) {
+      case 'buscar': {
+        this.setBuscar();
+        break;
+      }
+      case 'asignar': {
+        if (this.usuarios.length) {
+          this.asignarUsuario();
+        }
+        break;
+      }
+      default: {
+        this.loading(false, false);
+        console.error('Error de para asignar');
+        break;
+      }
     }
   }
 
-  exportArchivo() {
-    this.loading(true, false);
-    this.retoServicio.getArchivo().subscribe({
-      next: (data: Blob) => {
-        const urlObject = window.URL.createObjectURL(data);
-        const element = document.createElement('a');
-        element.download = `Formato de asignación de Usuarios.xlsx`;
-        element.href = urlObject;
-        element.click();
+  setBuscar() {
+    let buscar = this.formulario.get(['buscar'])?.value;
+    if (buscar.trim() !== '') {
+      this.loading(true, false);
+      this.getUserBuscado(buscar);
+    } else {
+      this.usuarios = [];
+    }
+  }
+
+  getUserBuscado(texto: string) {
+    this.usuarioServicio.getBuscarList(texto).subscribe({
+      next: (data: any) => {
+        let { error, info, lista } = data.response;
+        this.info = info;
+        this.error = error;
+        if (error === 0) {
+          this.usuarios = lista;
+        } else {
+          this.usuarios = [];
+        }
         this.loading(false, false);
-        this.messageService.add({
-          severity: 'success',
-          summary: MsgOk,
-          detail: MsgFormatoDescargado,
-        });
       },
       error: (e) => {
         console.error(e);
-        this.alertError(TitleError, MsgError);
-        this.loading(false, false);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+        }
       },
     });
+  }
+
+  defaultList(event: Event) {
+    let text = (event.target as HTMLInputElement).value;
+    if (!text.trim()) {
+      this.usuarios = [];
+      this.error = 0;
+      this.formulario.patchValue({ buscar: '', correo: '' });
+    }
   }
 
   asignarUsuario() {
@@ -192,6 +181,11 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
         next: (data: any) => {
           let { error, info } = data.response;
           if (error === 0) {
+            this.messageService.add({
+              severity: 'success',
+              summary: MsgOk,
+              detail: 'Usuario asignado al reto',
+            });
             this.limpiarCampos();
             this.cargarData();
           } else {
@@ -266,6 +260,7 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
       idRol: '',
       rol: '',
       idPais: '',
+      pais: '',
       idCiudad: '',
       ciudad: '',
       idEmpresa: '',
@@ -296,6 +291,9 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
       comportamientoPregunta: '',
       estado: 0,
       totalPreguntas: 0,
+      usuariosAsignados: 0,
+      equiposAsignados: 0,
+      enEquipo: 0,
     };
 
     usuarioReto = {
@@ -305,17 +303,23 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
       tiempo: 0,
       vidas: 0,
       totalRetos: 0,
+      posicion: 0,
       completado: 0,
+      tieneEquipo: 0,
+      fechaCreacion: new Date(),
+      fechaModificacion: new Date(),
     };
     return usuarioReto!;
   }
 
+  selectUsuario(correo: string) {
+    this.formulario.patchValue({ correo: correo });
+  }
+
   limpiarCampos() {
     this.closeModalAsignar.nativeElement.click();
-    this.closeModalImportar.nativeElement.click();
-    this.selectedFile = null;
-    this.valueArchivo.nativeElement.value = '';
-    this.formulario.patchValue({ correo: '' });
+    this.formulario.patchValue({ buscar: '', correo: '' });
+    this.usuarios = [];
     this.verErrorsInputs = false;
   }
 }

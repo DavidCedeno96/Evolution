@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
-using System.Security.Claims;
+using Newtonsoft.Json;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -14,10 +11,10 @@ namespace WebApiRest.Controllers
     [ApiController]
     public class RetoController : ControllerBase
     {
-        readonly RetoData data = new();
+        readonly RetoData data = new();        
 
         private readonly IWebHostEnvironment _env;
-        private readonly string nombreCarpeta = "Reto";
+        private readonly string nombreCarpeta = "Reto";        
 
         public RetoController(IWebHostEnvironment env)
         {
@@ -48,6 +45,16 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> GetById([FromRoute] int estado, [FromRoute] Guid idReto)
         {
             RetoItem response = await data.GetReto(estado, idReto);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("ranking/{top}")]
+        [Authorize]
+        public async Task<IActionResult> Ranking([FromRoute] int top)
+        {
+            string userId = User.FindFirst("id").Value;
+            Usuario_RetoList response = await data.GetUsuarioRetoPuntosList(new Guid(userId), top);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -87,6 +94,15 @@ namespace WebApiRest.Controllers
         {
             string userId = User.FindFirst("id").Value;
             Usuario_RetoList response = await data.GetUsuarioRetoList(texto, new Guid(userId), 0);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("equiposByReto/{idReto}/{estado}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> GetEquiposRetoList([FromRoute] Guid idReto, [FromRoute] int estado)
+        {            
+            Equipo_RetoList response = await data.GetEquiposByReto(estado, idReto);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -142,81 +158,33 @@ namespace WebApiRest.Controllers
         }
 
         [HttpPost]
-        [Route("importUsuarioReto/{idReto}")]
+        [Route("massAction/createUsuarioReto/{idReto}")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> ImportList([FromRoute] Guid idReto, [FromForm] IFormFile archivo)
+        public async Task<IActionResult> CreateUsuarioReto([FromRoute] Guid idReto, [FromForm] string jsonList)
         {
-            Response response = new();
+            List<string> listaCorreosIds = JsonConvert.DeserializeObject<List<string>>(jsonList);
+            List<Response> response = new();            
 
-            List<Usuario_Reto> lista = new();
-
-            if (archivo != null)
-            {
-                Stream stream = archivo.OpenReadStream();
-                if (Path.GetExtension(archivo.FileName).Equals(".xlsx"))
-                {
-                    IWorkbook archivoExcel = new XSSFWorkbook(stream);
-                    ISheet hojaExcel = archivoExcel.GetSheetAt(0);
-                    int cantidadFilas = hojaExcel.LastRowNum + 1;
-
-                    for (int i = 0; i < cantidadFilas; i++)
-                    {
-                        if (i > 0)
-                        {
-                            string filaEncabezado = hojaExcel.GetRow(0).GetCell(0).ToString();
-                            IRow filaData = hojaExcel.GetRow(i);
-                            Usuario_Reto ur = new() { 
-                                Usuario = new(),
-                                Reto = new()
-                            };                            
-                            try
-                            {
-                                if (filaEncabezado.ToLower().Contains("correo"))
-                                {
-                                    ur.Usuario.Correo = WC.GetTrim(filaData.GetCell(0, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
-                                }                                    
-                            }
-                            catch (Exception) {}
-
-                            if (!string.IsNullOrEmpty(ur.Usuario.Correo.Trim()))
-                            {
-                                ur.Reto.IdReto = idReto;
-                                ur.Puntos = 0;
-                                ur.Tiempo = 0;
-                                ur.Vidas = 0;
-
-                                lista.Add(ur);
-                            }
-                        }
-                    }
-
-                    if (lista.Count > 0)
-                    {
-                        foreach (var item in lista)
-                        {
-                            response = VF.ValidarUsuario(item.Usuario);
-                            if (response.Error == 0)
-                            {
-                                response = await data.CreateUsuarioReto(item);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        response.Error = 1;
-                        response.Info = "el Archivo no tiene registros válidos";
-                    }
-                }
-                else
-                {
-                    response.Error = 1;
-                    response.Info = "Archivo no permitido";
-                }
+            foreach (string item in listaCorreosIds)
+            {                
+                response.Add(await data.CreateUsuarioReto(idReto, item));
             }
-            else
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+
+        [HttpPost]
+        [Route("createEquipoReto/{idReto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> CreateEquipoReto([FromRoute] Guid idReto, [FromForm] string jsonList)
+        {
+            List<string> listaIdsEquipos = JsonConvert.DeserializeObject<List<string>>(jsonList);
+            List<Response> response = new();
+
+            foreach (string item in listaIdsEquipos)
             {
-                response.Error = 1;
-                response.Info = "Falta el archivo";
+                response.Add(await data.CreateEquipoReto(idReto, new Guid(item)));
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
@@ -278,7 +246,16 @@ namespace WebApiRest.Controllers
             Response response = await data.UpdateUsuario_Reto(usuarioReto);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
-        
+
+        [HttpPut]
+        [Route("updateEstado")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Update([FromBody] Reto reto)
+        {
+            Response response = await data.UpdateRetoByEstado(reto);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
 
         [HttpDelete]
         [Route("delete")]
@@ -310,6 +287,15 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> DeleteUsuarioReto([FromRoute] Guid idReto, [FromRoute] Guid idUsuario)
         {
             Response response = await data.DeleteUsuarioReto(idReto, idUsuario);            
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpDelete]
+        [Route("deleteEquipoReto/{idReto}/{idEquipo}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> DeleteEquipoReto([FromRoute] Guid idReto, [FromRoute] Guid idEquipo)
+        {
+            Response response = await data.DeleteEquipoReto(idReto, idEquipo);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -13,10 +13,13 @@ import {
   MsgElimindo,
   MsgError,
   MsgOk,
+  SetUpsert,
   SinRegistros,
   TitleEliminar,
   TitleError,
   TitleErrorForm,
+  Upsert,
+  UpsertMsg,
 } from 'src/app/Utils/Constants';
 import { NoticiaService } from 'src/app/services/noticia.service';
 
@@ -26,9 +29,10 @@ import { NoticiaService } from 'src/app/services/noticia.service';
   styleUrls: ['./view-noticia.component.css'],
   providers: [ConfirmationService, MessageService],
 })
-export class ViewNoticiaComponent implements OnInit {
+export class ViewNoticiaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   changeRoute = ChangeRoute();
   getImage = GetImage();
   dateCompare = DateCompare();
@@ -68,6 +72,19 @@ export class ViewNoticiaComponent implements OnInit {
   ngOnInit(): void {
     this.loading(true, false);
     this.cargarData();
+  }
+
+  ngAfterViewInit(): void {
+    if (Upsert) {
+      setTimeout(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: MsgOk,
+          detail: UpsertMsg,
+        });
+        this.setUpsert(false, '');
+      }, 100);
+    }
   }
 
   cargarData() {
@@ -175,7 +192,7 @@ export class ViewNoticiaComponent implements OnInit {
 
   defaultList(event: Event) {
     let text = (event.target as HTMLInputElement).value;
-    if (!text) {
+    if (!text.trim()) {
       this.noticias = this.auxNoticias;
     }
   }

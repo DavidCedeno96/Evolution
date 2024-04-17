@@ -19,10 +19,13 @@ import {
   Loading,
   MsgError,
   MsgErrorForm,
-  ObjectInvalid,
   TitleError,
   TitleErrorForm,
   SugerenciaImagen,
+  ImgWidthMax,
+  ImgHeightMax,
+  SetUpsert,
+  HtmlLicencias,
 } from 'src/app/Utils/Constants';
 import {
   CaracterInvalid,
@@ -41,6 +44,7 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   formatTiempo = FormatTiempo();
   dateFormatInput = DateFormatInput();
   dateCompare = DateCompare();
@@ -82,6 +86,9 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     idComportamiento: '',
     comportamientoPregunta: '',
     totalPreguntas: 0,
+    usuariosAsignados: 0,
+    equiposAsignados: 0,
+    enEquipo: -1,
     estado: 0,
   };
 
@@ -106,6 +113,15 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
         ],
       ],
       idTipoReto: [this.reto.idTipoReto, [Validators.required]],
+      enEquipo: [
+        this.reto.enEquipo,
+        [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(1),
+          Validators.pattern(exp_numeros),
+        ],
+      ],
       fechaApertura: [this.reto.fechaApertura],
       fechaCierre: [this.reto.fechaCierre],
       vidas: [
@@ -132,7 +148,7 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
         [
           Validators.required,
           Validators.min(1),
-          Validators.max(100),
+          Validators.max(1000),
           Validators.pattern(exp_numeros),
         ],
       ],
@@ -140,8 +156,8 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
         this.reto.creditosObtenidos,
         [
           Validators.required,
-          Validators.min(1),
-          Validators.max(100),
+          Validators.min(0),
+          Validators.max(1000),
           Validators.pattern(exp_numeros),
         ],
       ],
@@ -205,6 +221,8 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   cargarData(idReto: string) {
     this.retoServicio.getItem(-1, idReto).subscribe({
       next: (data: any) => {
+        console.log(data);
+
         let { error, reto } = data.response;
         if (error === 0) {
           reto.fechaApertura = this.dateFormatInput(reto.fechaApertura);
@@ -284,7 +302,10 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
         let { campo, error, info } = data.response;
 
         if (error === 0) {
+          this.setUpsert(true, 'Registro Creado');
           this.router.navigate(['/view-reto']);
+        } else if (error === 2) {
+          this.alertError(TitleErrorForm, info + HtmlLicencias);
         } else if (campo !== '') {
           this.error = error;
           this.campo = campo;
@@ -310,6 +331,7 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Actualizado');
           this.router.navigate(['/view-reto']);
         } else if (campo !== '') {
           this.error = error;
@@ -344,6 +366,7 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
       ? formData.append('fechaCierre', '1800-01-01')
       : formData.append('fechaCierre', this.reto.fechaCierre);
 
+    formData.append('enEquipo', this.reto.enEquipo.toString().trim());
     formData.append('vidas', this.reto.vidas.toString().trim());
     formData.append('tiempo_ms', this.reto.tiempo_ms.toString().trim());
     formData.append(
@@ -369,20 +392,32 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   onFileSelected(event: Event) {
     this.selectedImage = (event.target as HTMLInputElement).files![0];
 
-    if (this.selectedImage.size > ImgSizeMax) {
-      this.errorArchivo = true;
-    } else {
-      this.errorArchivo = false;
-    }
-
-    if (this.selectedImage.size > 0) {
+    if (this.selectedImage) {
       let reader = new FileReader();
       reader.onload = (e: any) => {
-        this.previewImage = e.target.result;
+        let img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          let w = (img as HTMLImageElement).width;
+          let h = (img as HTMLImageElement).height;
+
+          if (
+            this.selectedImage.size > ImgSizeMax ||
+            w > ImgWidthMax ||
+            h > ImgHeightMax
+          ) {
+            this.errorArchivo = true;
+          } else {
+            this.errorArchivo = false;
+          }
+        };
+
+        this.previewImage = img.src;
       };
       reader.readAsDataURL(this.selectedImage);
+
+      console.log(this.selectedImage.name);
     }
-    console.log(this.selectedImage.name, this.previewImage);
   }
 
   setSection(index: number, tipo: string) {
@@ -455,10 +490,10 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
       tiempo_ms: totalMilisegundos,
     });
 
-    console.log(
+    /* console.log(
       typeof this.formulario.get(['tiempo_h'])?.value,
       this.formulario.get(['tiempo_h'])?.value,
       totalMilisegundos
-    );
+    ); */
   }
 }

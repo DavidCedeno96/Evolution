@@ -20,7 +20,7 @@ import {
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { Configuracion } from 'src/app/Models/Configuracion';
 
@@ -40,6 +40,23 @@ export class LoginComponent implements OnInit, AfterViewInit {
   verErrorsInputs: boolean = false;
   numClicksLogin: number = 0;
 
+  modalActivate: boolean = true;
+  activateUserToken: string = '';
+  error: number = 0;
+  info: string = '';
+
+  imgHeader: string = '';
+  config: Configuracion = {
+    idConfig: '',
+    tipo: '',
+    propiedad: '',
+    nombre: '',
+    valor: '',
+    descripcion: '',
+    idUsuario: '',
+    usuario: '',
+  };
+
   formulario!: FormGroup;
   usuario: Usuario = {
     idUsuario: '',
@@ -52,6 +69,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     idRol: '',
     rol: '',
     idPais: '',
+    pais: '',
     idCiudad: '',
     ciudad: '',
     idEmpresa: '',
@@ -68,6 +86,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private renderer: Renderer2,
     private el: ElementRef,
     private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
     private router: Router,
     private localStorage: StorageMap,
     private usuarioServicio: UsuarioService,
@@ -88,6 +107,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loading(true, false);
+    this.getRouteParams();
+
     this.getRemember();
     this.usuarioServicio.removeLocalItems();
 
@@ -100,6 +121,17 @@ export class LoginComponent implements OnInit, AfterViewInit {
     }
     const url = window.location;
     console.log(url.origin);
+  }
+
+  getRouteParams() {
+    this.route.queryParams.subscribe((params) => {
+      this.activateUserToken = params['user'];
+      if (params['user']) {
+        this.ActivateUser();
+      } else {
+        this.modalActivate = false;
+      }
+    });
   }
 
   iniciarSesion() {
@@ -127,17 +159,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
           this.setRemember();
           this.usuarioServicio.startWatching();
           this.router.navigate(['/home']);
-
-          /*const decodeToken = this.helper.decodeToken(info);
-          let { role } = decodeToken;
-          //Ruta para el jugador
-          if (role === 'jug') {
-            this.router.navigate(['/homeUser']);
-          }
-          //Ruta para el administrador
-          if (role === 'adm' || role === 'sadm') {
-            this.router.navigate(['/homeAdmin']);
-          } */
+        } else if (error === 2) {
+          this.alertError(
+            'Error de usuario',
+            'El usuario esta desactivado, por favor contactate con el administrador'
+          );
         } else {
           this.alertError(
             'Error de credenciales',
@@ -147,7 +173,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         this.loading(false, false);
       },
       error: (e) => {
-        console.log(e);
+        console.error(e);
         this.loading(false, false);
         this.alertError(TitleError, MsgError);
       },
@@ -159,18 +185,27 @@ export class LoginComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { error, info, lista } = data.response;
         if (error === 0) {
-          let imagenes: Configuracion[] = lista.filter(
-            (item: Configuracion) => {
-              return item.tipo === 'imagen';
-            }
+          let config: Configuracion[] = lista.filter((item: Configuracion) => {
+            return item.tipo === 'imagen' || item.tipo === 'view';
+          });
+
+          let imgLogin = config.find(
+            (item) => item.nombre === 'iniciar sesión'
           );
+
+          let imgHeader = config.find((item) => item.nombre === 'header');
+          this.imgHeader = imgHeader?.valor!;
+
+          let conf = config.find((item) => item.tipo === 'view');
+          this.config = conf!;
+
           const fondo = this.el.nativeElement.querySelector('.fondoImagen');
           if (fondo) {
             this.renderer.setStyle(
               fondo,
               'background-image',
               `url("${this.getImage(
-                imagenes[0].valor,
+                imgLogin!.valor,
                 'config',
                 'default-login.png'
               )}")`
@@ -184,6 +219,27 @@ export class LoginComponent implements OnInit, AfterViewInit {
       error: (e) => {
         console.error(e);
         this.alertError(TitleError, MsgErrorConexion);
+      },
+    });
+  }
+
+  ActivateUser() {
+    this.usuarioServicio.registerUser(this.activateUserToken, '').subscribe({
+      next: (data: any) => {
+        const { info, error } = data.response;
+        this.error = error;
+        this.info = info;
+        this.loading(false, false);
+      },
+      error: (e) => {
+        console.error(e);
+        this.loading(false, false);
+        if (e.status === 401 || e.status === 403) {
+          this.error = 1;
+          this.info = 'El enlace de activación del usuario ha caducado';
+        } else {
+          this.router.navigate(['/']);
+        }
       },
     });
   }
@@ -221,6 +277,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
         }
       }
     });
+  }
+
+  closeModal() {
+    this.router.navigate(['/login']);
   }
 
   togglePassword() {

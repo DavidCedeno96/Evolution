@@ -40,8 +40,7 @@ namespace WebApiRest.Data
                         Propiedad = dr["propiedad"].ToString(),
                         Nombre = dr["nombre"].ToString(),
                         Valor = dr["valor"].ToString(),
-                        Descripcion = dr["descripcion"].ToString(),
-                        IdUsuario = new Guid(dr["idUsuario"].ToString()),
+                        Descripcion = dr["descripcion"].ToString(),                        
                         Usuario = dr["usuario"].ToString(),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
@@ -122,6 +121,62 @@ namespace WebApiRest.Data
             }
 
             return list;
+        }
+
+        public async Task<ConfiguracionItem> GetConfiguracion(string nombre)
+        {
+            ConfiguracionItem item = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_ConfiguracionByNombre", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@nombre", nombre);            
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                if (await dr.ReadAsync())
+                {
+                    item.Configuracion = new Configuracion()
+                    {
+                        IdConfig = new Guid(dr["idConfig"].ToString()),
+                        Tipo = dr["tipo"].ToString(),
+                        Propiedad = dr["propiedad"].ToString(),
+                        Nombre = dr["nombre"].ToString(),
+                        Valor = dr["valor"].ToString(),
+                        Descripcion = dr["descripcion"].ToString(),
+                        IdUsuario = new Guid(dr["idUsuario"].ToString()),
+                        Usuario = dr["usuario"].ToString(),
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
+                    };
+                }
+                await dr.NextResultAsync();
+
+                item.Info = cmd.Parameters["@info"].Value.ToString();
+                item.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+            }
+            catch (Exception ex)
+            {
+                item.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                item.Error = 1;
+                item.Configuracion = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return item;
         }
 
         public async Task<Response> CreateConfiguracion(Configuracion configuracion)

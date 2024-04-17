@@ -1,8 +1,11 @@
 export interface RedSocial {
   idRed: string;
   descripcion: string;
+  usuario: string;
+  foto: string;
+  tipo: string;
+  dir: string;
   imagen: string;
-  idCategoria: string;
   fechaPublicacion: Date;
   totalLikes: number;
   totalComents: number;

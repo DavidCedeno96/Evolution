@@ -1,4 +1,5 @@
-﻿using WebApiRest.Models;
+﻿using System.Drawing;
+using WebApiRest.Models;
 
 namespace WebApiRest.Utilities
 {
@@ -118,7 +119,7 @@ namespace WebApiRest.Utilities
         }
 
         //Categoria Noticia
-        public static Response ValidarCategoriaNoticia(CategoriaNoticia categoriaNoticia)
+        public static Response ValidarCategoriaNoticia(Categoria categoriaNoticia)
         {
             Response result = new();
             bool validForm = true;
@@ -369,6 +370,34 @@ namespace WebApiRest.Utilities
             return result;
         }
 
+        //Equipo
+        public static Response ValidarEquipo(Equipo equipo)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(equipo.Nombre, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "nombre";
+                validForm = false;
+            }
+            if (!RE.ValidRE(equipo.Descripcion, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "descripcion";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
         //Opcion
         public static Response ValidarOpcion(Opcion opcion)
         {
@@ -481,18 +510,82 @@ namespace WebApiRest.Utilities
             return result;
         }
 
+        //Noticia
+        public static Response ValidarNotificacion(Notificacion notificacion)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(notificacion.MsgPersonalizado, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "mensaje personalizado";
+                validForm = false;
+            }
+            if(notificacion.Estado > 1 || notificacion.Estado < 0)
+            {
+                result.Error = 1;
+                result.Info = WC.GetErrorEstado();
+                result.Campo = "estado";
+                validForm = false;
+            }
+            if(notificacion.NumDesc > 400 || notificacion.NumDesc < 0)
+            {
+                result.Error = 1;
+                result.Info = "El NumDesc no puede ser menor a 0 o mayor a 400";
+                result.Campo = "estado";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
+        //Licencia
+        public static Response ValidarLicencia(Licencia licencia)
+        {
+            Response result = new();
+            bool validForm = true;
+            if (!RE.ValidRE(licencia.Tabla, "palabras"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetErrorLetras();
+                result.Campo = "tabla";
+                validForm = false;
+            }
+            if (!RE.ValidRE(licencia.Nombre, "palabras"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetErrorLetras();
+                result.Campo = "nombre";
+                validForm = false;
+            }            
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
         // archivos
-        public static Response ValidarArchivo(IWebHostEnvironment _env, IFormFile archivo, string tipos, string nombreCarpeta, int pesoMaximoKB = 200)
+        public static Response ValidarArchivo(IWebHostEnvironment _env, IFormFile archivo, string tipos, string nombreCarpeta, int pesoMaximoKB = 200, int widthMax = 360, int heightMax = 360)
         {
             Response result = new();
             bool validForm = true;
             string rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+            Size dimensions = WC.GetImageDimensions(archivo);
 
             if (!WC.GetArchivoPermitido(tipos, archivo.FileName))
             {
                 result.Error = 1;
                 result.Info = WC.GetErrorArchivo();
-                result.Campo = "imagen";
+                result.Campo = "archivo";
                 validForm = false;
             }
 
@@ -500,7 +593,7 @@ namespace WebApiRest.Utilities
             {
                 result.Error = 1;
                 result.Info = WC.GetArchivoExistente()+": "+archivo.FileName;
-                result.Campo = $"imagen";
+                result.Campo = "archivo";
                 validForm = false;
             }
 
@@ -508,7 +601,7 @@ namespace WebApiRest.Utilities
             {
                 result.Error = 1;
                 result.Info = WC.GetInvalid();
-                result.Campo = "imagen";
+                result.Campo = "archivo";
                 validForm = false;
 
             }
@@ -516,16 +609,27 @@ namespace WebApiRest.Utilities
             {
                 result.Error = 1;
                 result.Info = WC.GetMax50();
-                result.Campo = "imagen";
+                result.Campo = "archivo";
                 validForm = false;
             }
 
             if (archivo.Length > pesoMaximoKB * 1024)
             {
                 result.Error = 1;
-                result.Info = WC.GetErrorTamanoArchivo();
-                result.Campo = "imagen";
+                result.Info = $"El archivo no puede superar los {pesoMaximoKB} KB";
+                result.Campo = "archivo";
                 validForm = false;                
+            }
+            
+            if (!dimensions.IsEmpty)
+            {                 
+                 if(dimensions.Width > widthMax || dimensions.Height > heightMax)
+                 {
+                    result.Error = 1;
+                    result.Info = $"El archivo no puede superar los {widthMax}x{heightMax} pixeles";
+                    result.Campo = "archivo";
+                    validForm = false;
+                 }
             }            
 
             if (validForm)

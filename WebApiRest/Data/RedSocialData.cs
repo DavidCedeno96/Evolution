@@ -7,65 +7,9 @@ namespace WebApiRest.Data
 {
     public class RedSocialData
     {
-        private readonly Conexion conexion = new();
+        private readonly Conexion conexion = new();       
 
-        public async Task<RedSocialList> GetRedSocialList(int estado)
-        {
-            RedSocialList list = new()
-            {
-                Lista = new()
-            };
-
-            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
-
-            SqlCommand cmd = new("sp_B_RedSocial", sqlConnection)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.AddWithValue("@estado", estado);
-
-            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
-            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
-            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
-
-            try
-            {
-                await sqlConnection.OpenAsync();
-                SqlDataReader dr = await cmd.ExecuteReaderAsync();
-                while (await dr.ReadAsync())
-                {
-                    list.Lista.Add(new RedSocial()
-                    {
-                        IdRed = new Guid(dr["idRed"].ToString()),                                                
-                        Descripcion = dr["descripcion"].ToString(),
-                        Imagen = dr["imagen"].ToString(),
-                        FechaPublicacion = Convert.ToDateTime(dr["fechaPublicacion"].ToString()),
-                        TotalLikes = Convert.ToInt32(dr["totalLikes"].ToString()),
-                        TotalComents = Convert.ToInt32(dr["totalComents"].ToString()),
-                        Estado = Convert.ToInt32(dr["estado"].ToString()),
-                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
-                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
-                    });
-                }
-
-                list.Info = WC.GetSatisfactorio();
-                list.Error = 0;
-            }
-            catch (Exception ex)
-            {
-                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
-                list.Error = 1;
-                list.Lista = null;
-            }
-            finally
-            {
-                await sqlConnection.CloseAsync();
-            }
-
-            return list;
-        }
-
-        public async Task<RedSocialList_comentarios> GetRedSocialList_comentarios(int estado)
+        public async Task<RedSocialList_comentarios> GetRedSocialList_comentarios()
         {
 
             RedSocialList_comentarios list = new()
@@ -78,9 +22,7 @@ namespace WebApiRest.Data
             SqlCommand cmd = new("sp_B_RedSocial", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
-            };
-
-            cmd.Parameters.AddWithValue("@estado", estado);
+            };            
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -99,7 +41,11 @@ namespace WebApiRest.Data
                         RedSocial = new RedSocial()
                         {
                             IdRed = new Guid(dr["idRed"].ToString()),                            
-                            Descripcion = dr["descripcion"].ToString(),                            
+                            Descripcion = dr["descripcion"].ToString(),
+                            Usuario = dr["usuario"].ToString(),
+                            Foto = dr["foto"].ToString(),
+                            Tipo = dr["tipo"].ToString(),
+                            Dir = dr["dir"].ToString(),
                             Imagen = dr["imagen"].ToString(),                            
                             FechaPublicacion = Convert.ToDateTime(dr["fechaPublicacion"].ToString()),
                             TotalLikes = Convert.ToInt32(dr["totalLikes"].ToString()),
@@ -182,6 +128,46 @@ namespace WebApiRest.Data
             }
 
             return list;
+        }
+
+        public async Task<Response> GetRedSocial(Guid idRed)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_B_RedSocialByIdRedUser", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            
+            cmd.Parameters.AddWithValue("@idRed", idRed);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+                response.Id = cmd.Parameters["@id"].Value.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
+                response.Id = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
         }
 
         public async Task<Response> CreateRedSocial(RedSocial redSocial)

@@ -6,10 +6,13 @@ import { Medalla } from 'src/app/Models/Medalla';
 import {
   AlertError,
   GetImage,
+  ImgHeightMax,
   ImgSizeMax,
+  ImgWidthMax,
   Loading,
   MsgError,
   MsgErrorForm,
+  SetUpsert,
   SugerenciaImagen,
   TitleError,
   TitleErrorForm,
@@ -17,6 +20,7 @@ import {
 import {
   CaracterInvalid,
   exp_invalidos,
+  exp_numeros,
 } from 'src/app/Utils/RegularExpressions';
 import { AdicionalService } from 'src/app/services/adicional.service';
 import { MedallaService } from 'src/app/services/medalla.service';
@@ -30,6 +34,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   caracterInvalid = CaracterInvalid();
   sugerenciaImagen = SugerenciaImagen;
 
@@ -55,6 +60,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
     imagen: '',
     totalUsuarios: 0,
     idCondicion: '',
+    numCondicion: 0,
     condicion: '',
     estado: 0,
     fechaCreacion: new Date(),
@@ -77,6 +83,15 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
           Validators.required,
           Validators.maxLength(30),
           Validators.pattern(exp_invalidos),
+        ],
+      ],
+      numCondicion: [
+        this.medalla.numCondicion,
+        [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(1000),
+          Validators.pattern(exp_numeros),
         ],
       ],
       descripcion: [
@@ -202,6 +217,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Creado');
           this.router.navigate(['/view-medalla']);
         } else if (campo !== '') {
           this.error = error;
@@ -228,6 +244,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Actualizado');
           this.router.navigate(['/view-medalla']);
         } else if (campo !== '') {
           this.error = error;
@@ -255,6 +272,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
     formData.append('nombre', this.medalla.nombre.trim());
     formData.append('descripcion', this.medalla.descripcion.trim());
     formData.append('idCondicion', this.medalla.idCondicion.trim());
+    formData.append('numCondicion', this.medalla.numCondicion.toString());
 
     if (this.selectedImage) {
       formData.append('archivo', this.selectedImage);
@@ -266,19 +284,31 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
   onFileSelected(event: Event) {
     this.selectedImage = (event.target as HTMLInputElement).files![0];
 
-    if (this.selectedImage.size > ImgSizeMax) {
-      this.errorArchivo = true;
-    } else {
-      this.errorArchivo = false;
-    }
-
-    if (this.selectedImage.size > 0) {
+    if (this.selectedImage) {
       let reader = new FileReader();
       reader.onload = (e: any) => {
-        this.previewImage = e.target.result;
+        let img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          let w = (img as HTMLImageElement).width;
+          let h = (img as HTMLImageElement).height;
+
+          if (
+            this.selectedImage.size > ImgSizeMax ||
+            w > ImgWidthMax ||
+            h > ImgHeightMax
+          ) {
+            this.errorArchivo = true;
+          } else {
+            this.errorArchivo = false;
+          }
+        };
+
+        this.previewImage = img.src;
       };
       reader.readAsDataURL(this.selectedImage);
+
+      //console.log(this.selectedImage.name);
     }
-    console.log(this.selectedImage.name, this.previewImage);
   }
 }

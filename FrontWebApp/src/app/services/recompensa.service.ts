@@ -22,6 +22,15 @@ export class RecompensaService {
     });
   }
 
+  reporteRecompensa(estado: number): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<any>(`${this.apiURL}/reporte/recompensa/${estado}`, {
+      headers: headers,
+    });
+  }
+
   getList(estado: number): Observable<Recompensa[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
@@ -40,13 +49,16 @@ export class RecompensaService {
     });
   }
 
-  getBuscarList(texto: string): Observable<Recompensa[]> {
+  getBuscarList(texto: string, idCategoria: string): Observable<Recompensa[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
-    return this.http.get<Recompensa[]>(`${this.apiURL}/buscar/${texto}`, {
-      headers: headers,
-    });
+    return this.http.get<Recompensa[]>(
+      `${this.apiURL}/buscar?texto=${texto}&idCategoria=${idCategoria}`,
+      {
+        headers: headers,
+      }
+    );
   }
 
   create(formData: FormData): Observable<FormData> {
@@ -65,6 +77,19 @@ export class RecompensaService {
     return this.http.put<FormData>(`${this.apiURL}/update`, formData, {
       headers: headers,
     });
+  }
+
+  updateEstado(recompensa: Recompensa): Observable<Recompensa> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.put<Recompensa>(
+      `${this.apiURL}/updateEstado`,
+      recompensa,
+      {
+        headers: headers,
+      }
+    );
   }
 
   delete(idRecompensa: string): Observable<string> {

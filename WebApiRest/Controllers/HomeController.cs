@@ -11,8 +11,7 @@ namespace WebApiRest.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        readonly HomeData data = new();
-        readonly ChartPuntosData dataChartPuntos = new();
+        readonly HomeData data = new();        
         readonly UsuarioData dataUsuario = new();
         readonly ResumenGeneralData dataResumenGeneral = new();
         readonly NoticiaData dataNoticia = new();
@@ -20,6 +19,7 @@ namespace WebApiRest.Controllers
         readonly RetoData dataReto = new();
         readonly NivelData dataNivel = new();
         readonly RecompensaData dataRecompensa = new();
+        readonly LicenciaData dataLicencia = new();
 
         [HttpGet]
         [Route("list")]
@@ -41,7 +41,7 @@ namespace WebApiRest.Controllers
 
             bool hayError = false;
             string errorInfo = "Error";
-            int posicionNivel;
+            int puntosMiNivel;
             int puntosNecesarios = 100;
             int porcentajeNivel;
 
@@ -49,29 +49,31 @@ namespace WebApiRest.Controllers
             UsuarioItem miInfo = await dataUsuario.GetUsuario(-1, new Guid(userId));
             ResumenGeneralItem resumenGeneral = await dataResumenGeneral.GetResumenGeneral(new Guid(userId));
             NoticiaList noticiasEnTendencia = await dataNoticia.GetNoticiaTendenciaList(-1);
-            Usuario_MedallaList misMedallas = await dataMedalla.GetUsuarioMedallaList(4, new Guid(userId));
-            ChartPuntosList chartList = await dataChartPuntos.GetChartPuntosList();
+            Usuario_MedallaList misMedallas = await dataMedalla.GetUsuarioMedallaList(5, new Guid(userId));
+            ChartPuntosList chartList = await dataReto.GetUsuarioRetoPuntosChartList(new Guid(userId));
             UsuarioList usuariosMasActivos = await dataUsuario.GetUsuarioList(new Guid(userId));
             Usuario_RetoList misRetosTerminados = await dataReto.GetUsuarioRetoList(10, new Guid(userId), 1);
             Usuario_NivelList miNivel = await dataNivel.GetUsuarioNivelList(1, new Guid(userId));
             Usuario_RecompensalList recompensasMasReclamadas = await dataRecompensa.GetUsuarioRecompensaList();
-            Usuario_RetoList rankingPorPuntos = await dataReto.GetUsuarioRetoList();
+            Usuario_RetoList rankingPorPuntos = await dataReto.GetUsuarioRetoPuntosList(new Guid(userId), 10);
             Usuario_RetoList misRetosAsignados = await dataReto.GetUsuarioRetoList(10, new Guid(userId), 0);
+            LicenciaList licencias = await dataLicencia.GetLicenciaList(-1);
+            DatasetPuntosList datasetList = Charts.ChartPuntos(chartList);
 
             if (miNivel.Lista.Count == 0)
             {
-                posicionNivel = 0;
+                puntosMiNivel = 0;
             }
             else
             {
-                posicionNivel = miNivel.Lista[0].Posicion;
+                puntosMiNivel = miNivel.Lista[0].Puntos;
             }
-            NivelItem proximoNivel = await dataNivel.GetNivel(posicionNivel);
-            DatasetPuntosList datasetList = Charts.ChartPuntos(chartList);
 
-            if (proximoNivel.Nivel != null)
+            NivelItem nextNivel = await dataNivel.GetNivel(puntosMiNivel);
+
+            if (nextNivel.Nivel != null)
             {
-                puntosNecesarios = proximoNivel.Nivel.PuntosNecesarios;
+                puntosNecesarios = nextNivel.Nivel.PuntosNecesarios;
             }
 
             double totalPorcentaje = (miInfo.Usuario.Puntos * 100) / puntosNecesarios;
@@ -93,11 +95,12 @@ namespace WebApiRest.Controllers
             response.Lista.Add(usuariosMasActivos.Lista);
             response.Lista.Add(misRetosTerminados.Lista);
             response.Lista.Add(miNivel.Lista);
-            response.Lista.Add(proximoNivel.Nivel);
+            response.Lista.Add(nextNivel.Nivel);
+            response.Lista.Add(porcentajeNivel);
             response.Lista.Add(recompensasMasReclamadas.Lista);
             response.Lista.Add(rankingPorPuntos.Lista);
             response.Lista.Add(misRetosAsignados.Lista);
-            response.Lista.Add(porcentajeNivel);
+            response.Lista.Add(licencias.Lista);
 
 
             if (homeList.Error > 0)
@@ -155,10 +158,15 @@ namespace WebApiRest.Controllers
                 hayError = true;
                 errorInfo += ", Mis retos asignados: " + misRetosAsignados.Info;
             }
-            if (proximoNivel.Error > 0)
+            if (nextNivel.Error > 0)
             {
                 hayError = true;
-                errorInfo += ", Proximo nivel: " + proximoNivel.Info;
+                errorInfo += ", Proximo nivel: " + nextNivel.Info;
+            }
+            if (licencias.Error > 0)
+            {
+                hayError = true;
+                errorInfo += ", Licencias: " + licencias.Info;
             }
 
 

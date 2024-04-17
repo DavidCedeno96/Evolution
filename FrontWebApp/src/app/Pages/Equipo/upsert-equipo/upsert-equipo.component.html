@@ -1,0 +1,118 @@
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">
+    {{ titulo }}
+  </h5>
+  <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
+    <div class="row g-3">
+      <div class="col-12">
+        <label for="med-nom" class="form-label">Nombre*</label>
+        <input
+          type="text"
+          class="form-control {{
+            formulario.get('nombre')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="nombre"
+          id="med-nom"
+        />
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formulario.get('nombre')?.hasError('maxlength')"
+          >
+            Máximo 30 caracteres
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('nombre')?.hasError('pattern')"
+          >
+            Contiene caracteres inválidos
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('nombre')?.hasError('required')"
+          >
+            Campo obligatorio
+          </span>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-5">
+        <label for="med-desc" class="form-label">Descripción</label>
+        <textarea
+          class="form-control {{
+            formulario.get('descripcion')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="descripcion"
+          cols="30"
+          rows="7"
+          id="med-desc"
+        ></textarea>
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formulario.get('descripcion')?.hasError('maxlength')"
+          >
+            Máximo 250 caracteres
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('descripcion')?.hasError('caracterInvalid')"
+          >
+            Contiene caracteres inválidos
+          </span>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-7">
+        <label for="med-imagen" class="form-label">Imagen</label>
+        <input
+          type="file"
+          class="form-control mb-2 {{
+            errorArchivo && verErrorsInputs ? 'is-invalid' : ''
+          }}"
+          id="med-imagen"
+          accept=".jpg, .jpeg, .png"
+          (change)="onFileSelected($event)"
+        />
+        <div class="invalid-feedback">
+          El archivo no puede superar los 360x360 píxeles y los 200 KB.
+        </div>
+        <div class="text-center text-md-start">
+          <small
+            class="d-block {{
+              errorArchivo && verErrorsInputs ? 'd-none' : ''
+            }}"
+            >{{ sugerenciaImagen }}
+          </small>
+          <img
+            *ngIf="!selectedImage"
+            [src]="getImage(equipo.imagen, 'equipo', 'default-equipo.png')"
+            class="img-thumbnail"
+            width="110"
+            alt="medalla"
+          />
+          <img
+            *ngIf="selectedImage"
+            [src]="previewImage"
+            class="img-thumbnail"
+            width="110"
+            alt="medalla"
+          />
+        </div>
+      </div>
+
+      <div class="col-12 mt-4 text-end d-grid d-md-block">
+        <button type="submit" class="btn btn-primary mb-3 mb-md-0 me-md-2">
+          <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
+        </button>
+        <a class="btn btn-tertiary" routerLink="/view-equipo">
+          <i class="fa-solid fa-angle-left me-2"></i>Cancelar
+        </a>
+      </div>
+    </div>
+  </form>
+</div>

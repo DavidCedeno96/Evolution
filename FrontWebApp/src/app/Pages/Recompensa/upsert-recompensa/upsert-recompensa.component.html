@@ -1,200 +1,229 @@
-<div class="my-3 my-md-5">
-  <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
-    <h5 class="my-5 text-center txt text-primary text-uppercase">
-      {{ titulo }}
-    </h5>
-    <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
-      <div class="row g-3">
-        <div class="col-12 col-md-4">
-          <label for="rec-nom" class="form-label">Nombre*</label>
-          <input
-            type="text"
-            class="form-control {{
-              formulario.get('nombre')?.errors && verErrorsInputs
-                ? 'is-invalid'
-                : ''
-            }}"
-            formControlName="nombre"
-            id="rec-nom"
-          />
-          <div class="invalid-feedback">
-            <span
-              class="d-block"
-              *ngIf="formulario.get('nombre')?.hasError('maxlength')"
-            >
-              Máximo 60 caracteres
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('nombre')?.hasError('pattern')"
-            >
-              Contiene caracteres inválidos
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('nombre')?.hasError('required')"
-            >
-              Campo obligatorio
-            </span>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <label for="rec-cantdips" class="form-label"
-            >Cantidad Disponible*</label
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">
+    {{ titulo }}
+  </h5>
+  <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
+    <div class="row g-3">
+      <div class="col-12 col-md-6 col-lg-3">
+        <label for="rec-cat" class="form-label">Categoría*</label>
+        <select
+          class="form-select {{
+            formulario.get('idCategoria')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="idCategoria"
+          id="rec-cat"
+        >
+          <option value="">Seleccione...</option>
+          <option *ngFor="let item of categorias" [value]="item.idCategoria">
+            {{ item.nombre }}
+          </option>
+        </select>
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formulario.get('idCategoria')?.hasError('required')"
           >
-          <input
-            type="text"
-            class="form-control {{
-              formulario.get('cantDisponible')?.errors && verErrorsInputs
-                ? 'is-invalid'
-                : ''
-            }}"
-            formControlName="cantDisponible"
-            id="rec-cantdips"
-          />
-          <div class="invalid-feedback">
-            <span
-              class="d-block"
-              *ngIf="formulario.get('cantDisponible')?.hasError('min')"
-            >
-              Mínimo 1
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('cantDisponible')?.hasError('max')"
-            >
-              Máximo 99999
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('cantDisponible')?.hasError('pattern')"
-            >
-              Solo se permiten números
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('cantDisponible')?.hasError('required')"
-            >
-              Campo obligatorio
-            </span>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <label for="rec-cantcanje" class="form-label"
-            >Créditos Requeridos*</label
-          >
-          <input
-            type="text"
-            class="form-control {{
-              formulario.get('cantCanje')?.errors && verErrorsInputs
-                ? 'is-invalid'
-                : ''
-            }}"
-            formControlName="cantCanje"
-            id="rec-cantcanje"
-          />
-          <div class="invalid-feedback">
-            <span
-              class="d-block"
-              *ngIf="formulario.get('cantCanje')?.hasError('min')"
-            >
-              Mínimo 1
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('cantCanje')?.hasError('max')"
-            >
-              Máximo 9999
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('cantCanje')?.hasError('pattern')"
-            >
-              Solo se permiten números
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('cantCanje')?.hasError('required')"
-            >
-              Campo obligatorio
-            </span>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <label for="rec-desc" class="form-label">Descripción</label>
-          <textarea
-            class="form-control {{
-              formulario.get('descripcion')?.errors && verErrorsInputs
-                ? 'is-invalid'
-                : ''
-            }}"
-            formControlName="descripcion"
-            cols="30"
-            rows="7"
-            id="rec-desc"
-          ></textarea>
-          <div class="invalid-feedback">
-            <span
-              class="d-block"
-              *ngIf="formulario.get('descripcion')?.hasError('maxlength')"
-            >
-              Máximo 250 caracteres
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('descripcion')?.hasError('caracterInvalid')"
-            >
-              Contiene caracteres inválidos
-            </span>
-          </div>
-        </div>
-        <div class="col-12 col-md-8">
-          <label for="rec-imagen" class="form-label">Imagen</label>
-          <input
-            type="file"
-            class="form-control mb-2 {{
-              errorArchivo && verErrorsInputs ? 'is-invalid' : ''
-            }}"
-            id="rec-imagen"
-            accept=".jpg, .jpeg, .png"
-            (change)="onFileSelected($event)"
-          />
-          <div class="invalid-feedback">
-            El tamaño del archivo no puede superar los 200 KB.
-          </div>
-          <div class="text-center text-md-start">
-            <small class="d-block">{{ sugerenciaImagen }} </small>
-            <img
-              *ngIf="!selectedImage"
-              [src]="
-                getImage(
-                  recompensa.imagen,
-                  'recompensa',
-                  'default-recompensa.jpg'
-                )
-              "
-              class="img-thumbnail"
-              width="110"
-              alt="recompensa"
-            />
-            <img
-              *ngIf="selectedImage"
-              [src]="previewImage"
-              class="img-thumbnail"
-              width="110"
-              alt="recompensa"
-            />
-          </div>
-        </div>
-        <div class="col-12 mt-4 text-end d-grid d-md-block">
-          <button type="submit" class="btn btn-success mb-3 mb-md-0 me-md-2">
-            <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
-          </button>
-          <a class="btn btn-secondary" routerLink="/view-recompensa">
-            <i class="fa-solid fa-angle-left me-2"></i>Cancelar
-          </a>
+            Campo obligatorio
+          </span>
         </div>
       </div>
-    </form>
-  </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <label for="rec-nom" class="form-label">Nombre*</label>
+        <input
+          type="text"
+          class="form-control {{
+            formulario.get('nombre')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="nombre"
+          id="rec-nom"
+        />
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formulario.get('nombre')?.hasError('maxlength')"
+          >
+            Máximo 60 caracteres
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('nombre')?.hasError('pattern')"
+          >
+            Contiene caracteres inválidos
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('nombre')?.hasError('required')"
+          >
+            Campo obligatorio
+          </span>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-3">
+        <label for="rec-cantdips" class="form-label"
+          >Cantidad Disponible*</label
+        >
+        <input
+          type="text"
+          class="form-control {{
+            formulario.get('cantDisponible')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="cantDisponible"
+          id="rec-cantdips"
+        />
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formulario.get('cantDisponible')?.hasError('min')"
+          >
+            Mínimo 1
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('cantDisponible')?.hasError('max')"
+          >
+            Máximo 99999
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('cantDisponible')?.hasError('pattern')"
+          >
+            Solo se permiten números
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('cantDisponible')?.hasError('required')"
+          >
+            Campo obligatorio
+          </span>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <label for="rec-cantcanje" class="form-label"
+          >Créditos Requeridos*</label
+        >
+        <input
+          type="text"
+          class="form-control {{
+            formulario.get('cantCanje')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="cantCanje"
+          id="rec-cantcanje"
+        />
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formulario.get('cantCanje')?.hasError('min')"
+          >
+            Mínimo 1
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('cantCanje')?.hasError('max')"
+          >
+            Máximo 9999
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('cantCanje')?.hasError('pattern')"
+          >
+            Solo se permiten números
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('cantCanje')?.hasError('required')"
+          >
+            Campo obligatorio
+          </span>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="rec-desc" class="form-label">Descripción</label>
+        <textarea
+          class="form-control {{
+            formulario.get('descripcion')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="descripcion"
+          cols="30"
+          rows="7"
+          id="rec-desc"
+        ></textarea>
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formulario.get('descripcion')?.hasError('maxlength')"
+          >
+            Máximo 250 caracteres
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formulario.get('descripcion')?.hasError('caracterInvalid')"
+          >
+            Contiene caracteres inválidos
+          </span>
+        </div>
+      </div>
+      <div class="col-12 col-md-8">
+        <label for="rec-imagen" class="form-label">Imagen</label>
+        <input
+          type="file"
+          class="form-control mb-2 {{
+            errorArchivo && verErrorsInputs ? 'is-invalid' : ''
+          }}"
+          id="rec-imagen"
+          accept=".jpg, .jpeg, .png"
+          (change)="onFileSelected($event)"
+        />
+        <div class="invalid-feedback">
+          El archivo no puede superar los 360x360 píxeles y los 200 KB.
+        </div>
+        <div class="text-center text-md-start">
+          <small
+            class="d-block {{
+              errorArchivo && verErrorsInputs ? 'd-none' : ''
+            }}"
+            >{{ sugerenciaImagen }}
+          </small>
+          <img
+            *ngIf="!selectedImage"
+            [src]="
+              getImage(
+                recompensa.imagen,
+                'recompensa',
+                'default-recompensa.jpg'
+              )
+            "
+            class="img-thumbnail"
+            width="110"
+            alt="recompensa"
+          />
+          <img
+            *ngIf="selectedImage"
+            [src]="previewImage"
+            class="img-thumbnail"
+            width="110"
+            alt="recompensa"
+          />
+        </div>
+      </div>
+      <div class="col-12 mt-4 text-end d-grid d-md-block">
+        <button type="submit" class="btn btn-primary mb-3 mb-md-0 me-md-2">
+          <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
+        </button>
+        <a class="btn btn-tertiary" routerLink="/view-recompensa">
+          <i class="fa-solid fa-angle-left me-2"></i>Cancelar
+        </a>
+      </div>
+    </div>
+  </form>
 </div>

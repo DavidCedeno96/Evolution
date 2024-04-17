@@ -1,7 +1,7 @@
 <div class="my-3 my-md-5">
   <div class="shadow-lg p-4 px-md-5 mb-2 bg-body rounded">
     <div class="d-flex justify-content-between mb-3">
-      <span class="fw-semibold txt text-primary fs-5"
+      <span class="fw-semibold txt text-secondary fs-5"
         >Pregunta {{ preguntaActual + 1 }}/{{ preguntaOpciones.length }}</span
       >
       <div class="icon-text">
@@ -9,7 +9,7 @@
           svgIcon="reloj-arena"
           class="icon-border-circle me-2"
         ></mat-icon>
-        <span class="fw-semibold txt text-primary fs-5">{{
+        <span class="fw-semibold txt text-secondary fs-5">{{
           formatTiempoRestante
         }}</span>
       </div>
@@ -71,7 +71,7 @@
         <div class="col-12 d-grid d-md-block text-end">
           <button
             type="submit"
-            class="btn btn-success"
+            class="btn btn-primary"
             [disabled]="nextButonDisable"
           >
             <span>{{ nextText }}</span>

@@ -1,18 +1,13 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Categoria } from 'src/app/Models/Adicional';
 import {
   AlertError,
-  ChangeRoute,
   Loading,
   MsgError,
   MsgErrorForm,
+  SetUpsert,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
@@ -30,6 +25,7 @@ import { CategoriaNoticiaService } from 'src/app/services/categoria-noticia.serv
 export class UpsertCategoriaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   caracterInvalid = CaracterInvalid();
 
   type: string = '';
@@ -170,6 +166,7 @@ export class UpsertCategoriaComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Creado');
           this.router.navigate(['/view-categoria-noticia']);
         } else if (campo !== '') {
           this.error = error;
@@ -196,6 +193,7 @@ export class UpsertCategoriaComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         let { campo, error, info } = data.response;
         if (error === 0) {
+          this.setUpsert(true, 'Registro Actualizado');
           this.router.navigate(['/view-categoria-noticia']);
         } else if (campo !== '') {
           this.error = error;

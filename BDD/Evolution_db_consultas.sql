@@ -4,10 +4,10 @@ EXEC sp_spaceused
 
 EXEC sp_helpdb 'Evolution_db';
 
----
+--- Fecha y hora actual
 SELECT SYSDATETIME() AS [Fecha y Hora Actual], CURRENT_TIMEZONE() AS [Zona Horaria Actual];
 
----
+--- SPs
 SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES 
    WHERE ROUTINE_TYPE = 'PROCEDURE'
    ORDER BY ROUTINE_NAME 
@@ -24,7 +24,7 @@ INNER JOIN sys.trigger_events te ON tr.object_id = te.object_id
 INNER JOIN sys.objects o ON tr.parent_id = o.object_id
 --WHERE te.type = 1;
 
----
+--- RESTRICCIONES
 SELECT 
 	tc.CONSTRAINT_TYPE,
     tc.CONSTRAINT_NAME,
@@ -34,10 +34,10 @@ FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
 JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
     ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME
 WHERE 
-    tc.TABLE_NAME = 'nivel' AND 
+    tc.TABLE_NAME = 'Usuario_Equipo' AND 
     tc.CONSTRAINT_TYPE = 'UNIQUE'    
 
-----
+---- RESTRICCIONES
 SELECT *
 FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
 WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
@@ -46,13 +46,14 @@ WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'nivel';
+WHERE tc.TABLE_NAME = 'Notificacion';
 
 ---
 SELECT @@VERSION;
 
 -- INSERTS IMPORTANTES ---------------------------------------------------------
 --Insert into Constants (nombre,descripcion) values
+--('sin_licencias','El número de licencias están agotadas'),
 --('no_delete','Registro no eliminado'),
 --('encontrar','encontrado'),
 --('no_encontrar','no encontrado'),
@@ -68,6 +69,11 @@ SELECT @@VERSION;
 
 -- Insert Into CategoriaNoticia (nombre, descripcion) values 
 -- ('General','Es para las noticias en general')
+
+--Notificacion
+--Configuracion
+--Inicio
+--CorreoEnvio
 
 -- OTROS INSERTS ---------------------------------------------------------
 --Insert into Usuario (nombre, apellido, correo, celular, idRol, pais, ciudad, clave) values
@@ -93,6 +99,9 @@ exec sp_B_Inicio
 @info = '',
 @id = ''
 
+select * from Inicio where nombre = 'Mis últimos retos terminados'
+-- update Inicio set nombre = 'Retos completados' where nombre = 'Mis últimos retos terminados'
+
 exec sp_B_InicioByIdRol	
 @idRol = 'adm',
 @error = '',
@@ -117,11 +126,13 @@ exec sp_D_InicioByNoIds
 @id = ''
 
 -- USUARIO --------------------------------------------------------
--- delete from Usuario where idUsuario = '015E40DD-58CE-401E-A0A9-075874BC0B68'
+-- delete from Usuario where idUsuario = 'D33AEE6A-F632-4476-9C9D-7A1D6DB5093B'
 -- delete from Usuario where fechaCreacion > '2024-02-20'
+-- update Usuario set correo = 'user@correo.com' where idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41'
+-- update Usuario set estado = 1
 
 select * from Usuario
-
+--AB37197C-BF33-44B8-BA5D-E246FA250B41
 exec sp_B_Usuario
 @estado = -1,
 @error = '',
@@ -141,8 +152,16 @@ exec sp_B_UsuarioByCorreo
 @info = '',
 @id = ''
 
+exec sp_B_UsuarioByRegister
+@idU = '',
+@correo = '',
+@codRegistro = '',
+@error = '',
+@info = '',
+@id = ''
+
 exec sp_B_UsuarioByAll		
-@buscar = 'david',
+@buscar = 'admin',
 @error = '',
 @info = '',
 @id = ''
@@ -193,6 +212,15 @@ exec sp_U_UsuarioByEstado
 @error = '',
 @info = '',
 @id = ''
+
+
+exec sp_U_UsuarioEstadoByCorreoIds
+@correo_id = '1020304056',
+@estado = 0,
+@error = '',
+@info = '',
+@id = ''
+
 
 exec sp_U_UsuarioByFoto
 @idUsuario = 'F42329D1-EDAA-4F2C-9AE1-8F026C92C842',
@@ -373,14 +401,8 @@ exec sp_B_NivelByAll
 @info = '',
 @id = ''
 
-exec sp_B_NivelByPosicion
-@posicion = 2,
-@error = '',
-@info = '',
-@id = ''
-
-exec sp_B_NivelByNextPos
-@posicion = 4,
+exec sp_B_NivelByNextPuntos
+@puntos = 20,
 @error = '',
 @info = '',
 @id = ''
@@ -388,7 +410,6 @@ exec sp_B_NivelByNextPos
 
 exec sp_C_Nivel
 @nombre = 'nivel con pos',
-@posicion = '',
 @descripcion = 'este es para el nivel con pos',
 @puntosNecesarios = 3,
 @imagen = '',
@@ -399,7 +420,6 @@ exec sp_C_Nivel
 exec sp_U_Nivel
 @idNivel = 'A3AE5C3C-1D90-4306-882D-A092EDBD82EF',
 @nombre = 'nivel con pos edit',
-@posicion = '',
 @descripcion = 'este es para el nivel con pos edit',
 @puntosNecesarios = 23,
 @imagen = '',
@@ -414,20 +434,24 @@ exec sp_D_Nivel
 @id = ''
 
 exec sp_B_Usuario_NivelByIdUsuario		
-@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
 @top = -1,
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_C_Usuario_Nivel
-@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
-@idNivel = 'A3AE5C3C-1D90-4306-882D-A092EDBD82EF',
+@idUsuario = '015E40DD-58CE-401E-A0A9-075874BC0B68',
+@idNivel = '62629073-7CC1-4AD3-82F1-B57A823E0092',
 @error = '',
 @info = '',
 @id = ''
 
+select * from Usuario_Nivel
+select * from Usuario
 -- Condicion --------------------------------------------------------
+select * from Condicion
+
 exec sp_B_Condicion		
 @estado = -1,
 @error = '',
@@ -435,7 +459,7 @@ exec sp_B_Condicion
 @id = ''
 
 -- Medallas --------------------------------------------------------
-select * from Condicion
+select * from Medalla
 
 exec sp_B_Medalla
 @estado = -1,
@@ -451,7 +475,7 @@ exec sp_B_MedallaById
 @id = ''
 
 exec sp_B_MedallaByAll		
-@buscar = 'medalla 2',
+@buscar = 'medalla',
 @error = '',
 @info = '',
 @id = ''
@@ -461,6 +485,7 @@ exec sp_C_Medalla
 @descripcion = 'desc 1',
 @imagen = '',
 @idCondicion = '2439150E-8525-4582-8203-9D1D2AC93739',
+@numCondicion = 0,
 @error = '',
 @info = '',
 @id = ''
@@ -471,6 +496,7 @@ exec sp_U_Medalla
 @descripcion = 'desc 1',
 @imagen = '',
 @idCondicion = '2439150E-8525-4582-8203-9D1D2AC93739',
+@numCondicion = 0,
 @error = '',
 @info = '',
 @id = ''
@@ -489,13 +515,49 @@ exec sp_B_Usuario_MedallaByIdUsuario
 @id = ''
 
 exec sp_C_Usuario_Medalla
-@idUsuario = '6D3A6B25-C6C7-4ED4-A5E9-D992B1CC98A7',
-@idMedalla = '26763EAA-657D-4E10-BD82-78D29934C607',
+@idUsuario = 'F42329D1-EDAA-4F2C-9AE1-8F026C92C842',
+@idMedalla = '2EB8768C-F1AE-49BE-83E0-B04C39EB64C2',
 @error = '',
 @info = '',
 @id = ''
 
--- Recompensas --------------------------------------------------------
+-- Recompensas y sus Categorias --------------------------------------------------------
+-- Categorias ----------
+exec sp_B_CategoriaRecompensa		
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_CategoriaRecompensaByAll		
+@buscar = 'g',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_CategoriaRecompensaById		
+@idCategoria = '11283D21-EA6E-4945-9C59-A8868416016f',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_CategoriaRecompensa
+@nombre = 'Nueva1',
+@descripcion = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_CategoriaRecompensa
+@idCategoria = '11283D21-EA6E-4945-9C59-A8868416016F',
+@nombre = 'edit',
+@descripcion = 'desc edit',
+@error = '',
+@info = '',
+@id = ''
+
+-- Recompensas ----------
 exec sp_B_Recompensa
 @estado = -1,
 @error = '',
@@ -503,20 +565,22 @@ exec sp_B_Recompensa
 @id = ''
 
 exec sp_B_RecompensaById		
-@idRecompensa = 'CC0B9551-17E1-453A-9FFA-D0EF55F02F70',
+@idRecompensa = '4D6DA0F1-01A5-4EFC-9CA3-4FD6A5130A11',
 @estado = -1,
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_B_RecompensaByAll		
-@buscar = 'entradas',
+@buscar = '',
+@idCategoria = 'EE6CA0ED-F5E2-4640-AAF4-76D11C9762B2',
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_C_Recompensa
 @nombre = '10 entradas al cine',
+@idCategoria = '',
 @descripcion = '',
 @imagen = '',
 @cantDisp = 0,	
@@ -527,11 +591,19 @@ exec sp_C_Recompensa
 
 exec sp_U_Recompensa
 @idRecompensa = '',
+@idCategoria = '',
 @nombre = '10 entradas al cine',
 @descripcion = '',
 @imagen = '',
 @cantDisp = 0,	
 @cantCanje = 5,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_RecompensaByEstado
+@idRecompensa = '3C18891D-48F7-44B1-9DE9-E9EB833CEE23',
+@estado = '',
 @error = '',
 @info = '',
 @id = ''
@@ -548,6 +620,12 @@ exec sp_B_Usuario_RecompensaTotalUsuarios
 @info = '',
 @id = ''
 
+exec sp_B_Usuario_RecompensaByIdUsuario
+@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@error = '',
+@info = '',
+@id = ''
+
 -- HAY TRIGGER
 exec sp_C_Usuario_Recompensa
 @idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
@@ -555,6 +633,8 @@ exec sp_C_Usuario_Recompensa
 @error = '',
 @info = '',
 @id = ''
+
+select * from Usuario
 
 -- Noticias y sus Categorias --------------------------------------------------------
 -- Categorias
@@ -665,10 +745,13 @@ exec sp_C_Usuario_Noticia
 @id = ''
 
 -- Red Social --------------------------------------------------------
-select * from RedSocial
-
 exec sp_B_RedSocial		
-@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_RedSocialByIdRedUser		
+@idRed = 'DAD5FFE9-A8CE-4D00-BF12-9FAF4F30204f',
 @error = '',
 @info = '',
 @id = ''
@@ -702,34 +785,39 @@ select * from Usuario_RedSocial
 -- Configuracion --------------------------------------------------------
 select * from Configuracion where tipo = 'imagen'
 
+--update Configuracion set valor = '#f58220' where idConfig = '8FDC49E5-2C82-423F-B3A9-85AF544339C9'
+
 exec sp_B_Configuracion
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_B_ConfiguracionByValor
-@valor = '',
+@valor = 'abc-123-xyz-23',
 @error = '',
 @info = '',
 @id = ''
 
---update Configuracion set valor = '#f58220' where idConfig = 'F7A0D011-57B5-4417-A8C4-F38C8DCE0A20'
---update Configuracion set valor = null where idConfig = 'E21410F4-491B-4E5D-A639-FE5C0E70278D'
+exec sp_B_ConfiguracionByNombre
+@nombre = 'registro',
+@error = '',
+@info = '',
+@id = ''
 
 exec sp_C_Configuracion
-@tipo = 'llave',
+@tipo = 'view',
 @propiedad = '',
-@nombre = 'codigo de registro',
-@valor = 'abc-123',
-@descripcion = 'Este es el código para que el usuario pueda registrarse en el sitio web',
-@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@nombre = 'registro',
+@valor = '0',
+@descripcion = 'Esta es para permitir la vista de Registrarse',
+--@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_U_Configuracion
-@idConfig = '5DFF0459-133F-4EAF-889A-8B2E5557184B',
-@valor = '#FFFFFF',
+@idConfig = '71B8C9AE-1509-4886-80B7-679368903BD7',
+@valor = '1',
 @idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
 @error = '',
 @info = '',
@@ -847,7 +935,7 @@ exec sp_B_Reto
 @id = ''
 
 exec sp_B_RetoById	
-@idReto = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
+@idReto = '27C5527F-3EA3-431B-BEDF-65841EAF5663',
 @estado = -1,
 @error = '',
 @info = '',
@@ -878,6 +966,7 @@ exec sp_C_Reto
 @imagen = '',
 @idTipoReto = '63AA060B-CDE4-49C0-9D60-AAF069DF1533',
 @idComportamiento = '1DD28D88-34C7-4394-AB3D-525726001730',
+@enEquipo = 0,
 @error = '',
 @info = '',
 @id = ''
@@ -900,10 +989,17 @@ exec sp_U_Reto
 @info = '',
 @id = ''
 
+exec sp_U_RetoByEstado
+@idReto = '63AA060B-CDE4-49C0-9D60-AAF069DF1533',
+@estado = '',
+@error = '',
+@info = '',
+@id = ''
+
 select * from Usuario_Reto
---delete from Usuario_Reto where fechaCreacion = '2024-03-07 09:35:53.787'
+--delete from Reto where fechaCreacion = '2024-03-07 09:35:53.787'
 exec sp_B_Usuario_RetoByIdUsuario		
-@idUsuario = '91331754-1E83-417F-90E7-0E596E996510',
+@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
 @top = -1,
 @completado = 0,
 @error = '',
@@ -911,7 +1007,7 @@ exec sp_B_Usuario_RetoByIdUsuario
 @id = ''
 
 exec sp_B_Usuario_RetoByIdUsuarioByAll		
-@buscar = 'pri',
+@buscar = 'en e',
 @idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',			
 @completado = 0,
 @error = '',
@@ -933,41 +1029,175 @@ exec sp_B_Usuario_RetoByIdUsuarioYIdReto
 @info = '',
 @id = ''
 
+select * from Usuario
 exec sp_B_Usuario_RetoSumaPuntos
+@idUsuario = '015E40DD-58CE-401E-A0A9-075874BC0B68',
+@top = 10,
 @error = '',
 @info = '',
 @id = ''
 
+exec sp_B_Usuario_RetoPtosMesesAños
+@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
+@error = '',
+@info = '',
+@id = ''
 
 exec sp_C_Usuario_Reto
-@correo = 'elver.galarga@gmail.com',
+@correo = 'david@hotmail.com',
 @idReto = '81642C08-9711-469B-B831-18C682B5122A',
-@puntos = 0,
-@tiempo = 0,
-@vidas = 0,
+@tieneEquipo = 0,
 @error = '',
 @info = '',
 @id = ''
 
-exec sp_U_Usuario_Reto
-@idUsuario = '81642C08-9711-469B-B831-18C682B5122A',
-@idReto = '81642C08-9711-469B-B831-18C682B5122A',
-@puntos = 0,
-@tiempo = 0,
-@vidas = 0,
-@completado = 0,
-@error = '',
-@info = '',
-@id = ''
-
-exec sp_D_Usuario_Reto	
-@idUsuario = '',
+exec sp_C_Usuario_RetoByCorreoIds
+@correo_id = '',
 @idReto = '',
 @error = '',
 @info = '',
 @id = ''
 
+exec sp_U_Usuario_Reto
+@idUsuario = 'F42329D1-EDAA-4F2C-9AE1-8F026C92C842',
+@idReto = '27C5527F-3EA3-431B-BEDF-65841EAF5663',
+@puntos = 10,
+@tiempo = 100,
+@vidas = -1,
+@completado = 1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_D_Usuario_Reto	
+@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@idReto = '81642C08-9711-469B-B831-18C682B5122A',
+@error = '',
+@info = '',
+@id = ''
+
+select * from Usuario_Reto
 select * from Usuario
+
+-- Equipos ------------------------------------------------------------------------
+select * from Equipo
+select * from Usuario
+select * from Usuario_Equipo
+
+exec sp_B_Equipo
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_EquipoById		
+@idEquipo = 'C1A956C7-E197-4D62-8D7F-86AF30AFF3EE',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_EquipoByAll		
+@buscar = 'desc 2',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Equipo		
+@nombre = '',
+@imagen = '',
+@descripcion = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Equipo		
+@idEquipo = '',
+@nombre = '',
+@imagen = '',
+@descripcion = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_EquipoByEstado
+@idEquipo = 'FAAE4C5D-9140-40FE-8FB1-F88C5090D8A2',
+@estado = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_D_Equipo	
+@idEquipo = 'FAAE4C5D-9140-40FE-8FB1-F88C5090D8A1',
+@error = '',
+@info = '',
+@id = ''
+
+
+select * from Usuario_Equipo
+exec sp_B_Usuario_EquipoByIdEquipo
+@idEquipo = '53F42543-4841-4482-B4CA-B6C1EABA4EF8',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Usuario_Equipo
+@correo = 'elver.galarga@gmail.com',
+@idEquipo = '4638E1DF-928A-442A-BCD8-388AD33A8829',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Usuario_EquipoByCorreoIds
+@correo_id = '',
+@idEquipo = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_D_Usuario_Equipo	
+@idUsuario = '',
+@idEquipo = '',
+@error = '',
+@info = '',
+@id = ''
+
+
+exec sp_B_Equipo_RetoByIdReto
+@idReto = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Equipo_Reto
+@idEquipo = '53F42543-4841-4482-B4CA-B6C1EABA4EF8',
+@idReto = 'D9CA3DCB-EE6A-4F35-AE4C-719843510A1A',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_D_Equipo_Reto	
+@idEquipo = '29F12B60-F1D4-4CA8-948C-90BAF876A4F2',
+@idReto = '27C5527F-3EA3-431B-BEDF-65841EAF5663',
+@error = '',
+@info = '',
+@id = ''
+
+-- EQUIPOS AGREGADOS A LOS RETOS
+Select 	
+ur.idReto,
+e.idEquipo,
+count(ue.idEquipo) as 'totalUsuarios',
+e.nombre,
+ISNULL(e.imagen, 'N/A') as 'imagen'	,
+e.estado
+From Usuario_Reto ur 
+inner join Usuario_Equipo ue on ue.idUsuario = ur.idUsuario
+inner join Equipo e on e.idEquipo = ue.idEquipo 
+Where ur.tieneEquipo = 1
+Group by ue.idEquipo, ur.idReto, e.idEquipo, e.nombre, e.imagen, e.estado
+
 -- Tipo de Reto ------------------------------------------------------------------------
 exec sp_B_tipoReto		
 @estado = -1,
@@ -983,13 +1213,6 @@ exec sp_B_ComporPregu
 @info = '',
 @id = ''
 
-
--- Chart puntos ------------------------------------------------------------------------
-exec sp_B_chartPuntos
-@error = '',
-@info = '',
-@id = ''
-
 -- Resumen General ------------------------------------------------------------------------
 select * from Usuario
 exec sp_B_resumenGeneral
@@ -998,6 +1221,80 @@ exec sp_B_resumenGeneral
 @info = '',
 @id = ''
 
+-- Estadisticas del Campus (Licencias)------------------------------------------------------------------------
+select * from Licencia
+exec sp_B_Licencia
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Licencia
+@tabla = 'Batalla',
+@nombre = 'Batallas',
+@cantMax = 10,
+@error = '',
+@info = '',
+@id = ''
+
+-- delete from Licencia where idLicencia = '88A01598-B763-4A27-B13F-9A477D93F61E' 
+
+-- Notificación ------------------------------------------------------------------------
+exec sp_B_Notificacion		
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_NotificacionById		
+@idNotificacion = '69614AED-FC82-4EB0-91BD-1463CF6D75FC',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_NotificacionByNombre		
+@nombre = 'Notificar a los usuarios cuando canjean una recompensa',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_Notificacion
+@idNotificacion = '',
+@estado = '',
+@msgPers = '',
+@numDesc = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_NotificacionByEstado		
+@idNotificacion = 'F8F1F0CD-7338-473D-B75A-2256A0924D84',
+@estado = '',
+@error = '',
+@info = '',
+@id = ''
+
+-- Correo ------------------------------------------------------------------------
+select * from CorreoEnvio
+exec sp_B_CorreoEnvio
+@error = '',
+@info = '',
+@id = ''
+
+declare @auxClaveCorreo varbinary(max) = CAST('Aqui poner el texto encripado' AS VARBINARY(MAX))
+insert into CorreoEnvio (correo, clave, puerto, host) values
+('bcedeno@digimentore.com.ec', @auxClaveCorreo, 587, 'smtp.office365.com')
+
+------------------------------------------------------------------------------------------------------------------------------------
+--Insert Into Notificacion (nombre) values
+--('Notificar a los usuarios cuando el administrador crea un nuevo usuario'),
+--('Notificar a los usuarios cuando se les agregaron a un reto'),
+--('Notificar a los usuarios cuando ganan una medalla'),
+--('Notificar a los usuarios cuando este entre 10 primeros puestos del ranking'),
+--('Notificar a los usuarios cuando el reto esta por cerrarse'),
+--('Notificar a los usuarios cuando canjean una recompensa'),
+--('Notificar a los usuarios cuando suben de nivel'),
+--('Notificar a los usuarios cuando reciben una reacción en la red social'),
 ------------------------------------------------------------------------------------------------------------------------------------
 --insert into Reto (nombre, fechaApetura, fechaCierre, vidas, tiempo_ms, puntosRecompensa, creditosObtenidos, idTipoReto, idComportamiento) values
 --('Mi primer reto', '2023-12-16', '2023-12-17', 3, 300000, 10, 5, '63AA060B-CDE4-49C0-9D60-AAF069DF1533', '1DD28D88-34C7-4394-AB3D-525726001730')
@@ -1016,4 +1313,3 @@ exec sp_B_resumenGeneral
 
 
 SELECT CONVERT(uniqueidentifier,'DF215E10-8BD4-4401-B2DC-99BB03135F2E')
-select top 1 * from Usuario_Nivel order by fechaCreacion desc

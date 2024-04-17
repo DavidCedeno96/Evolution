@@ -1,0 +1,95 @@
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">
+    Acciones masivas
+  </h5>
+  <form
+    class="row g-3 mb-4"
+    [formGroup]="formulario"
+    (ngSubmit)="setUserValues()"
+  >
+    <div class="col-12">
+      <label class="form-label" for="correosuser"
+        >Listado de correos electrónicos o Ids únicos de usuarios</label
+      ><i
+        class="fa-regular fa-circle-question ms-1 me-2"
+        matTooltip="Puede ser la cédula, pasaporte o id único de usuario"
+        [matTooltipPosition]="'right'"
+      ></i>
+      <span>Un usuario por línea.</span>
+      <textarea
+        class="form-control {{
+          formulario.get('correosIds')?.errors && verErrorsInputs
+            ? 'is-invalid'
+            : ''
+        }}"
+        formControlName="correosIds"
+        id="correosuser"
+        cols="30"
+        rows="10"
+      ></textarea>
+      <div class="invalid-feedback">
+        <span
+          class="d-block"
+          *ngIf="formulario.get('correosIds')?.hasError('minlength')"
+        >
+          Mínimo 5 caracteres
+        </span>
+        <span
+          class="d-block"
+          *ngIf="formulario.get('correosIds')?.hasError('required')"
+        >
+          Campo obligatorio
+        </span>
+        <span
+          class="d-block"
+          *ngIf="formulario.get('correosIds')?.hasError('pattern')"
+        >
+          Contiene caracteres inválidos
+        </span>
+      </div>
+    </div>
+    <div class="row g-3 d-flex justify-content-end">
+      <div class="col-12 col-md-auto d-grid">
+        <button type="submit" class="btn btn-primary">Asignar</button>
+      </div>
+      <div class="col-12 col-md-auto d-grid">
+        <button type="button" class="btn btn-tertiary" (click)="back()">
+          <i class="fa-solid fa-angle-left me-2"></i>Cancelar
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<p-dialog
+  header="Usuarios asignados al Equipo"
+  [(visible)]="modal"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '50vw' }"
+>
+  <div class="card mt-4 mt-lg-0">
+    <ul class="list-group list-group-flush">
+      <li
+        *ngFor="let item of responseList"
+        class="list-group-item d-flex justify-content-between {{
+          item.error ? 'text-danger' : 'text-success'
+        }}"
+      >
+        <div class="text-break">
+          <span class="d-block fw-semibold">{{ item.id }}</span>
+          <small class="d-block" *ngIf="item.error">{{ item.info }}</small>
+          <small class="d-block" *ngIf="!item.error"
+            >Usuario asignado al equipo</small
+          >
+        </div>
+        <div class="d-none d-md-block align-self-center">
+          <i class="fa-regular fa-circle-check" *ngIf="!item.error"></i>
+          <i class="fa-regular fa-circle-xmark" *ngIf="item.error"></i>
+        </div>
+      </li>
+    </ul>
+  </div>
+</p-dialog>

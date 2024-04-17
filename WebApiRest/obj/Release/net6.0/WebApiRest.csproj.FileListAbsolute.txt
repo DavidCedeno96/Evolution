@@ -1,3 +1,5 @@
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Images\Config\_default.png
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Images\Default\default-logoDM.png
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Images\Medalla\_default.png
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Images\Nivel\_default.png
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Images\Noticia\_default.png
@@ -14,6 +16,7 @@ C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiR
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\WebApiRest.pdb
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\BouncyCastle.Cryptography.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\Enums.NET.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\MailKit.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\MathNet.Numerics.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
@@ -24,6 +27,7 @@ C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiR
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\Microsoft.IO.RecyclableMemoryStream.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\Microsoft.OpenApi.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\MimeKit.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\Newtonsoft.Json.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\NPOI.Core.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\NPOI.OOXML.dll
@@ -38,11 +42,13 @@ C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiR
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\System.Configuration.ConfigurationManager.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\System.Data.SqlClient.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\System.Drawing.Common.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\System.Formats.Asn1.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\System.Security.Cryptography.Xml.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\System.Security.Permissions.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\System.Text.Encoding.CodePages.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\System.Windows.Extensions.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\runtimes\win-arm64\native\sni.dll
@@ -54,6 +60,7 @@ C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiR
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\runtimes\win\lib\net6.0\System.Text.Encoding.CodePages.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.csproj.AssemblyReference.cache
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.GeneratedMSBuildEditorConfig.editorconfig
@@ -77,4 +84,7 @@ C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiR
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.pdb
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.genruntimeconfig.cache
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\ref\WebApiRest.dll
-C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Images\Config\_default.png
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Archivos\Usuario\_default.xlsx
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Archivos\Nivel\_default.xlsx
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Archivos\Recompensa\_default.xlsx
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Images\Equipo\_default.png

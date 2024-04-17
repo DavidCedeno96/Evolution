@@ -16,7 +16,7 @@
           configIndex === 1 ? 'active' : 'pointer'
         }}"
         (click)="config(1)"
-        >Colores</a
+        >Marca</a
       >
     </li>
     <li class="nav-item">
@@ -25,7 +25,7 @@
           configIndex === 2 ? 'active' : 'pointer'
         }}"
         (click)="config(2)"
-        >Imagenes</a
+        >Campos Personalizados</a
       >
     </li>
     <li class="nav-item">
@@ -34,7 +34,16 @@
           configIndex === 3 ? 'active' : 'pointer'
         }}"
         (click)="config(3)"
-        >Campos Personalizados</a
+        >Registro</a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link text-dark {{
+          configIndex === 4 ? 'active' : 'pointer'
+        }}"
+        (click)="config(4)"
+        >Notificaciones</a
       >
     </li>
   </ul>
@@ -68,7 +77,7 @@
             <div class="btn-group">
               <button
                 type="button"
-                class="btn btn-primary dropdown-toggle"
+                class="btn btn-secondary dropdown-toggle"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
@@ -77,11 +86,19 @@
               <ul class="dropdown-menu">
                 <li>
                   <a
-                    class="dropdown-item pointer"
+                    class="dropdown-item pointer {{
+                      setColorItemAgregado(item)
+                        ? 'txt text-primary'
+                        : 'txt text-secondary fw-semibold'
+                    }}"
                     *ngFor="let item of configInicioItems"
                     (click)="agregarItemInicio(item)"
-                    >{{ item.nombre }}</a
-                  >
+                    >{{ item.nombre }}
+                    <i
+                      class="fa-solid fa-check"
+                      *ngIf="setColorItemAgregado(item)"
+                    ></i
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -101,8 +118,11 @@
             >
               <div class="card">
                 <div class="card-body" [style.background]="item.color">
-                  <div class="d-flex justify-content-between">
-                    <span>{{ item.nombre }}</span>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <i class="fa-solid fa-grip me-2"></i
+                    ><span>{{ item.nombre }}</span>
                     <button
                       class="btn btn-danger btn-sm"
                       (click)="quitarItemInicio(item)"
@@ -130,8 +150,11 @@
             >
               <div class="card" cdkDragHandle>
                 <div class="card-body" [style.background]="item.color">
-                  <div class="d-flex justify-content-between">
-                    <span>{{ item.nombre }}</span>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <i class="fa-solid fa-grip me-4 me-lg-0"></i
+                    ><span>{{ item.nombre }}</span>
                     <button
                       class="btn btn-danger btn-sm"
                       (click)="quitarItemInicio(item)"
@@ -146,7 +169,7 @@
           </div>
 
           <div class="col-12 mt-4 text-end d-grid d-md-block">
-            <button type="submit" class="btn btn-success">
+            <button type="submit" class="btn btn-primary">
               Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
             </button>
           </div>
@@ -155,238 +178,17 @@
     </div>
 
     <!-- ******************* 1 ************************** -->
+    <!-- LOGO -->
     <form
       class="row g-3 mb-4"
-      [formGroup]="formColor"
-      (ngSubmit)="updateColor()"
       *ngIf="configIndex === 1"
-    >
-      <div class="col-12 col-md-4">
-        <label for="colbs" class="form-label">Banda superior</label>
-        <input
-          type="color"
-          id="colbs"
-          class="form-control"
-          formControlName="bandaSuperior"
-          (change)="cambiarColor($event, '--BandaSuperior')"
-        />
-      </div>
-      <div class="col-12 col-md-4">
-        <label for="colen" class="form-label">Encabezado</label>
-        <input
-          type="color"
-          id="colen"
-          class="form-control"
-          formControlName="encabezado"
-        />
-      </div>
-      <div class="col-12 col-md-4">
-        <label for="colpie" class="form-label">Pie de página</label>
-        <input
-          type="color"
-          id="colpie"
-          class="form-control"
-          formControlName="piePagina"
-        />
-      </div>
-      <div class="col-12 col-md-3">
-        <label for="colbPri" class="form-label">Boton primario</label>
-        <input
-          type="color"
-          id="colbPri"
-          class="form-control mb-2"
-          formControlName="botonPrimario"
-          (change)="cambiarColor($event, '--BotonPrimario')"
-        />
-        <div class="d-grid d-md-block text-center">
-          <button type="button" class="btn btn-primary">Boton ejemplo</button>
-        </div>
-      </div>
-      <div class="col-12 col-md-3">
-        <label for="colbSec" class="form-label">Boton secundario</label>
-        <input
-          type="color"
-          id="colbSec"
-          class="form-control mb-2"
-          formControlName="botonSecundario"
-          (change)="cambiarColor($event, '--BotonSecundario')"
-        />
-        <div class="d-grid d-md-block text-center">
-          <button type="button" class="btn btn-secondary">Boton ejemplo</button>
-        </div>
-      </div>
-      <div class="col-12 col-md-3">
-        <label for="colbTer" class="form-label">Boton terciario</label>
-        <input
-          type="color"
-          id="colbTer"
-          class="form-control mb-2"
-          formControlName="botonTerciario"
-          (change)="cambiarColor($event, '--BotonTerciario')"
-        />
-        <div class="d-grid d-md-block text-center">
-          <button type="button" class="btn btn-tertiary">Boton ejemplo</button>
-        </div>
-      </div>
-      <div class="col-12 col-md-3">
-        <label for="colbSucc" class="form-label">Boton guardado</label>
-        <input
-          type="color"
-          id="colbSucc"
-          class="form-control mb-2"
-          formControlName="botonGuardado"
-          (change)="cambiarColor($event, '--BotonGuardado')"
-        />
-        <div class="d-grid d-md-block text-center">
-          <button type="button" class="btn btn-success">Boton ejemplo</button>
-        </div>
-      </div>
-      <div class="col-12 col-md-6">
-        <label for="coltPri" class="form-label">Texto primario</label>
-        <input
-          type="color"
-          id="coltPri"
-          class="form-control mb-2"
-          formControlName="textoPrimario"
-        />
-        <div class="text-center">
-          <span class="txt text-primary fs-5">Texto ejemplo</span>
-        </div>
-      </div>
-      <div class="col-12 col-md-6">
-        <label for="coltSec" class="form-label">Texto secundario</label>
-        <input
-          type="color"
-          id="coltSec"
-          class="form-control"
-          formControlName="textoSecundario"
-        />
-        <div class="text-center">
-          <span class="txt text-secondary fs-5">Texto ejemplo</span>
-        </div>
-      </div>
-      <div class="col-12 col-md-6">
-        <label for="colLoad" class="form-label">Carga superior</label>
-        <input
-          type="color"
-          id="colLoad"
-          class="form-control"
-          formControlName="cargaSuperior"
-          (change)="cambiarColor($event, '--Loading1')"
-        />
-        <div class="text-center"><div class="loading-ejemplo"></div></div>
-      </div>
-      <div class="col-12 col-md-6">
-        <label for="colLoad2" class="form-label">Carga inferior</label>
-        <input
-          type="color"
-          id="colLoad2"
-          class="form-control"
-          formControlName="cargaInferior"
-          (change)="cambiarColor($event, '--Loading2')"
-        />
-        <div class="text-center"><div class="loading-ejemplo"></div></div>
-      </div>
-      <div class="col-12 col-md-3">
-        <label for="conMItem" class="form-label">Menú item active</label>
-        <input
-          type="color"
-          id="conMItem"
-          class="form-control"
-          formControlName="menuItem"
-          (change)="cambiarColor($event, '--BgMenuItem')"
-        />
-      </div>
-      <div class="col-12 col-md-3">
-        <label for="conMItemH" class="form-label">Menú item hover</label>
-        <input
-          type="color"
-          id="conMItemH"
-          class="form-control"
-          formControlName="menuItemHover"
-          (change)="cambiarColor($event, '--BgMenuItem-hover')"
-        />
-      </div>
-      <div class="col-12 col-md-3">
-        <label for="contxtMItemA" class="form-label">Texto menú active</label>
-        <input
-          type="color"
-          id="contxtMItemA"
-          class="form-control"
-          formControlName="textoMenuItemActive"
-          (change)="cambiarColor($event, '--TxtMenuItem-active')"
-        />
-      </div>
-      <div class="col-12 col-md-3">
-        <label for="contxtMItem" class="form-label">Texto menú</label>
-        <input
-          type="color"
-          id="contxtMItem"
-          class="form-control"
-          formControlName="textoMenuItem"
-          (change)="cambiarColor($event, '--TxtMenuItem')"
-        />
-      </div>
-
-      <div class="col-12 col-md-6 col-lg-3">
-        <div class="menu">
-          <a class="active">
-            <div class="icon-text">
-              <mat-icon svgIcon="casa"></mat-icon><span>Inicio</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <div class="col-12 mt-4 text-end d-grid d-md-block">
-        <button type="submit" class="btn btn-success">
-          Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
-        </button>
-      </div>
-    </form>
-
-    <!-- ******************* 2 ************************** -->
-    <form
-      class="row g-3 mb-4"
-      *ngIf="configIndex === 2"
       (ngSubmit)="updateImagen()"
     >
-      <div class="col-12 col-md-6">
-        <label for="imgLogin" class="form-label">Iniciar Sesión</label>
-        <input
-          type="file"
-          id="imgLogin"
-          class="form-control {{
-            errorImgLogin && verErrorsInputsImage ? 'is-invalid' : ''
-          }}"
-          accept=".jpg, .jpeg, .png"
-          (change)="onFileSelected($event, 'login')"
-        />
-        <div class="invalid-feedback">
-          El tamaño del archivo no puede superar los 600 KB.
-        </div>
-        <div class="text-center text-md-start mt-3">
-          <small class="d-block">{{ sugerenciaImagen }} </small>
-          <img
-            *ngIf="!imgLogin"
-            [src]="
-              getImage(configImages[0].valor, 'config', 'default-login.png')
-            "
-            class="img-thumbnail"
-            width="400"
-            alt="login"
-          />
-          <img
-            *ngIf="imgLogin"
-            [src]="previewLogin"
-            class="img-thumbnail"
-            width="400"
-            alt="login"
-          />
-        </div>
+      <div class="col-12 ms-2">
+        <h5 class="txt text-secondary">Logo</h5>
       </div>
       <div class="col-12 col-md-6">
-        <label for="imgHeader" class="form-label">Logo Header</label>
+        <label for="imgHeader" class="form-label">Logo Horizontal</label>
         <input
           type="file"
           id="imgHeader"
@@ -394,13 +196,20 @@
             errorImgHeader && verErrorsInputsImage ? 'is-invalid' : ''
           }}"
           accept=".jpg, .jpeg, .png"
-          (change)="onFileSelected($event, 'header')"
+          (change)="onFileSelected($event, 'header', 1024, 200)"
         />
         <div class="invalid-feedback">
-          El tamaño del archivo no puede superar los 600 KB.
+          El archivo no puede superar los 1024x200 píxeles y los 350 KB.
+          Formatos JPG y PNG.
         </div>
         <div class="text-center text-md-start mt-3">
-          <small class="d-block">{{ sugerenciaImagen }} </small>
+          <small
+            class="d-block mb-1 {{
+              errorImgHeader && verErrorsInputsImage ? 'd-none' : ''
+            }}"
+          >
+            Dimensiones máximas 1024x200 píxeles y 350 KB. Formatos JPG y PNG.
+          </small>
           <img
             *ngIf="!imgHeader"
             [src]="
@@ -420,21 +229,27 @@
         </div>
       </div>
       <div class="col-12 col-md-6">
-        <label for="imgFooter" class="form-label">Logo Footer</label>
+        <label for="imgFooter" class="form-label">Logo Cuadrado</label>
         <input
           type="file"
           id="imgFooter"
           class="form-control {{
             errorImgFooter && verErrorsInputsImage ? 'is-invalid' : ''
           }}"
-          accept=".jpg, .jpeg, .png"
-          (change)="onFileSelected($event, 'footer')"
+          accept=".png"
+          (change)="onFileSelected($event, 'footer', 300, 300)"
         />
         <div class="invalid-feedback">
-          El tamaño del archivo no puede superar los 600 KB.
+          El archivo no puede superar los 300x300 píxeles y los 350 KB. Formatos
+          PNG.
         </div>
         <div class="text-center text-md-start mt-3">
-          <small class="d-block">{{ sugerenciaImagen }} </small>
+          <small
+            class="d-block mb-1 {{
+              errorImgFooter && verErrorsInputsImage ? 'd-none' : ''
+            }}"
+            >Dimensiones máximas 300x300 píxeles y 350 KB. Formatos PNG.
+          </small>
           <img
             *ngIf="!imgFooter"
             [src]="
@@ -454,14 +269,270 @@
         </div>
       </div>
       <div class="col-12 mt-4 text-end d-grid d-md-block">
-        <button type="submit" class="btn btn-success">
-          Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!hayCambiosImages"
+        >
+          Guardar Logo<i class="fa-regular fa-floppy-disk ms-2"></i>
+        </button>
+      </div>
+
+      <div>
+        <hr class="hr-text" data-content="O" />
+      </div>
+    </form>
+
+    <!-- COLORES -->
+    <form
+      class="row g-3 mb-4"
+      [formGroup]="formColor"
+      (ngSubmit)="updateColor()"
+      *ngIf="configIndex === 1"
+    >
+      <div class="col-12 ms-2">
+        <h5 class="txt text-secondary">CC Colores</h5>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <label for="colpri" class="form-label">Primario</label>
+        <input
+          type="color"
+          id="colpri"
+          class="form-control"
+          formControlName="primario"
+          (change)="cambiarColor($event, 'primario')"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="colsec" class="form-label">Secundario</label>
+        <input
+          type="color"
+          id="colsec"
+          class="form-control"
+          formControlName="secundario"
+          (change)="cambiarColor($event, 'secundario')"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="colter" class="form-label">Terciario</label>
+        <input
+          type="color"
+          id="colter"
+          class="form-control"
+          formControlName="terciario"
+          (change)="cambiarColor($event, 'terciario')"
+        />
+      </div>
+
+      <div class="mt-4">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="verMarcaConfigAvanzada = !verMarcaConfigAvanzada"
+        >
+          Configuración avanzada
+        </button>
+      </div>
+
+      <div class="row g-3" *ngIf="verMarcaConfigAvanzada">
+        <div class="col-12 col-md-4">
+          <label for="colbPri" class="form-label">Botón primario</label>
+          <input
+            type="color"
+            id="colbPri"
+            class="form-control mb-2"
+            formControlName="botonPrimario"
+            (change)="cambiarPropiedad($event, '--BotonPrimario')"
+          />
+          <div class="d-grid d-md-block text-center">
+            <button type="button" class="btn btn-primary">Botón ejemplo</button>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="colbSec" class="form-label">Botón secundario</label>
+          <input
+            type="color"
+            id="colbSec"
+            class="form-control mb-2"
+            formControlName="botonSecundario"
+            (change)="cambiarPropiedad($event, '--BotonSecundario')"
+          />
+          <div class="d-grid d-md-block text-center">
+            <button type="button" class="btn btn-secondary">
+              Botón ejemplo
+            </button>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="colbTer" class="form-label">Botón terciario</label>
+          <input
+            type="color"
+            id="colbTer"
+            class="form-control mb-2"
+            formControlName="botonTerciario"
+            (change)="cambiarPropiedad($event, '--BotonTerciario')"
+          />
+          <div class="d-grid d-md-block text-center">
+            <button type="button" class="btn btn-tertiary">
+              Botón ejemplo
+            </button>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="coltPri" class="form-label">Texto primario</label>
+          <input
+            type="color"
+            id="coltPri"
+            class="form-control mb-2"
+            formControlName="textoPrimario"
+            (change)="cambiarPropiedad($event, '--TextoPrimario')"
+          />
+          <div class="text-center">
+            <span class="txt text-primary fs-5">Texto ejemplo</span>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="coltSec" class="form-label">Texto secundario</label>
+          <input
+            type="color"
+            id="coltSec"
+            class="form-control"
+            formControlName="textoSecundario"
+            (change)="cambiarPropiedad($event, '--TextoSecundario')"
+          />
+          <div class="text-center">
+            <span class="txt text-secondary fs-5">Texto ejemplo</span>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <label for="coltTer" class="form-label">Texto terciario</label>
+          <input
+            type="color"
+            id="coltTer"
+            class="form-control"
+            formControlName="textoTerciario"
+            (change)="cambiarPropiedad($event, '--TextoTerciario')"
+          />
+          <div class="text-center">
+            <span class="txt text-tertiary fs-5">Texto ejemplo</span>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <label for="colbs" class="form-label">Banda superior</label>
+          <input
+            type="color"
+            id="colbs"
+            class="form-control"
+            formControlName="bandaSuperior"
+          />
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="colen" class="form-label">Encabezado</label>
+          <input
+            type="color"
+            id="colen"
+            class="form-control"
+            formControlName="encabezado"
+          />
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="colpie" class="form-label">Pie de página</label>
+          <input
+            type="color"
+            id="colpie"
+            class="form-control"
+            formControlName="piePagina"
+          />
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label for="colLoad" class="form-label">Carga superior</label>
+          <input
+            type="color"
+            id="colLoad"
+            class="form-control"
+            formControlName="cargaSuperior"
+            (change)="cambiarPropiedad($event, '--Loading1')"
+          />
+          <div class="text-center"><div class="loading-ejemplo"></div></div>
+        </div>
+        <div class="col-12 col-md-6">
+          <label for="colLoad2" class="form-label">Carga inferior</label>
+          <input
+            type="color"
+            id="colLoad2"
+            class="form-control"
+            formControlName="cargaInferior"
+            (change)="cambiarPropiedad($event, '--Loading2')"
+          />
+          <div class="text-center"><div class="loading-ejemplo"></div></div>
+        </div>
+        <div class="col-12 col-md-3">
+          <label for="conMItem" class="form-label">Menú item active</label>
+          <input
+            type="color"
+            id="conMItem"
+            class="form-control"
+            formControlName="menuItem"
+            (change)="cambiarPropiedad($event, '--BgMenuItem')"
+          />
+        </div>
+        <div class="col-12 col-md-3">
+          <label for="conMItemH" class="form-label">Menú item hover</label>
+          <input
+            type="color"
+            id="conMItemH"
+            class="form-control"
+            formControlName="menuItemHover"
+            (change)="cambiarPropiedad($event, '--BgMenuItem-hover')"
+          />
+        </div>
+        <div class="col-12 col-md-3">
+          <label for="contxtMItem" class="form-label">Texto menú</label>
+          <input
+            type="color"
+            id="contxtMItem"
+            class="form-control"
+            formControlName="textoMenuItem"
+            (change)="cambiarPropiedad($event, '--TxtMenuItem')"
+          />
+        </div>
+        <div class="col-12 col-md-3">
+          <label for="contxtMItemA" class="form-label"
+            >Texto menú active - hover</label
+          >
+          <input
+            type="color"
+            id="contxtMItemA"
+            class="form-control"
+            formControlName="textoMenuItemActive"
+            (change)="cambiarPropiedad($event, '--TxtMenuItem-active')"
+          />
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="menu">
+            <a class="active">
+              <div class="icon-text">
+                <mat-icon svgIcon="casa"></mat-icon><span>Inicio</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 mt-4 text-end d-grid d-md-block">
+        <button type="submit" class="btn btn-primary">
+          Guardar Colores<i class="fa-regular fa-floppy-disk ms-2"></i>
         </button>
       </div>
     </form>
 
-    <!-- ******************* 3 ************************** -->
-    <div class="row g-3 mb-4" *ngIf="configIndex === 3">
+    <!-- ******************* 2 ************************** -->
+    <div class="row g-3 mb-4" *ngIf="configIndex === 2">
       <div class="col-12 col-md-6">
         <div class="body-table">
           <table class="table align-middle">
@@ -492,7 +563,7 @@
                 <td class="col-8">{{ item.nombre }}</td>
                 <td class="text-end">
                   <button
-                    class="btn btn-info btn-sm"
+                    class="btn btn-tertiary btn-sm"
                     (click)="
                       modalCampoUsuario(
                         'pais',
@@ -541,7 +612,7 @@
                 <td class="col-8">{{ item.nombre }} - {{ item.pais }}</td>
                 <td class="text-end">
                   <button
-                    class="btn btn-info btn-sm"
+                    class="btn btn-tertiary btn-sm"
                     (click)="
                       modalCampoUsuario(
                         'ciudad',
@@ -591,7 +662,7 @@
                 <td class="col-8">{{ item.nombre }}</td>
                 <td class="text-end">
                   <button
-                    class="btn btn-info btn-sm"
+                    class="btn btn-tertiary btn-sm"
                     (click)="
                       modalCampoUsuario(
                         'empresa',
@@ -640,7 +711,7 @@
                 <td class="col-8">{{ item.nombre }} - {{ item.empresa }}</td>
                 <td class="text-end">
                   <button
-                    class="btn btn-info btn-sm"
+                    class="btn btn-tertiary btn-sm"
                     (click)="
                       modalCampoUsuario(
                         'area',
@@ -746,7 +817,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-success btn-sm">
+              <button type="submit" class="btn btn-primary btn-sm">
                 Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
               </button>
             </div>
@@ -754,60 +825,80 @@
         </div>
       </div>
       <!-- Fin Modal -->
-
-      <div class="col-12">
-        <form
-          class="d-md-flex w-100"
-          [formGroup]="formCodigoRegistro"
-          (ngSubmit)="updateCodigo()"
-        >
-          <div class="flex-grow-1 me-md-3 mb-3 mb-md-0">
-            <label for="codRerUser" class="form-label"
-              >Código de registro de usuario</label
-            >
-            <input
-              type="text"
-              class="form-control {{
-                formCodigoRegistro.get('llave')?.errors ? 'is-invalid' : ''
-              }}"
-              formControlName="llave"
-              id="codRerUser"
-            />
-            <div class="invalid-feedback">
-              <span
-                class="d-block"
-                *ngIf="formCodigoRegistro.get('llave')?.hasError('minlength')"
-              >
-                Mínimo 5 caracteres
-              </span>
-              <span
-                class="d-block"
-                *ngIf="formCodigoRegistro.get('llave')?.hasError('maxlength')"
-              >
-                Máximo hasta 50 caracteres
-              </span>
-              <span
-                class="d-block"
-                *ngIf="formCodigoRegistro.get('llave')?.hasError('pattern')"
-              >
-                Caracteres invalidos
-              </span>
-              <span
-                class="d-block"
-                *ngIf="formCodigoRegistro.get('llave')?.hasError('required')"
-              >
-                Campo obligatorio
-              </span>
-            </div>
-          </div>
-          <div class="d-grid d-md-flex align-items-end">
-            <button type="submit" class="btn btn-success">
-              Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
-            </button>
-          </div>
-        </form>
-      </div>
     </div>
+
+    <!-- ******************* 3 ************************** -->
+    <form
+      class="d-md-flex w-100 mb-4"
+      *ngIf="configIndex === 3"
+      [formGroup]="formCodigoRegistro"
+      (ngSubmit)="updateCodigo()"
+    >
+      <div class="flex-grow-1 me-md-3 mb-3 mb-md-0">
+        <label for="codRerUser" class="form-label"
+          >Código de registro de usuario</label
+        >
+        <input
+          type="text"
+          class="form-control {{
+            formCodigoRegistro.get('llave')?.errors ? 'is-invalid' : ''
+          }}"
+          formControlName="llave"
+          id="codRerUser"
+        />
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formCodigoRegistro.get('llave')?.hasError('minlength')"
+          >
+            Mínimo 5 caracteres
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formCodigoRegistro.get('llave')?.hasError('maxlength')"
+          >
+            Máximo hasta 50 caracteres
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formCodigoRegistro.get('llave')?.hasError('pattern')"
+          >
+            Caracteres invalidos
+          </span>
+          <span
+            class="d-block"
+            *ngIf="formCodigoRegistro.get('llave')?.hasError('required')"
+          >
+            Campo obligatorio
+          </span>
+        </div>
+      </div>
+      <div class="d-grid d-md-flex align-items-end">
+        <button type="submit" class="btn btn-primary">
+          Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
+        </button>
+      </div>
+    </form>
+
+    <!-- ******************* 4 ************************** -->
+    <form class="mb-4" *ngIf="configIndex === 4">
+      <!-- <div *ngFor="let n of notificacionList">
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            id="notif1"
+          />
+          <label class="form-check-label" for="notif1"
+            >Notificar a los usuarios cuando ganan una medalla</label
+          >
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm">
+          Agregar mensaje personalizado
+        </button>
+      </div> -->
+    </form>
   </div>
 </div>
 

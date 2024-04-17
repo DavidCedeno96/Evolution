@@ -1,37 +1,43 @@
-<div class="my-3 my-md-5">
-  <div class="shadow-lg p-3 mb-2 bg-body rounded">
-    <div class="row g-3 mx-2 mx-md-5 my-2">
-      <div class="col-12 text-center">
-        <h3 class="text-truncate">
-          {{ reto.nombre }}
-        </h3>
-        <img
-          [src]="getImage(reto.imagen, 'reto', 'default-reto.jpg')"
-          class="img-thumbnail"
-          width="300"
-          alt=""
-        />
-      </div>
+<div class="shadow-lg p-3 mb-2 bg-body rounded">
+  <div
+    class="row g-3 text-center text-xxl-start align-items-center mx-2 mx-md-5 my-2"
+  >
+    <div class="col-12 col-md-auto me-3">
+      <h3 class="text-truncate txt text-primary mb-3">
+        {{ reto.nombre }}
+      </h3>
+      <img
+        [src]="getImage(reto.imagen, 'reto', 'default-reto.jpg')"
+        class="img-thumbnail"
+        width="300"
+        alt=""
+      />
+    </div>
 
-      <div class="col-12">
-        <h4>Instrucciones</h4>
-        <p *ngIf="!reto.instrucciones">
-          Contesta correctamente las preguntas para ganar puntos y avanza rápido
-          para llegar primero a la meta. Tienes un tiempo total de
-          <strong>{{ formatTiempo_ms }} </strong>
-          {{ getTypeTime() }} ¡Diviértete!
-        </p>
-        <p *ngIf="reto.instrucciones">
-          {{ reto.instrucciones }}
-        </p>
-      </div>
-      <div class="col-12 text-center text-md-end d-grid d-md-block">
-        <button class="btn btn-primary icon" (click)="comenzar(reto.idReto)">
-          <div class="icon-text buton">
-            <mat-icon svgIcon="gamepad"></mat-icon><span>Comenzar</span>
-          </div>
-        </button>
-      </div>
+    <div class="col-12 col-md-4 col-xxl-8">
+      <h4>Instrucciones</h4>
+      <p *ngIf="!reto.instrucciones">
+        Contesta correctamente las preguntas para ganar puntos y avanza rápido
+        para llegar primero a la meta. Tienes un tiempo total de
+        <strong>{{ formatTiempo_ms }} </strong>
+        {{ getTypeTime(reto.tiempo_ms) }} ¡Diviértete!
+      </p>
+      <p *ngIf="reto.instrucciones">
+        {{ reto.instrucciones }}
+      </p>
+    </div>
+    <div class="col-12 text-center text-md-end d-grid d-md-block">
+      <button
+        class="btn btn-primary icon mb-3 mb-md-0 me-md-2"
+        (click)="comenzar(reto.idReto)"
+      >
+        <div class="icon-text buton">
+          <mat-icon svgIcon="gamepad"></mat-icon><span>Comenzar</span>
+        </div>
+      </button>
+      <a class="btn btn-tertiary" routerLink="/user-reto">
+        <i class="fa-solid fa-angle-left me-2"></i>Cancelar
+      </a>
     </div>
   </div>
 </div>

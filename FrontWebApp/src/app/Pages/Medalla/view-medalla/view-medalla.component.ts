@@ -12,10 +12,13 @@ import {
   MsgElimindo,
   MsgError,
   MsgOk,
+  SetUpsert,
   SinRegistros,
   TitleEliminar,
   TitleError,
   TitleErrorForm,
+  Upsert,
+  UpsertMsg,
 } from 'src/app/Utils/Constants';
 import { MedallaService } from 'src/app/services/medalla.service';
 
@@ -28,6 +31,7 @@ import { MedallaService } from 'src/app/services/medalla.service';
 export class ViewMedallaComponent implements OnInit {
   alertError = AlertError();
   loading = Loading();
+  setUpsert = SetUpsert();
   changeRoute = ChangeRoute();
   getImage = GetImage();
 
@@ -44,6 +48,7 @@ export class ViewMedallaComponent implements OnInit {
       imagen: '',
       totalUsuarios: 0,
       idCondicion: '',
+      numCondicion: 0,
       condicion: '',
       estado: 1,
       fechaCreacion: new Date(),
@@ -65,6 +70,19 @@ export class ViewMedallaComponent implements OnInit {
   ngOnInit(): void {
     this.loading(true, false);
     this.cargarData();
+  }
+
+  ngAfterViewInit(): void {
+    if (Upsert) {
+      setTimeout(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: MsgOk,
+          detail: UpsertMsg,
+        });
+        this.setUpsert(false, '');
+      }, 100);
+    }
   }
 
   cargarData() {
@@ -163,7 +181,7 @@ export class ViewMedallaComponent implements OnInit {
 
   defaultList(event: Event) {
     let text = (event.target as HTMLInputElement).value;
-    if (!text) {
+    if (!text.trim()) {
       this.medallas = this.auxMedallas;
     }
   }

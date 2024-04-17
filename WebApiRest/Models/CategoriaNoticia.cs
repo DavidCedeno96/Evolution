@@ -1,6 +1,6 @@
 ﻿namespace WebApiRest.Models
 {
-    public class CategoriaNoticia
+    public class Categoria
     {
         public Guid IdCategoria { get; set; }
         public string Nombre { get; set; }
@@ -10,17 +10,17 @@
         public DateTime FechaModificacion { get; set; }
     }
 
-    public class CategoriaNoticiaItem
+    public class CategoriaItem
     {
         public string Info { get; set; }
         public int Error { get; set; }
-        public CategoriaNoticia CategoriaNoticia { get; set; } 
+        public Categoria CategoriaNoticia { get; set; } 
     }
 
-    public class CategoriaNoticiaList
+    public class CategoriaList
     {
         public string Info { get; set; }
         public int Error { get; set; }
-        public List<CategoriaNoticia> Lista { get; set; }
+        public List<Categoria> Lista { get; set; }
     }
 }

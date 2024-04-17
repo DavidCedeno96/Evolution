@@ -1,75 +1,91 @@
-<div class="my-3 my-md-5">
-  <h5 class="my-3 text-center text-md-start txt text-primary text-uppercase">
-    noticias
-  </h5>
+<div class="col-12 col-md-8 col-lg-5 col-xl-4 mx-md-auto">
   <div
-    class="shadow-lg bg-white p-4 pb-md-3 p-md-5 pb-md-3 mb-4 rounded"
+    class="shadow-lg p-3 mb-5 bg-body rounded"
     *ngFor="let item of noticia_reaccion"
   >
-    <h6 class="txt text-primary">{{ item.noticia.titular }}</h6>
-    <p>{{ item.noticia.descripcion }}</p>
-    <div class="col-12 mb-3">
-      <div class="row g-3">
-        <div class="col-6 col-md-2 col-lg-2 col-xl-1 text-truncate">
-          <span
-            class="pointer"
-            type="button"
-            (click)="addReaccion('like', item)"
-            ><i class="fa-regular fa-thumbs-up me-1"></i
-            >{{ item.noticia.totalLikes }}</span
+    <h5 class="txt text-secondary">{{ item.noticia.titular }}</h5>
+    <div class="card">
+      <img
+        [src]="getImage(item.noticia.imagen, 'noticia', 'default-noticia.jpg')"
+        class="card-img-top"
+        alt="noticia"
+      />
+      <div class="px-3 mt-2">
+        {{ item.noticia.descripcion }}
+        <div class="text-truncate" *ngIf="item.noticia.url">
+          <a
+            class="link-opacity-100 pointer"
+            (click)="onNavigate(item.noticia.url)"
           >
-        </div>
-        <div class="col-6 col-md-2 col-lg-2 col-xl-1 text-truncate">
-          <span
-            ><i class="fa-regular fa-comments me-1"></i
-            >{{ item.noticia.totalComents }}</span
-          >
+            {{ item.noticia.url }}
+          </a>
         </div>
       </div>
-    </div>
-    <form [formGroup]="formulario" (ngSubmit)="addReaccion('comentario', item)">
-      <div class="row g-3 mb-3">
-        <div class="col-12 col-md-10">
+
+      <div class="card-body">
+        <h5 class="card-title">
+          <i
+            class="fa-regular fa-thumbs-up me-2 fs-5 pointer"
+            type="button"
+            (click)="addReaccion('like', item)"
+          ></i>
+          <i class="fa-regular fa-comments me-1 fs-5"></i>
+        </h5>
+        <p class="card-text">
+          <span class="text-black-50 d-block"
+            >{{ item.noticia.totalLikes }} me gusta</span
+          >
+          <span class="text-black-50 d-block"
+            >{{ item.noticia.totalComents }} comentarios</span
+          >
+        </p>
+        <hr class="hr-text" data-content="Comentarios" />
+        <form
+          class="d-flex align-items-center mb-3"
+          [formGroup]="formulario"
+          (ngSubmit)="addReaccion('comentario', item)"
+        >
           <input
             type="text"
-            class="form-control me-2 {{
+            class="form-control me-md-4 {{
               formulario.get('comentario')?.errors && verErrorsInputs
                 ? 'is-invalid'
                 : ''
             }}"
             formControlName="comentario"
-            placeholder="Escribe aqui tu comentario..."
+            placeholder="Escribe tu comentario"
           />
-          <div
-            class="invalid-feedback"
-            *ngIf="formulario.get('comentario')?.errors"
+          <button type="submit" class="btn btn-tertiary ms-2 ms-md-0">
+            comentar
+          </button>
+        </form>
+        <div
+          class="text-danger p-0 mb-3"
+          *ngIf="formulario.get('comentario')?.errors && verErrorsInputs"
+        >
+          <small
+            class="d-block"
+            *ngIf="formulario.get('comentario')?.hasError('maxlength')"
           >
-            <span
-              class="d-block"
-              *ngIf="formulario.get('comentario')?.hasError('maxlength')"
-            >
-              Máximo 250 caracteres
-            </span>
-            <span
-              class="d-block"
-              *ngIf="formulario.get('comentario')?.hasError('pattern')"
-            >
-              Contiene caracteres inválidos
-            </span>
+            Máximo 250 caracteres
+          </small>
+          <small
+            class="d-block"
+            *ngIf="formulario.get('comentario')?.hasError('pattern')"
+          >
+            Contiene caracteres inválidos
+          </small>
+        </div>
+        <div class="box-comentarios" *ngIf="getComentarios(item).length">
+          <div class="mb-3" *ngFor="let ob of getComentarios(item)">
+            <!-- <img
+              src="assets/img/default/default-user.jpg"
+              class="imgRedonda me-2"
+              alt="user"
+            /> -->
+            <span>{{ ob.usuario }}</span>
+            <small class="d-block">{{ ob.comentario }}</small>
           </div>
-        </div>
-        <div class="col-12 col-md-auto">
-          <button type="submit" class="btn btn-success">Comentar</button>
-        </div>
-      </div>
-    </form>
-    <div *ngIf="getComentarios(item).length">
-      <hr />
-      <h6>Comentarios</h6>
-      <div class="box-comentarios">
-        <div class="mb-3" *ngFor="let ob of getComentarios(item)">
-          <span class="d-block fs-5">{{ ob.usuario }}</span>
-          <span class="fs-6">{{ ob.comentario }}</span>
         </div>
       </div>
     </div>

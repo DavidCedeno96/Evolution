@@ -1,0 +1,293 @@
+<div class="shadow-lg bg-white px-4 py-2 pt-4 pt-lg-5 px-lg-5 rounded">
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-6">
+      <div class="body-table">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th scope="col" class="d-flex align-items-center">
+                <span>Pais</span>
+                <button
+                  class="btn btn-primary btn-sm ms-2"
+                  (click)="
+                    modalCampoUsuario(
+                      'pais',
+                      'crear',
+                      '',
+                      '7c8c2672-2233-486a-a184-f0b51eb4a331',
+                      ''
+                    )
+                  "
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of paises">
+              <td class="col-8">{{ item.nombre }}</td>
+              <td class="text-end">
+                <button
+                  class="btn btn-tertiary btn-sm"
+                  (click)="
+                    modalCampoUsuario(
+                      'pais',
+                      'editar',
+                      item.nombre,
+                      item.idPais,
+                      ''
+                    )
+                  "
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="body-table">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th scope="col" class="d-flex align-items-center">
+                <span>Ciudad</span>
+                <button
+                  class="btn btn-primary btn-sm ms-2"
+                  (click)="
+                    modalCampoUsuario(
+                      'ciudad',
+                      'crear',
+                      '',
+                      '',
+                      '7c8c2672-2233-486a-a184-f0b51eb4a331'
+                    )
+                  "
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of ciudades">
+              <td class="col-8">{{ item.nombre }} - {{ item.pais }}</td>
+              <td class="text-end">
+                <button
+                  class="btn btn-tertiary btn-sm"
+                  (click)="
+                    modalCampoUsuario(
+                      'ciudad',
+                      'editar',
+                      item.nombre,
+                      item.idPais,
+                      item.idCiudad
+                    )
+                  "
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="body-table">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th scope="col" class="d-flex align-items-center">
+                <span>Empresa</span>
+                <button
+                  class="btn btn-primary btn-sm ms-2"
+                  (click)="
+                    modalCampoUsuario(
+                      'empresa',
+                      'crear',
+                      '',
+                      '7c8c2672-2233-486a-a184-f0b51eb4a331',
+                      ''
+                    )
+                  "
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of empresas">
+              <td class="col-8">{{ item.nombre }}</td>
+              <td class="text-end">
+                <button
+                  class="btn btn-tertiary btn-sm"
+                  (click)="
+                    modalCampoUsuario(
+                      'empresa',
+                      'editar',
+                      item.nombre,
+                      item.idEmpresa,
+                      ''
+                    )
+                  "
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="body-table">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th scope="col" class="d-flex align-items-center">
+                <span>Area</span>
+                <button
+                  class="btn btn-primary btn-sm ms-2"
+                  (click)="
+                    modalCampoUsuario(
+                      'area',
+                      'crear',
+                      '',
+                      '',
+                      '7c8c2672-2233-486a-a184-f0b51eb4a331'
+                    )
+                  "
+                >
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of areas">
+              <td class="col-8">{{ item.nombre }} - {{ item.empresa }}</td>
+              <td class="text-end">
+                <button
+                  class="btn btn-tertiary btn-sm"
+                  (click)="
+                    modalCampoUsuario(
+                      'area',
+                      'editar',
+                      item.nombre,
+                      item.idEmpresa,
+                      item.idArea
+                    )
+                  "
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <button
+      class="col-1 position-absolute d-none"
+      data-bs-toggle="modal"
+      data-bs-target="#complementoModal"
+      #openModal
+    ></button>
+    <div class="modal fade" id="complementoModal" tabindex="-1">
+      <div class="modal-dialog">
+        <form
+          class="modal-content"
+          [formGroup]="formCampos"
+          (ngSubmit)="upsertCampo()"
+        >
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="complementoModalLabel">
+              {{ tituloModal }}
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              #closeModal
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3" *ngIf="labelSelect">
+              <label class="form-label">{{ labelSelect }}*</label>
+              <select
+                *ngIf="tipoCampo === 'ciudad'"
+                class="form-select  {{
+                  formCampos.get('idSelect')?.errors && verErrorsInputsCampo
+                    ? 'is-invalid'
+                    : ''
+                }}"
+                formControlName="idSelect"
+              >
+                <option value="">Seleccione...</option>
+                <option *ngFor="let item of paises" [value]="item.idPais">
+                  {{ item.nombre }}
+                </option>
+              </select>
+              <select
+                *ngIf="tipoCampo === 'area'"
+                class="form-select  {{
+                  formCampos.get('idSelect')?.errors && verErrorsInputsCampo
+                    ? 'is-invalid'
+                    : ''
+                }}"
+                formControlName="idSelect"
+              >
+                <option value="">Seleccione...</option>
+                <option *ngFor="let item of empresas" [value]="item.idEmpresa">
+                  {{ item.nombre }}
+                </option>
+              </select>
+              <div class="invalid-feedback">
+                <span *ngIf="formCampos.get('idSelect')?.hasError('required')"
+                  >Campo obligatorio</span
+                >
+              </div>
+            </div>
+            <div *ngIf="formCampos.get(['idSelect'])?.value">
+              <label class="form-label" for="conf-nombre">Nombre*</label>
+              <input
+                type="text"
+                class="form-control {{
+                  formCampos.get('nombre')?.errors && verErrorsInputsCampo
+                    ? 'is-invalid'
+                    : ''
+                }}"
+                id="conf-nombre"
+                formControlName="nombre"
+              />
+              <div class="invalid-feedback">
+                <span *ngIf="formCampos.get('nombre')?.hasError('required')"
+                  >Campo obligatorio</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary btn-sm">
+              Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Fin Modal -->
+  </div>
+</div>

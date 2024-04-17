@@ -1,5 +1,4 @@
 <div>
-  <h4 class="text-uppercase">Mis Niveles</h4>
   <!-- buscador -->
   <!-- <form
         class="row g-3 mb-4"
@@ -34,18 +33,18 @@
               [src]="getImage(item.imagen, 'nivel', 'default-nivel.jpg')"
               class="img-thumbnail"
               width="100"
-              alt="miMedalla"
+              alt="miNivel"
             />
           </div>
           <div class="col-9">
-            <div class="d-flex justify-content-between align-items-center">
-              <span class="txt text-primary fw-semibold text-truncate me-2">{{
-                item.nombre
-              }}</span>
-            </div>
-            <small class="text-black-50 fw-semibold d-block">{{
-              item.fechaCreacion
-            }}</small>
+            <h5 class="txt text-secondary me-2">
+              {{ item.nombre }}
+            </h5>
+            <span>{{ item.descripcion }}</span>
+            <small class="text-black-50 fw-semibold d-block">
+              <strong>Conseguido el: </strong>
+              {{ dateCompare(item.fechaCreacion) }}</small
+            >
           </div>
         </div>
       </div>

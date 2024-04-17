@@ -4,7 +4,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
+
+// tooltip
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // Este es para la apiRest
 import { HttpClientModule } from '@angular/common/http';
@@ -21,6 +24,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 
 /* PÁGINAS */
@@ -59,7 +63,27 @@ import { UserRecompensaComponent } from './Pages/Recompensa/user-recompensa/user
 import { HomeComponent } from './Pages/home/home.component';
 import { HomeViewsComponent } from './Components/home-views/home-views.component';
 import { AsigUserRetoComponent } from './Pages/Reto/asig-user-reto/asig-user-reto.component';
-import { RedSocialComponent } from './Pages/red-social/red-social.component';
+import { RedSocialComponent } from './Pages/RedSocial/red-social/red-social.component';
+import { RankingComponent } from './Pages/ranking/ranking.component';
+import { NotificacionComponent } from './Pages/Config/notificacion/notificacion.component';
+import { InicioComponent } from './Pages/Config/inicio/inicio.component';
+import { UpsertNotificacionComponent } from './Pages/Config/upsert-notificacion/upsert-notificacion.component';
+import { ProfileUserComponent } from './Pages/Usuario/profile-user/profile-user.component';
+import { MassActionsUserComponent } from './Pages/Usuario/mass-actions-user/mass-actions-user.component';
+import { MassActionsAsigUserRetoComponent } from './Pages/Reto/mass-actions-asig-user-reto/mass-actions-asig-user-reto.component';
+import { MarcaComponent } from './Pages/Config/marca/marca.component';
+import { CamposComponent } from './Pages/Config/campos/campos.component';
+import { RegistroComponent } from './Pages/Config/registro/registro.component';
+import { RedUserComponent } from './Pages/RedSocial/red-user/red-user.component';
+import { ProfileUserEditComponent } from './Pages/Usuario/profile-user-edit/profile-user-edit.component';
+import { ViewEquipoComponent } from './Pages/Equipo/view-equipo/view-equipo.component';
+import { UpsertEquipoComponent } from './Pages/Equipo/upsert-equipo/upsert-equipo.component';
+import { AsigUserEquipoComponent } from './Pages/Equipo/asig-user-equipo/asig-user-equipo.component';
+import { MassActionsAsigUserEquipoComponent } from './Pages/Equipo/mass-actions-asig-user-equipo/mass-actions-asig-user-equipo.component';
+import { AsigEquipoRetoComponent } from './Pages/Reto/asig-equipo-reto/asig-equipo-reto.component';
+import { FinRetoComponent } from './Pages/Reto/fin-reto/fin-reto.component';
+import { ViewCategoriaRecompensaComponent } from './Pages/Recompensa/view-categoria-recompensa/view-categoria-recompensa.component';
+import { UpsertCategoriaRecompensaComponent } from './Pages/Recompensa/upsert-categoria-recompensa/upsert-categoria-recompensa.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +121,26 @@ import { RedSocialComponent } from './Pages/red-social/red-social.component';
     HomeViewsComponent,
     AsigUserRetoComponent,
     RedSocialComponent,
+    RankingComponent,
+    NotificacionComponent,
+    InicioComponent,
+    UpsertNotificacionComponent,
+    ProfileUserComponent,
+    MassActionsUserComponent,
+    MassActionsAsigUserRetoComponent,
+    MarcaComponent,
+    CamposComponent,
+    RegistroComponent,
+    RedUserComponent,
+    ProfileUserEditComponent,
+    ViewEquipoComponent,
+    UpsertEquipoComponent,
+    AsigUserEquipoComponent,
+    MassActionsAsigUserEquipoComponent,
+    AsigEquipoRetoComponent,
+    FinRetoComponent,
+    ViewCategoriaRecompensaComponent,
+    UpsertCategoriaRecompensaComponent,
   ],
   imports: [
     BrowserModule,
@@ -113,8 +157,10 @@ import { RedSocialComponent } from './Pages/red-social/red-social.component';
     InputTextModule,
     PaginatorModule,
     ConfirmDialogModule,
+    DialogModule,
     ToastModule,
     CommonModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
