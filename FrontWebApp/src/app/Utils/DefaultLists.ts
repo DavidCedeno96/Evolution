@@ -172,7 +172,7 @@ export const GetBreadcrumb = () => {
           },
           {
             url: '/profile-user/edit',
-            nombre: 'Editar perfil de usuario',
+            nombre: 'Editar',
             estado: 0,
           },
         ];
@@ -648,6 +648,27 @@ export const GetBreadcrumb = () => {
           {
             url: '/red-social',
             nombre: 'Red Social',
+            estado: 1,
+          },
+        ];
+        break;
+      }
+
+      case '/red-social-perfil': {
+        lista = [
+          {
+            url: '/home',
+            nombre: 'Inicio',
+            estado: 1,
+          },
+          {
+            url: '/red-social',
+            nombre: 'Red Social',
+            estado: 1,
+          },
+          {
+            url: '/red-social-perfil',
+            nombre: 'Perfil',
             estado: 1,
           },
         ];

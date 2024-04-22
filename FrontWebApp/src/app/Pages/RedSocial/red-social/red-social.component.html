@@ -1,4 +1,16 @@
 <div class="col-12 col-md-8 col-lg-5 col-xl-4 mx-md-auto">
+  <div class="shadow-lg p-3 mb-3 bg-body rounded">
+    <a class="text-decoration-none" routerLink="/red-social-perfil">
+      <img
+        *ngIf="userFoto"
+        [src]="getImage(userFoto, 'usuario', 'default-user.jpg')"
+        class="imgRedonda me-2"
+        alt="user"
+      />
+      <span class="link-primary"> {{ userName }} </span>
+    </a>
+  </div>
+
   <div
     class="shadow-lg p-3 mb-5 bg-body rounded"
     *ngFor="let item of redSocial_reaccion"

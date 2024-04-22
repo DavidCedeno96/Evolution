@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -33,6 +33,9 @@ export class RedSocialComponent implements OnInit {
   idUsuario: string = '';
   verErrorsInputs: boolean = false;
 
+  userName: string = '';
+  userFoto: string = '';
+
   formulario!: FormGroup;
   redSocial_reaccion: RedSocial_Reaccion[] = [];
 
@@ -56,8 +59,8 @@ export class RedSocialComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading(true, false);
-    this.idUsuario = this.usuarioService.getIdUsuario();
     this.cargarData();
+    this.cargarCurrentUser();
   }
 
   cargarData() {
@@ -81,6 +84,22 @@ export class RedSocialComponent implements OnInit {
         }
       },
     });
+  }
+
+  cargarCurrentUser() {
+    if (this.usuarioService.loggedIn()) {
+      this.idUsuario = this.usuarioService.getIdUsuario();
+      this.userName = this.usuarioService.getUserName();
+      this.userFoto = this.usuarioService.getUserFoto();
+    }
+
+    if (localStorage.getItem('foto')) {
+      this.userFoto = localStorage.getItem('foto')!;
+    }
+
+    if (localStorage.getItem('userName')) {
+      this.userName = localStorage.getItem('userName')!;
+    }
   }
 
   addReaccion(tipo: string, redSocial: RedSocial_Reaccion) {

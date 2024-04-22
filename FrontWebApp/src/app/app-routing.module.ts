@@ -53,6 +53,7 @@ import { AsigEquipoRetoComponent } from './Pages/Reto/asig-equipo-reto/asig-equi
 import { FinRetoComponent } from './Pages/Reto/fin-reto/fin-reto.component';
 import { ViewCategoriaRecompensaComponent } from './Pages/Recompensa/view-categoria-recompensa/view-categoria-recompensa.component';
 import { UpsertCategoriaRecompensaComponent } from './Pages/Recompensa/upsert-categoria-recompensa/upsert-categoria-recompensa.component';
+import { RedSocialPerfilComponent } from './Pages/RedSocial/red-social-perfil/red-social-perfil.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -255,6 +256,11 @@ const routes: Routes = [
   {
     path: 'red-social',
     component: RedSocialComponent,
+    canActivate: [authGuardPlayer],
+  },
+  {
+    path: 'red-social-perfil',
+    component: RedSocialPerfilComponent,
     canActivate: [authGuardPlayer],
   },
   {
