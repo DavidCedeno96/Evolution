@@ -62,13 +62,17 @@
               <small>{{ dateCompare(item.reto.fechaCierre) }}</small>
             </div>
           </div>
-          <div class="col-12 col-xl-3 text-end">
-            <span
-              class="badge {{
-                item.completado ? 'text-bg-success' : 'text-bg-warning'
-              }} me-2 m-xl-0"
-              >{{ item.completado ? "Completado" : "Pendiente" }}</span
-            >
+          <div class="col-12 col-xl-3 text-center text-xl-end">
+            <div class="d-flex justify-content-center justify-content-xl-end">
+              <div class="col-2 col-md-3 col-lg-3 col-xl-8">
+                <circle-progress
+                  [percent]="item.completado ? 100 : 0"
+                  [outerStrokeColor]="customOuterStrokeColor"
+                >
+                </circle-progress>
+              </div>
+            </div>
+
             <span
               class="badge {{
                 item.reto.estado ? 'text-bg-success' : 'text-bg-danger'

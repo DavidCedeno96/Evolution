@@ -80,7 +80,7 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
   cargarData(idReto: string) {
     this.retoService.getUsuario_RetoByIdUsuarioYIdReto(idReto).subscribe({
       next: (data: any) => {
-        console.log(data);
+        //console.log(data);
 
         let { error, ur } = data.response;
         if (error === 0) {

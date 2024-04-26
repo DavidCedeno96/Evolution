@@ -239,7 +239,69 @@ namespace WebApiRest.Data
             }
 
             return list;
-        }        
+        }
+
+        public async Task<Usuario_EquipoList> GetUsuarioEquipoList(Guid idUsuario, int top)
+        {
+            Usuario_EquipoList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_Usuario_EquipoByPuntos", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+            cmd.Parameters.AddWithValue("@top", top);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    list.Lista.Add(new Usuario_Equipo()
+                    {                        
+                        Equipo = new Equipo()
+                        {
+                            IdEquipo = new Guid(dr["idEquipo"].ToString()),
+                            TotalUsuarios = Convert.ToInt32(dr["totalUsuarios"].ToString()),
+                            Nombre = dr["nombre"].ToString(),
+                            Puntos = Convert.ToInt32(dr["puntos"].ToString()),
+                            Tiempo = Convert.ToInt32(dr["tiempo"].ToString()),                            
+                            Imagen = dr["imagen"].ToString(),
+                            Estado = Convert.ToInt32(dr["estado"].ToString()),                            
+                        },
+                        Posicion = Convert.ToInt32(dr["posicion"].ToString()),                        
+                    });
+                }
+                await dr.NextResultAsync();
+
+                list.Info = WC.GetSatisfactorio();
+                list.Error = 0;        
+                list.Id = cmd.Parameters["@id"].Value.ToString();
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+        }
 
         public async Task<Response> CreateEquipo(Equipo equipo)
         {

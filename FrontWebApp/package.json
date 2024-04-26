@@ -26,6 +26,7 @@
     "bootstrap": "^5.3.0",
     "chart.js": "^4.4.1",
     "jquery": "^3.7.1",
+    "ng-circle-progress": "^1.7.1",
     "popper.js": "^1.16.1",
     "primeflex": "^3.3.1",
     "primeng": "^16.4.0",

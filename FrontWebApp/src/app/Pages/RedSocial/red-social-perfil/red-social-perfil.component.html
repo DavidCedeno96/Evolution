@@ -1,1 +1,136 @@
-<p>red-social-perfil works!</p>
+<div class="row g-3">
+  <div class="col-12 col-md-5 pe-lg-3 text-center">
+    <div class="shadow-lg bg-white p-4 rounded">
+      <img
+        [src]="getImage(usuario.foto, 'usuario', 'default-user.jpg')"
+        class="foto mb-2"
+        alt="User"
+      />
+      <h5 class="txt text-secondary mb-4">
+        {{ usuario.nombre }} {{ usuario.apellido }}
+      </h5>
+
+      <h6 class="txt text-primary text-start">Nivel de experiencia</h6>
+      <div class="card p-3 mb-3">
+        <div class="d-flex">
+          <img
+            *ngIf="miNivel.length"
+            [src]="getImage(miNivel[0].imagen, 'nivel', 'default-nivel.jpg')"
+            class="img-thumbnail me-2"
+            width="60"
+            alt="nivel"
+          />
+          <img
+            *ngIf="!miNivel.length"
+            src="assets/img/default/default-nivel.jpg"
+            class="imageRedonda me-2"
+            alt="nivel"
+          />
+          <div class="col-10 pe-5 p-xl-2 align-self-center">
+            <div class="d-flex justify-content-between">
+              <span *ngIf="miNivel.length">{{ miNivel[0].nombre }}</span>
+              <span *ngIf="!miNivel.length">Nivel 0</span>
+              <span class="text-truncate"
+                >{{ usuario.puntos }} / {{ nivelProx.puntosNecesarios }}</span
+              >
+            </div>
+            <div class="progress border border-black">
+              <div
+                class="progress-bar bg bg-secondary"
+                role="progressbar"
+                aria-label="Success example"
+                [style.width]="porcentajeNivel + '%'"
+              >
+                <span *ngIf="porcentajeNivel > 9">
+                  {{ porcentajeNivel }}%
+                </span>
+              </div>
+              <span
+                class="text-dark ms-2 d-flex align-items-center"
+                *ngIf="porcentajeNivel < 10"
+                >{{ porcentajeNivel }}%</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-7">
+    <div class="shadow-lg bg-white rounded mb-4" *ngIf="misMedallas.length">
+      <div class="bg bg-primary rounded-top p-1 p-md-2 text-center">
+        <span class="txt text-white fs-5"> Medallas </span>
+      </div>
+
+      <div
+        class="row g-3 p-4 px-lg-5 d-flex justify-content-center text-center mb-3 {{
+          misMedallas.length > 3 ? 'justify-content-lg-between' : ''
+        }}"
+      >
+        <div class="col-4 col-lg-2" *ngFor="let medalla of misMedallas">
+          <img
+            [src]="getImage(medalla.imagen, 'medalla', 'default-medalla.jpg')"
+            class="rounded-circle img-thumbnail me-2"
+            width="80"
+            alt="medalla"
+          />
+          <small class="text-truncate d-block">{{ medalla.nombre }}</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="shadow-lg bg-white rounded mb-4" *ngIf="recompensas.length">
+      <div class="bg bg-primary rounded-top p-1 p-md-2 text-center">
+        <span class="txt text-white fs-5"> Recompensas </span>
+      </div>
+      <div
+        class="row g-3 p-4 px-lg-5 d-flex justify-content-center text-center mb-3 {{
+          recompensas.length > 3 ? 'justify-content-lg-between' : ''
+        }}"
+      >
+        <div class="col-4 col-lg-2" *ngFor="let recompensa of recompensas">
+          <img
+            [src]="
+              getImage(
+                recompensa.imagen,
+                'recompensa',
+                'default-recompensa.jpg'
+              )
+            "
+            class="rounded-circle img-thumbnail me-2"
+            width="80"
+            alt="recompensa"
+          />
+          <small class="text-truncate d-block">{{ recompensa.nombre }}</small>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="shadow-lg bg-white rounded mb-4"
+      *ngIf="misRetosTerminados.length"
+    >
+      <div class="bg bg-primary rounded-top p-1 p-md-2 text-center">
+        <span class="txt text-white fs-5"> Retos Completados</span>
+      </div>
+      <div class="p-4 px-lg-5">
+        <table class="table" *ngIf="misRetosTerminados.length">
+          <thead>
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Fecha de finalización</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ur of misRetosTerminados">
+              <td>{{ ur.reto.nombre }}</td>
+              <td>{{ ur.reto.tipoReto }}</td>
+              <td>{{ ur.fechaModificacion | date : "dd-LL-yyyy" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

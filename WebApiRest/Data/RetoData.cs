@@ -283,7 +283,7 @@ namespace WebApiRest.Data
                         Usuario = new Usuario()
                         {
                             IdUsuario = new Guid(dr["idUsuario"].ToString()),
-                        },
+                        },                        
                         Completado = Convert.ToInt32(dr["completado"].ToString()),
                         Puntos = Convert.ToInt32(dr["puntos"].ToString()),
                         Tiempo = Convert.ToInt32(dr["tiempo"].ToString()),

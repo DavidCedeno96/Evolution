@@ -354,14 +354,14 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
     clearInterval(this.termporizador); // detiene el termporizador
     clearInterval(this.contador); // detiene el contador
 
-    console.log('FINALIZANDO TRIVIA');
+    //console.log('FINALIZANDO TRIVIA');
     this.retoService.updateUsuario_reto(this.setData()).subscribe({
       next: (data: any) => {
         let { error, info } = data.response;
         if (error === 0) {
           this.reproducirSonido(SoundQuizVictory);
 
-          let msjPuntosCreditos = `<span class="d-block">Puntos Obtenidos: ${
+          /* let msjPuntosCreditos = `<span class="d-block">Puntos Obtenidos: ${
             this.porcentajeTotal >= this.reto.criterioMinimo
               ? this.reto.puntosRecompensa
               : 0
@@ -382,7 +382,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
           this.alertSuccess(
             'Reto Terminado',
             this.reto.creditosObtenidos ? msjPuntosCreditos : msjPuntos
-          );
+          ); */
 
           this.changeRoute('/fin-reto', { reto: this.idReto });
         } else {

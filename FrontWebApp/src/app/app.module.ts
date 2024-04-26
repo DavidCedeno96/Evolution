@@ -9,6 +9,9 @@ import { CommonModule } from '@angular/common';
 // tooltip
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+// ng-circle-progress
+import { NgCircleProgressModule } from 'ng-circle-progress';
+
 // Este es para la apiRest
 import { HttpClientModule } from '@angular/common/http';
 
@@ -29,7 +32,6 @@ import { ToastModule } from 'primeng/toast';
 
 /* PÁGINAS */
 import { LoginComponent } from './Pages/login/login.component';
-import { HomeAdminComponent } from './Pages/home-admin/home-admin.component';
 import { RegisterComponent } from './Pages/register/register.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
@@ -51,7 +53,6 @@ import { ViewRetoComponent } from './Pages/Reto/view-reto/view-reto.component';
 import { UpsertRetoComponent } from './Pages/Reto/upsert-reto/upsert-reto.component';
 import { ViewPreguntaComponent } from './Pages/Pregunta/view-pregunta/view-pregunta.component';
 import { UpsertPreguntaComponent } from './Pages/Pregunta/upsert-pregunta/upsert-pregunta.component';
-import { HomeUserComponent } from './Pages/home-user/home-user.component';
 import { UserRetoComponent } from './Pages/Reto/user-reto/user-reto.component';
 import { EntradaRetoComponent } from './Pages/Reto/entrada-reto/entrada-reto.component';
 import { JuegoRetoComponent } from './Pages/Reto/juego-reto/juego-reto.component';
@@ -64,7 +65,6 @@ import { HomeComponent } from './Pages/home/home.component';
 import { HomeViewsComponent } from './Components/home-views/home-views.component';
 import { AsigUserRetoComponent } from './Pages/Reto/asig-user-reto/asig-user-reto.component';
 import { RedSocialComponent } from './Pages/RedSocial/red-social/red-social.component';
-import { RankingComponent } from './Pages/ranking/ranking.component';
 import { NotificacionComponent } from './Pages/Config/notificacion/notificacion.component';
 import { InicioComponent } from './Pages/Config/inicio/inicio.component';
 import { UpsertNotificacionComponent } from './Pages/Config/upsert-notificacion/upsert-notificacion.component';
@@ -85,12 +85,13 @@ import { FinRetoComponent } from './Pages/Reto/fin-reto/fin-reto.component';
 import { ViewCategoriaRecompensaComponent } from './Pages/Recompensa/view-categoria-recompensa/view-categoria-recompensa.component';
 import { UpsertCategoriaRecompensaComponent } from './Pages/Recompensa/upsert-categoria-recompensa/upsert-categoria-recompensa.component';
 import { RedSocialPerfilComponent } from './Pages/RedSocial/red-social-perfil/red-social-perfil.component';
+import { RankingUsersComponent } from './Pages/Ranking/ranking-users/ranking-users.component';
+import { RankingTeamsComponent } from './Pages/Ranking/ranking-teams/ranking-teams.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeAdminComponent,
     RegisterComponent,
     ConfiguracionComponent,
     ViewUserComponent,
@@ -109,7 +110,6 @@ import { RedSocialPerfilComponent } from './Pages/RedSocial/red-social-perfil/re
     UpsertRetoComponent,
     ViewPreguntaComponent,
     UpsertPreguntaComponent,
-    HomeUserComponent,
     UserRetoComponent,
     EntradaRetoComponent,
     JuegoRetoComponent,
@@ -122,7 +122,6 @@ import { RedSocialPerfilComponent } from './Pages/RedSocial/red-social-perfil/re
     HomeViewsComponent,
     AsigUserRetoComponent,
     RedSocialComponent,
-    RankingComponent,
     NotificacionComponent,
     InicioComponent,
     UpsertNotificacionComponent,
@@ -143,6 +142,8 @@ import { RedSocialPerfilComponent } from './Pages/RedSocial/red-social-perfil/re
     ViewCategoriaRecompensaComponent,
     UpsertCategoriaRecompensaComponent,
     RedSocialPerfilComponent,
+    RankingUsersComponent,
+    RankingTeamsComponent,
   ],
   imports: [
     BrowserModule,
@@ -163,6 +164,21 @@ import { RedSocialPerfilComponent } from './Pages/RedSocial/red-social-perfil/re
     ToastModule,
     CommonModule,
     MatTooltipModule,
+    NgCircleProgressModule.forRoot({
+      responsive: true,
+      showSubtitle: false,
+      showBackground: false,
+      showInnerStroke: true,
+      animation: true,
+      animationDuration: 1000,
+      radius: 15,
+      outerStrokeWidth: 3,
+      innerStrokeWidth: 3,
+      outerStrokeColor: 'f58220',
+      innerStrokeColor: '#F1F1F1',
+      titleFontSize: '9',
+      space: -3,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

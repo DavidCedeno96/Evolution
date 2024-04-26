@@ -49,6 +49,8 @@ export class ViewEquipoComponent implements OnInit, AfterViewInit {
     imagen: '',
     descripcion: '',
     totalUsuarios: 0,
+    puntos: 0,
+    tiempo: 0,
     estado: 0,
   };
 

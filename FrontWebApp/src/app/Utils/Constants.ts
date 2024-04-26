@@ -21,6 +21,8 @@ export const FormatoFecha: string = 'dd/MM/yyyy';
 export const FormatoFechaInput: string = 'yyyy-MM-dd';
 export const SugerenciaImagen: string =
   'Dimensiones máximas 360x360 píxeles y 200 KB. Formatos JPG y PNG.';
+export const SugerenciaImagen1: string =
+  'Dimensiones máximas 360x360 píxeles y 200 KB. Formatos JPG, PNG y GIF.';
 export const SinRegistros: string = 'No hay registros';
 export const TitleEliminar: string = 'Confirmación Eliminar';
 export const MsgEliminar: string = '¿Seguro desea eliminar el registro?';

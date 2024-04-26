@@ -5,7 +5,6 @@ import { authGuardAdmin, authGuardPlayer } from './auth.guard';
 /* PAGINAS */
 import { LoginComponent } from './Pages/login/login.component';
 import { RegisterComponent } from './Pages/register/register.component';
-import { HomeAdminComponent } from './Pages/home-admin/home-admin.component';
 import { ViewUserComponent } from './Pages/Usuario/view-user/view-user.component';
 import { UpsertUserComponent } from './Pages/Usuario/upsert-user/upsert-user.component';
 import { ViewNoticiaComponent } from './Pages/Noticia/view-noticia/view-noticia.component';
@@ -22,7 +21,6 @@ import { ViewRetoComponent } from './Pages/Reto/view-reto/view-reto.component';
 import { UpsertRetoComponent } from './Pages/Reto/upsert-reto/upsert-reto.component';
 import { ViewPreguntaComponent } from './Pages/Pregunta/view-pregunta/view-pregunta.component';
 import { UpsertPreguntaComponent } from './Pages/Pregunta/upsert-pregunta/upsert-pregunta.component';
-import { HomeUserComponent } from './Pages/home-user/home-user.component';
 import { UserRetoComponent } from './Pages/Reto/user-reto/user-reto.component';
 import { EntradaRetoComponent } from './Pages/Reto/entrada-reto/entrada-reto.component';
 import { JuegoRetoComponent } from './Pages/Reto/juego-reto/juego-reto.component';
@@ -33,7 +31,6 @@ import { UserRecompensaComponent } from './Pages/Recompensa/user-recompensa/user
 import { HomeComponent } from './Pages/home/home.component';
 import { AsigUserRetoComponent } from './Pages/Reto/asig-user-reto/asig-user-reto.component';
 import { RedSocialComponent } from './Pages/RedSocial/red-social/red-social.component';
-import { RankingComponent } from './Pages/ranking/ranking.component';
 import { NotificacionComponent } from './Pages/Config/notificacion/notificacion.component';
 import { InicioComponent } from './Pages/Config/inicio/inicio.component';
 import { UpsertNotificacionComponent } from './Pages/Config/upsert-notificacion/upsert-notificacion.component';
@@ -54,6 +51,8 @@ import { FinRetoComponent } from './Pages/Reto/fin-reto/fin-reto.component';
 import { ViewCategoriaRecompensaComponent } from './Pages/Recompensa/view-categoria-recompensa/view-categoria-recompensa.component';
 import { UpsertCategoriaRecompensaComponent } from './Pages/Recompensa/upsert-categoria-recompensa/upsert-categoria-recompensa.component';
 import { RedSocialPerfilComponent } from './Pages/RedSocial/red-social-perfil/red-social-perfil.component';
+import { RankingUsersComponent } from './Pages/Ranking/ranking-users/ranking-users.component';
+import { RankingTeamsComponent } from './Pages/Ranking/ranking-teams/ranking-teams.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -61,16 +60,6 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
-    canActivate: [authGuardPlayer],
-  },
-  {
-    path: 'homeAdmin',
-    component: HomeAdminComponent,
-    canActivate: [authGuardAdmin],
-  },
-  {
-    path: 'homeUser',
-    component: HomeUserComponent,
     canActivate: [authGuardPlayer],
   },
   {
@@ -269,8 +258,13 @@ const routes: Routes = [
     canActivate: [authGuardPlayer],
   },
   {
-    path: 'ranking',
-    component: RankingComponent,
+    path: 'ranking-users',
+    component: RankingUsersComponent,
+    canActivate: [authGuardPlayer],
+  },
+  {
+    path: 'ranking-teams',
+    component: RankingTeamsComponent,
     canActivate: [authGuardPlayer],
   },
   {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Reto, Usuario_Reto } from 'src/app/Models/Reto';
@@ -28,6 +28,8 @@ export class UserRetoComponent implements OnInit {
   dateCompare = DateCompare();
   load = Loading();
 
+  customOuterStrokeColor: string = '';
+
   first: number = 0;
   rows: number = 9; // items por página
 
@@ -39,6 +41,7 @@ export class UserRetoComponent implements OnInit {
   auxUr: Usuario_Reto[] = [];
 
   constructor(
+    private el: ElementRef,
     private router: Router,
     private retoService: RetoService,
     private formBuilder: FormBuilder
@@ -50,6 +53,7 @@ export class UserRetoComponent implements OnInit {
 
   ngOnInit(): void {
     this.load(true, false);
+    this.getPrimaryColor();
     this.cargarData();
   }
 
@@ -130,6 +134,7 @@ export class UserRetoComponent implements OnInit {
     ) {
       fechaAValida = false;
     }
+
     if (
       new Date(ur.reto.fechaCierre) < fechaHoy &&
       this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
@@ -137,7 +142,9 @@ export class UserRetoComponent implements OnInit {
       fechaCValida = false;
     }
 
-    if (!ur.reto.estado) {
+    if (ur.completado === 1) {
+      this.changeRoute('/fin-reto', { reto: ur.reto.idReto });
+    } else if (!ur.reto.estado) {
       this.alertWarning('', 'El reto está desactivado');
     } else if (!fechaAValida) {
       this.alertWarning(
@@ -146,8 +153,6 @@ export class UserRetoComponent implements OnInit {
       );
     } else if (!fechaCValida) {
       this.alertWarning('', 'El reto ha caducado');
-    } else if (ur.completado === 1) {
-      this.changeRoute('/fin-reto', { reto: ur.reto.idReto });
     } else {
       this.changeRoute('/entrada-reto', { reto: ur.reto.idReto });
     }
@@ -182,5 +187,11 @@ export class UserRetoComponent implements OnInit {
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
+  }
+
+  getPrimaryColor() {
+    this.customOuterStrokeColor = window
+      .getComputedStyle(this.el.nativeElement)
+      .getPropertyValue('--Primario');
   }
 }

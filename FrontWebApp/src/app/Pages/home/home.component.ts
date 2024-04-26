@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { Chart, ChartType } from 'chart.js/auto';
 import { ConfigInicio } from 'src/app/Models/Configuracion';
+import { Usuario_Equipo } from 'src/app/Models/Equipo';
 import { Licencia } from 'src/app/Models/Licencia';
 import { Medalla } from 'src/app/Models/Medalla';
 import { Nivel, Usuario_Nivel } from 'src/app/Models/Nivel';
@@ -47,9 +48,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('canvas') canvas!: QueryList<ElementRef>;
 
+  customOuterStrokeColor: string = '';
   chart: Chart[] = [];
 
   rol: string = '';
+  idEquipo: string = '';
 
   usuario: Usuario = {
     idUsuario: '',
@@ -101,6 +104,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   recompensas: Recompensa[] = [];
   usuariosRanking: Usuario_Reto[] = [];
+  equiposRanking: Usuario_Equipo[] = [];
   retosAsignados: Usuario_Reto[] = [];
   licencias: Licencia[] = [];
 
@@ -122,6 +126,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ];
 
   constructor(
+    private el: ElementRef,
     private usuarioServicio: UsuarioService,
     private homeService: HomeService,
     private nivelService: NivelService,
@@ -185,8 +190,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.porcentajeNivel = lista[10];
           this.recompensas = lista[11];
           this.usuariosRanking = lista[12];
-          this.retosAsignados = lista[13];
-          this.licencias = lista[14];
+          this.equiposRanking = lista[13];
+          this.idEquipo = lista[14];
+          this.retosAsignados = lista[15];
+          this.licencias = lista[16];
 
           datasetList.forEach((item: any) => {
             if (item.data.length > this.indexMesesChart) {
@@ -197,6 +204,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.auxMeses.push(this.meses[i]);
           }
           this.lineChart(datasetList);
+          this.getPrimaryColor();
         } else {
           this.alertError(TitleErrorForm, info);
         }
@@ -299,7 +307,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
         break;
       }
       case 'ranking': {
-        this.changeRoute('/ranking', {});
+        this.changeRoute('/ranking-users', {});
+        break;
+      }
+      case 'rankingXequipos': {
+        this.changeRoute('/ranking-teams', {});
+        break;
+      }
+      case 'perfilRedSocial': {
+        this.changeRoute('/red-social-perfil', {});
         break;
       }
     }
@@ -319,5 +335,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     } else {
       return 1;
     }
+  }
+
+  getPrimaryColor() {
+    this.customOuterStrokeColor = window
+      .getComputedStyle(this.el.nativeElement)
+      .getPropertyValue('--Primario');
   }
 }

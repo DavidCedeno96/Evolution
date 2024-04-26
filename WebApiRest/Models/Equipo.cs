@@ -7,6 +7,8 @@
         public string Imagen { get; set; }
         public string Descripcion { get; set; }
         public int TotalUsuarios { get; set; }
+        public int Puntos { get; set; }
+        public int Tiempo { get; set; }
         public int Estado { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
@@ -31,7 +33,8 @@
     public class Usuario_Equipo
     {
         public Usuario Usuario { get; set; }
-        public Equipo Equipo { get; set; }        
+        public Equipo Equipo { get; set; }
+        public int Posicion { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
     }
@@ -40,6 +43,7 @@
     {
         public string Info { get; set; }
         public int Error { get; set; }
+        public string Id { get; set; }
         public List<Usuario_Equipo> Lista { get; set; }
     }
 }

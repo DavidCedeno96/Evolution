@@ -152,7 +152,7 @@ namespace WebApiRest.Controllers
 
             if (archivo != null && response.Error == 0)
             {
-                response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
+                response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png/gif", nombreCarpeta);
                 rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
 
                 nivel.Imagen = archivo.FileName.Trim();
@@ -187,7 +187,7 @@ namespace WebApiRest.Controllers
 
             if (archivo != null && response.Error == 0)
             {
-                response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
+                response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png/gif", nombreCarpeta);
                 rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
 
                 nivel.Imagen = archivo.FileName.Trim();

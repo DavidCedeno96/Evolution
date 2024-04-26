@@ -11,6 +11,7 @@ import { UsuarioService } from './services/usuario.service';
 import { ConfiguracionService } from './services/configuracion.service';
 import {
   AlertError,
+  ChangeRoute,
   GetImage,
   ImgHeightMax,
   ImgSizeMax,
@@ -34,6 +35,7 @@ export class AppComponent implements OnInit, AfterContentInit {
   getImage = GetImage();
   getBreadcrumb = GetBreadcrumb();
   getNavItemPills = GetNavItemPills();
+  changeRoute = ChangeRoute();
 
   load: boolean = false;
   showNavbar: boolean = false;
@@ -46,6 +48,7 @@ export class AppComponent implements OnInit, AfterContentInit {
   userName: string = '';
   userFoto: string = '';
   idRol: string = '';
+  rolName: string = '';
   previewFoto: string = '';
 
   imgLogin: string = '';
@@ -82,6 +85,7 @@ export class AppComponent implements OnInit, AfterContentInit {
             this.showNavbar = true;
             if (usuarioServicio.loggedIn()) {
               this.idRol = this.usuarioServicio.getRol();
+              this.rolName = this.usuarioServicio.getRolName();
               this.userName = this.usuarioServicio.getUserName();
               this.userFoto = this.usuarioServicio.getUserFoto();
             }

@@ -58,6 +58,15 @@ namespace WebApiRest.Controllers
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
+        [HttpGet]
+        [Route("ranking/{top}/{idUsuario}")]
+        [Authorize]
+        public async Task<IActionResult> GetUsuarioEquipoByPuntos([FromRoute] int top, [FromRoute] Guid idUsuario)
+        {
+            Usuario_EquipoList response = await data.GetUsuarioEquipoList(idUsuario, top);
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "adm,sadm")]

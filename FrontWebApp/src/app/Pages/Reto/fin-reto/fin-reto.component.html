@@ -3,9 +3,9 @@
     class="row g-3 text-center text-xxl-start align-items-center mx-2 mx-md-5 my-2"
   >
     <div class="col-12 col-md-auto me-3">
-      <h3 class="text-truncate txt text-primary mb-3">MI reto</h3>
+      <h4>Reto Finalizado</h4>
       <img
-        src="assets/img/default/default-reto.jpg"
+        [src]="getImage(ur.reto.imagen, 'reto', 'default-reto.jpg')"
         class="img-thumbnail"
         width="300"
         alt=""
@@ -13,10 +13,25 @@
     </div>
 
     <div class="col-12 col-md-4 col-xxl-8">
-      <h4 class="txt text-secondary">Trivia</h4>
-      <span class="txt text-tertiary d-block mb-3">Reto en Equipo</span>
+      <h4 class="text-truncate txt text-primary mb-3">{{ ur.reto.nombre }}</h4>
+      <h5 class="txt text-secondary">{{ ur.reto.tipoReto }}</h5>
+      <span class="txt text-tertiary d-block mb-3" *ngIf="ur.reto.enEquipo"
+        >Reto en Equipo</span
+      >
+      <span class="txt text-tertiary d-block mb-2" *ngIf="!ur.reto.enEquipo"
+        >Reto Individual</span
+      >
+      <div *ngIf="ur.vidas !== -1">
+        <span> <strong>Vidas:</strong> {{ ur.vidas }} </span>
+      </div>
       <div>
-        <span> <strong>Vidas:</strong> 23</span>
+        <span> <strong>Puntos obtenidos:</strong> {{ ur.puntos }}</span>
+      </div>
+      <div *ngIf="!ur.reto.enEquipo && ur.puntos > 0">
+        <span>
+          <strong>Créditos obtenidos:</strong>
+          {{ ur.reto.creditosObtenidos }}</span
+        >
       </div>
     </div>
     <div class="col-12 text-center text-md-end d-grid d-md-block">

@@ -1,6 +1,6 @@
 USE [Evolution_db]
 GO
-/****** Object:  Table [dbo].[Area]    Script Date: 17/04/2024 18:20:01 ******/
+/****** Object:  Table [dbo].[Area]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -19,7 +19,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CategoriaNoticia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[CategoriaNoticia]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -37,7 +37,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CategoriaRecompensa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[CategoriaRecompensa]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -55,7 +55,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Ciudad]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Ciudad]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -74,7 +74,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ComportamientoPregunta]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[ComportamientoPregunta]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -92,7 +92,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Condicion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Condicion]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -110,7 +110,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Configuracion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Configuracion]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -131,7 +131,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Constants]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Constants]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -144,7 +144,7 @@ CREATE TABLE [dbo].[Constants](
 	[fechaModificacion] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[CorreoEnvio]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[CorreoEnvio]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -163,7 +163,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Empresa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Empresa]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -181,7 +181,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Equipo]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Equipo]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -194,13 +194,15 @@ CREATE TABLE [dbo].[Equipo](
 	[estado] [int] NULL,
 	[fechaCreacion] [datetime] NULL,
 	[fechaModificacion] [datetime] NULL,
+	[tiempo] [int] NOT NULL,
+	[puntos] [int] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[idEquipo] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Inicio]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Inicio]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -220,7 +222,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Licencia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Licencia]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -239,7 +241,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Medalla]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Medalla]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -260,7 +262,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Nivel]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Nivel]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -280,7 +282,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Noticia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Noticia]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -302,7 +304,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Notificacion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Notificacion]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -323,7 +325,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Opcion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Opcion]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -342,7 +344,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Pais]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Pais]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -360,7 +362,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Pregunta]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Pregunta]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -378,7 +380,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Puzzle]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Puzzle]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -396,7 +398,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Recompensa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Recompensa]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -418,7 +420,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RedSocial]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[RedSocial]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -437,7 +439,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Reto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Reto]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -466,7 +468,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Rol]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Rol]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -484,7 +486,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[tipoReto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[tipoReto]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -502,7 +504,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Usuario]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -531,7 +533,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_Equipo]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Usuario_Equipo]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -543,7 +545,7 @@ CREATE TABLE [dbo].[Usuario_Equipo](
 	[fechaModificacion] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_Medalla]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Usuario_Medalla]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -555,7 +557,7 @@ CREATE TABLE [dbo].[Usuario_Medalla](
 	[fechaModificacion] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_Nivel]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Usuario_Nivel]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -567,7 +569,7 @@ CREATE TABLE [dbo].[Usuario_Nivel](
 	[fechaModificacion] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_Noticia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Usuario_Noticia]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -581,7 +583,7 @@ CREATE TABLE [dbo].[Usuario_Noticia](
 	[fechaModificacion] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_Recompensa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Usuario_Recompensa]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -593,7 +595,7 @@ CREATE TABLE [dbo].[Usuario_Recompensa](
 	[fechaModificacion] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_RedSocial]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Usuario_RedSocial]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -607,7 +609,7 @@ CREATE TABLE [dbo].[Usuario_RedSocial](
 	[fechaModificacion] [datetime] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Usuario_Reto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Table [dbo].[Usuario_Reto]    Script Date: 26/04/2024 9:36:50 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -755,39 +757,45 @@ INSERT [dbo].[Empresa] ([idEmpresa], [nombre], [descripcion], [estado], [fechaCr
 GO
 INSERT [dbo].[Empresa] ([idEmpresa], [nombre], [descripcion], [estado], [fechaCreacion], [fechaModificacion]) VALUES (N'1cb1db77-b372-43d8-9fa1-eb64fa7b9cdd', N'Dinamica Mercados', NULL, 1, CAST(N'2023-12-15T10:44:49.083' AS DateTime), CAST(N'2023-12-15T10:44:49.083' AS DateTime))
 GO
-INSERT [dbo].[Equipo] ([idEquipo], [nombre], [imagen], [descripcion], [estado], [fechaCreacion], [fechaModificacion]) VALUES (N'4638e1df-928a-442a-bcd8-388ad33a8829', N'Equipo 23', NULL, NULL, 1, CAST(N'2024-04-11T12:59:09.077' AS DateTime), CAST(N'2024-04-11T17:28:06.833' AS DateTime))
+INSERT [dbo].[Equipo] ([idEquipo], [nombre], [imagen], [descripcion], [estado], [fechaCreacion], [fechaModificacion], [tiempo], [puntos]) VALUES (N'114ec699-77c3-4e52-999b-0e59861f46b9', N'Equipo 1', N'ventajas-trabajo-en-equipo.jpg', NULL, 1, CAST(N'2024-04-25T10:58:06.663' AS DateTime), CAST(N'2024-04-25T10:59:18.940' AS DateTime), 0, 0)
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'568740a5-6764-4e15-8cbf-1618245445c1', N'Ranking por puntos', 4, 1, NULL, N'adm', CAST(N'2024-03-14T09:55:44.817' AS DateTime), CAST(N'2024-04-03T17:50:45.917' AS DateTime))
+INSERT [dbo].[Equipo] ([idEquipo], [nombre], [imagen], [descripcion], [estado], [fechaCreacion], [fechaModificacion], [tiempo], [puntos]) VALUES (N'4638e1df-928a-442a-bcd8-388ad33a8829', N'Equipo 23', NULL, NULL, 1, CAST(N'2024-04-11T12:59:09.077' AS DateTime), CAST(N'2024-04-11T17:28:06.833' AS DateTime), 0, 0)
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'd419d4fa-eef6-4d4d-b1e8-16f7f0e76cdd', N'Puntos de experiencia', 5, 1, NULL, N'adm', CAST(N'2024-03-14T15:14:11.513' AS DateTime), CAST(N'2024-04-03T17:50:45.917' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'568740a5-6764-4e15-8cbf-1618245445c1', N'Ranking por puntos', 4, 1, NULL, N'adm', CAST(N'2024-03-14T09:55:44.817' AS DateTime), CAST(N'2024-04-25T15:47:20.630' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'727a9ae6-b5f6-4a08-af68-1876aff92e0c', N'Usuarios más activos', 6, 1, NULL, N'adm', CAST(N'2024-04-03T17:48:45.890' AS DateTime), CAST(N'2024-04-03T17:50:45.917' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'd419d4fa-eef6-4d4d-b1e8-16f7f0e76cdd', N'Puntos de experiencia', 5, 1, NULL, N'adm', CAST(N'2024-03-14T15:14:11.513' AS DateTime), CAST(N'2024-04-25T15:47:20.630' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'65058300-b83d-4028-8732-24a978706e43', N'Retos completados', 9, 1, NULL, N'jug', CAST(N'2024-04-09T17:53:22.017' AS DateTime), CAST(N'2024-04-11T16:38:00.657' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'727a9ae6-b5f6-4a08-af68-1876aff92e0c', N'Usuarios más activos', 6, 1, NULL, N'adm', CAST(N'2024-04-03T17:48:45.890' AS DateTime), CAST(N'2024-04-25T15:47:20.630' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'c23647f1-0975-43c7-9635-27c96899a288', N'Mis retos asignados', 2, 1, NULL, N'jug', CAST(N'2024-04-09T17:53:22.013' AS DateTime), CAST(N'2024-04-11T16:38:00.653' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'65058300-b83d-4028-8732-24a978706e43', N'Retos completados', 10, 1, NULL, N'jug', CAST(N'2024-04-09T17:53:22.017' AS DateTime), CAST(N'2024-04-25T15:47:14.403' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'622bbb0e-5e21-4f80-a64c-41dff7a7ca47', N'Mis medallas', 3, 1, NULL, N'jug', CAST(N'2024-03-13T15:52:11.040' AS DateTime), CAST(N'2024-04-11T16:38:00.657' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'c23647f1-0975-43c7-9635-27c96899a288', N'Mis retos pendientes', 2, 1, NULL, N'jug', CAST(N'2024-04-09T17:53:22.013' AS DateTime), CAST(N'2024-04-25T15:47:14.400' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'ed8f54e1-c1e6-4192-993b-48b57653d3fa', N'Usuarios más activos', 6, 1, NULL, N'jug', CAST(N'2024-04-09T17:53:22.017' AS DateTime), CAST(N'2024-04-11T16:38:00.657' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'03dff04a-5eec-4fbe-9432-3f4bc400cbef', N'Ranking por equipos', 8, 1, NULL, N'adm', CAST(N'2024-04-25T15:47:20.630' AS DateTime), CAST(N'2024-04-25T15:47:20.630' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'3fb69c62-d3d2-46ed-bb10-54342a55bfe1', N'Noticias', 2, 1, NULL, N'adm', CAST(N'2024-03-13T16:41:09.810' AS DateTime), CAST(N'2024-04-03T17:50:45.913' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'622bbb0e-5e21-4f80-a64c-41dff7a7ca47', N'Mis medallas', 3, 1, NULL, N'jug', CAST(N'2024-03-13T15:52:11.040' AS DateTime), CAST(N'2024-04-25T15:47:14.400' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'ff17bf8f-837b-4247-9439-6907c11023b5', N'Resumen general', 1, 1, NULL, N'adm', CAST(N'2024-03-13T15:51:50.023' AS DateTime), CAST(N'2024-04-03T17:50:45.913' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'ed8f54e1-c1e6-4192-993b-48b57653d3fa', N'Usuarios más activos', 6, 1, NULL, N'jug', CAST(N'2024-04-09T17:53:22.017' AS DateTime), CAST(N'2024-04-25T15:47:14.400' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'e1364975-2ef7-410d-abdc-6e991b407e18', N'Recompensas más reclamadas', 3, 1, NULL, N'adm', CAST(N'2024-03-14T09:23:21.610' AS DateTime), CAST(N'2024-04-03T17:50:45.917' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'3fb69c62-d3d2-46ed-bb10-54342a55bfe1', N'Noticias', 2, 1, NULL, N'adm', CAST(N'2024-03-13T16:41:09.810' AS DateTime), CAST(N'2024-04-25T15:47:20.630' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'e08dabb8-788a-439e-8075-75ab690d3255', N'Ranking por puntos', 5, 1, NULL, N'jug', CAST(N'2024-03-14T10:34:55.687' AS DateTime), CAST(N'2024-04-11T16:38:00.657' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'ff17bf8f-837b-4247-9439-6907c11023b5', N'Resumen general', 1, 1, NULL, N'adm', CAST(N'2024-03-13T15:51:50.023' AS DateTime), CAST(N'2024-04-25T15:47:20.627' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'6d38188b-5c5b-4c6d-8cb8-806d93f5f5ab', N'Noticias', 7, 1, NULL, N'jug', CAST(N'2024-03-13T17:06:32.073' AS DateTime), CAST(N'2024-04-11T16:38:00.657' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'e1364975-2ef7-410d-abdc-6e991b407e18', N'Recompensas más reclamadas', 3, 1, NULL, N'adm', CAST(N'2024-03-14T09:23:21.610' AS DateTime), CAST(N'2024-04-25T15:47:20.630' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'3e346378-31f6-4758-9c9a-8ab25fc61aba', N'Mi evolución', 4, 1, NULL, N'jug', CAST(N'2024-03-14T16:07:19.493' AS DateTime), CAST(N'2024-04-11T16:38:00.657' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'e08dabb8-788a-439e-8075-75ab690d3255', N'Ranking por puntos', 5, 1, NULL, N'jug', CAST(N'2024-03-14T10:34:55.687' AS DateTime), CAST(N'2024-04-25T15:47:14.400' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'72751bda-5e5c-488e-8fd9-9f9b7a409607', N'Nivel de Experiencia', 1, 1, NULL, N'jug', CAST(N'2024-03-28T16:13:50.657' AS DateTime), CAST(N'2024-04-11T16:38:00.653' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'6d38188b-5c5b-4c6d-8cb8-806d93f5f5ab', N'Noticias', 8, 1, NULL, N'jug', CAST(N'2024-03-13T17:06:32.073' AS DateTime), CAST(N'2024-04-25T15:47:14.403' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'4807188d-02ce-4a4f-8a49-ca851f698b6b', N'Resumen general', 8, 1, NULL, N'jug', CAST(N'2024-03-14T17:14:37.477' AS DateTime), CAST(N'2024-04-11T16:38:00.657' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'3e346378-31f6-4758-9c9a-8ab25fc61aba', N'Mi evolución', 4, 1, NULL, N'jug', CAST(N'2024-03-14T16:07:19.493' AS DateTime), CAST(N'2024-04-25T15:47:14.400' AS DateTime))
 GO
-INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'be6d44ba-fdea-42b9-8d83-ed03eb81742c', N'Uso del plan', 7, 1, NULL, N'adm', CAST(N'2024-04-03T17:50:45.917' AS DateTime), CAST(N'2024-04-03T17:50:45.917' AS DateTime))
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'72751bda-5e5c-488e-8fd9-9f9b7a409607', N'Nivel de Experiencia', 1, 1, NULL, N'jug', CAST(N'2024-03-28T16:13:50.657' AS DateTime), CAST(N'2024-04-25T15:47:14.397' AS DateTime))
+GO
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'4807188d-02ce-4a4f-8a49-ca851f698b6b', N'Resumen general', 9, 1, NULL, N'jug', CAST(N'2024-03-14T17:14:37.477' AS DateTime), CAST(N'2024-04-25T15:47:14.403' AS DateTime))
+GO
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'be6d44ba-fdea-42b9-8d83-ed03eb81742c', N'Uso del plan', 7, 1, NULL, N'adm', CAST(N'2024-04-03T17:50:45.917' AS DateTime), CAST(N'2024-04-25T15:47:20.630' AS DateTime))
+GO
+INSERT [dbo].[Inicio] ([idInicio], [nombre], [indice], [estado], [color], [idRol], [fechaCreacion], [fechaModificacion]) VALUES (N'5fcb6814-6f71-4e8d-b0ee-f22a08c71632', N'Ranking por equipos', 7, 1, NULL, N'jug', CAST(N'2024-04-25T15:47:14.403' AS DateTime), CAST(N'2024-04-25T15:47:14.403' AS DateTime))
 GO
 INSERT [dbo].[Licencia] ([idLicencia], [tabla], [nombre], [cantidadMaxima], [estado], [fechaCreacion], [fechaModificacion]) VALUES (N'f3adc302-6ab6-4657-82de-235fa5f9f891', N'Recompensa', N'Recompensas', 23, 1, CAST(N'2024-03-20T17:55:04.470' AS DateTime), CAST(N'2024-03-20T17:55:04.470' AS DateTime))
 GO
@@ -798,6 +806,8 @@ GO
 INSERT [dbo].[Medalla] ([idMedalla], [nombre], [descripcion], [imagen], [estado], [idCondicion], [fechaCreacion], [fechaModificacion], [numCondicion]) VALUES (N'2eb8768c-f1ae-49be-83e0-b04c39eb64c2', N'medalla 1', N'desc 1', NULL, 1, N'2439150e-8525-4582-8203-9d1d2ac93739', CAST(N'2023-12-12T11:58:46.920' AS DateTime), CAST(N'2024-03-20T11:40:45.200' AS DateTime), 20)
 GO
 INSERT [dbo].[Medalla] ([idMedalla], [nombre], [descripcion], [imagen], [estado], [idCondicion], [fechaCreacion], [fechaModificacion], [numCondicion]) VALUES (N'54c00fb9-e9d1-491c-b3bb-d9fd6307d508', N'medalla 2', N'desc 1', NULL, 1, N'5f908fdb-6b0d-4903-ad1f-76826511c8a5', CAST(N'2024-03-12T10:39:24.067' AS DateTime), CAST(N'2024-04-16T15:00:36.047' AS DateTime), 5)
+GO
+INSERT [dbo].[Nivel] ([idNivel], [nombre], [descripcion], [puntosNecesarios], [imagen], [estado], [fechaCreacion], [fechaModificacion]) VALUES (N'537f0f44-9d61-4c40-8aaa-0f8b88471c91', N'nivel de prueba', NULL, 33, N'level-up1.gif', 1, CAST(N'2024-04-22T15:43:10.603' AS DateTime), CAST(N'2024-04-22T15:43:10.603' AS DateTime))
 GO
 INSERT [dbo].[Nivel] ([idNivel], [nombre], [descripcion], [puntosNecesarios], [imagen], [estado], [fechaCreacion], [fechaModificacion]) VALUES (N'4544d5a7-2e3b-49d5-8df6-145cee2a7698', N'new level', NULL, 25, N'nivel1.png', 1, CAST(N'2024-02-01T15:48:37.110' AS DateTime), CAST(N'2024-02-01T15:48:37.110' AS DateTime))
 GO
@@ -811,7 +821,7 @@ INSERT [dbo].[Nivel] ([idNivel], [nombre], [descripcion], [puntosNecesarios], [i
 GO
 INSERT [dbo].[Nivel] ([idNivel], [nombre], [descripcion], [puntosNecesarios], [imagen], [estado], [fechaCreacion], [fechaModificacion]) VALUES (N'62629073-7cc1-4ad3-82f1-b57a823e0092', N'nivel 1', NULL, 21, NULL, 1, CAST(N'2023-12-11T16:13:01.443' AS DateTime), CAST(N'2023-12-11T16:13:01.443' AS DateTime))
 GO
-INSERT [dbo].[Nivel] ([idNivel], [nombre], [descripcion], [puntosNecesarios], [imagen], [estado], [fechaCreacion], [fechaModificacion]) VALUES (N'ffd99848-9d07-4cbd-93b1-b7ca5cc18452', N'next level', N'next level', 24, N'nivel3.png', 1, CAST(N'2024-02-01T15:42:37.177' AS DateTime), CAST(N'2024-02-01T15:42:37.177' AS DateTime))
+INSERT [dbo].[Nivel] ([idNivel], [nombre], [descripcion], [puntosNecesarios], [imagen], [estado], [fechaCreacion], [fechaModificacion]) VALUES (N'ffd99848-9d07-4cbd-93b1-b7ca5cc18452', N'next level', N'next level', 24, N'level-up.gif', 1, CAST(N'2024-02-01T15:42:37.177' AS DateTime), CAST(N'2024-04-22T15:43:29.510' AS DateTime))
 GO
 INSERT [dbo].[Noticia] ([idNoticia], [titular], [descripcion], [url], [imagen], [estado], [idCategoria], [fechaPublicacion], [fechaCreacion], [fechaModificacion]) VALUES (N'70114d2e-1ba0-4251-a626-1cfdfdce6a40', N'titular de prueba', N'descripcion de prueba', N'https://stackoverflow.com/questions/35359358/angular-2-change-event-on-every-keypress', NULL, 1, N'622ff0ac-4ec0-461f-8eda-f8a487f80eb3', CAST(N'2024-03-23T00:00:00.000' AS DateTime), CAST(N'2023-12-12T16:37:49.343' AS DateTime), CAST(N'2024-02-01T10:02:10.100' AS DateTime))
 GO
@@ -833,7 +843,7 @@ INSERT [dbo].[Notificacion] ([idNotificacion], [nombre], [estado], [msgPersonali
 GO
 INSERT [dbo].[Notificacion] ([idNotificacion], [nombre], [estado], [msgPersonalizado], [descripcion], [numDesc], [enviarCorreo], [fechaCreacion], [fechaModificacion]) VALUES (N'00321384-1c44-4a73-8202-9f3cfba40582', N'Notificar a los usuarios cuando el administrador crea un nuevo usuario', 0, NULL, NULL, 0, 1, CAST(N'2024-03-22T11:19:08.290' AS DateTime), CAST(N'2024-03-22T15:51:41.960' AS DateTime))
 GO
-INSERT [dbo].[Notificacion] ([idNotificacion], [nombre], [estado], [msgPersonalizado], [descripcion], [numDesc], [enviarCorreo], [fechaCreacion], [fechaModificacion]) VALUES (N'1115961e-3ba2-482e-b664-a6547a4ed198', N'Notificar a los usuarios cuando canjean una recompensa', 0, N'Este es el mensaje del administrador', NULL, 0, 1, CAST(N'2024-03-22T11:19:08.290' AS DateTime), CAST(N'2024-04-17T17:44:53.633' AS DateTime))
+INSERT [dbo].[Notificacion] ([idNotificacion], [nombre], [estado], [msgPersonalizado], [descripcion], [numDesc], [enviarCorreo], [fechaCreacion], [fechaModificacion]) VALUES (N'1115961e-3ba2-482e-b664-a6547a4ed198', N'Notificar a los usuarios cuando canjean una recompensa', 1, N'Este es el mensaje del administrador', NULL, 0, 1, CAST(N'2024-03-22T11:19:08.290' AS DateTime), CAST(N'2024-04-23T12:35:42.497' AS DateTime))
 GO
 INSERT [dbo].[Opcion] ([idOpcion], [nombre], [correcta], [estado], [idPregunta], [fechaCreacion], [fechaModificacion]) VALUES (N'8f422900-4874-4e70-a2db-0ddc1bfd9d8b', N'Interfaz de programación de aplicaciones', 0, 1, N'43c4c9c4-b885-4bc4-83cb-1e3a257c3530', CAST(N'2024-02-27T16:55:53.443' AS DateTime), CAST(N'2024-02-27T16:55:53.443' AS DateTime))
 GO
@@ -863,7 +873,7 @@ INSERT [dbo].[Pregunta] ([idPregunta], [nombre], [estado], [idReto], [fechaCreac
 GO
 INSERT [dbo].[Pregunta] ([idPregunta], [nombre], [estado], [idReto], [fechaCreacion], [fechaModificacion]) VALUES (N'5089e889-89ff-4ca9-a614-9fe5d0567487', N'¿Que significa API?', 1, N'27c5527f-3ea3-431b-bedf-65841eaf5663', CAST(N'2024-02-27T16:56:20.277' AS DateTime), CAST(N'2024-02-27T16:56:20.277' AS DateTime))
 GO
-INSERT [dbo].[Recompensa] ([idRecompensa], [nombre], [descripcion], [imagen], [cantDisponible], [cantCanje], [estado], [fechaCreacion], [fechaModificacion], [idCategoria]) VALUES (N'40853d25-1a7a-416a-a9ca-32c3f2c53814', N'mi recompensa', N'desc 1', NULL, 18, 10, 1, CAST(N'2024-04-16T14:49:23.880' AS DateTime), CAST(N'2024-04-16T14:51:49.697' AS DateTime), N'ee6ca0ed-f5e2-4640-aaf4-76d11c9762b2')
+INSERT [dbo].[Recompensa] ([idRecompensa], [nombre], [descripcion], [imagen], [cantDisponible], [cantCanje], [estado], [fechaCreacion], [fechaModificacion], [idCategoria]) VALUES (N'40853d25-1a7a-416a-a9ca-32c3f2c53814', N'mi recompensa', N'desc 1', NULL, 16, 10, 1, CAST(N'2024-04-16T14:49:23.880' AS DateTime), CAST(N'2024-04-16T14:51:49.697' AS DateTime), N'ee6ca0ed-f5e2-4640-aaf4-76d11c9762b2')
 GO
 INSERT [dbo].[Recompensa] ([idRecompensa], [nombre], [descripcion], [imagen], [cantDisponible], [cantCanje], [estado], [fechaCreacion], [fechaModificacion], [idCategoria]) VALUES (N'4d6da0f1-01a5-4efc-9ca3-4fd6a5130a11', N'Tarjeta supermaxi', N'Descripcion 1', NULL, 10, 40, 0, CAST(N'2024-03-12T17:04:26.230' AS DateTime), CAST(N'2024-04-16T14:52:05.287' AS DateTime), N'11283d21-ea6e-4945-9c59-a8868416016f')
 GO
@@ -917,6 +927,10 @@ INSERT [dbo].[RedSocial] ([idRed], [descripcion], [imagen], [estado], [fechaPubl
 GO
 INSERT [dbo].[RedSocial] ([idRed], [descripcion], [imagen], [estado], [fechaPublicacion], [fechaCreacion], [fechaModificacion]) VALUES (N'46f01d50-f16a-4e50-9da8-b386f6828a89', N'91331754-1E83-417F-90E7-0E596E996510|ha alcanzado el|5690C0BA-70E1-4F3D-A0E2-2AB787446F37|Nivel', N'nivel1.png', 1, CAST(N'2024-03-11T00:00:00.000' AS DateTime), CAST(N'2024-03-11T15:48:42.310' AS DateTime), CAST(N'2024-03-11T15:48:42.310' AS DateTime))
 GO
+INSERT [dbo].[RedSocial] ([idRed], [descripcion], [imagen], [estado], [fechaPublicacion], [fechaCreacion], [fechaModificacion]) VALUES (N'7a3a2037-49ec-43cc-ae03-c913f92c50e4', N'AB37197C-BF33-44B8-BA5D-E246FA250B41|ha canjeado la recompensa:|40853D25-1A7A-416A-A9CA-32C3F2C53814|Recompensa', NULL, 1, CAST(N'2024-04-23T12:36:45.357' AS DateTime), CAST(N'2024-04-23T12:36:45.357' AS DateTime), CAST(N'2024-04-23T12:36:45.357' AS DateTime))
+GO
+INSERT [dbo].[RedSocial] ([idRed], [descripcion], [imagen], [estado], [fechaPublicacion], [fechaCreacion], [fechaModificacion]) VALUES (N'd42358c4-9253-4fcf-8190-dba1ec8b7ca4', N'AB37197C-BF33-44B8-BA5D-E246FA250B41|ha canjeado la recompensa:|40853D25-1A7A-416A-A9CA-32C3F2C53814|Recompensa', NULL, 1, CAST(N'2024-04-23T14:58:35.780' AS DateTime), CAST(N'2024-04-23T14:58:35.780' AS DateTime), CAST(N'2024-04-23T14:58:35.780' AS DateTime))
+GO
 INSERT [dbo].[RedSocial] ([idRed], [descripcion], [imagen], [estado], [fechaPublicacion], [fechaCreacion], [fechaModificacion]) VALUES (N'47bf5792-021c-4ba1-b51a-e115f3ff516d', N'AB37197C-BF33-44B8-BA5D-E246FA250B41|ha conseguido una recompensa,|91F482C6-59A5-450F-A09A-9C745B861339|Recompensa', N'entradas-cine.jpg', 1, CAST(N'2024-04-17T12:28:45.223' AS DateTime), CAST(N'2024-04-17T12:28:45.227' AS DateTime), CAST(N'2024-04-17T12:28:45.227' AS DateTime))
 GO
 INSERT [dbo].[RedSocial] ([idRed], [descripcion], [imagen], [estado], [fechaPublicacion], [fechaCreacion], [fechaModificacion]) VALUES (N'9f8ea6aa-1f62-499f-a260-e19c34f5476c', N'AB37197C-BF33-44B8-BA5D-E246FA250B41|ha conseguido una recompensa,|91F482C6-59A5-450F-A09A-9C745B861339|Recompensa', N'entradas-cine.jpg', 1, CAST(N'2024-04-17T17:44:05.903' AS DateTime), CAST(N'2024-04-17T17:44:05.903' AS DateTime), CAST(N'2024-04-17T17:44:05.903' AS DateTime))
@@ -941,19 +955,23 @@ INSERT [dbo].[Usuario] ([idUsuario], [nombre], [apellido], [correo], [celular], 
 GO
 INSERT [dbo].[Usuario] ([idUsuario], [nombre], [apellido], [correo], [celular], [foto], [estado], [idRol], [idArea], [fechaCreacion], [fechaModificacion], [clave], [idCiudad], [fechaLogin], [puntos], [creditos], [id]) VALUES (N'91331754-1e83-417f-90e7-0e596e996510', N'Elver pablo', N'Galarraga', N'elver.galarga@gmail.com', N'1234567891', N'elver.PNG', 0, N'jug', N'c1df8d3c-0069-468e-8811-a0f404f12819', CAST(N'2023-12-07T10:27:03.510' AS DateTime), CAST(N'2024-04-04T11:51:09.593' AS DateTime), 0x7B2243697068657254657874223A2254576B68637955364E697A71764D354C7346306A39673D3D222C224956223A22776A4C5A46474B42775265316C6C64564470564F54413D3D227D, N'ca6c9451-3ea9-465f-88ce-07e078314731', CAST(N'2024-03-04T17:13:07.187' AS DateTime), 0, 0, N'1020304023')
 GO
-INSERT [dbo].[Usuario] ([idUsuario], [nombre], [apellido], [correo], [celular], [foto], [estado], [idRol], [idArea], [fechaCreacion], [fechaModificacion], [clave], [idCiudad], [fechaLogin], [puntos], [creditos], [id]) VALUES (N'939c9c6d-9dcf-4b7e-bea6-5c26169fa066', N'Admin', N'Admin', N'admin@hotmail.com', N'1234567892', N'user12.PNG', 1, N'adm', N'b7fc947e-8db6-415d-b361-e0c41fcc8344', CAST(N'2023-12-05T16:50:12.913' AS DateTime), CAST(N'2024-04-05T12:45:24.947' AS DateTime), 0x7B2243697068657254657874223A22692F444C66616A30636E7A7A74776D327572325249773D3D222C224956223A2230674A567079537A56674B31414741596D626A594F773D3D227D, N'48632ff5-b6f9-45f0-a514-c0a5ec544226', CAST(N'2024-04-17T17:44:47.370' AS DateTime), 0, 17, N'1020304053')
+INSERT [dbo].[Usuario] ([idUsuario], [nombre], [apellido], [correo], [celular], [foto], [estado], [idRol], [idArea], [fechaCreacion], [fechaModificacion], [clave], [idCiudad], [fechaLogin], [puntos], [creditos], [id]) VALUES (N'939c9c6d-9dcf-4b7e-bea6-5c26169fa066', N'Admin', N'Admin', N'admin@hotmail.com', N'1234567892', N'user12.PNG', 1, N'adm', N'b7fc947e-8db6-415d-b361-e0c41fcc8344', CAST(N'2023-12-05T16:50:12.913' AS DateTime), CAST(N'2024-04-22T09:56:12.913' AS DateTime), 0x7B2243697068657254657874223A22692F444C66616A30636E7A7A74776D327572325249773D3D222C224956223A2230674A567079537A56674B31414741596D626A594F773D3D227D, N'48632ff5-b6f9-45f0-a514-c0a5ec544226', CAST(N'2024-04-25T18:08:22.157' AS DateTime), 0, 17, N'1020304053')
 GO
-INSERT [dbo].[Usuario] ([idUsuario], [nombre], [apellido], [correo], [celular], [foto], [estado], [idRol], [idArea], [fechaCreacion], [fechaModificacion], [clave], [idCiudad], [fechaLogin], [puntos], [creditos], [id]) VALUES (N'f42329d1-edaa-4f2c-9ae1-8f026c92c842', N'Pedro', N'Romero', N'pedro@gmail.com', N'1223456723', NULL, 0, N'jug', NULL, CAST(N'2023-12-05T17:41:38.327' AS DateTime), CAST(N'2024-04-05T12:27:05.617' AS DateTime), 0x7B2243697068657254657874223A22652F54724D7849773741505264516C526E42737A65773D3D222C224956223A2237365330735A734F7A662B31353959796D37503246413D3D227D, NULL, CAST(N'2024-03-14T09:19:46.533' AS DateTime), 10, 38, N'1020304054')
+INSERT [dbo].[Usuario] ([idUsuario], [nombre], [apellido], [correo], [celular], [foto], [estado], [idRol], [idArea], [fechaCreacion], [fechaModificacion], [clave], [idCiudad], [fechaLogin], [puntos], [creditos], [id]) VALUES (N'f42329d1-edaa-4f2c-9ae1-8f026c92c842', N'Pedro', N'Romero', N'pedro@gmail.com', N'1223456723', N'user3.PNG', 1, N'jug', NULL, CAST(N'2023-12-05T17:41:38.327' AS DateTime), CAST(N'2024-04-25T18:11:23.193' AS DateTime), 0x7B2243697068657254657874223A22652F54724D7849773741505264516C526E42737A65773D3D222C224956223A2237365330735A734F7A662B31353959796D37503246413D3D227D, NULL, CAST(N'2024-04-26T09:17:54.403' AS DateTime), 10, 38, N'1020304054')
 GO
 INSERT [dbo].[Usuario] ([idUsuario], [nombre], [apellido], [correo], [celular], [foto], [estado], [idRol], [idArea], [fechaCreacion], [fechaModificacion], [clave], [idCiudad], [fechaLogin], [puntos], [creditos], [id]) VALUES (N'91db7bae-7d2f-423d-b595-d227c63ca0a6', N'Marie', N'Guerrero', N'marie@gmail.com', N'1223456', NULL, 0, N'jug', NULL, CAST(N'2023-12-05T17:28:22.697' AS DateTime), CAST(N'2024-03-26T17:50:27.330' AS DateTime), 0x7B2243697068657254657874223A22392F37666B717362614A4B4C586233724764534547413D3D222C224956223A225078384C70486C3351454864614E347443656D6B73513D3D227D, NULL, NULL, 10, 80, N'1020304056')
 GO
 INSERT [dbo].[Usuario] ([idUsuario], [nombre], [apellido], [correo], [celular], [foto], [estado], [idRol], [idArea], [fechaCreacion], [fechaModificacion], [clave], [idCiudad], [fechaLogin], [puntos], [creditos], [id]) VALUES (N'6d3a6b25-c6c7-4ed4-a5e9-d992b1cc98a7', N'Benito', N'Camelas', N'benito@gmail.com', N'12234', NULL, 1, N'jug', NULL, CAST(N'2023-12-05T16:52:23.680' AS DateTime), CAST(N'2024-03-27T14:53:36.657' AS DateTime), 0x7B2243697068657254657874223A2276456B7A6C785776754A3865554373466B41776231673D3D222C224956223A224F66432B4E4F3874687A7A57655A5047333874514D513D3D227D, NULL, CAST(N'2024-03-14T09:08:18.583' AS DateTime), 23, 2, N'1020304057')
 GO
-INSERT [dbo].[Usuario] ([idUsuario], [nombre], [apellido], [correo], [celular], [foto], [estado], [idRol], [idArea], [fechaCreacion], [fechaModificacion], [clave], [idCiudad], [fechaLogin], [puntos], [creditos], [id]) VALUES (N'ab37197c-bf33-44b8-ba5d-e246fa250b41', N'prueba uno', N'prueba', N'user@correo.com', N'1234567811', NULL, 1, N'jug', N'b7fc947e-8db6-415d-b361-e0c41fcc8344', CAST(N'2024-01-31T16:38:57.650' AS DateTime), CAST(N'2024-04-03T13:06:18.600' AS DateTime), 0x7B2243697068657254657874223A2242796E476A34666933472B4B4B5145435835483172513D3D222C224956223A2238652B4A687244622B626442635972515A566A3051773D3D227D, N'48632ff5-b6f9-45f0-a514-c0a5ec544226', CAST(N'2024-04-17T17:45:10.183' AS DateTime), 0, 24, N'1020304058')
+INSERT [dbo].[Usuario] ([idUsuario], [nombre], [apellido], [correo], [celular], [foto], [estado], [idRol], [idArea], [fechaCreacion], [fechaModificacion], [clave], [idCiudad], [fechaLogin], [puntos], [creditos], [id]) VALUES (N'ab37197c-bf33-44b8-ba5d-e246fa250b41', N'prueba uno', N'prueba', N'user@correo.com', N'1234567811', NULL, 1, N'jug', N'b7fc947e-8db6-415d-b361-e0c41fcc8344', CAST(N'2024-01-31T16:38:57.650' AS DateTime), CAST(N'2024-04-03T13:06:18.600' AS DateTime), 0x7B2243697068657254657874223A2242796E476A34666933472B4B4B5145435835483172513D3D222C224956223A2238652B4A687244622B626442635972515A566A3051773D3D227D, N'48632ff5-b6f9-45f0-a514-c0a5ec544226', CAST(N'2024-04-25T09:59:56.503' AS DateTime), 11, 20, N'1020304058')
 GO
 INSERT [dbo].[Usuario_Equipo] ([idEquipo], [idUsuario], [fechaCreacion], [fechaModificacion]) VALUES (N'4638e1df-928a-442a-bcd8-388ad33a8829', N'ab37197c-bf33-44b8-ba5d-e246fa250b41', CAST(N'2024-04-12T16:27:13.070' AS DateTime), CAST(N'2024-04-12T16:27:13.070' AS DateTime))
 GO
+INSERT [dbo].[Usuario_Equipo] ([idEquipo], [idUsuario], [fechaCreacion], [fechaModificacion]) VALUES (N'114ec699-77c3-4e52-999b-0e59861f46b9', N'6d3a6b25-c6c7-4ed4-a5e9-d992b1cc98a7', CAST(N'2024-04-25T10:58:54.060' AS DateTime), CAST(N'2024-04-25T10:58:54.060' AS DateTime))
+GO
 INSERT [dbo].[Usuario_Equipo] ([idEquipo], [idUsuario], [fechaCreacion], [fechaModificacion]) VALUES (N'4638e1df-928a-442a-bcd8-388ad33a8829', N'91db7bae-7d2f-423d-b595-d227c63ca0a6', CAST(N'2024-04-11T13:07:04.263' AS DateTime), CAST(N'2024-04-11T13:07:04.263' AS DateTime))
+GO
+INSERT [dbo].[Usuario_Equipo] ([idEquipo], [idUsuario], [fechaCreacion], [fechaModificacion]) VALUES (N'114ec699-77c3-4e52-999b-0e59861f46b9', N'91331754-1e83-417f-90e7-0e596e996510', CAST(N'2024-04-25T10:59:13.430' AS DateTime), CAST(N'2024-04-25T10:59:13.430' AS DateTime))
 GO
 INSERT [dbo].[Usuario_Equipo] ([idEquipo], [idUsuario], [fechaCreacion], [fechaModificacion]) VALUES (N'4638e1df-928a-442a-bcd8-388ad33a8829', N'015e40dd-58ce-401e-a0a9-075874bc0b68', CAST(N'2024-04-11T13:07:04.267' AS DateTime), CAST(N'2024-04-11T13:07:04.267' AS DateTime))
 GO
@@ -1029,6 +1047,10 @@ INSERT [dbo].[Usuario_Recompensa] ([idRecompensa], [idUsuario], [fechaCreacion],
 GO
 INSERT [dbo].[Usuario_Recompensa] ([idRecompensa], [idUsuario], [fechaCreacion], [fechaModificacion]) VALUES (N'91f482c6-59a5-450f-a09a-9c745b861339', N'ab37197c-bf33-44b8-ba5d-e246fa250b41', CAST(N'2024-04-17T17:45:15.837' AS DateTime), CAST(N'2024-04-17T17:45:15.837' AS DateTime))
 GO
+INSERT [dbo].[Usuario_Recompensa] ([idRecompensa], [idUsuario], [fechaCreacion], [fechaModificacion]) VALUES (N'40853d25-1a7a-416a-a9ca-32c3f2c53814', N'ab37197c-bf33-44b8-ba5d-e246fa250b41', CAST(N'2024-04-23T12:36:45.357' AS DateTime), CAST(N'2024-04-23T12:36:45.357' AS DateTime))
+GO
+INSERT [dbo].[Usuario_Recompensa] ([idRecompensa], [idUsuario], [fechaCreacion], [fechaModificacion]) VALUES (N'40853d25-1a7a-416a-a9ca-32c3f2c53814', N'ab37197c-bf33-44b8-ba5d-e246fa250b41', CAST(N'2024-04-23T14:58:35.780' AS DateTime), CAST(N'2024-04-23T14:58:35.780' AS DateTime))
+GO
 INSERT [dbo].[Usuario_Recompensa] ([idRecompensa], [idUsuario], [fechaCreacion], [fechaModificacion]) VALUES (N'91f482c6-59a5-450f-a09a-9c745b861339', N'ab37197c-bf33-44b8-ba5d-e246fa250b41', CAST(N'2024-04-17T12:48:51.900' AS DateTime), CAST(N'2024-04-17T12:48:51.900' AS DateTime))
 GO
 INSERT [dbo].[Usuario_Recompensa] ([idRecompensa], [idUsuario], [fechaCreacion], [fechaModificacion]) VALUES (N'91f482c6-59a5-450f-a09a-9c745b861339', N'ab37197c-bf33-44b8-ba5d-e246fa250b41', CAST(N'2024-04-17T12:49:24.170' AS DateTime), CAST(N'2024-04-17T12:49:24.170' AS DateTime))
@@ -1049,7 +1071,9 @@ INSERT [dbo].[Usuario_RedSocial] ([idRed], [idUsuario], [likes], [comentario], [
 GO
 INSERT [dbo].[Usuario_RedSocial] ([idRed], [idUsuario], [likes], [comentario], [fechaCreacion], [fechaModificacion]) VALUES (N'46f01d50-f16a-4e50-9da8-b386f6828a89', N'939c9c6d-9dcf-4b7e-bea6-5c26169fa066', 1, NULL, CAST(N'2024-03-12T08:43:49.863' AS DateTime), CAST(N'2024-03-12T08:43:49.863' AS DateTime))
 GO
-INSERT [dbo].[Usuario_Reto] ([idReto], [idUsuario], [puntos], [tiempo], [vidas], [fechaCreacion], [fechaModificacion], [completado], [fechaAsignacion], [tieneEquipo]) VALUES (N'27c5527f-3ea3-431b-bedf-65841eaf5663', N'ab37197c-bf33-44b8-ba5d-e246fa250b41', 0, 0, 0, CAST(N'2024-03-28T18:32:02.993' AS DateTime), CAST(N'2024-03-28T18:32:02.993' AS DateTime), 0, CAST(N'2024-03-28T18:32:02.993' AS DateTime), 0)
+INSERT [dbo].[Usuario_RedSocial] ([idRed], [idUsuario], [likes], [comentario], [fechaCreacion], [fechaModificacion]) VALUES (N'18bb6c17-1fa4-49b0-8be0-3a8b22e3381a', N'939c9c6d-9dcf-4b7e-bea6-5c26169fa066', 1, NULL, CAST(N'2024-04-22T10:14:24.167' AS DateTime), CAST(N'2024-04-22T10:14:24.167' AS DateTime))
+GO
+INSERT [dbo].[Usuario_Reto] ([idReto], [idUsuario], [puntos], [tiempo], [vidas], [fechaCreacion], [fechaModificacion], [completado], [fechaAsignacion], [tieneEquipo]) VALUES (N'27c5527f-3ea3-431b-bedf-65841eaf5663', N'ab37197c-bf33-44b8-ba5d-e246fa250b41', 11, 65000, -1, CAST(N'2024-03-28T18:32:02.993' AS DateTime), CAST(N'2024-04-23T08:59:53.437' AS DateTime), 1, CAST(N'2024-03-28T18:32:02.993' AS DateTime), 0)
 GO
 INSERT [dbo].[Usuario_Reto] ([idReto], [idUsuario], [puntos], [tiempo], [vidas], [fechaCreacion], [fechaModificacion], [completado], [fechaAsignacion], [tieneEquipo]) VALUES (N'27c5527f-3ea3-431b-bedf-65841eaf5663', N'91331754-1e83-417f-90e7-0e596e996510', 0, 0, 0, CAST(N'2024-03-07T16:07:10.130' AS DateTime), CAST(N'2024-03-07T16:07:10.130' AS DateTime), 0, CAST(N'2024-03-07T16:39:54.333' AS DateTime), 0)
 GO
@@ -1063,11 +1087,15 @@ INSERT [dbo].[Usuario_Reto] ([idReto], [idUsuario], [puntos], [tiempo], [vidas],
 GO
 INSERT [dbo].[Usuario_Reto] ([idReto], [idUsuario], [puntos], [tiempo], [vidas], [fechaCreacion], [fechaModificacion], [completado], [fechaAsignacion], [tieneEquipo]) VALUES (N'27c5527f-3ea3-431b-bedf-65841eaf5663', N'015e40dd-58ce-401e-a0a9-075874bc0b68', 0, 0, 0, CAST(N'2024-04-09T13:00:16.287' AS DateTime), CAST(N'2024-04-09T13:00:16.287' AS DateTime), 0, CAST(N'2024-04-09T13:00:16.287' AS DateTime), 0)
 GO
+INSERT [dbo].[Usuario_Reto] ([idReto], [idUsuario], [puntos], [tiempo], [vidas], [fechaCreacion], [fechaModificacion], [completado], [fechaAsignacion], [tieneEquipo]) VALUES (N'd9ca3dcb-ee6a-4f35-ae4c-719843510a1a', N'6d3a6b25-c6c7-4ed4-a5e9-d992b1cc98a7', 0, 0, 0, CAST(N'2024-04-25T11:11:04.960' AS DateTime), CAST(N'2024-04-25T11:11:04.960' AS DateTime), 0, CAST(N'2024-04-25T11:11:04.960' AS DateTime), 1)
+GO
+INSERT [dbo].[Usuario_Reto] ([idReto], [idUsuario], [puntos], [tiempo], [vidas], [fechaCreacion], [fechaModificacion], [completado], [fechaAsignacion], [tieneEquipo]) VALUES (N'd9ca3dcb-ee6a-4f35-ae4c-719843510a1a', N'91331754-1e83-417f-90e7-0e596e996510', 0, 0, 0, CAST(N'2024-04-25T11:11:04.960' AS DateTime), CAST(N'2024-04-25T11:11:04.960' AS DateTime), 0, CAST(N'2024-04-25T11:11:04.960' AS DateTime), 1)
+GO
 INSERT [dbo].[Usuario_Reto] ([idReto], [idUsuario], [puntos], [tiempo], [vidas], [fechaCreacion], [fechaModificacion], [completado], [fechaAsignacion], [tieneEquipo]) VALUES (N'd9ca3dcb-ee6a-4f35-ae4c-719843510a1a', N'ab37197c-bf33-44b8-ba5d-e246fa250b41', 0, 0, 0, CAST(N'2024-04-12T16:27:13.073' AS DateTime), CAST(N'2024-04-12T16:27:13.073' AS DateTime), 0, CAST(N'2024-04-12T16:27:13.073' AS DateTime), 1)
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Area__72AFBCC6C2500A79]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Area__72AFBCC6C2500A79]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Area] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1075,7 +1103,7 @@ ALTER TABLE [dbo].[Area] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Categori__72AFBCC6B3607509]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Categori__72AFBCC6B3607509]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[CategoriaNoticia] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1083,7 +1111,7 @@ ALTER TABLE [dbo].[CategoriaNoticia] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Categori__72AFBCC6945FD353]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Categori__72AFBCC6945FD353]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[CategoriaRecompensa] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1091,7 +1119,7 @@ ALTER TABLE [dbo].[CategoriaRecompensa] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Ciudad__72AFBCC60987AF52]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Ciudad__72AFBCC60987AF52]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Ciudad] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1099,7 +1127,7 @@ ALTER TABLE [dbo].[Ciudad] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Comporta__72AFBCC6D24EDAA1]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Comporta__72AFBCC6D24EDAA1]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[ComportamientoPregunta] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1107,7 +1135,7 @@ ALTER TABLE [dbo].[ComportamientoPregunta] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Condicio__72AFBCC66FA3235E]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Condicio__72AFBCC66FA3235E]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Condicion] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1115,7 +1143,7 @@ ALTER TABLE [dbo].[Condicion] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ_Configuracion_nom]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ_Configuracion_nom]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Configuracion] ADD  CONSTRAINT [UQ_Configuracion_nom] UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1123,7 +1151,7 @@ ALTER TABLE [dbo].[Configuracion] ADD  CONSTRAINT [UQ_Configuracion_nom] UNIQUE 
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Constant__72AFBCC6D3153B93]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Constant__72AFBCC6D3153B93]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Constants] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1131,7 +1159,7 @@ ALTER TABLE [dbo].[Constants] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__CorreoEn__2A586E0BB0F69B96]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__CorreoEn__2A586E0BB0F69B96]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[CorreoEnvio] ADD UNIQUE NONCLUSTERED 
 (
 	[correo] ASC
@@ -1139,7 +1167,7 @@ ALTER TABLE [dbo].[CorreoEnvio] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__CorreoEn__7F309E8F39900DF2]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__CorreoEn__7F309E8F39900DF2]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[CorreoEnvio] ADD UNIQUE NONCLUSTERED 
 (
 	[host] ASC
@@ -1147,7 +1175,7 @@ ALTER TABLE [dbo].[CorreoEnvio] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Empresa__72AFBCC630736C09]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Empresa__72AFBCC630736C09]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Empresa] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1155,7 +1183,7 @@ ALTER TABLE [dbo].[Empresa] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Equipo__72AFBCC63B05F2DF]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Equipo__72AFBCC63B05F2DF]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Equipo] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1163,7 +1191,7 @@ ALTER TABLE [dbo].[Equipo] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Licencia__506462E02EF68D3A]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Licencia__506462E02EF68D3A]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Licencia] ADD UNIQUE NONCLUSTERED 
 (
 	[tabla] ASC
@@ -1171,7 +1199,7 @@ ALTER TABLE [dbo].[Licencia] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Licencia__72AFBCC6AA2279C2]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Licencia__72AFBCC6AA2279C2]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Licencia] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1179,13 +1207,13 @@ ALTER TABLE [dbo].[Licencia] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Medalla__72AFBCC6A797F12C]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Medalla__72AFBCC6A797F12C]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Medalla] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [UQ_puntosNecesarios]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ_puntosNecesarios]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Nivel] ADD  CONSTRAINT [UQ_puntosNecesarios] UNIQUE NONCLUSTERED 
 (
 	[puntosNecesarios] ASC
@@ -1193,7 +1221,7 @@ ALTER TABLE [dbo].[Nivel] ADD  CONSTRAINT [UQ_puntosNecesarios] UNIQUE NONCLUSTE
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Notifica__72AFBCC6F41559DF]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Notifica__72AFBCC6F41559DF]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Notificacion] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1201,7 +1229,7 @@ ALTER TABLE [dbo].[Notificacion] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Pais__72AFBCC68522AA86]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Pais__72AFBCC68522AA86]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Pais] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1209,7 +1237,7 @@ ALTER TABLE [dbo].[Pais] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Reto__72AFBCC683289CD8]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Reto__72AFBCC683289CD8]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Reto] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1217,7 +1245,7 @@ ALTER TABLE [dbo].[Reto] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Rol__72AFBCC65215A463]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Rol__72AFBCC65215A463]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Rol] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1225,7 +1253,7 @@ ALTER TABLE [dbo].[Rol] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__tipoReto__72AFBCC679DDB36C]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__tipoReto__72AFBCC679DDB36C]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[tipoReto] ADD UNIQUE NONCLUSTERED 
 (
 	[nombre] ASC
@@ -1233,7 +1261,7 @@ ALTER TABLE [dbo].[tipoReto] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Usuario__2A586E0BBB3CDCB2]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Usuario__2A586E0BBB3CDCB2]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Usuario] ADD  CONSTRAINT [UQ__Usuario__2A586E0BBB3CDCB2] UNIQUE NONCLUSTERED 
 (
 	[correo] ASC
@@ -1241,13 +1269,13 @@ ALTER TABLE [dbo].[Usuario] ADD  CONSTRAINT [UQ__Usuario__2A586E0BBB3CDCB2] UNIQ
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ_Usuario_id]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ_Usuario_id]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Usuario] ADD  CONSTRAINT [UQ_Usuario_id] UNIQUE NONCLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [UQ__Usuario___645723A71F7E3A8D]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  Index [UQ__Usuario___645723A71F7E3A8D]    Script Date: 26/04/2024 9:36:51 ******/
 ALTER TABLE [dbo].[Usuario_Equipo] ADD UNIQUE NONCLUSTERED 
 (
 	[idUsuario] ASC
@@ -1336,6 +1364,10 @@ GO
 ALTER TABLE [dbo].[Equipo] ADD  DEFAULT (getdate()) FOR [fechaCreacion]
 GO
 ALTER TABLE [dbo].[Equipo] ADD  DEFAULT (getdate()) FOR [fechaModificacion]
+GO
+ALTER TABLE [dbo].[Equipo] ADD  DEFAULT ((0)) FOR [tiempo]
+GO
+ALTER TABLE [dbo].[Equipo] ADD  DEFAULT ((0)) FOR [puntos]
 GO
 ALTER TABLE [dbo].[Inicio] ADD  DEFAULT (newid()) FOR [idInicio]
 GO
@@ -1622,7 +1654,7 @@ GO
 ALTER TABLE [dbo].[Usuario_Reto]  WITH CHECK ADD FOREIGN KEY([idUsuario])
 REFERENCES [dbo].[Usuario] ([idUsuario])
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Area]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Area]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1637,50 +1669,29 @@ CREATE procedure [dbo].[sp_B_Area]
 AS
 BEGIN
 
-	SET NOCOUNT ON;			
+	SET NOCOUNT ON;				
 	
-	if(@estado = -1)
-	begin
-
-		Select a.idArea,
-		a.nombre,
-		a.descripcion,
-		a.idEmpresa,
-		e.nombre as 'empresa',
-		a.estado,
-		a.fechaCreacion,
-		a.fechaModificacion
-		From Area a
-		Inner Join Empresa e on e.idEmpresa = a.idEmpresa
-		Order By a.fechaCreacion desc					
-
-	end
-	else
-	begin					
-
-		Select a.idArea,
-		a.nombre,
-		a.descripcion,
-		a.idEmpresa,
-		e.nombre as 'empresa',
-		a.estado,
-		a.fechaCreacion,
-		a.fechaModificacion
-		From Area a
-		Inner Join Empresa e on e.idEmpresa = a.idEmpresa
-		Where a.estado = @estado
-		Order By a.fechaCreacion desc		
-
-	end	
+	Select a.idArea,
+	a.nombre,
+	a.descripcion,
+	a.idEmpresa,
+	e.nombre as 'empresa',
+	a.estado,
+	a.fechaCreacion,
+	a.fechaModificacion
+	From Area a
+	Inner Join Empresa e on e.idEmpresa = a.idEmpresa
+	Where (a.estado = @estado or @estado = -1)
+	Order By a.fechaCreacion desc	
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_AreaById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_AreaById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_AreaById] 
+CREATE procedure [dbo].[sp_B_AreaById] 
 		
 	@idArea uniqueidentifier,	
 	@estado int,
@@ -1700,40 +1711,18 @@ BEGIN
 	if(@existeId > 0)
 	begin
 
-		if(@estado = -1)
-		begin
-
-			Select a.idArea,
-			a.nombre,
-			a.descripcion,
-			a.idEmpresa,
-			e.nombre as 'empresa',
-			a.estado,
-			a.fechaCreacion,
-			a.fechaModificacion
-			From Area a
-			Inner Join Empresa e on e.idEmpresa = a.idEmpresa
-			Where a.idArea = @idArea
-			Order By a.fechaCreacion desc					
-
-		end
-		else
-		begin					
-
-			Select a.idArea,
-			a.nombre,
-			a.descripcion,
-			a.idEmpresa,
-			e.nombre as 'empresa',
-			a.estado,
-			a.fechaCreacion,
-			a.fechaModificacion
-			From Area a
-			Inner Join Empresa e on e.idEmpresa = a.idEmpresa
-			Where a.estado = @estado and a.idArea = @idArea
-			Order By a.fechaCreacion desc		
-
-		end	
+		Select a.idArea,
+		a.nombre,
+		a.descripcion,
+		a.idEmpresa,
+		e.nombre as 'empresa',
+		a.estado,
+		a.fechaCreacion,
+		a.fechaModificacion
+		From Area a
+		Inner Join Empresa e on e.idEmpresa = a.idEmpresa
+		Where (a.estado = @estado or @estado = -1) and a.idArea = @idArea
+		Order By a.fechaCreacion desc		
 
 		select @info = CONCAT('Empresa ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -1750,7 +1739,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_AreaByNombre]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_AreaByNombre]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1804,7 +1793,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_CategoriaNoticia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_CategoriaNoticia]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1821,39 +1810,20 @@ BEGIN
 
 	SET NOCOUNT ON;				
 	
-	if(@estado = -1)
-	begin
-
-		Select 
-		c.idCategoria,
-		c.nombre,
-		ISNULL(c.descripcion, 'N/A') as 'descripcion',
-		c.estado,
-		c.fechaCreacion,
-		c.fechaModificacion
-		From CategoriaNoticia c
-		Order By c.fechaCreacion desc					
-
-	end
-	else
-	begin
-
-		Select 
-		c.idCategoria,
-		c.nombre,
-		ISNULL(c.descripcion, 'N/A') as 'descripcion',
-		c.estado,
-		c.fechaCreacion,
-		c.fechaModificacion
-		From CategoriaNoticia c
-		where c.estado = @estado
-		Order By c.fechaCreacion desc			
-
-	end	
+	Select 
+	c.idCategoria,
+	c.nombre,
+	ISNULL(c.descripcion, 'N/A') as 'descripcion',
+	c.estado,
+	c.fechaCreacion,
+	c.fechaModificacion
+	From CategoriaNoticia c
+	where (c.estado = @estado or @estado = -1)
+	Order By c.fechaCreacion desc			
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_CategoriaNoticiaByAll]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_CategoriaNoticiaByAll]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1900,12 +1870,12 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_CategoriaNoticiaById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_CategoriaNoticiaById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_CategoriaNoticiaById] 
+CREATE procedure [dbo].[sp_B_CategoriaNoticiaById] 
 		
 	@idCategoria uniqueidentifier,	
 	@estado int,
@@ -1925,22 +1895,9 @@ BEGIN
 	if(@existeId > 0)
 	begin
 
-		if(@estado = -1)
-		begin
-
-			Select * From CategoriaNoticia c
-			Where c.idCategoria = @idCategoria
-			Order By c.fechaCreacion desc					
-
-		end
-		else
-		begin
-
-			Select * From CategoriaNoticia c
-			where c.estado = @estado and c.idCategoria = @idCategoria
-			Order By c.fechaCreacion desc			
-
-		end	
+		Select * From CategoriaNoticia c
+		where (c.estado = @estado or @estado = -1) and c.idCategoria = @idCategoria
+		Order By c.fechaCreacion desc			
 
 		select @info = CONCAT('Categoría ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -1958,7 +1915,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_CategoriaRecompensa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_CategoriaRecompensa]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1975,39 +1932,20 @@ BEGIN
 
 	SET NOCOUNT ON;				
 	
-	if(@estado = -1)
-	begin
-
-		Select 
-		c.idCategoria,
-		c.nombre,
-		ISNULL(c.descripcion, 'N/A') as 'descripcion',
-		c.estado,
-		c.fechaCreacion,
-		c.fechaModificacion
-		From CategoriaRecompensa c
-		Order By c.fechaCreacion desc					
-
-	end
-	else
-	begin
-
-		Select 
-		c.idCategoria,
-		c.nombre,
-		ISNULL(c.descripcion, 'N/A') as 'descripcion',
-		c.estado,
-		c.fechaCreacion,
-		c.fechaModificacion
-		From CategoriaRecompensa c
-		where c.estado = @estado
-		Order By c.fechaCreacion desc			
-
-	end	
+	Select 
+	c.idCategoria,
+	c.nombre,
+	ISNULL(c.descripcion, 'N/A') as 'descripcion',
+	c.estado,
+	c.fechaCreacion,
+	c.fechaModificacion
+	From CategoriaRecompensa c
+	where (c.estado = @estado or @estado = -1)
+	Order By c.fechaCreacion desc	
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_CategoriaRecompensaByAll]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_CategoriaRecompensaByAll]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2054,12 +1992,12 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_CategoriaRecompensaById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_CategoriaRecompensaById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_CategoriaRecompensaById] 
+CREATE procedure [dbo].[sp_B_CategoriaRecompensaById] 
 		
 	@idCategoria uniqueidentifier,	
 	@estado int,
@@ -2079,22 +2017,9 @@ BEGIN
 	if(@existeId > 0)
 	begin
 
-		if(@estado = -1)
-		begin
-
-			Select * From CategoriaRecompensa c
-			Where c.idCategoria = @idCategoria
-			Order By c.fechaCreacion desc					
-
-		end
-		else
-		begin
-
-			Select * From CategoriaRecompensa c
-			where c.estado = @estado and c.idCategoria = @idCategoria
-			Order By c.fechaCreacion desc			
-
-		end	
+		Select * From CategoriaRecompensa c
+		where (c.estado = @estado or @estado = -1) and c.idCategoria = @idCategoria
+		Order By c.fechaCreacion desc				
 
 		select @info = CONCAT('Categoría ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -2112,12 +2037,12 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Ciudad]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Ciudad]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_Ciudad] 
+CREATE procedure [dbo].[sp_B_Ciudad] 
 		
 	@estado int,
 
@@ -2129,43 +2054,22 @@ BEGIN
 
 	SET NOCOUNT ON;			
 	
-	if(@estado = -1)
-	begin
-
-		Select c.idCiudad,
-		c.nombre,
-		c.descripcion,
-		c.idPais,
-		p.nombre as 'pais',
-		c.estado,
-		c.fechaCreacion,
-		c.fechaModificacion
-		From Ciudad c
-		Inner join Pais p on p.idPais = c.idPais
-		Order By c.fechaCreacion desc					
-
-	end
-	else
-	begin					
-
-		Select c.idCiudad,
-		c.nombre,
-		c.descripcion,
-		c.idPais,
-		p.nombre as 'pais',
-		c.estado,
-		c.fechaCreacion,
-		c.fechaModificacion
-		From Ciudad c
-		Inner join Pais p on p.idPais = c.idPais
-		Where c.estado = @estado
-		Order By c.fechaCreacion desc			
-
-	end	
+	Select c.idCiudad,
+	c.nombre,
+	c.descripcion,
+	c.idPais,
+	p.nombre as 'pais',
+	c.estado,
+	c.fechaCreacion,
+	c.fechaModificacion
+	From Ciudad c
+	Inner join Pais p on p.idPais = c.idPais
+	Where (c.estado = @estado or @estado = -1)
+	Order By c.fechaCreacion desc			
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_CiudadById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_CiudadById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2190,41 +2094,18 @@ BEGIN
 	if(@existeId > 0)
 	begin
 
-		if(@estado = -1)
-		begin
-
-			Select c.idCiudad,
-			c.nombre,
-			c.descripcion,
-			c.idPais,
-			p.nombre as 'pais',
-			c.estado,
-			c.fechaCreacion,
-			c.fechaModificacion
-			From Ciudad c
-			Inner join Pais p on p.idPais = c.idPais
-			Where
-			c.idCiudad = @idCiudad
-			Order By c.fechaCreacion desc					
-
-		end
-		else
-		begin					
-
-			Select c.idCiudad,
-			c.nombre,
-			c.descripcion,
-			c.idPais,
-			p.nombre as 'pais',
-			c.estado,
-			c.fechaCreacion,
-			c.fechaModificacion
-			From Ciudad c
-			Inner join Pais p on p.idPais = c.idPais
-			Where c.estado = @estado and c.idCiudad = @idCiudad
-			Order By c.fechaCreacion desc			
-
-		end	
+		Select c.idCiudad,
+		c.nombre,
+		c.descripcion,
+		c.idPais,
+		p.nombre as 'pais',
+		c.estado,
+		c.fechaCreacion,
+		c.fechaModificacion
+		From Ciudad c
+		Inner join Pais p on p.idPais = c.idPais
+		Where (c.estado = @estado or @estado = -1) and c.idCiudad = @idCiudad
+		Order By c.fechaCreacion desc
 
 		select @info = CONCAT('Ciudad ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -2242,7 +2123,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_CiudadByNombre]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_CiudadByNombre]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2295,12 +2176,12 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_ComporPregu]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_ComporPregu]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_ComporPregu] 
+CREATE procedure [dbo].[sp_B_ComporPregu] 
 		
 	@estado int,
 
@@ -2311,33 +2192,20 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;				
-	
-	if(@estado = -1)
-	begin
-
-		Select * 
-		From ComportamientoPregunta cp
-		Order By cp.fechaCreacion desc						
-
-	end
-	else
-	begin
-
-		Select * 
-		From ComportamientoPregunta cp
-		Where cp.estado = @estado
-		Order By cp.fechaCreacion desc		
-
-	end	
+		
+	Select * 
+	From ComportamientoPregunta cp
+	Where (cp.estado = @estado or @estado = -1)
+	Order By cp.fechaCreacion desc		
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Condicion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Condicion]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_Condicion] 
+CREATE procedure [dbo].[sp_B_Condicion] 
 		
 	@estado int,
 
@@ -2349,27 +2217,14 @@ BEGIN
 
 	SET NOCOUNT ON;			
 	
-	if(@estado = -1)
-	begin
-
-		Select * 
-		From Condicion c
-		Order By c.fechaCreacion Desc							
-
-	end
-	else
-	begin
-			
-		Select * 
-		From Condicion c
-		Where c.estado = @estado
-		Order By c.fechaCreacion Desc				
-
-	end	
+	Select * 
+	From Condicion c
+	Where (c.estado = @estado or @estado = -1)
+	Order By c.fechaCreacion Desc				
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Configuracion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Configuracion]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2400,7 +2255,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_ConfiguracionByNombre]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_ConfiguracionByNombre]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2454,7 +2309,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_ConfiguracionByValor]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_ConfiguracionByValor]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2508,7 +2363,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_CorreoEnvio]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_CorreoEnvio]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2556,12 +2411,12 @@ BEGIN
 	print @info
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Empresa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Empresa]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_Empresa] 
+CREATE procedure [dbo].[sp_B_Empresa] 
 		
 	@estado int,
 
@@ -2572,31 +2427,19 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;			
-	
-	if(@estado = -1)
-	begin
-
-		Select * From Empresa e
-		Order By e.fechaCreacion desc					
-
-	end
-	else
-	begin					
-
-		Select * From Empresa e
-		where e.estado = @estado
-		Order By e.fechaCreacion desc
-
-	end	
+		
+	Select * From Empresa e
+	where (e.estado = @estado or @estado = -1)
+	Order By e.fechaCreacion desc
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_EmpresaById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_EmpresaById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_EmpresaById] 
+CREATE procedure [dbo].[sp_B_EmpresaById] 
 		
 	@idEmpresa uniqueidentifier,
 	@estado int,
@@ -2615,23 +2458,10 @@ BEGIN
 
 	if(@existeId > 0)
 	begin
-
-		if(@estado = -1)
-		begin
-
-			Select * From Empresa e
-			Where e.idEmpresa = @idEmpresa
-			Order By e.fechaCreacion desc					
-
-		end
-		else
-		begin					
-
-			Select * From Empresa e
-			where e.estado = @estado and e.idEmpresa = @idEmpresa
-			Order By e.fechaCreacion desc
-
-		end	
+	
+		Select * From Empresa e
+		where (e.estado = @estado or @estado = -1) and e.idEmpresa = @idEmpresa
+		Order By e.fechaCreacion desc
 
 		select @info = CONCAT('Empresa ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -2649,7 +2479,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Equipo]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Equipo]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2665,42 +2495,22 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;				
-	
-	if(@estado = -1)
-	begin
-
-		Select e.idEquipo,
-		e.nombre,
-		ISNULL(e.imagen, 'N/A') as 'imagen',
-		ISNULL(e.descripcion, 'N/A') as 'descripcion',
-		(select COUNT(*) from Usuario_Equipo ue where ue.idEquipo = e.idEquipo) as 'totalUsuarios',
-		e.estado,
-		e.fechaCreacion,
-		e.fechaModificacion
-		From Equipo e
-		Order By e.fechaCreacion desc
-
-	end
-	else
-	begin					
-
-		Select e.idEquipo,
-		e.nombre,
-		ISNULL(e.imagen, 'N/A') as 'imagen',
-		ISNULL(e.descripcion, 'N/A') as 'descripcion',
-		(select COUNT(*) from Usuario_Equipo ue where ue.idEquipo = e.idEquipo) as 'totalUsuarios',
-		e.estado,
-		e.fechaCreacion,
-		e.fechaModificacion
-		From Equipo e
-		Where e.estado = @estado
-		Order By e.fechaCreacion desc
-
-	end	
+		
+	Select e.idEquipo,
+	e.nombre,
+	ISNULL(e.imagen, 'N/A') as 'imagen',
+	ISNULL(e.descripcion, 'N/A') as 'descripcion',
+	(select COUNT(*) from Usuario_Equipo ue where ue.idEquipo = e.idEquipo) as 'totalUsuarios',
+	e.estado,
+	e.fechaCreacion,
+	e.fechaModificacion
+	From Equipo e
+	Where (e.estado = @estado or @estado = -1)
+	Order By e.fechaCreacion desc
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Equipo_RetoByIdReto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Equipo_RetoByIdReto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2724,40 +2534,19 @@ BEGIN
 
 	if(@existeId > 0)
 	begin
-
-		if(@estado = -1)
-		begin
-
-			Select 	
-			ur.idReto,
-			e.idEquipo,
-			count(ue.idEquipo) as 'totalUsuarios',
-			e.nombre,
-			ISNULL(e.imagen, 'N/A') as 'imagen'	,
-			e.estado
-			From Usuario_Reto ur 
-			inner join Usuario_Equipo ue on ue.idUsuario = ur.idUsuario
-			inner join Equipo e on e.idEquipo = ue.idEquipo 
-			Where ur.tieneEquipo = 1 and ur.idReto  = @idReto
-			Group by ue.idEquipo, ur.idReto, e.idEquipo, e.nombre, e.imagen, e.estado
-
-		end
-		else
-		begin
-
-			Select 	
-			ur.idReto,
-			count(ue.idEquipo) as 'totalUsuarios',
-			e.nombre,
-			ISNULL(e.imagen, 'N/A') as 'imagen',
-			e.estado
-			From Usuario_Reto ur 
-			inner join Usuario_Equipo ue on ue.idUsuario = ur.idUsuario
-			inner join Equipo e on e.idEquipo = ue.idEquipo 
-			Where ur.tieneEquipo = 1 and ur.idReto  = @idReto and e.estado = @estado
-			Group by ue.idEquipo, ur.idReto, e.idEquipo, e.nombre, e.imagen, e.estado
-
-		end
+		
+		Select 	
+		ur.idReto,
+		e.idEquipo,
+		count(ue.idEquipo) as 'totalUsuarios',
+		e.nombre,
+		ISNULL(e.imagen, 'N/A') as 'imagen',
+		e.estado
+		From Usuario_Reto ur 
+		inner join Usuario_Equipo ue on ue.idUsuario = ur.idUsuario
+		inner join Equipo e on e.idEquipo = ue.idEquipo 
+		Where ur.tieneEquipo = 1 and ur.idReto  = @idReto and (e.estado = @estado or @estado = -1)
+		Group by ue.idEquipo, ur.idReto, e.idEquipo, e.nombre, e.imagen, e.estado
 
 		select @info = CONCAT('Equipo ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -2775,7 +2564,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_EquipoByAll]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_EquipoByAll]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2829,7 +2618,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_EquipoById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_EquipoById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2853,39 +2642,18 @@ BEGIN
 	
 	if(@existeId > 0)
 	begin
-
-		if(@estado = -1)
-		begin
-
-			Select e.idEquipo,
-			e.nombre,
-			ISNULL(e.imagen, 'N/A') as 'imagen',
-			e.descripcion,
-			(select COUNT(*) from Usuario_Equipo ue where ue.idEquipo = e.idEquipo) as 'totalUsuarios',
-			e.estado,
-			e.fechaCreacion,
-			e.fechaModificacion
-			From Equipo e
-			Where e.idEquipo = @idEquipo
-			Order By e.fechaCreacion desc
-
-		end
-		else
-		begin
-
-			Select e.idEquipo,
-			e.nombre,
-			ISNULL(e.imagen, 'N/A') as 'imagen',
-			e.descripcion,
-			(select COUNT(*) from Usuario_Equipo ue where ue.idEquipo = e.idEquipo) as 'totalUsuarios',
-			e.estado,
-			e.fechaCreacion,
-			e.fechaModificacion
-			From Equipo e
-			Where e.estado = @estado and e.idEquipo = @idEquipo
-			Order By e.fechaCreacion desc
-
-		end
+	
+		Select e.idEquipo,
+		e.nombre,
+		ISNULL(e.imagen, 'N/A') as 'imagen',
+		e.descripcion,
+		(select COUNT(*) from Usuario_Equipo ue where ue.idEquipo = e.idEquipo) as 'totalUsuarios',
+		e.estado,
+		e.fechaCreacion,
+		e.fechaModificacion
+		From Equipo e
+		Where (e.estado = @estado or @estado = -1) and e.idEquipo = @idEquipo
+		Order By e.fechaCreacion desc
 
 		select @info = CONCAT('Equipo ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -2903,7 +2671,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Inicio]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Inicio]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2925,7 +2693,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_InicioByIdRol]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_InicioByIdRol]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2969,7 +2737,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Licencia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Licencia]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3021,28 +2789,15 @@ BEGIN
 	CLOSE LicenciasInfo
 	DEALLOCATE LicenciasInfo
 
-
-	if(@estado = -1)
-	begin				
-
-		Select * 
-		From @auxTable								
-		Order by fechaCreacion desc
-
-	end
-	else
-	begin				
 	
-		Select * 
-		From @auxTable 
-		Where estado = @estado		
-		Order by fechaCreacion desc
-
-	end	
+	Select * 
+	From @auxTable 
+	Where (estado = @estado or @estado = -1)
+	Order by fechaCreacion desc
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Medalla]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Medalla]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3058,50 +2813,26 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;			
-	
-	if(@estado = -1)
-	begin
-
-		Select m.idMedalla,
-		m.nombre,
-		m.descripcion,		
-		ISNULL(m.imagen, 'N/A') as 'imagen',
-		m.estado,
-		(select COUNT(*) from Usuario_Medalla um where um.idMedalla = m.idMedalla) as 'totalUsuarios',
-		m.idCondicion,		
-		c.nombre as 'condicion',
-		m.numCondicion,
-		m.fechaCreacion,
-		m.fechaModificacion
-		From Medalla m
-		Inner Join Condicion c on c.idCondicion = m.idCondicion
-		Order by m.fechaCreacion desc				
-
-	end
-	else
-	begin					
-
-		Select m.idMedalla,
-		m.nombre,
-		m.descripcion,		
-		ISNULL(m.imagen, 'N/A') as 'imagen',
-		m.estado,
-		(select COUNT(*) from Usuario_Medalla um where um.idMedalla = m.idMedalla) as 'totalUsuarios',
-		m.idCondicion,		
-		c.nombre as 'condicion',
-		m.numCondicion,
-		m.fechaCreacion,
-		m.fechaModificacion
-		From Medalla m
-		Inner Join Condicion c on c.idCondicion = m.idCondicion
-		where m.estado = @estado
-		Order by m.fechaCreacion desc	
-
-	end	
+		
+	Select m.idMedalla,
+	m.nombre,
+	m.descripcion,		
+	ISNULL(m.imagen, 'N/A') as 'imagen',
+	m.estado,
+	(select COUNT(*) from Usuario_Medalla um where um.idMedalla = m.idMedalla) as 'totalUsuarios',
+	m.idCondicion,		
+	c.nombre as 'condicion',
+	m.numCondicion,
+	m.fechaCreacion,
+	m.fechaModificacion
+	From Medalla m
+	Inner Join Condicion c on c.idCondicion = m.idCondicion
+	where (m.estado = @estado or @estado = -1)
+	Order by m.fechaCreacion desc	
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_MedallaByAll]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_MedallaByAll]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3160,7 +2891,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_MedallaById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_MedallaById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3184,47 +2915,22 @@ BEGIN
 	
 	if(@existeId > 0)
 	begin
-
-		if(@estado = -1)
-		begin
-
-			Select m.idMedalla,
-			m.nombre,
-			m.descripcion,		
-			ISNULL(m.imagen, 'N/A') as 'imagen',
-			m.estado,
-			(select COUNT(*) from Usuario_Medalla um where um.idMedalla = m.idMedalla) as 'totalUsuarios',
-			m.idCondicion,		
-			c.nombre as 'condicion',
-			m.numCondicion,
-			m.fechaCreacion,
-			m.fechaModificacion
-			From Medalla m
-			Inner Join Condicion c on c.idCondicion = m.idCondicion
-			Where m.idMedalla = @idMedalla
-			Order by m.fechaCreacion desc				
-
-		end
-		else
-		begin					
-
-			Select m.idMedalla,
-			m.nombre,
-			m.descripcion,		
-			ISNULL(m.imagen, 'N/A') as 'imagen',
-			m.estado,
-			(select COUNT(*) from Usuario_Medalla um where um.idMedalla = m.idMedalla) as 'totalUsuarios',
-			m.idCondicion,		
-			c.nombre as 'condicion',
-			m.numCondicion,
-			m.fechaCreacion,
-			m.fechaModificacion
-			From Medalla m
-			Inner Join Condicion c on c.idCondicion = m.idCondicion
-			Where m.estado = @estado and m.idMedalla = @idMedalla
-			Order by m.fechaCreacion desc	
-
-		end	
+		
+		Select m.idMedalla,
+		m.nombre,
+		m.descripcion,		
+		ISNULL(m.imagen, 'N/A') as 'imagen',
+		m.estado,
+		(select COUNT(*) from Usuario_Medalla um where um.idMedalla = m.idMedalla) as 'totalUsuarios',
+		m.idCondicion,		
+		c.nombre as 'condicion',
+		m.numCondicion,
+		m.fechaCreacion,
+		m.fechaModificacion
+		From Medalla m
+		Inner Join Condicion c on c.idCondicion = m.idCondicion
+		Where (m.estado = @estado or @estado = -1) and m.idMedalla = @idMedalla
+		Order by m.fechaCreacion desc	
 
 		select @info = CONCAT('Medalla ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -3243,7 +2949,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Nivel]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Nivel]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3258,45 +2964,24 @@ CREATE procedure [dbo].[sp_B_Nivel]
 AS
 BEGIN
 
-	SET NOCOUNT ON;		
-	
-	if(@estado = -1)
-	begin
-
-		Select n.idNivel,
-		n.nombre,		
-		n.descripcion,
-		n.puntosNecesarios,
-		ISNULL(n.imagen, 'N/A') as 'imagen',
-		n.estado,
-		(select COUNT(*) from Usuario_Nivel un where un.idNivel = n.idNivel) as 'totalUsuarios',
-		n.fechaCreacion,
-		n.fechaModificacion
-		From Nivel n		
-		Order by n.fechaCreacion desc				
-
-	end
-	else
-	begin
+	SET NOCOUNT ON;			
 			
-		Select n.idNivel,
-		n.nombre,
-		n.descripcion,
-		n.puntosNecesarios,
-		ISNULL(n.imagen, 'N/A') as 'imagen',
-		n.estado,
-		(select COUNT(*) from Usuario_Nivel un where un.idNivel = n.idNivel) as 'totalUsuarios',
-		n.fechaCreacion,
-		n.fechaModificacion
-		From Nivel n		
-		where n.estado = @estado
-		Order by n.fechaCreacion desc		
-
-	end	
+	Select n.idNivel,
+	n.nombre,
+	n.descripcion,
+	n.puntosNecesarios,
+	ISNULL(n.imagen, 'N/A') as 'imagen',
+	n.estado,
+	(select COUNT(*) from Usuario_Nivel un where un.idNivel = n.idNivel) as 'totalUsuarios',
+	n.fechaCreacion,
+	n.fechaModificacion
+	From Nivel n		
+	where (n.estado = @estado or @estado = -1)
+	Order by n.fechaCreacion desc		
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_NivelByAll]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_NivelByAll]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3352,7 +3037,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_NivelById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_NivelById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3376,41 +3061,19 @@ BEGIN
 
 	if(@existeId > 0)
 	begin
-		
-		if(@estado = -1)
-		begin
-
-			Select n.idNivel,
-			n.nombre,			
-			n.descripcion,
-			n.puntosNecesarios,
-			ISNULL(n.imagen, 'N/A') as 'imagen',
-			n.estado,
-			(select COUNT(*) from Usuario_Nivel un where un.idNivel = n.idNivel) as 'totalUsuarios',
-			n.fechaCreacion,
-			n.fechaModificacion
-			From Nivel n	
-			Where n.idNivel = @idNivel
-			Order by n.fechaCreacion desc				
-
-		end
-		else
-		begin
-			
-			Select n.idNivel,
-			n.nombre,
-			n.descripcion,
-			n.puntosNecesarios,
-			ISNULL(n.imagen, 'N/A') as 'imagen',
-			n.estado,
-			(select COUNT(*) from Usuario_Nivel un where un.idNivel = n.idNivel) as 'totalUsuarios',
-			n.fechaCreacion,
-			n.fechaModificacion
-			From Nivel n		
-			where n.estado = @estado and n.idNivel = @idNivel
-			Order by n.fechaCreacion desc		
-
-		end	
+				
+		Select n.idNivel,
+		n.nombre,
+		n.descripcion,
+		n.puntosNecesarios,
+		ISNULL(n.imagen, 'N/A') as 'imagen',
+		n.estado,
+		(select COUNT(*) from Usuario_Nivel un where un.idNivel = n.idNivel) as 'totalUsuarios',
+		n.fechaCreacion,
+		n.fechaModificacion
+		From Nivel n		
+		where (n.estado = @estado or @estado = -1) and n.idNivel = @idNivel
+		Order by n.fechaCreacion desc		
 
 		select @info = CONCAT('Nivel ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -3426,7 +3089,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_NivelByNextPuntos]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_NivelByNextPuntos]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3459,7 +3122,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Noticia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Noticia]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3475,54 +3138,28 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;			
-	
-	if(@estado = -1)
-	begin
-
-		Select n.idNoticia,
-		n.titular,
-		n.descripcion,
-		n.url,
-		ISNULL(n.imagen,'N/A') as 'imagen',
-		n.estado,
-		n.idCategoria,
-		c.nombre as 'categoria',
-		ISNULL(n.fechaPublicacion, '1800-01-01 00:00:00') as 'fechaPublicacion',
-		(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.likes > 0) as 'totalLikes',
-		(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.comentario is not null) as 'totalComents',
-		n.fechaCreacion,
-		n.fechaModificacion
-		From Noticia n
-		inner join CategoriaNoticia c on c.idCategoria = n.idCategoria
-		Order by n.fechaCreacion desc				
-
-	end
-	else
-	begin
 		
-		Select n.idNoticia,
-		n.titular,
-		n.descripcion,
-		n.url,
-		ISNULL(n.imagen,'N/A') as 'imagen',
-		n.estado,
-		n.idCategoria,
-		c.nombre as 'categoria',
-		ISNULL(n.fechaPublicacion, '1800-01-01 00:00:00') as 'fechaPublicacion',
-		(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.likes > 0) as 'totalLikes',
-		(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.comentario is not null) as 'totalComents',
-		n.fechaCreacion,
-		n.fechaModificacion
-		From Noticia n
-		inner join CategoriaNoticia c on c.idCategoria = n.idCategoria
-		where n.estado = @estado
-		Order by n.fechaCreacion desc		
-
-	end	
+	Select n.idNoticia,
+	n.titular,
+	n.descripcion,
+	n.url,
+	ISNULL(n.imagen,'N/A') as 'imagen',
+	n.estado,
+	n.idCategoria,
+	c.nombre as 'categoria',
+	ISNULL(n.fechaPublicacion, '1800-01-01 00:00:00') as 'fechaPublicacion',
+	(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.likes > 0) as 'totalLikes',
+	(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.comentario is not null) as 'totalComents',
+	n.fechaCreacion,
+	n.fechaModificacion
+	From Noticia n
+	inner join CategoriaNoticia c on c.idCategoria = n.idCategoria
+	where (n.estado = @estado or @estado = -1)
+	Order by n.fechaCreacion desc		
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Noticia_enTendencia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Noticia_enTendencia]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3539,55 +3176,28 @@ BEGIN
 
 	SET NOCOUNT ON;			
 	
-	if(@estado = -1)
-	begin
-
-		Select top 5
-		n.idNoticia,
-		n.titular,
-		n.descripcion,
-		n.url,
-		ISNULL(n.imagen,'N/A') as 'imagen',
-		n.estado,
-		n.idCategoria,
-		c.nombre as 'categoria',
-		ISNULL(n.fechaPublicacion, '1800-01-01 00:00:00') as 'fechaPublicacion',
-		(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.likes > 0) as 'totalLikes',
-		(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.comentario is not null) as 'totalComents',
-		n.fechaCreacion,
-		n.fechaModificacion
-		From Noticia n
-		inner join CategoriaNoticia c on c.idCategoria = n.idCategoria
-		Order by n.fechaCreacion desc				
-
-	end
-	else
-	begin
-		
-		Select top 5
-		n.idNoticia,
-		n.titular,
-		n.descripcion,
-		n.url,
-		ISNULL(n.imagen,'N/A') as 'imagen',
-		n.estado,
-		n.idCategoria,
-		c.nombre as 'categoria',
-		ISNULL(n.fechaPublicacion, '1800-01-01 00:00:00') as 'fechaPublicacion',
-		(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.likes > 0) as 'totalLikes',
-		(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.comentario is not null) as 'totalComents',
-		n.fechaCreacion,
-		n.fechaModificacion
-		From Noticia n
-		inner join CategoriaNoticia c on c.idCategoria = n.idCategoria
-		where n.estado = @estado
-		Order by n.fechaCreacion desc		
-
-	end	
+	Select top 5
+	n.idNoticia,
+	n.titular,
+	n.descripcion,
+	n.url,
+	ISNULL(n.imagen,'N/A') as 'imagen',
+	n.estado,
+	n.idCategoria,
+	c.nombre as 'categoria',
+	ISNULL(n.fechaPublicacion, '1800-01-01 00:00:00') as 'fechaPublicacion',
+	(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.likes > 0) as 'totalLikes',
+	(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.comentario is not null) as 'totalComents',
+	n.fechaCreacion,
+	n.fechaModificacion
+	From Noticia n
+	inner join CategoriaNoticia c on c.idCategoria = n.idCategoria
+	where (n.estado = @estado or @estado = -1)
+	Order by n.fechaCreacion desc		
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_NoticiaByAll]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_NoticiaByAll]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3650,7 +3260,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_NoticiaById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_NoticiaById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3674,51 +3284,24 @@ BEGIN
 	
 	if(@existeId > 0)
 	begin
-
-		if(@estado = -1)
-		begin
-
-			Select n.idNoticia,
-			n.titular,
-			n.descripcion,
-			n.url,
-			ISNULL(n.imagen,'N/A') as 'imagen',
-			n.estado,
-			LOWER(n.idCategoria) as 'idCategoria',
-			c.nombre as 'categoria',
-			ISNULL(n.fechaPublicacion, '1800-01-01 00:00:00') as 'fechaPublicacion',
-			(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.likes > 0) as 'totalLikes',
-			(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.comentario is not null) as 'totalComents',
-			n.fechaCreacion,
-			n.fechaModificacion
-			From Noticia n
-			inner join CategoriaNoticia c on c.idCategoria = n.idCategoria
-			Where n.idNoticia = @idNoticia
-			Order by n.fechaCreacion desc				
-
-		end
-		else
-		begin
 		
-			Select n.idNoticia,
-			n.titular,
-			n.descripcion,
-			n.url,
-			ISNULL(n.imagen,'N/A') as 'imagen',
-			n.estado,
-			LOWER(n.idCategoria) as 'idCategoria',
-			c.nombre as 'categoria',
-			ISNULL(n.fechaPublicacion, '1800-01-01 00:00:00') as 'fechaPublicacion',
-			(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.likes > 0) as 'totalLikes',
-			(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.comentario is not null) as 'totalComents',
-			n.fechaCreacion,
-			n.fechaModificacion
-			From Noticia n
-			inner join CategoriaNoticia c on c.idCategoria = n.idCategoria
-			where n.estado = @estado and n.idNoticia = @idNoticia
-			Order by n.fechaCreacion desc		
-
-		end	
+		Select n.idNoticia,
+		n.titular,
+		n.descripcion,
+		n.url,
+		ISNULL(n.imagen,'N/A') as 'imagen',
+		n.estado,
+		LOWER(n.idCategoria) as 'idCategoria',
+		c.nombre as 'categoria',
+		ISNULL(n.fechaPublicacion, '1800-01-01 00:00:00') as 'fechaPublicacion',
+		(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.likes > 0) as 'totalLikes',
+		(select COUNT(*) from Usuario_Noticia un where un.idNoticia = n.idNoticia and un.comentario is not null) as 'totalComents',
+		n.fechaCreacion,
+		n.fechaModificacion
+		From Noticia n
+		inner join CategoriaNoticia c on c.idCategoria = n.idCategoria
+		where (n.estado = @estado or @estado = -1) and n.idNoticia = @idNoticia
+		Order by n.fechaCreacion desc		
 
 		select @info = CONCAT('Noticia ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -3736,7 +3319,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Notificacion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Notificacion]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3753,44 +3336,22 @@ BEGIN
 
 	SET NOCOUNT ON;			
 	
-	if(@estado = -1)
-	begin
-
-		Select 
-		n.idNotificacion,
-		n.nombre,
-		n.estado,
-		ISNULL(n.msgPersonalizado, 'N/A') as 'msgPersonalizado',
-		ISNULL(n.descripcion, 'N/A') as 'descripcion',
-		n.numDesc,
-		n.enviarCorreo,
-		n.fechaCreacion,
-		n.fechaModificacion
-		From Notificacion n
-		Order By n.fechaCreacion								
-
-	end
-	else
-	begin					
-
-		Select n.idNotificacion,
-		n.nombre,
-		n.estado,
-		ISNULL(n.msgPersonalizado, 'N/A') as 'msgPersonalizado',
-		ISNULL(n.descripcion, 'N/A') as 'descripcion',
-		n.numDesc,
-		n.enviarCorreo,
-		n.fechaCreacion,
-		n.fechaModificacion
-		From Notificacion n
-		Where n.estado = @estado
-		Order By n.fechaCreacion	
-
-	end	
+	Select n.idNotificacion,
+	n.nombre,
+	n.estado,
+	ISNULL(n.msgPersonalizado, 'N/A') as 'msgPersonalizado',
+	ISNULL(n.descripcion, 'N/A') as 'descripcion',
+	n.numDesc,
+	n.enviarCorreo,
+	n.fechaCreacion,
+	n.fechaModificacion
+	From Notificacion n
+	Where (n.estado = @estado or @estado = -1)
+	Order By n.fechaCreacion	
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_NotificacionById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_NotificacionById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3836,7 +3397,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_NotificacionByNombre]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_NotificacionByNombre]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3882,12 +3443,12 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_OpcionByIdPregunta]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_OpcionByIdPregunta]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_OpcionByIdPregunta] 
+CREATE procedure [dbo].[sp_B_OpcionByIdPregunta] 
 		
 	@estado int,	
 	@idPregunta uniqueidentifier,
@@ -3899,35 +3460,21 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;			
-	
-	if(@estado = -1)
-	begin
 
-		Select * 
-		from Opcion o
-		Where idPregunta = @idPregunta
-		Order By o.fechaCreacion desc						
-
-	end
-	else
-	begin					
-
-		Select * 
-		from Opcion o
-		Where idPregunta = @idPregunta 
-		and o.estado = @estado
-		Order By o.fechaCreacion desc
-
-	end	
+	Select * 
+	from Opcion o
+	Where idPregunta = @idPregunta 
+	and (o.estado = @estado or @estado = -1)
+	Order By o.fechaCreacion desc
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Pais]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Pais]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_Pais] 
+CREATE procedure [dbo].[sp_B_Pais] 
 		
 	@estado int,
 
@@ -3938,31 +3485,19 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;			
-	
-	if(@estado = -1)
-	begin
-
-		Select * From Pais p
-		Order By p.fechaCreacion desc					
-
-	end
-	else
-	begin					
-
-		Select * From Pais p
-		Where p.estado = @estado
-		Order By p.fechaCreacion desc
-
-	end	
+		
+	Select * From Pais p
+	Where (p.estado = @estado or @estado = -1)
+	Order By p.fechaCreacion desc
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_PaisById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_PaisById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_PaisById] 
+CREATE procedure [dbo].[sp_B_PaisById] 
 		
 	@idPais uniqueidentifier,	
 	@estado int,
@@ -3982,22 +3517,9 @@ BEGIN
 	if(@existeId > 0)
 	begin
 
-		if(@estado = -1)
-		begin
-
-			Select * From Pais p
-			Where p.idPais = @idPais
-			Order By p.fechaCreacion desc					
-
-		end
-		else
-		begin					
-
-			Select * From Pais p
-			Where p.estado = @estado and p.idPais = @idPais
-			Order By p.fechaCreacion desc
-
-		end	
+		Select * From Pais p
+		Where (p.estado = @estado or @estado = -1) and p.idPais = @idPais
+		Order By p.fechaCreacion desc
 
 		select @info = CONCAT('Pais ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -4015,7 +3537,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_PreguntaByAll]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_PreguntaByAll]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4063,12 +3585,12 @@ BEGIN
 	print @info		
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_PreguntaById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_PreguntaById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_PreguntaById] 
+CREATE procedure [dbo].[sp_B_PreguntaById] 
 		
 	@idPregunta uniqueidentifier,
 	@estado int,
@@ -4087,26 +3609,12 @@ BEGIN
 
 	if(@existeId > 0)
 	begin
-
-		if(@estado = -1)
-		begin
 		
-			Select * 
-			From Pregunta p
-			Where p.idPregunta = @idPregunta
-			Order By p.fechaCreacion Desc						
-
-		end
-		else
-		begin					
-
-			Select * 
-			From Pregunta p
-			Where p.idPregunta = @idPregunta
-			and p.estado = @estado
-			Order By p.fechaCreacion Desc			
-
-		end
+		Select * 
+		From Pregunta p
+		Where p.idPregunta = @idPregunta
+		and (p.estado = @estado or @estado = -1)
+		Order By p.fechaCreacion Desc			
 
 		select @info = CONCAT('Pregunta ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -4123,12 +3631,12 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_PreguntaByIdReto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_PreguntaByIdReto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_PreguntaByIdReto] 
+CREATE procedure [dbo].[sp_B_PreguntaByIdReto] 
 		
 	@estado int,
 	@idReto uniqueidentifier,
@@ -4141,29 +3649,15 @@ BEGIN
 
 	SET NOCOUNT ON;	
 	
-	if(@estado = -1)
-	begin
-		
-		Select * 
-		From Pregunta p
-		Where p.idReto = @idReto
-		Order By p.fechaCreacion Desc						
-
-	end
-	else
-	begin					
-
-		Select * 
-		From Pregunta p
-		Where p.idReto = @idReto
-		and p.estado = @estado
-		Order By p.fechaCreacion Desc			
-
-	end	
+	Select * 
+	From Pregunta p
+	Where p.idReto = @idReto
+	and (p.estado = @estado or @estado = -1)
+	Order By p.fechaCreacion Desc			
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Recompensa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Recompensa]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4180,52 +3674,27 @@ BEGIN
 
 	SET NOCOUNT ON;			
 	
-	if(@estado = -1)
-	begin
-
-		Select 
-		r.idRecompensa,
-		r.nombre,
-		r.descripcion,		
-		ISNULL(r.imagen, 'N/A') as 'imagen',
-		r.cantDisponible,
-		r.cantCanje,
-		r.estado,
-		(select COUNT(*) from Usuario_Recompensa ur where ur.idRecompensa = r.idRecompensa) as 'totalUsuarios',
-		r.idCategoria,
-		cr.nombre as 'categoria',
-		r.fechaCreacion,
-		r.fechaModificacion
-		From Recompensa r
-		Inner join CategoriaRecompensa cr on cr.idCategoria = r.idCategoria
-		Order by r.fechaCreacion desc						
-
-	end
-	else
-	begin
-			
-		Select r.idRecompensa,
-		r.nombre,
-		r.descripcion,		
-		ISNULL(r.imagen, 'N/A') as 'imagen',
-		r.cantDisponible,
-		r.cantCanje,
-		r.estado,
-		(select COUNT(*) from Usuario_Recompensa ur where ur.idRecompensa = r.idRecompensa) as 'totalUsuarios',
-		r.idCategoria,
-		cr.nombre as 'categoria',
-		r.fechaCreacion,
-		r.fechaModificacion
-		From Recompensa r
-		Inner join CategoriaRecompensa cr on cr.idCategoria = r.idCategoria
-		where r.estado = @estado
-		Order by r.fechaCreacion desc				
-
-	end	
+	Select 
+	r.idRecompensa,
+	r.nombre,
+	r.descripcion,		
+	ISNULL(r.imagen, 'N/A') as 'imagen',
+	r.cantDisponible,
+	r.cantCanje,
+	r.estado,
+	(select COUNT(*) from Usuario_Recompensa ur where ur.idRecompensa = r.idRecompensa) as 'totalUsuarios',
+	r.idCategoria,
+	cr.nombre as 'categoria',
+	r.fechaCreacion,
+	r.fechaModificacion
+	From Recompensa r
+	Inner join CategoriaRecompensa cr on cr.idCategoria = r.idCategoria
+	where (r.estado = @estado or @estado = -1)
+	Order by r.fechaCreacion desc				
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_RecompensaByAll]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_RecompensaByAll]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4322,7 +3791,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_RecompensaById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_RecompensaById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4346,49 +3815,23 @@ BEGIN
 	
 	if(@existeId > 0)
 	begin
-
-		if(@estado = -1)
-		begin
-
-			Select r.idRecompensa,
-			r.nombre,
-			r.descripcion,		
-			ISNULL(r.imagen, 'N/A') as 'imagen',
-			r.cantDisponible,
-			r.cantCanje,
-			r.estado,
-			(select COUNT(*) from Usuario_Recompensa ur where ur.idRecompensa = r.idRecompensa) as 'totalUsuarios',
-			r.idCategoria,
-			cr.nombre as 'categoria',
-			r.fechaCreacion,
-			r.fechaModificacion
-			From Recompensa r
-			Inner join CategoriaRecompensa cr on cr.idCategoria = r.idCategoria
-			Where r.idRecompensa = @idRecompensa
-			Order by r.fechaCreacion desc						
-
-		end
-		else
-		begin
-			
-			Select r.idRecompensa,
-			r.nombre,
-			r.descripcion,		
-			ISNULL(r.imagen, 'N/A') as 'imagen',
-			r.cantDisponible,
-			r.cantCanje,
-			r.estado,
-			(select COUNT(*) from Usuario_Recompensa ur where ur.idRecompensa = r.idRecompensa) as 'totalUsuarios',
-			r.idCategoria,
-			cr.nombre as 'categoria',
-			r.fechaCreacion,
-			r.fechaModificacion
-			From Recompensa r
-			Inner join CategoriaRecompensa cr on cr.idCategoria = r.idCategoria
-			where r.estado = @estado and r.idRecompensa = @idRecompensa
-			Order by r.fechaCreacion desc				
-
-		end	
+		
+		Select r.idRecompensa,
+		r.nombre,
+		r.descripcion,		
+		ISNULL(r.imagen, 'N/A') as 'imagen',
+		r.cantDisponible,
+		r.cantCanje,
+		r.estado,
+		(select COUNT(*) from Usuario_Recompensa ur where ur.idRecompensa = r.idRecompensa) as 'totalUsuarios',
+		r.idCategoria,
+		cr.nombre as 'categoria',
+		r.fechaCreacion,
+		r.fechaModificacion
+		From Recompensa r
+		Inner join CategoriaRecompensa cr on cr.idCategoria = r.idCategoria
+		where (r.estado = @estado or @estado = -1) and r.idRecompensa = @idRecompensa
+		Order by r.fechaCreacion desc				
 
 		select @info = CONCAT('Recompensa ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -4406,7 +3849,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_RedSocial]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_RedSocial]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4459,7 +3902,8 @@ BEGIN
 	DEALLOCATE RedInfo
 
 
-	Select r.idRed,
+	Select top 50
+	r.idRed,
 	r.descripcion,
 	r.usuario,
 	r.foto,
@@ -4477,7 +3921,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_RedSocialByIdRedUser]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_RedSocialByIdRedUser]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4523,7 +3967,7 @@ BEGIN
 	print @id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_resumenGeneral]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_resumenGeneral]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4590,7 +4034,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Reto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Reto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4606,108 +4050,55 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;	
-
-	if(@estado = -1)
-	begin
-
-		Select r.idReto,
-		r.nombre,
-		r.fechaApetura,
-		r.fechaCierre,
-		r.estado,
-		r.vidas,
-		r.tiempo_ms,
-		r.puntosRecompensa,
-		r.creditosObtenidos,
-		r.instrucciones,
-		ISNULL(r.imagen, 'N/A') as 'imagen',
-		r.idTipoReto,
-		tr.nombre as 'tipoReto',
-		r.idComportamiento,
-		cp.nombre as 'comportamientoPregunta',		
-		r.criterioMinimo,
-		(select COUNT(*) from Pregunta p where p.idReto = r.idReto) as 'totalPreguntas', 
-
-		(
-			case r.enEquipo when 0 then 
-				(select COUNT(*) from Usuario_Reto ur where ur.tieneEquipo = 0 and ur.idReto = r.idReto) 
-			else 
-				(select COUNT(*) from Usuario_Reto ur where ur.tieneEquipo = 1 and ur.idReto = r.idReto) 
-			end
-		) as 'usuariosAsignados',
-
-		ISNULL((
-			select 	
-			COUNT(distinct ur.idReto)
-			From Usuario_Reto ur 
-			inner join Usuario_Equipo ue on ue.idUsuario = ur.idUsuario
-			inner join Equipo e on e.idEquipo = ue.idEquipo 
-			Where ur.tieneEquipo = 1 and ur.idReto = r.idReto
-			Group by ur.idReto
-		),0) as 'equiposAsignados',
-
-		r.enEquipo,
-		r.fechaCreacion,
-		r.fechaModificacion
-		From Reto r
-		Inner Join tipoReto tr on tr.idTipoReto = r.idTipoReto
-		Inner Join ComportamientoPregunta cp on cp.idComportamiento = r.idComportamiento
-		Order By r.fechaCreacion Desc
-
-	end
-	else
-	begin
-
-		Select r.idReto,
-		r.nombre,
-		r.fechaApetura,
-		r.fechaCierre,	
-		r.estado,
-		r.vidas,
-		r.tiempo_ms,
-		r.puntosRecompensa,
-		r.creditosObtenidos,
-		r.instrucciones,
-		ISNULL(r.imagen, 'N/A') as 'imagen',
-		r.idTipoReto,
-		tr.nombre as 'tipoReto',
-		r.idComportamiento,
-		cp.nombre as 'comportamientoPregunta',	
-		r.criterioMinimo,
-		(select COUNT(*) from Pregunta p where p.idReto = r.idReto) as 'totalPreguntas', 
-
-		(
-			case r.enEquipo when 0 then 
-				(select COUNT(*) from Usuario_Reto ur where ur.tieneEquipo = 0 and ur.idReto = r.idReto) 
-			else 
-				(select COUNT(*) from Usuario_Reto ur where ur.tieneEquipo = 1 and ur.idReto = r.idReto) 
-			end
-		) as 'usuariosAsignados',
-
-		ISNULL((
-			select 	
-			COUNT(distinct ur.idReto)
-			From Usuario_Reto ur 
-			inner join Usuario_Equipo ue on ue.idUsuario = ur.idUsuario
-			inner join Equipo e on e.idEquipo = ue.idEquipo 
-			Where ur.tieneEquipo = 1 and ur.idReto = r.idReto
-			Group by ur.idReto
-		),0) as 'equiposAsignados',
-
-		r.enEquipo,
-		r.fechaCreacion,
-		r.fechaModificacion
-		From Reto r
-		Inner Join tipoReto tr on tr.idTipoReto = r.idTipoReto
-		Inner Join ComportamientoPregunta cp on cp.idComportamiento = r.idComportamiento
-		Where r.estado = @estado
-		Order By r.fechaCreacion Desc		
 	
-	end	
+	Select r.idReto,
+	r.nombre,
+	r.fechaApetura,
+	r.fechaCierre,	
+	r.estado,
+	r.vidas,
+	r.tiempo_ms,
+	r.puntosRecompensa,
+	r.creditosObtenidos,
+	r.instrucciones,
+	ISNULL(r.imagen, 'N/A') as 'imagen',
+	r.idTipoReto,
+	tr.nombre as 'tipoReto',
+	r.idComportamiento,
+	cp.nombre as 'comportamientoPregunta',	
+	r.criterioMinimo,
+	(select COUNT(*) from Pregunta p where p.idReto = r.idReto) as 'totalPreguntas', 
+
+	(
+		case r.enEquipo when 0 then 
+			(select COUNT(*) from Usuario_Reto ur where ur.tieneEquipo = 0 and ur.idReto = r.idReto) 
+		else 
+			(select COUNT(*) from Usuario_Reto ur where ur.tieneEquipo = 1 and ur.idReto = r.idReto) 
+		end
+	) as 'usuariosAsignados',
+
+	ISNULL((
+		select 	
+		COUNT(distinct ur.idReto)
+		From Usuario_Reto ur 
+		inner join Usuario_Equipo ue on ue.idUsuario = ur.idUsuario
+		inner join Equipo e on e.idEquipo = ue.idEquipo 
+		Where ur.tieneEquipo = 1 and ur.idReto = r.idReto
+		Group by ur.idReto
+	),0) as 'equiposAsignados',
+
+	r.enEquipo,
+	r.fechaCreacion,
+	r.fechaModificacion
+	From Reto r
+	Inner Join tipoReto tr on tr.idTipoReto = r.idTipoReto
+	Inner Join ComportamientoPregunta cp on cp.idComportamiento = r.idComportamiento
+	Where (r.estado = @estado or @estado = -1)
+	Order By r.fechaCreacion Desc		
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_RetoByAll]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_RetoByAll]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4800,7 +4191,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_RetoById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_RetoById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4824,67 +4215,32 @@ BEGIN
 
 	if(@existeId > 0)
 	begin
-
-		if(@estado = -1)
-		begin
-
-			Select r.idReto,
-			r.nombre,
-			r.fechaApetura,
-			r.fechaCierre,
-			r.estado,
-			r.vidas,
-			r.tiempo_ms,
-			r.puntosRecompensa,
-			r.creditosObtenidos,
-			r.instrucciones,
-			ISNULL(r.imagen,'N/A') as 'imagen',
-			LOWER(r.idTipoReto) as 'idTipoReto',
-			tr.nombre as 'tipoReto',
-			LOWER(r.idComportamiento) as 'idComportamiento',
-			cp.nombre as 'comportamientoPregunta',
-			r.criterioMinimo,
-			(select COUNT(*) from Pregunta p where p.idReto = r.idReto) as 'totalPreguntas', 
-			r.enEquipo,
-			r.fechaCreacion,
-			r.fechaModificacion
-			From Reto r
-			Inner Join tipoReto tr on tr.idTipoReto = r.idTipoReto
-			Inner Join ComportamientoPregunta cp on cp.idComportamiento = r.idComportamiento
-			Where idReto = @idReto
-			Order By r.fechaCreacion Desc
-
-		end
-		else
-		begin
-
-			Select r.idReto,
-			r.nombre,
-			r.fechaApetura,
-			r.fechaCierre,
-			r.estado,
-			r.vidas,
-			r.tiempo_ms,
-			r.puntosRecompensa,
-			r.creditosObtenidos,
-			r.instrucciones,
-			ISNULL(r.imagen,'N/A') as 'imagen',
-			LOWER(r.idTipoReto) as 'idTipoReto',
-			tr.nombre as 'tipoReto',
-			LOWER(r.idComportamiento) as 'idComportamiento',
-			cp.nombre as 'comportamientoPregunta',
-			r.criterioMinimo,
-			(select COUNT(*) from Pregunta p where p.idReto = r.idReto) as 'totalPreguntas', 
-			r.enEquipo,
-			r.fechaCreacion,
-			r.fechaModificacion
-			From Reto r
-			Inner Join tipoReto tr on tr.idTipoReto = r.idTipoReto
-			Inner Join ComportamientoPregunta cp on cp.idComportamiento = r.idComportamiento
-			Where r.estado = @estado and idReto = @idReto
-			Order By r.fechaCreacion Desc				
-	
-		end	
+		
+		Select r.idReto,
+		r.nombre,
+		r.fechaApetura,
+		r.fechaCierre,
+		r.estado,
+		r.vidas,
+		r.tiempo_ms,
+		r.puntosRecompensa,
+		r.creditosObtenidos,
+		r.instrucciones,
+		ISNULL(r.imagen,'N/A') as 'imagen',
+		LOWER(r.idTipoReto) as 'idTipoReto',
+		tr.nombre as 'tipoReto',
+		LOWER(r.idComportamiento) as 'idComportamiento',
+		cp.nombre as 'comportamientoPregunta',
+		r.criterioMinimo,
+		(select COUNT(*) from Pregunta p where p.idReto = r.idReto) as 'totalPreguntas', 
+		r.enEquipo,
+		r.fechaCreacion,
+		r.fechaModificacion
+		From Reto r
+		Inner Join tipoReto tr on tr.idTipoReto = r.idTipoReto
+		Inner Join ComportamientoPregunta cp on cp.idComportamiento = r.idComportamiento
+		Where (r.estado = @estado or @estado = -1) and idReto = @idReto
+		Order By r.fechaCreacion Desc				
 
 		select @info = CONCAT('Reto ', descripcion) from Constants where nombre = 'encontrar'		
 		set @error = 0
@@ -4902,7 +4258,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Rol]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Rol]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4919,27 +4275,16 @@ BEGIN
 
 	SET NOCOUNT ON;
 
-	if(@estado = -1)
-	begin
-
-		Select * From Rol		
-
-	end
-	else
-	begin
-
-		Select * From Rol Where estado = @estado
-	
-	end	
+	Select * From Rol Where (estado = @estado or @estado = -1)
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_tipoReto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_tipoReto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create procedure [dbo].[sp_B_tipoReto] 
+CREATE procedure [dbo].[sp_B_tipoReto] 
 		
 	@estado int,
 
@@ -4950,28 +4295,15 @@ AS
 BEGIN
 
 	SET NOCOUNT ON;				
-	
-	if(@estado = -1)
-	begin
-
-		Select * 
-		From tipoReto tr
-		Order By tr.fechaCreacion Desc	
-
-	end
-	else
-	begin
-
-		Select * 
-		From tipoReto tr
-		Where tr.estado = @estado
-		Order By tr.fechaCreacion Desc		
-
-	end	
+		
+	Select * 
+	From tipoReto tr
+	Where (tr.estado = @estado or @estado = -1)
+	Order By tr.fechaCreacion Desc		
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4988,73 +4320,37 @@ BEGIN
 
 	SET NOCOUNT ON;	
 	
-	if(@estado = -1)
-	begin	
-			
-		Select u.idUsuario,
-		u.nombre,
-		u.apellido,
-		u.correo,
-		u.id,
-		u.clave,
-		ISNULL(u.celular, 'N/A') as 'celular',
-		ISNULL(u.foto, 'N/A') as 'foto',
-		u.estado,
-		u.idRol,
-		r.nombre as 'rol',				
-		ISNULL(CAST(c.idPais as varchar(40)), 'N/A') as 'idPais',
-		ISNULL((select p.nombre from Pais p where p.idPais = c.idPais),'N/A') as 'pais',
-		ISNULL(CAST(u.idCiudad as varchar(40)), 'N/A') as 'idCiudad',
-		ISNULL(c.nombre, 'N/A') as 'ciudad',		
-		ISNULL(CAST(u.idArea as varchar(40)), 'N/A') as 'idArea',
-		ISNULL(a.nombre, 'N/A') as 'area',	
-		ISNULL(CAST(a.idEmpresa as varchar(40)), 'N/A') as 'idEmpresa',
-		ISNULL((select e.nombre from Empresa e where e.idEmpresa = a.idEmpresa), 'N/A') as 'empresa',
-		u.fechaCreacion,
-		u.fechaModificacion
-		From Usuario u 
-		Inner Join Rol r on r.idRol = u.idRol 
-		Left Join Area a on a.idArea = u.idArea
-		Left Join Ciudad c on c.idCiudad = u.idCiudad		
-		Order by u.fechaCreacion desc
-
-	end
-	else
-	begin
-			
-		Select u.idUsuario,
-		u.nombre,
-		u.apellido,
-		u.correo,
-		u.id,
-		u.clave,
-		ISNULL(u.celular, 'N/A') as 'celular',
-		ISNULL(u.foto, 'N/A') as 'foto',
-		u.estado,
-		u.idRol,
-		r.nombre as 'rol',
-		ISNULL(CAST(c.idPais as varchar(40)), 'N/A') as 'idPais',
-		ISNULL((select p.nombre from Pais p where p.idPais = c.idPais),'N/A') as 'pais',
-		ISNULL(CAST(u.idCiudad as varchar(40)), 'N/A') as 'idCiudad',
-		ISNULL(c.nombre, 'N/A') as 'ciudad',		
-		ISNULL(CAST(u.idArea as varchar(40)), 'N/A') as 'idArea',
-		ISNULL(a.nombre, 'N/A') as 'area',		
-		ISNULL(CAST(a.idEmpresa as varchar(40)), 'N/A') as 'idEmpresa',
-		ISNULL((select e.nombre from Empresa e where e.idEmpresa = a.idEmpresa), 'N/A') as 'empresa',
-		u.fechaCreacion,
-		u.fechaModificacion
-		From Usuario u 
-		Inner Join Rol r on r.idRol = u.idRol 
-		Left Join Area a on a.idArea = u.idArea
-		Left Join Ciudad c on c.idCiudad = u.idCiudad
-		where u.estado = @estado
-		Order by u.fechaCreacion desc
-
-	end	
+	Select u.idUsuario,
+	u.nombre,
+	u.apellido,
+	u.correo,
+	u.id,
+	u.clave,
+	ISNULL(u.celular, 'N/A') as 'celular',
+	ISNULL(u.foto, 'N/A') as 'foto',
+	u.estado,
+	u.idRol,
+	r.nombre as 'rol',
+	ISNULL(CAST(c.idPais as varchar(40)), 'N/A') as 'idPais',
+	ISNULL((select p.nombre from Pais p where p.idPais = c.idPais),'N/A') as 'pais',
+	ISNULL(CAST(u.idCiudad as varchar(40)), 'N/A') as 'idCiudad',
+	ISNULL(c.nombre, 'N/A') as 'ciudad',		
+	ISNULL(CAST(u.idArea as varchar(40)), 'N/A') as 'idArea',
+	ISNULL(a.nombre, 'N/A') as 'area',		
+	ISNULL(CAST(a.idEmpresa as varchar(40)), 'N/A') as 'idEmpresa',
+	ISNULL((select e.nombre from Empresa e where e.idEmpresa = a.idEmpresa), 'N/A') as 'empresa',
+	u.fechaCreacion,
+	u.fechaModificacion
+	From Usuario u 
+	Inner Join Rol r on r.idRol = u.idRol 
+	Left Join Area a on a.idArea = u.idArea
+	Left Join Ciudad c on c.idCiudad = u.idCiudad
+	where (u.estado = @estado or @estado = -1)
+	Order by u.fechaCreacion desc
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_EquipoByIdEquipo]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_EquipoByIdEquipo]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5090,7 +4386,126 @@ BEGIN
 		
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_fechaLogin]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_EquipoByPuntos]    Script Date: 26/04/2024 9:36:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create procedure [dbo].[sp_B_Usuario_EquipoByPuntos] 
+
+	@idUsuario uniqueidentifier,	
+	@top int,
+
+	@error int output,
+	@info varchar(max) output,	
+	@id varchar(max) output
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	Declare @table table (idReto uniqueidentifier, idEquipo uniqueidentifier, totalUsuarios int, nombre varchar(60), puntos int, tiempo int, posicion int, imagen varchar(60), estado int)
+	Declare @idEquipo uniqueidentifier, @puntos int, @tiempo int, @posicion int, @auxPos int = 0
+	
+	DECLARE positionEquipo CURSOR FOR 
+	
+	Select 		
+	ue.idEquipo,
+	ROW_NUMBER() OVER(ORDER BY e.puntos desc) AS 'posicion'	
+	From Usuario_Reto ur 
+	inner join Usuario_Equipo ue on ue.idUsuario = ur.idUsuario
+	inner join Equipo e on e.idEquipo = ue.idEquipo 
+	Where ur.tieneEquipo = 1 and ur.completado > 0
+	Group by ue.idEquipo, ur.idReto, e.puntos, e.tiempo
+	Order by e.puntos desc, e.tiempo asc
+
+	OPEN positionEquipo
+	FETCH NEXT FROM positionEquipo INTO @idEquipo, @posicion
+	WHILE @@fetch_status = 0
+	BEGIN
+		
+		declare @contue int = 0
+		Select @contue = COUNT(*) from Usuario_Equipo where idEquipo = @idEquipo and idUsuario = @idUsuario
+
+		if(@contue > 0)
+		begin		
+			set @id = @idEquipo
+			set @auxPos = @posicion
+		end
+
+		FETCH NEXT FROM positionEquipo INTO @idEquipo, @posicion
+	END
+	CLOSE positionEquipo
+	DEALLOCATE positionEquipo
+
+	if((@auxPos <= 10 and @top <= 10) or (@auxPos <= @top))
+	begin
+
+		Select top (@top)	
+		ur.idReto,
+		e.idEquipo,	
+		count(ue.idEquipo) as 'totalUsuarios',
+		e.nombre,
+		e.puntos,
+		e.tiempo,
+		ROW_NUMBER() OVER(ORDER BY e.puntos desc) AS 'posicion',
+		ISNULL(e.imagen, 'N/A') as 'imagen'	,
+		e.estado
+		From Usuario_Reto ur 
+		inner join Usuario_Equipo ue on ue.idUsuario = ur.idUsuario
+		inner join Equipo e on e.idEquipo = ue.idEquipo 
+		Where ur.tieneEquipo = 1 and ur.completado > 0
+		Group by ue.idEquipo, ur.idReto, e.idEquipo, e.nombre, e.imagen, e.puntos, e.tiempo, e.estado
+		Order by e.puntos desc, e.tiempo asc
+
+	end
+	else
+	begin
+
+		Insert into @table (idReto, idEquipo, totalUsuarios, nombre, puntos, tiempo, posicion, imagen, estado)
+		Select top (@top)	
+		ur.idReto,
+		e.idEquipo,	
+		count(ue.idEquipo) as 'totalUsuarios',
+		e.nombre,
+		e.puntos,
+		e.tiempo,
+		ROW_NUMBER() OVER(ORDER BY e.puntos desc) AS 'posicion',
+		ISNULL(e.imagen, 'N/A') as 'imagen'	,
+		e.estado
+		From Usuario_Reto ur 
+		inner join Usuario_Equipo ue on ue.idUsuario = ur.idUsuario
+		inner join Equipo e on e.idEquipo = ue.idEquipo 
+		Where ur.tieneEquipo = 1 and ur.completado > 0
+		Group by ue.idEquipo, ur.idReto, e.idEquipo, e.nombre, e.imagen, e.puntos, e.tiempo, e.estado
+		Order by e.puntos desc, e.tiempo asc
+
+		Insert into @table (idReto, idEquipo, totalUsuarios, nombre, puntos, tiempo, posicion, imagen, estado)
+		Select
+		ur.idReto,
+		e.idEquipo,	
+		count(ue.idEquipo) as 'totalUsuarios',
+		e.nombre,
+		e.puntos,
+		e.tiempo,
+		@auxPos,
+		ISNULL(e.imagen, 'N/A') as 'imagen'	,
+		e.estado
+		From Usuario_Reto ur 
+		inner join Usuario_Equipo ue on ue.idUsuario = ur.idUsuario
+		inner join Equipo e on e.idEquipo = ue.idEquipo 
+		Where ur.tieneEquipo = 1 and ur.completado > 0 and e.idEquipo = @id
+		Group by ue.idEquipo, ur.idReto, e.idEquipo, e.nombre, e.imagen, e.puntos, e.tiempo, e.estado
+		Order by e.puntos desc, e.tiempo asc
+
+		Select * from @table
+
+	end
+
+	print concat('La posición del equipo es: ', @auxPos)	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_fechaLogin]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5160,7 +4575,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_MedallaByIdUsuario]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_MedallaByIdUsuario]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5236,7 +4651,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_NivelByIdUsuario]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_NivelByIdUsuario]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5315,7 +4730,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_NoticiaByIdNoticia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_NoticiaByIdNoticia]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5346,7 +4761,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RecompensaByIdUsuario]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RecompensaByIdUsuario]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5377,7 +4792,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RecompensaTotalUsuarios]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RecompensaTotalUsuarios]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5404,7 +4819,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RedSocialByIdRed]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RedSocialByIdRed]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5435,7 +4850,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RetoByIdReto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RetoByIdReto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5474,7 +4889,7 @@ BEGIN
 	-- ur.completado = 0	and
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RetoByIdUsuario]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RetoByIdUsuario]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5500,80 +4915,38 @@ BEGIN
 	if(@existeId > 0)
 	begin
 
-		if(@top > 0)
-		begin 
-
-			Select top (@top)
-			ur.idUsuario,	
-			ur.idReto,
-			r.nombre,
-			r.fechaApetura,
-			r.fechaCierre,
-			r.estado,
-			r.vidas,
-			r.tiempo_ms,
-			r.puntosRecompensa,
-			r.creditosObtenidos,
-			r.instrucciones,
-			ISNULL(r.imagen, 'N/A') as 'imagen',
-			r.idTipoReto,
-			tr.nombre as 'tipoReto',
-			r.idComportamiento,
-			cp.nombre as 'comportamientoPregunta',		
-			r.criterioMinimo,
-			(select COUNT(*) from Pregunta p where p.idReto = r.idReto) as 'totalPreguntas', 		
-			r.enEquipo,
-			ur.completado,
-			ur.puntos,
-			ur.tiempo,
-			ur.vidas,
-			ur.fechaCreacion,
-			ur.fechaModificacion
-			From Usuario_Reto ur
-			Inner Join  Reto r on r.idReto = ur.idReto
-			Inner Join tipoReto tr on tr.idTipoReto = r.idTipoReto
-			Inner Join ComportamientoPregunta cp on cp.idComportamiento = r.idComportamiento
-			Where idUsuario = @idUsuario and ur.completado = @completado
-			Order by ur.fechaAsignacion desc
-			
-		end
-		else 
-		begin
-
-			Select
-			ur.idUsuario,	
-			ur.idReto,
-			r.nombre,
-			r.fechaApetura,
-			r.fechaCierre,
-			r.estado,
-			r.vidas,
-			r.tiempo_ms,
-			r.puntosRecompensa,
-			r.creditosObtenidos,
-			r.instrucciones,
-			ISNULL(r.imagen, 'N/A') as 'imagen',
-			r.idTipoReto,
-			tr.nombre as 'tipoReto',
-			r.idComportamiento,
-			cp.nombre as 'comportamientoPregunta',		
-			r.criterioMinimo,
-			(select COUNT(*) from Pregunta p where p.idReto = r.idReto) as 'totalPreguntas', 	
-			r.enEquipo,
-			ur.completado,
-			ur.puntos,
-			ur.tiempo,
-			ur.vidas,
-			ur.fechaCreacion,
-			ur.fechaModificacion
-			From Usuario_Reto ur
-			Inner Join  Reto r on r.idReto = ur.idReto
-			Inner Join tipoReto tr on tr.idTipoReto = r.idTipoReto
-			Inner Join ComportamientoPregunta cp on cp.idComportamiento = r.idComportamiento
-			Where idUsuario = @idUsuario and ur.completado = @completado
-			Order by ur.fechaAsignacion desc
-
-		end
+		Select top (case when @top < 0 then (select COUNT(*) from Usuario_Reto) else @top end)
+		ur.idUsuario,	
+		ur.idReto,
+		r.nombre,
+		r.fechaApetura,
+		r.fechaCierre,
+		r.estado,
+		r.vidas,
+		r.tiempo_ms,
+		r.puntosRecompensa,
+		r.creditosObtenidos,
+		r.instrucciones,
+		ISNULL(r.imagen, 'N/A') as 'imagen',
+		r.idTipoReto,
+		tr.nombre as 'tipoReto',
+		r.idComportamiento,
+		cp.nombre as 'comportamientoPregunta',		
+		r.criterioMinimo,
+		(select COUNT(*) from Pregunta p where p.idReto = r.idReto) as 'totalPreguntas', 		
+		r.enEquipo,
+		ur.completado,
+		ur.puntos,
+		ur.tiempo,
+		ur.vidas,
+		ur.fechaCreacion,
+		ur.fechaModificacion
+		From Usuario_Reto ur
+		Inner Join  Reto r on r.idReto = ur.idReto
+		Inner Join tipoReto tr on tr.idTipoReto = r.idTipoReto
+		Inner Join ComportamientoPregunta cp on cp.idComportamiento = r.idComportamiento
+		Where idUsuario = @idUsuario and (ur.completado = @completado or @completado = -1)
+		Order by ur.fechaAsignacion desc		
 
 		
 		select @info = CONCAT('Usuario ', descripcion) from Constants where nombre = 'encontrar'		
@@ -5593,7 +4966,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RetoByIdUsuarioByAll]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RetoByIdUsuarioByAll]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5644,7 +5017,7 @@ BEGIN
 	Inner Join  Reto r on r.idReto = ur.idReto
 	Inner Join tipoReto tr on tr.idTipoReto = r.idTipoReto
 	Inner Join ComportamientoPregunta cp on cp.idComportamiento = r.idComportamiento
-	Where idUsuario = @idUsuario and ur.completado = @completado and 
+	Where idUsuario = @idUsuario and (ur.completado = @completado or @completado = -1) and 
 	(r.nombre like '%'+@buscar+'%' or
 	r.enEquipo = case when @equipo like '%'+@buscar+'%' then '1'
 					when @individual like '%'+@buscar+'%' then '0' end or
@@ -5679,7 +5052,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RetoByIdUsuarioYIdReto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RetoByIdUsuarioYIdReto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5735,7 +5108,7 @@ BEGIN
 		Inner Join  Reto r on r.idReto = ur.idReto
 		Inner Join tipoReto tr on tr.idTipoReto = r.idTipoReto
 		Inner Join ComportamientoPregunta cp on cp.idComportamiento = r.idComportamiento
-		Where ur.idUsuario = @idUsuario and ur.idReto = @idReto and ur.completado = @completado
+		Where ur.idUsuario = @idUsuario and ur.idReto = @idReto and (ur.completado = @completado or @completado = -1)
 		Order by ur.fechaAsignacion desc
 
 		
@@ -5756,7 +5129,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RetoPtosMesesAños]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RetoPtosMesesAños]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5784,27 +5157,27 @@ BEGIN
 	if(@idRol = 'adm' or @idRol = 'sadm')
 	begin
 
-		Select SUM(puntos) as 'puntos', MONTH(fechaCreacion) as 'mes', YEAR(fechaCreacion) as 'año' 
+		Select SUM(puntos) as 'puntos', MONTH(fechaModificacion) as 'mes', YEAR(fechaModificacion) as 'año' 
 		From Usuario_Reto 
 		Where completado > 0
-		Group by MONTH(fechaCreacion), YEAR(fechaCreacion)
-		Order by MONTH(fechaCreacion) asc, YEAR(fechaCreacion) asc	
+		Group by MONTH(fechaModificacion), YEAR(fechaModificacion)
+		Order by MONTH(fechaModificacion) asc, YEAR(fechaModificacion) asc	
 
 	end
 	else
 	begin
 
-		Select SUM(puntos) as 'puntos', MONTH(fechaCreacion) as 'mes', YEAR(fechaCreacion) as 'año' 
+		Select SUM(puntos) as 'puntos', MONTH(fechaModificacion) as 'mes', YEAR(fechaModificacion) as 'año' 
 		From Usuario_Reto 
 		Where completado > 0 and idUsuario = @idUsuario
-		Group by MONTH(fechaCreacion), YEAR(fechaCreacion)
-		Order by MONTH(fechaCreacion) asc, YEAR(fechaCreacion) asc	
+		Group by MONTH(fechaModificacion), YEAR(fechaModificacion)
+		Order by MONTH(fechaModificacion) asc, YEAR(fechaModificacion) asc			
 
 	end
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RetoSumaPuntos]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_Usuario_RetoSumaPuntos]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5925,7 +5298,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_UsuarioByAll]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_UsuarioByAll]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6005,7 +5378,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_UsuarioByCorreo]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_UsuarioByCorreo]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6083,7 +5456,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_UsuarioById]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_UsuarioById]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6191,7 +5564,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_B_UsuarioByRegister]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_B_UsuarioByRegister]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6257,7 +5630,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Area]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Area]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6314,7 +5687,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_CategoriaNoticia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_CategoriaNoticia]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6369,7 +5742,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_CategoriaRecompensa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_CategoriaRecompensa]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6424,7 +5797,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Ciudad]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Ciudad]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6481,7 +5854,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Configuracion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Configuracion]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6545,7 +5918,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Empresa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Empresa]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6600,7 +5973,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Equipo]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Equipo]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6659,7 +6032,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Equipo_Reto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Equipo_Reto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6730,7 +6103,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Licencia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Licencia]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6803,7 +6176,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Medalla]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Medalla]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6886,7 +6259,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Nivel]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Nivel]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6963,7 +6336,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Noticia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Noticia]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7011,7 +6384,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Opcion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Opcion]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7091,7 +6464,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Pais]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Pais]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7146,7 +6519,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Pregunta]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Pregunta]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7208,7 +6581,7 @@ BEGIN
 	print @id
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Recompensa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Recompensa]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7289,7 +6662,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_RedSocial]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_RedSocial]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7331,7 +6704,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Reto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Reto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7433,7 +6806,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Usuario]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Usuario]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7534,7 +6907,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_Equipo]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_Equipo]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7640,7 +7013,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_EquipoByCorreoIds]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_EquipoByCorreoIds]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7719,7 +7092,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_Medalla]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_Medalla]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7772,7 +7145,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_Nivel]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_Nivel]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7825,7 +7198,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_Noticia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_Noticia]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7894,7 +7267,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_Recompensa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_Recompensa]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7955,7 +7328,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_RedSocial]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_RedSocial]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8024,7 +7397,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_Reto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_Reto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8091,7 +7464,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_RetoByCorreoIds]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_C_Usuario_RetoByCorreoIds]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8162,7 +7535,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_Equipo]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_Equipo]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8239,7 +7612,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_Equipo_Reto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_Equipo_Reto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8317,7 +7690,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_InicioByNoIds]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_InicioByNoIds]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8352,7 +7725,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_Medalla]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_Medalla]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8407,7 +7780,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_Nivel]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_Nivel]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8463,7 +7836,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_Noticia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_Noticia]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8519,7 +7892,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_Opcion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_Opcion]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8572,7 +7945,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_OpcionByNoIds]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_OpcionByNoIds]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8607,7 +7980,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_Pregunta]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_Pregunta]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8663,7 +8036,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_Recompensa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_Recompensa]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8719,7 +8092,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_Reto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_Reto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8795,7 +8168,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_Usuario_Equipo]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_Usuario_Equipo]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8852,7 +8225,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_D_Usuario_Reto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_D_Usuario_Reto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8905,7 +8278,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Area]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Area]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8964,7 +8337,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_CategoriaNoticia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_CategoriaNoticia]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9021,7 +8394,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_CategoriaRecompensa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_CategoriaRecompensa]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9078,7 +8451,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Ciudad]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Ciudad]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9137,7 +8510,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Configuracion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Configuracion]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9182,7 +8555,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Empresa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Empresa]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9239,7 +8612,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Equipo]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Equipo]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9308,7 +8681,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_EquipoByEstado]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_EquipoByEstado]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9371,7 +8744,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Inicio]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Inicio]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9452,7 +8825,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Medalla]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Medalla]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9545,7 +8918,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Nivel]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Nivel]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9631,7 +9004,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Noticia]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Noticia]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9696,7 +9069,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Notificacion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Notificacion]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9743,7 +9116,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_NotificacionByEstado]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_NotificacionByEstado]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9785,7 +9158,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Opcion]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Opcion]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9852,7 +9225,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Pais]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Pais]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9909,7 +9282,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Pregunta]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Pregunta]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9956,7 +9329,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Recompensa]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Recompensa]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10035,7 +9408,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_RecompensaByEstado]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_RecompensaByEstado]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10090,7 +9463,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Reto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Reto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10168,7 +9541,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_RetoByEstado]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_RetoByEstado]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10223,7 +9596,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Usuario]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Usuario]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10329,7 +9702,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_Usuario_Reto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_Usuario_Reto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10391,7 +9764,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_UsuarioByEstado]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_UsuarioByEstado]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10455,7 +9828,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_UsuarioByFoto]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_UsuarioByFoto]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10510,7 +9883,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_U_UsuarioEstadoByCorreoIds]    Script Date: 17/04/2024 18:20:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_U_UsuarioEstadoByCorreoIds]    Script Date: 26/04/2024 9:36:51 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

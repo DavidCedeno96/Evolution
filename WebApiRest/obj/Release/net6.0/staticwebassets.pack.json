@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\Content\\Images\\Default\\default-logoDM.png"
     },
     {
+      "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Default\\default-recompensa.jpg",
+      "PackagePath": "staticwebassets\\Content\\Images\\Default\\default-recompensa.jpg"
+    },
+    {
       "Id": "C:\\Users\\Alejandro\\OneDrive - Digimentore SA\\Escritorio\\GitHub\\Evolution\\WebApiRest\\wwwroot\\Content\\Images\\Equipo\\_default.png",
       "PackagePath": "staticwebassets\\Content\\Images\\Equipo\\_default.png"
     },

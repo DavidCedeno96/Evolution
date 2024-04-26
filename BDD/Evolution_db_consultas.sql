@@ -46,7 +46,7 @@ WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Notificacion';
+WHERE tc.TABLE_NAME = 'Equipo';
 
 ---
 SELECT @@VERSION;
@@ -99,8 +99,8 @@ exec sp_B_Inicio
 @info = '',
 @id = ''
 
-select * from Inicio where nombre = 'Mis últimos retos terminados'
--- update Inicio set nombre = 'Retos completados' where nombre = 'Mis últimos retos terminados'
+select * from Inicio where nombre = 'Mis retos asignados'
+-- update Inicio set nombre = 'Mis retos pendientes' where nombre = 'Mis retos asignados'
 
 exec sp_B_InicioByIdRol	
 @idRol = 'adm',
@@ -745,6 +745,8 @@ exec sp_C_Usuario_Noticia
 @id = ''
 
 -- Red Social --------------------------------------------------------
+select * from RedSocial
+
 exec sp_B_RedSocial		
 @error = '',
 @info = '',
@@ -786,6 +788,7 @@ select * from Usuario_RedSocial
 select * from Configuracion where tipo = 'imagen'
 
 --update Configuracion set valor = '#f58220' where idConfig = '8FDC49E5-2C82-423F-B3A9-85AF544339C9'
+--update Configuracion set valor = '#5EFF33' where idConfig = '8FDC49E5-2C82-423F-B3A9-85AF544339C9'
 
 exec sp_B_Configuracion
 @error = '',
@@ -1001,15 +1004,15 @@ select * from Usuario_Reto
 exec sp_B_Usuario_RetoByIdUsuario		
 @idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
 @top = -1,
-@completado = 0,
+@completado = -1,
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_B_Usuario_RetoByIdUsuarioByAll		
-@buscar = 'en e',
+@buscar = '',
 @idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',			
-@completado = 0,
+@completado = -1,
 @error = '',
 @info = '',
 @id = ''
@@ -1022,16 +1025,16 @@ exec sp_B_Usuario_RetoByIdReto
 @id = ''
 
 exec sp_B_Usuario_RetoByIdUsuarioYIdReto		
-@idUsuario = '91331754-1E83-417F-90E7-0E596E996510',
+@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
 @idReto = '27C5527F-3EA3-431B-BEDF-65841EAF5663',			
-@completado = 0,
+@completado = -1,
 @error = '',
 @info = '',
 @id = ''
 
 select * from Usuario
 exec sp_B_Usuario_RetoSumaPuntos
-@idUsuario = '015E40DD-58CE-401E-A0A9-075874BC0B68',
+@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
 @top = 10,
 @error = '',
 @info = '',
@@ -1091,7 +1094,7 @@ exec sp_B_Equipo
 @id = ''
 
 exec sp_B_EquipoById		
-@idEquipo = 'C1A956C7-E197-4D62-8D7F-86AF30AFF3EE',
+@idEquipo = '114EC699-77C3-4E52-999B-0E59861F46B9',
 @estado = -1,
 @error = '',
 @info = '',
@@ -1141,6 +1144,13 @@ exec sp_B_Usuario_EquipoByIdEquipo
 @info = '',
 @id = ''
 
+exec sp_B_Usuario_EquipoByPuntos
+@idUsuario  = '91DB7BAE-7D2F-423D-B595-D227C63CA0A6',
+@top  = 10,
+@error = '',
+@info = '',
+@id = ''
+
 exec sp_C_Usuario_Equipo
 @correo = 'elver.galarga@gmail.com',
 @idEquipo = '4638E1DF-928A-442A-BCD8-388AD33A8829',
@@ -1164,7 +1174,7 @@ exec sp_D_Usuario_Equipo
 
 
 exec sp_B_Equipo_RetoByIdReto
-@idReto = '21A9D4C2-0EAD-4CC5-B4C7-1C264676DD30',
+@idReto = 'd9ca3dcb-ee6a-4f35-ae4c-719843510a1a',
 @estado = -1,
 @error = '',
 @info = '',

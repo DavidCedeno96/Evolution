@@ -60,6 +60,15 @@ export class UsuarioService {
     });
   }
 
+  getLogros(id: string): Observable<Usuario> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.get<Usuario>(`${this.apiURL}/logros/${id}`, {
+      headers: headers,
+    });
+  }
+
   create(formData: FormData): Observable<FormData> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.getToken()}`,
@@ -195,6 +204,20 @@ export class UsuarioService {
     }
 
     return idRol;
+  }
+
+  getRolName() {
+    let rolName = '';
+
+    if (this.loggedIn()) {
+      let token = this.getToken();
+      const decodeToken = this.helper.decodeToken(token!);
+      rolName = decodeToken.rol;
+    } else {
+      this.router.navigate(['/']);
+    }
+
+    return rolName;
   }
 
   getIdUsuario() {

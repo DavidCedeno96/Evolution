@@ -125,7 +125,11 @@
     ></button>
   </div>
   <div class="offcanvas-user">
-    <div class="row g-3 d-flex align-items-center">
+    <div
+      class="row g-3 d-flex align-items-center pointer"
+      data-bs-dismiss="offcanvas"
+      (click)="changeRoute('/profile-user', {})"
+    >
       <div class="col-auto">
         <img
           *ngIf="!previewFoto"
@@ -142,27 +146,28 @@
       </div>
       <div class="col-6 lh-sm">
         <span class="d-block">{{ userName }}</span>
-        <a routerLink="/profile-user" data-bs-dismiss="offcanvas"
+        <small class="text-black-50 d-block">{{ rolName }}</small>
+        <!-- <a routerLink="/profile-user" data-bs-dismiss="offcanvas"
           ><small>Perfil de usuario</small></a
-        >
+        > -->
         <!-- <label
           class="link-primary text-decoration-underline pointer"
           for="camfotouser"
           ><small>Cambiar Foto</small></label
         > -->
-        <input
+        <!-- <input
           type="file"
           class="d-none"
           id="camfotouser"
           accept=".jpg, .jpeg, .png"
           (change)="onFileSelected($event)"
-        />
+        /> -->
       </div>
-      <!-- <div class="col-auto">
+      <div class="col-auto">
         <a class="text-dark" data-bs-dismiss="offcanvas"
           ><i class="fa-solid fa-chevron-right"></i
         ></a>
-      </div> -->
+      </div>
     </div>
   </div>
   <hr class="hr-text" data-content="O" />

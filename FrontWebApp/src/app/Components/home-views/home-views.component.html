@@ -312,36 +312,53 @@
     </div>
   </div>
 
-  <div *ngIf="tipoVista === 'Mis retos asignados'">
+  <div *ngIf="tipoVista === 'Mis retos pendientes'">
+    <div class="col-2"></div>
+
     <div class="card">
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
-          <div class="d-flex justify-content-between">
-            <span>Reto 1</span>
-            <div>
-              <span class="badge text-bg-warning me-2">Pendiente</span>
-              <span class="badge text-bg-success me-2">Abierto</span>
-              <span class="badge text-bg-success">Activo</span>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="col-6 col-lg-8 col-xl-9">Reto 1 </span>
+            <div class="row gx-2 justify-content-end">
+              <div class="col-5">
+                <circle-progress
+                  [percent]="10"
+                  [outerStrokeColor]="customOuterStrokeColor"
+                >
+                </circle-progress>
+              </div>
+              <div class="col-7">
+                <div>
+                  <span class="badge text-bg-success me-2">Abierto</span>
+                </div>
+                <div>
+                  <span class="badge text-bg-success">Activo</span>
+                </div>
+              </div>
             </div>
           </div>
         </li>
+
         <li class="list-group-item">
-          <div class="d-flex justify-content-between">
-            <span>Reto 2</span>
-            <div>
-              <span class="badge text-bg-warning me-2">Pendiente</span>
-              <span class="badge text-bg-danger me-2">Cerrado</span>
-              <span class="badge text-bg-success">Activo</span>
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="d-flex justify-content-between">
-            <span>Reto 3</span>
-            <div>
-              <span class="badge text-bg-success me-2">Completado</span>
-              <span class="badge text-bg-success me-2">Abierto</span>
-              <span class="badge text-bg-danger">Desactivado</span>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="col-6 col-lg-8 col-xl-9">Reto 2 </span>
+            <div class="row gx-2 justify-content-end">
+              <div class="col-5">
+                <circle-progress
+                  [percent]="70"
+                  [outerStrokeColor]="customOuterStrokeColor"
+                >
+                </circle-progress>
+              </div>
+              <div class="col-7">
+                <div>
+                  <span class="badge text-bg-danger me-2">Cerrado</span>
+                </div>
+                <div>
+                  <span class="badge text-bg-success">Activo</span>
+                </div>
+              </div>
             </div>
           </div>
         </li>
@@ -398,6 +415,68 @@
               />
             </td>
             <td>Usuario 3</td>
+            <td>24</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-grid d-lg-block">
+      <button type="button" class="btn btn-secondary btn-sm">
+        Ver ranking completo
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="tipoVista === 'Ranking por equipos'">
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">Equipo</th>
+            <th scope="col">Puntos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>1</th>
+            <td>
+              <img
+                src="assets/img/default/default-equipo.png"
+                class="rounded-circle img-thumbnail me-2"
+                width="50px"
+                alt="equipo"
+              />
+            </td>
+            <td>Equipo 1</td>
+            <td>22</td>
+          </tr>
+          <tr>
+            <th>2</th>
+            <td>
+              <img
+                src="assets/img/default/default-equipo.png"
+                class="rounded-circle img-thumbnail me-2"
+                width="50px"
+                alt="equipo"
+              />
+            </td>
+            <td>Equipo 2</td>
+            <td>23</td>
+          </tr>
+          <tr class="table-secondary">
+            <th>23</th>
+            <td>
+              <img
+                src="assets/img/default/default-equipo.png"
+                class="rounded-circle img-thumbnail me-2"
+                width="50px"
+                alt="equipo"
+              />
+            </td>
+            <td>Equipo 3</td>
             <td>24</td>
           </tr>
         </tbody>

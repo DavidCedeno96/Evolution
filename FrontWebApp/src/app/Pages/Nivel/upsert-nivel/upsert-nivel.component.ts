@@ -12,7 +12,7 @@ import {
   MsgError,
   MsgErrorForm,
   SetUpsert,
-  SugerenciaImagen,
+  SugerenciaImagen1,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
@@ -34,7 +34,7 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
   loading = Loading();
   setUpsert = SetUpsert();
   caracterInvalid = CaracterInvalid();
-  sugerenciaImagen = SugerenciaImagen;
+  sugerenciaImagen = SugerenciaImagen1;
 
   type: string = '';
   titulo: string = '';
@@ -279,7 +279,7 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
       };
       reader.readAsDataURL(this.selectedImage);
 
-      console.log(this.selectedImage.name);
+      //console.log(this.selectedImage.name);
     }
   }
 }

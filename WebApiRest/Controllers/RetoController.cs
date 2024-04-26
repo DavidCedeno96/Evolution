@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -73,7 +74,7 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> GetUsuarioRetoByIdUsuario()
         {
             string userId = User.FindFirst("id").Value;
-            Usuario_RetoList response = await data.GetUsuarioRetoList(-1, new Guid(userId), 0);
+            Usuario_RetoList response = await data.GetUsuarioRetoList(-1, new Guid(userId), -1);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -83,7 +84,7 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> GetUsuarioRetoByIdUsuarioYIdReto([FromRoute] Guid idReto)
         {
             string userId = User.FindFirst("id").Value;
-            Usuario_RetoItem response = await data.GetUsuarioRetoList(idReto, new Guid(userId), 0);
+            Usuario_RetoItem response = await data.GetUsuarioRetoList(idReto, new Guid(userId), -1);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -93,7 +94,7 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> GetUsuarioRetoByIdUsuario([FromRoute] string texto)
         {
             string userId = User.FindFirst("id").Value;
-            Usuario_RetoList response = await data.GetUsuarioRetoList(texto, new Guid(userId), 0);
+            Usuario_RetoList response = await data.GetUsuarioRetoList(texto, new Guid(userId), -1);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -243,6 +244,10 @@ namespace WebApiRest.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateUsuario_Reto([FromBody] Usuario_Reto usuarioReto)
         {
+
+            Claim userClaim = User.FindFirst("id");
+            usuarioReto.Usuario.IdUsuario = new Guid(userClaim.Value);
+
             Response response = await data.UpdateUsuario_Reto(usuarioReto);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }

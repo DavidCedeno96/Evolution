@@ -1,62 +1,81 @@
-<div class="shadow-lg bg-white px-4 py-5 px-lg-5 rounded">
-  <div class="text-center mb-4">
-    <h5 class="txt text-primary text-uppercase my-4">
-      Perfil de usuario
-      <a class="txt text-primary" routerLink="/profile-user/edit">
-        <i class="fa-regular fa-pen-to-square ms-2 pointer"></i>
-      </a>
-    </h5>
-
-    <img
-      [src]="getImage(usuario.foto, 'usuario', 'default-user.jpg')"
-      class="imageRedonda"
-      alt="User"
-    />
-    <div class="my-2">
-      <h5 class="d-block txt text-secondary fw-semibold">
-        {{ usuario.nombre }} {{ usuario.apellido }}
+<div class="col-12 col-md-8 col-lg-6 col-xl-4 mx-md-auto">
+  <div class="shadow-lg bg-white py-4 rounded">
+    <div class="text-center mb-4">
+      <h5 class="txt text-primary text-uppercase my-4">
+        Perfil de usuario
+        <a class="txt text-primary" routerLink="/profile-user/edit">
+          <i class="fa-regular fa-pen-to-square ms-2 pointer"></i>
+        </a>
       </h5>
-      <span class="d-block">{{ usuario.correo }}</span>
-      <span
-        class="d-block {{
-          usuario.idRol === 'adm' ? 'txt text-primary' : 'txt text-tertiary'
-        }}"
-        >{{ usuario.rol }}</span
-      >
-    </div>
-  </div>
 
-  <div class="row g-3 col-md-8 mx-auto text-center">
-    <div class="col-12 col-md-6">
-      <span class="d-block txt text-secondary fw-semibold"
-        >Número de identificación
-        <i
-          class="fa-regular fa-circle-question ms-1"
-          matTooltip="Cédula, pasaporte o id único de usuario"
-          [matTooltipPosition]="'right'"
-        ></i
-      ></span>
-      <small>{{ usuario.id }}</small>
+      <img
+        [src]="getImage(usuario.foto, 'usuario', 'default-user.jpg')"
+        class="imageRedonda"
+        alt="User"
+      />
+      <div class="my-2">
+        <h5 class="d-block txt text-secondary fw-semibold">
+          {{ usuario.nombre }} {{ usuario.apellido }}
+        </h5>
+        <span class="d-block">{{ usuario.correo }}</span>
+        <span
+          class="d-block {{
+            usuario.idRol === 'adm' ? 'txt text-primary' : 'txt text-tertiary'
+          }}"
+          >{{ usuario.rol }}</span
+        >
+      </div>
     </div>
-    <div class="col-12 col-md-6">
-      <span class="d-block txt text-secondary fw-semibold">Celular</span>
-      <small>{{ usuario.celular ? usuario.celular : "N/A" }}</small>
-    </div>
-    <div class="col-12 col-md-6">
-      <span class="d-block txt text-secondary fw-semibold">Pais</span>
-      <small>{{ usuario.pais ? usuario.pais : "N/A" }}</small>
-    </div>
-    <div class="col-12 col-md-6">
-      <span class="d-block txt text-secondary fw-semibold">Ciudad</span>
-      <small>{{ usuario.ciudad ? usuario.ciudad : "N/A" }}</small>
-    </div>
-    <div class="col-12 col-md-6">
-      <span class="d-block txt text-secondary fw-semibold">Empresa</span>
-      <small>{{ usuario.empresa ? usuario.empresa : "N/A" }}</small>
-    </div>
-    <div class="col-12 col-md-6">
-      <span class="d-block txt text-secondary fw-semibold">Area</span>
-      <small>{{ usuario.area ? usuario.area : "N/A" }}</small>
+
+    <div class="table-responsive mx-3 mx-md-4">
+      <table class="table align-middle">
+        <tbody>
+          <tr>
+            <th colspan="1">
+              <small class="me-5">
+                Número de identificación<i
+                  class="fa-regular fa-circle-question ms-1 d-none d-md-inline"
+                  matTooltip="Cédula, pasaporte o id único de usuario"
+                  [matTooltipPosition]="'right'"
+                ></i>
+              </small>
+            </th>
+            <td colspan="2">
+              <small>{{ usuario.id }}</small>
+            </td>
+          </tr>
+          <tr>
+            <th colspan="1"><small>Celular</small></th>
+            <td>
+              <small>{{ usuario.celular ? usuario.celular : "N/A" }}</small>
+            </td>
+          </tr>
+          <tr>
+            <th colspan="1"><small>Pais</small></th>
+            <td colspan="2">
+              <small>{{ usuario.pais ? usuario.pais : "N/A" }}</small>
+            </td>
+          </tr>
+          <tr>
+            <th colspan="1"><small>Ciudad</small></th>
+            <td colspan="2">
+              <small>{{ usuario.ciudad ? usuario.ciudad : "N/A" }}</small>
+            </td>
+          </tr>
+          <tr>
+            <th colspan="1"><small>Empresa</small></th>
+            <td colspan="2">
+              <small>{{ usuario.empresa ? usuario.empresa : "N/A" }}</small>
+            </td>
+          </tr>
+          <tr>
+            <th colspan="1"><small>Area</small></th>
+            <td colspan="2">
+              <small>{{ usuario.area ? usuario.area : "N/A" }}</small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

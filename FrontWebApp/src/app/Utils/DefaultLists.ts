@@ -101,7 +101,7 @@ export const ConfigInicioList: ConfigInicio[] = [
   },
   {
     idConfigInicio: '7c8c2672-2233-486a-a184-f0b51eb4a331',
-    nombre: 'Mis retos asignados',
+    nombre: 'Mis retos pendientes',
     indice: 0,
     estado: 0,
     idRol: 'jug',
@@ -118,6 +118,22 @@ export const ConfigInicioList: ConfigInicio[] = [
   {
     idConfigInicio: '7c8c2672-2233-486a-a184-f0b51eb4a331',
     nombre: 'Ranking por puntos',
+    indice: 0,
+    estado: 0,
+    idRol: 'jug',
+    color: '',
+  },
+  {
+    idConfigInicio: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    nombre: 'Ranking por equipos',
+    indice: 0,
+    estado: 0,
+    idRol: 'adm',
+    color: '',
+  },
+  {
+    idConfigInicio: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    nombre: 'Ranking por equipos',
     indice: 0,
     estado: 0,
     idRol: 'jug',
@@ -180,7 +196,8 @@ export const GetBreadcrumb = () => {
         break;
       }
 
-      case '/ranking': {
+      case '/ranking-teams':
+      case '/ranking-users': {
         lista = [
           {
             url: '/home',
@@ -188,9 +205,9 @@ export const GetBreadcrumb = () => {
             estado: 1,
           },
           {
-            url: '/ranking',
+            url: '/home',
             nombre: 'Ranking',
-            estado: 1,
+            estado: -1,
           },
         ];
         break;
@@ -615,6 +632,22 @@ export const GetBreadcrumb = () => {
           {
             url: '/view-nivel',
             nombre: 'Niveles',
+            estado: 1,
+          },
+        ];
+        break;
+      }
+
+      case '/user-medalla': {
+        lista = [
+          {
+            url: '/home',
+            nombre: 'Inicio',
+            estado: 1,
+          },
+          {
+            url: '/user-medalla',
+            nombre: 'Medallas',
             estado: 1,
           },
         ];

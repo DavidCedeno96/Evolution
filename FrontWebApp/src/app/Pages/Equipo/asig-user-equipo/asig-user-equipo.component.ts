@@ -279,12 +279,15 @@ export class AsigUserEquipoComponent implements OnInit, AfterViewInit {
       imagen: '',
       descripcion: '',
       totalUsuarios: 0,
+      puntos: 0,
+      tiempo: 0,
       estado: 0,
     };
 
     usuarioEquipo = {
       usuario: usuario,
       equipo: equipo,
+      posicion: 0,
       fechaCreacion: new Date(),
       fechaModificacion: new Date(),
     };

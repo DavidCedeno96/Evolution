@@ -166,6 +166,10 @@ body {
   background-color: var(--Secundario) !important;
 }
 
+.bg.bg-tertiary {
+  background-color: var(--TextoTerciario) !important;
+}
+
 /****** TEXTOS ******/
 .txt.text-primary {
   color: var(--TextoPrimario) !important;

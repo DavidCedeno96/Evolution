@@ -55,6 +55,18 @@ export class EquipoService {
     );
   }
 
+  getRanking(idUsuario: string, top: number): Observable<Usuario_Equipo[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<Usuario_Equipo[]>(
+      `${this.apiURL}/ranking/${top}/${idUsuario}`,
+      {
+        headers: headers,
+      }
+    );
+  }
+
   create(formData: FormData): Observable<FormData> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NPOI.XWPF.UserModel;
 using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;
@@ -19,6 +20,7 @@ namespace WebApiRest.Controllers
         readonly RetoData dataReto = new();
         readonly NivelData dataNivel = new();
         readonly RecompensaData dataRecompensa = new();
+        readonly EquipoData dataEquipo = new();
         readonly LicenciaData dataLicencia = new();
 
         [HttpGet]
@@ -56,6 +58,7 @@ namespace WebApiRest.Controllers
             Usuario_NivelList miNivel = await dataNivel.GetUsuarioNivelList(1, new Guid(userId));
             Usuario_RecompensalList recompensasMasReclamadas = await dataRecompensa.GetUsuarioRecompensaList();
             Usuario_RetoList rankingPorPuntos = await dataReto.GetUsuarioRetoPuntosList(new Guid(userId), 10);
+            Usuario_EquipoList rankingPorEquipos = await dataEquipo.GetUsuarioEquipoList(new Guid(userId), 10);
             Usuario_RetoList misRetosAsignados = await dataReto.GetUsuarioRetoList(10, new Guid(userId), 0);
             LicenciaList licencias = await dataLicencia.GetLicenciaList(-1);
             DatasetPuntosList datasetList = Charts.ChartPuntos(chartList);
@@ -99,6 +102,8 @@ namespace WebApiRest.Controllers
             response.Lista.Add(porcentajeNivel);
             response.Lista.Add(recompensasMasReclamadas.Lista);
             response.Lista.Add(rankingPorPuntos.Lista);
+            response.Lista.Add(rankingPorEquipos.Lista);
+            response.Lista.Add(rankingPorEquipos.Id);
             response.Lista.Add(misRetosAsignados.Lista);
             response.Lista.Add(licencias.Lista);
 
@@ -152,6 +157,11 @@ namespace WebApiRest.Controllers
             {
                 hayError = true;
                 errorInfo += ", Ranking por puntos: " + rankingPorPuntos.Info;
+            }
+            if (rankingPorEquipos.Error > 0)
+            {
+                hayError = true;
+                errorInfo += ", Ranking por equipos: " + rankingPorEquipos.Info;
             }
             if (misRetosAsignados.Error > 0)
             {

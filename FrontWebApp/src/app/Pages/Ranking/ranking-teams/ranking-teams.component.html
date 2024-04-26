@@ -1,0 +1,75 @@
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">ranking</h5>
+
+  <div class="contenedor mb-3 mb-md-4" *ngIf="usuariosEquipos.length >= 3">
+    <div class="podio">
+      <div class="segunda posicion bg bg-secondary">
+        <span class="texto-imagen text-black-50 fw-semibold">{{
+          getTeamNamePodio(2)
+        }}</span>
+        <img
+          [src]="getImage(getTeamImgPodio(2), 'equipo', 'default-equipo.png')"
+          alt="Imagen del primer lugar"
+          class="imgRedonda-ranking imagen"
+        />
+        <h1>2</h1>
+      </div>
+      <div class="primera posicion bg bg-primary">
+        <span class="texto-imagen text-black-50 fw-semibold">{{
+          getTeamNamePodio(1)
+        }}</span>
+        <img
+          [src]="getImage(getTeamImgPodio(1), 'equipo', 'default-equipo.png')"
+          alt="Imagen del primer lugar"
+          class="imgRedonda-ranking imagen"
+        />
+        <h1>1</h1>
+      </div>
+      <div class="tercera posicion bg bg-tertiary">
+        <span class="texto-imagen text-black-50 fw-semibold">{{
+          getTeamNamePodio(3)
+        }}</span>
+        <img
+          [src]="getImage(getTeamImgPodio(3), 'equipo', 'default-equipo.png')"
+          alt="Imagen del primer lugar"
+          class="imgRedonda-ranking imagen"
+        />
+        <h1>3</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="my-4" *ngIf="!usuariosEquipos.length">
+    {{ info }}
+  </div>
+
+  <div class="table-responsive mb-4" *ngIf="usuariosEquipos.length">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col">Equipo</th>
+          <th scope="col">Puntos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let ue of usuariosEquipos; index as i"
+          [ngClass]="idEquipo === ue.equipo.idEquipo ? 'table-secondary' : ''"
+        >
+          <th>{{ ue.posicion }}</th>
+          <td>
+            <img
+              [src]="getImage(ue.equipo.imagen, 'equipo', 'default-equipo.png')"
+              class="imgRedonda-ranking me-2"
+              alt="user"
+            />
+          </td>
+          <td>{{ ue.equipo.nombre }}</td>
+          <td>{{ ue.equipo.puntos }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

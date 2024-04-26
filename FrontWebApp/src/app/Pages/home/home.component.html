@@ -82,7 +82,11 @@
           </div>
 
           <div class="d-grid d-lg-block">
-            <button type="button" class="btn btn-secondary btn-sm">
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="irAVista('perfilRedSocial')"
+            >
               Perfil de red social
             </button>
           </div>
@@ -337,46 +341,112 @@
           </div>
         </div>
 
-        <div *ngIf="item.nombre === 'Mis retos asignados'">
+        <div *ngIf="item.nombre === 'Ranking por equipos'">
+          <div class="text-center col-12" *ngIf="!equiposRanking.length">
+            <span>Sin ranking</span>
+          </div>
+
+          <div class="table-responsive" *ngIf="equiposRanking.length">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                  <th scope="col">Equipos</th>
+                  <th scope="col">Puntos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let ue of equiposRanking; index as i"
+                  [ngClass]="
+                    idEquipo === ue.equipo.idEquipo ? 'table-secondary' : ''
+                  "
+                >
+                  <th>{{ ue.posicion }}</th>
+                  <td>
+                    <img
+                      [src]="
+                        getImage(
+                          ue.equipo.imagen,
+                          'equipo',
+                          'default-equipo.png'
+                        )
+                      "
+                      class="imgRedonda-ranking me-2"
+                      alt="user"
+                    />
+                  </td>
+                  <td>{{ ue.equipo.nombre }}</td>
+                  <td>{{ ue.equipo.puntos }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-grid d-lg-block">
+            <button
+              *ngIf="equiposRanking.length"
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="irAVista('rankingXequipos')"
+            >
+              Ver ranking completo
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="item.nombre === 'Mis retos pendientes'">
           <div class="text-center col-12" *ngIf="!retosAsignados.length">
             <span>Sin retos asignados</span>
           </div>
 
-          <div class="card mb-3">
+          <div class="card mb-3" *ngIf="retosAsignados.length">
             <ul class="list-group list-group-flush">
               <li class="list-group-item" *ngFor="let ur of retosAsignados">
                 <div class="d-flex justify-content-between align-items-center">
-                  <span class="col-6">{{ ur.reto.nombre }}</span>
-                  <div class="text-end text-md-start">
-                    <span
-                      class="badge {{
-                        ur.completado ? 'text-bg-success' : 'text-bg-warning'
-                      }} me-2"
-                      >{{ ur.completado ? "Completado" : "Pendiente" }}</span
-                    >
-                    <span
-                      class="badge {{
-                        getEstadoFecha(ur.reto)
-                          ? 'text-bg-success'
-                          : 'text-bg-danger'
-                      }} me-2"
-                      >{{
-                        getEstadoFecha(ur.reto) ? "Abierto" : "Cerrado"
-                      }}</span
-                    >
-                    <span
-                      class="badge {{
-                        ur.reto.estado ? 'text-bg-success' : 'text-bg-danger'
-                      }}"
-                      >{{ ur.reto.estado ? "Activo" : "Desactivado" }}</span
-                    >
+                  <span class="col-6 col-lg-8 col-xl-9">{{
+                    ur.reto.nombre
+                  }}</span>
+                  <div class="row gx-2 justify-content-end">
+                    <div class="col-5">
+                      <circle-progress
+                        [percent]="ur.completado ? 100 : 0"
+                        [outerStrokeColor]="customOuterStrokeColor"
+                      >
+                      </circle-progress>
+                    </div>
+                    <div class="col-7">
+                      <div>
+                        <span
+                          class="badge {{
+                            getEstadoFecha(ur.reto)
+                              ? 'text-bg-success'
+                              : 'text-bg-danger'
+                          }}"
+                          >{{
+                            getEstadoFecha(ur.reto) ? "Abierto" : "Cerrado"
+                          }}</span
+                        >
+                      </div>
+                      <div>
+                        <span
+                          class="badge {{
+                            ur.reto.estado
+                              ? 'text-bg-success'
+                              : 'text-bg-danger'
+                          }}"
+                          >{{ ur.reto.estado ? "Activo" : "Desactivado" }}</span
+                        >
+                      </div>
+                    </div>
                   </div>
                 </div>
               </li>
             </ul>
           </div>
 
-          <div class="d-grid d-lg-block">
+          <div class="d-grid d-lg-block" *ngIf="retosAsignados.length">
             <button
               class="btn btn-secondary btn-sm"
               (click)="irAVista('retos')"
