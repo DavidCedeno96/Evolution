@@ -332,6 +332,13 @@ create table Opcion(
 	fechaModificacion datetime default getdate()
 );
 
+create table UsuarioxOpcion(
+	idOpcion uniqueidentifier not null,
+	idUsuario uniqueidentifier not null,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+)
+
 create table Usuario_Reto(
 	idReto uniqueidentifier references Reto(idReto) not null,
 	idUsuario uniqueidentifier references Usuario(idUsuario) not null,

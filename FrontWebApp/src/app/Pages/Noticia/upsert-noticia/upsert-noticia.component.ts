@@ -327,8 +327,8 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
         this.previewImage = img.src;
       };
       reader.readAsDataURL(this.selectedImage);
-
-      console.log(this.selectedImage.name);
+    } else {
+      this.errorArchivo = false;
     }
   }
 

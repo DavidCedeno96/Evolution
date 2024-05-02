@@ -42,6 +42,7 @@ namespace WebApiRest.Data
                         Nombre = dr["nombre"].ToString(),
                         Correcta = Convert.ToInt32(dr["correcta"].ToString()),
                         IdPregunta = new Guid(dr["idPregunta"].ToString()),
+                        CantVotos = Convert.ToInt32(dr["cantVotos"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())

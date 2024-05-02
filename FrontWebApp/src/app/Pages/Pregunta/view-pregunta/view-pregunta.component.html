@@ -159,6 +159,15 @@
                           }}"
                           >{{ op.nombre }}</span
                         >
+                        <div
+                          class="d-inline"
+                          *ngIf="item.reto.tipoReto === 'Encuesta'"
+                        >
+                          <span class="mx-2">-</span>
+                          <span class="text-black-50"
+                            >votos: {{ op.cantVotos }}</span
+                          >
+                        </div>
                       </li>
                     </ol>
                   </div>

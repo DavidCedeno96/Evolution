@@ -87,6 +87,7 @@ import { UpsertCategoriaRecompensaComponent } from './Pages/Recompensa/upsert-ca
 import { RedSocialPerfilComponent } from './Pages/RedSocial/red-social-perfil/red-social-perfil.component';
 import { RankingUsersComponent } from './Pages/Ranking/ranking-users/ranking-users.component';
 import { RankingTeamsComponent } from './Pages/Ranking/ranking-teams/ranking-teams.component';
+import { EncuestaComponent } from './Components/encuesta/encuesta.component';
 
 @NgModule({
   declarations: [
@@ -144,6 +145,7 @@ import { RankingTeamsComponent } from './Pages/Ranking/ranking-teams/ranking-tea
     RedSocialPerfilComponent,
     RankingUsersComponent,
     RankingTeamsComponent,
+    EncuestaComponent,
   ],
   imports: [
     BrowserModule,

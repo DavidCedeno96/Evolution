@@ -95,6 +95,8 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   tipoReto: TipoReto[] = [];
   comportPreg: ComportamientoPregunta[] = [];
 
+  sectionsByTipoReto: number[] = [1, 1, 1];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -221,8 +223,6 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   cargarData(idReto: string) {
     this.retoServicio.getItem(-1, idReto).subscribe({
       next: (data: any) => {
-        console.log(data);
-
         let { error, reto } = data.response;
         if (error === 0) {
           reto.fechaApertura = this.dateFormatInput(reto.fechaApertura);
@@ -233,6 +233,8 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
           this.formulario.patchValue({
             tiempo_h: this.formatTiempo(reto.tiempo_ms),
           });
+
+          this.setSectionsByTipoReto(this.reto.tipoReto);
         } else {
           history.back();
         }
@@ -415,8 +417,39 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
         this.previewImage = img.src;
       };
       reader.readAsDataURL(this.selectedImage);
+    } else {
+      this.errorArchivo = false;
+    }
+  }
 
-      console.log(this.selectedImage.name);
+  selectedTipoRetoName(e: Event) {
+    let selectedIndex = (e.target as HTMLSelectElement).selectedIndex;
+    let options = (e.target as HTMLSelectElement).options;
+
+    let text = options[selectedIndex].text;
+
+    this.reto.tipoReto = text;
+
+    this.setSectionsByTipoReto(text);
+  }
+
+  setSectionsByTipoReto(tipoReto: string) {
+    if (tipoReto === 'Trivia') {
+      this.sectionsByTipoReto[1] = 1;
+
+      this.formulario.patchValue({
+        tiempo_ms: 0,
+        criterioMinimo: 0,
+        puntosRecompensa: 0,
+      });
+    } else if (tipoReto === 'Encuesta') {
+      this.sectionsByTipoReto[1] = 0;
+
+      this.formulario.patchValue({
+        tiempo_ms: 300000,
+        criterioMinimo: 1,
+        puntosRecompensa: 1,
+      });
     }
   }
 
@@ -426,6 +459,12 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     let error: boolean = false;
 
     if (tipo === 'siguiente') {
+      for (let i = 0; i < this.sectionsByTipoReto.length; i++) {
+        if (this.sectionsByTipoReto[i] === 0) {
+          index += 1;
+        }
+      }
+
       switch (index) {
         case 1: {
           this.formulario.get('nombre')?.errors ||
@@ -454,6 +493,12 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
         this.sectionIndex = index;
       }
     } else if (tipo === 'anterior') {
+      for (let i = this.sectionsByTipoReto.length - 1; i >= 0; i--) {
+        if (this.sectionsByTipoReto[i] === 0) {
+          index -= 1;
+        }
+      }
+
       this.sectionIndex = index;
     } else if ('nav') {
       this.formulario.get('nombre')?.errors ||

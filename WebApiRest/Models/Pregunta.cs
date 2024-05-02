@@ -21,6 +21,7 @@
     {
         public string Info { get; set; }
         public int Error { get; set; }
+        public Reto Reto { get; set; }
         public Pregunta Pregunta { get; set; }
         public List<Opcion> OpcionList { get; set; }
     }

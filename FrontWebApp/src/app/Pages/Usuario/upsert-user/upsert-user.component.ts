@@ -378,8 +378,8 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
         this.previewFoto = img.src;
       };
       reader.readAsDataURL(this.selectedFoto);
-
-      console.log(this.selectedFoto.name);
+    } else {
+      this.errorArchivo = false;
     }
   }
 

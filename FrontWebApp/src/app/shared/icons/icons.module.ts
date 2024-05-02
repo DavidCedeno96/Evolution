@@ -38,6 +38,12 @@ export class IconModule {
       )
     );
     this._matIconRegistry.addSvgIcon(
+      'comprobar',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/comprobar.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
       'periodico',
       this._domZanitizer.bypassSecurityTrustResourceUrl(
         'assets/icons/periodico.svg'

@@ -3,6 +3,7 @@ using System.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
 using Microsoft.Extensions.Options;
+using NPOI.POIFS.Crypt.Dsig;
 
 namespace WebApiRest.Data
 {
@@ -10,6 +11,7 @@ namespace WebApiRest.Data
     {
         private readonly Conexion conexion = new();
         private readonly OpcionData opcionData = new();
+        private readonly RetoData retoData = new();
 
         public async Task<PreguntaList> GetPreguntaList(int estado, Guid idReto)
         {
@@ -95,9 +97,11 @@ namespace WebApiRest.Data
                 while (await dr.ReadAsync())
                 {
                     OpcionList opcionList = await opcionData.GetOpcionList(estado, new Guid(dr["idPregunta"].ToString()));
+                    RetoItem retoItem = await retoData.GetReto(estado, idReto);
 
                     list.List.Add(new Pregunta_OpcionList()
                     {
+                        Reto = retoItem.Reto,
                         Pregunta = new Pregunta()
                         {
                             IdPregunta = new Guid(dr["idPregunta"].ToString()),

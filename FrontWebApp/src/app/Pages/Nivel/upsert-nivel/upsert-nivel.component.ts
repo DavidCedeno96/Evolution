@@ -280,6 +280,8 @@ export class UpsertNivelComponent implements OnInit, AfterViewInit {
       reader.readAsDataURL(this.selectedImage);
 
       //console.log(this.selectedImage.name);
+    } else {
+      this.errorArchivo = false;
     }
   }
 }

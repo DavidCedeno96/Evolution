@@ -1,3 +1,5 @@
+import { Reto } from './Reto';
+
 export interface Pregunta {
   idPregunta: string;
   idReto: string;
@@ -9,9 +11,11 @@ export interface Opcion {
   idPregunta: string;
   nombre: string;
   correcta: number;
+  cantVotos: number;
 }
 
 export interface PreguntaOpciones {
+  reto: Reto;
   pregunta: Pregunta;
   opcionList: Opcion[];
 }

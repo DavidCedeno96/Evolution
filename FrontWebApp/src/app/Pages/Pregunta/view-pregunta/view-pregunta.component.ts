@@ -56,6 +56,28 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
 
   preguntaOpciones: PreguntaOpciones[] = [
     {
+      reto: {
+        idReto: '',
+        nombre: '',
+        fechaApertura: new Date(),
+        fechaCierre: new Date(),
+        vidas: 0,
+        tiempo_ms: 0,
+        puntosRecompensa: 0,
+        creditosObtenidos: 0,
+        instrucciones: '',
+        criterioMinimo: 0,
+        imagen: '',
+        idTipoReto: '',
+        tipoReto: '',
+        idComportamiento: '',
+        comportamientoPregunta: '',
+        estado: 0,
+        totalPreguntas: 0,
+        usuariosAsignados: 0,
+        equiposAsignados: 0,
+        enEquipo: 0,
+      },
       pregunta: {
         idPregunta: '',
         idReto: '',
@@ -67,6 +89,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
           idPregunta: '',
           nombre: '',
           correcta: 0,
+          cantVotos: 0,
         },
       ],
     },

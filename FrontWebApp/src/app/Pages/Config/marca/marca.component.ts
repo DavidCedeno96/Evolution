@@ -292,9 +292,9 @@ export class MarcaComponent implements OnInit, AfterViewInit {
       'textoMenuItemActive',
     ])?.value;
 
-    this.configColores.forEach((item) => {
+    /* this.configColores.forEach((item) => {
       item.idUsuario = this.idUsuario;
-    });
+    }); */
   }
 
   setDataImagen(): FormData {
@@ -344,6 +344,7 @@ export class MarcaComponent implements OnInit, AfterViewInit {
       }
       case 'header': {
         this.imgHeader = selectedImage;
+        console.log(selectedImage);
 
         if (selectedImage) {
           let reader = new FileReader();

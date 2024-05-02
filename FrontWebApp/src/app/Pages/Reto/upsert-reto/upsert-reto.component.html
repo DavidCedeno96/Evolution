@@ -11,7 +11,7 @@
         >Información</a
       >
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="reto.tipoReto === 'Trivia'">
       <a
         class="nav-link {{ sectionIndex === 1 ? 'active' : 'pointer' }}"
         (click)="setSection(1, 'nav')"
@@ -31,22 +31,22 @@
     <div *ngIf="type === 'crear'">
       <!-- Información -->
       <div *ngIf="sectionIndex === 0">
-        <p class="fs-5">Información</p>
+        <p class="txt text-secondary fs-5">Información</p>
       </div>
 
       <!-- Recompensas -->
-      <div *ngIf="sectionIndex === 1">
-        <p class="fs-5">Recompensas</p>
+      <div *ngIf="sectionIndex === 1 && reto.tipoReto === 'Trivia'">
+        <p class="txt text-secondary fs-5">Recompensas</p>
       </div>
 
       <!-- Adicionales -->
       <div *ngIf="sectionIndex === 2">
-        <p class="fs-5">Adicionales</p>
+        <p class="txt text-secondary fs-5">Adicionales</p>
       </div>
     </div>
 
     <div class="row g-3" *ngIf="sectionIndex === 0">
-      <div class="col-12 {{ type === 'crear' ? 'col-md-4' : 'col-md-6' }}">
+      <div class="col-12 col-md-4">
         <label for="ret-nom" class="form-label">Nombre*</label>
         <input
           type="text"
@@ -79,7 +79,16 @@
           </span>
         </div>
       </div>
-      <div class="col-12 {{ type === 'crear' ? 'col-md-4' : 'col-md-6' }}">
+      <div class="col-12 col-md-4" *ngIf="type === 'editar'">
+        <label for="ret-cobt" class="form-label">Tipo Reto</label>
+        <input
+          type="text"
+          class="form-control"
+          [value]="reto.tipoReto"
+          disabled
+        />
+      </div>
+      <div class="col-12 col-md-4" *ngIf="type === 'crear'">
         <label for="ret-cobt" class="form-label">Tipo Reto*</label>
         <select
           class="form-select {{
@@ -89,6 +98,7 @@
           }}"
           formControlName="idTipoReto"
           id="ret-cobt"
+          (change)="selectedTipoRetoName($event)"
         >
           <option value="">Seleccione...</option>
           <option *ngFor="let item of tipoReto" [value]="item.idTipoReto">
@@ -103,6 +113,17 @@
             Campo obligatorio
           </span>
         </div>
+      </div>
+      <div class="col-12 col-md-4" *ngIf="type === 'editar'">
+        <label for="ret-equipo" class="form-label"
+          >Forma de Participación</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          [value]="reto.enEquipo ? 'Reto en Equipo' : 'Reto Individual'"
+          disabled
+        />
       </div>
       <div class="col-12 col-md-4" *ngIf="type === 'crear'">
         <label for="ret-equipo" class="form-label"
@@ -192,7 +213,10 @@
       </div>
     </div>
 
-    <div class="row g-3" *ngIf="sectionIndex === 1">
+    <div
+      class="row g-3"
+      *ngIf="sectionIndex === 1 && reto.tipoReto === 'Trivia'"
+    >
       <div class="col-12 col-md-6 col-lg-3">
         <label for="ret-vid" class="form-label">Vidas</label>
         <input

@@ -5,6 +5,7 @@
         public Guid IdOpcion { get; set; }
         public string Nombre { get; set; }
         public int Correcta { get; set; }
+        public int CantVotos { get; set; }
         public int  Estado { get; set; }
         public Guid IdPregunta { get; set; }
         public DateTime FechaCreacion { get; set; }

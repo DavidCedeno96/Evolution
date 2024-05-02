@@ -53,7 +53,7 @@
                 <img
                   class="img-thumbnail"
                   [src]="getImage(reto.imagen, 'reto', 'default-reto.jpg')"
-                  width="100"
+                  width="135"
                   [alt]="reto.imagen"
                 />
               </div>
@@ -95,30 +95,32 @@
 
               <div class="col-12 col-md-3">
                 <div class="flex align-items-center gap-3">
-                  <div>
-                    <strong>Vidas:</strong>
-                    <span class="">
-                      {{ reto.vidas }}
-                    </span>
-                  </div>
-                  <div>
-                    <strong>Tiempo máximo:</strong>
-                    <span class="">
-                      {{ formatTiempo(reto.tiempo_ms) }}
-                      {{ getTypeTime(reto.tiempo_ms) }}
-                    </span>
-                  </div>
-                  <div>
-                    <strong>Puntos de Recompensa:</strong>
-                    <span class="">
-                      {{ reto.puntosRecompensa }}
-                    </span>
-                  </div>
-                  <div>
-                    <strong>Créditos Obtenidos:</strong>
-                    <span class="">
-                      {{ reto.creditosObtenidos }}
-                    </span>
+                  <div *ngIf="reto.tipoReto === 'Trivia'">
+                    <div>
+                      <strong>Vidas:</strong>
+                      <span class="">
+                        {{ reto.vidas }}
+                      </span>
+                    </div>
+                    <div>
+                      <strong>Tiempo máximo:</strong>
+                      <span class="">
+                        {{ formatTiempo(reto.tiempo_ms) }}
+                        {{ getTypeTime(reto.tiempo_ms) }}
+                      </span>
+                    </div>
+                    <div>
+                      <strong>Puntos de Recompensa:</strong>
+                      <span class="">
+                        {{ reto.puntosRecompensa }}
+                      </span>
+                    </div>
+                    <div>
+                      <strong>Créditos Obtenidos:</strong>
+                      <span class="">
+                        {{ reto.creditosObtenidos }}
+                      </span>
+                    </div>
                   </div>
 
                   <div class="text-truncate">
@@ -201,7 +203,7 @@
                     <li *ngIf="!reto.estado">
                       <a
                         class="dropdown-item pointer text-success"
-                        (click)="setEstado(reto.idReto, 1)"
+                        (click)="setEstado(reto, 1)"
                         ><i class="fa-solid fa-power-off me-2"></i>Activar
                       </a>
                     </li>
@@ -209,7 +211,7 @@
                     <li *ngIf="reto.estado">
                       <a
                         class="dropdown-item pointer text-danger"
-                        (click)="setEstado(reto.idReto, 0)"
+                        (click)="setEstado(reto, 0)"
                         ><i class="fa-solid fa-power-off me-2"></i>Desactivar
                       </a>
                     </li>

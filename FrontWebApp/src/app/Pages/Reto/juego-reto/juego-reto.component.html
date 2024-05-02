@@ -1,1 +1,2 @@
-<app-trivia></app-trivia>
+<app-trivia *ngIf="reto.tipoReto === 'Trivia'"></app-trivia>
+<app-encuesta *ngIf="reto.tipoReto === 'Encuesta'"></app-encuesta>

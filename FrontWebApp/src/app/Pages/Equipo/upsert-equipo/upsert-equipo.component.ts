@@ -269,6 +269,8 @@ export class UpsertEquipoComponent implements OnInit, AfterViewInit {
       reader.readAsDataURL(this.selectedImage);
 
       //console.log(this.selectedImage.name);
+    } else {
+      this.errorArchivo = false;
     }
   }
 }

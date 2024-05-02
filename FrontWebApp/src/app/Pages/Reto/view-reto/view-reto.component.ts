@@ -160,35 +160,58 @@ export class ViewRetoComponent implements OnInit, AfterViewInit {
     });
   }
 
-  setEstado(idReto: string, estado: number) {
-    this.loading(true, false);
-    this.reto.idReto = idReto;
-    this.reto.estado = estado;
+  setEstado(reto: Reto, estado: number) {
+    if (
+      estado &&
+      !reto.totalPreguntas &&
+      (reto.tipoReto === 'Trivia' || reto.tipoReto === 'Encuesta')
+    ) {
+      this.alertError(
+        TitleErrorForm,
+        'No se puede activar el reto porque no tiene preguntas'
+      );
+    } else if (
+      estado &&
+      !reto.usuariosAsignados &&
+      !reto.equiposAsignados &&
+      (reto.tipoReto === 'Trivia' || reto.tipoReto === 'Encuesta')
+    ) {
+      this.alertError(
+        TitleErrorForm,
+        `No se puede activar el reto porque no se asignó ${
+          reto.enEquipo ? 'equipos' : 'usuarios'
+        }`
+      );
+    } else {
+      this.loading(true, false);
+      this.reto.idReto = reto.idReto;
+      this.reto.estado = estado;
 
-    this.retoServicio.updateEstado(this.reto).subscribe({
-      next: (data: any) => {
-        let { error, info } = data.response;
-        if (error === 0) {
-          this.cargarData();
-          this.messageService.add({
-            severity: 'success',
-            summary: MsgOk,
-            detail: estado ? MsgActivado : MsgDesactivado,
-          });
-        } else {
-          this.alertError(TitleErrorForm, info);
-        }
-        this.loading(false, false);
-      },
-      error: (e) => {
-        console.error(e);
-        if (e.status === 401 || e.status === 403) {
-          this.router.navigate(['/']);
-        } else {
-          this.alertError(TitleError, MsgError);
-        }
-      },
-    });
+      this.retoServicio.updateEstado(this.reto).subscribe({
+        next: (data: any) => {
+          let { error, info } = data.response;
+          if (error === 0) {
+            this.cargarData();
+            this.messageService.add({
+              severity: 'success',
+              summary: MsgOk,
+              detail: estado ? MsgActivado : MsgDesactivado,
+            });
+          } else {
+            this.alertError(TitleErrorForm, info);
+          }
+          this.loading(false, false);
+        },
+        error: (e) => {
+          console.error(e);
+          if (e.status === 401 || e.status === 403) {
+            this.router.navigate(['/']);
+          } else {
+            this.alertError(TitleError, MsgError);
+          }
+        },
+      });
+    }
   }
 
   confirmEliminar(id: string) {

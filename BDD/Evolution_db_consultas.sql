@@ -46,7 +46,7 @@ WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Equipo';
+WHERE tc.TABLE_NAME = 'TipoReto';
 
 ---
 SELECT @@VERSION;
@@ -847,8 +847,8 @@ exec sp_B_tipoReto
 select * from Opcion
 
 exec sp_B_OpcionByIdPregunta		
+@idPregunta = '43C4C9C4-B885-4BC4-83CB-1E3A257C3530',
 @estado = -1,
-@idPregunta = 'EFE6E2F4-091C-4B53-958C-CC1EDC252445',
 @error = '',
 @info = '',
 @id = ''
@@ -882,6 +882,19 @@ exec sp_D_OpcionByNoIds
 @error = '',
 @info = '',
 @id = ''
+
+-- UsuarioxOpcion ------------------------------------------------------------------------
+select * from UsuarioxOpcion
+select Count(*) as 'cantVotos' from UsuarioxOpcion where idOpcion = '848DFB3C-C8F8-4322-A5E2-11F6CF0089B2'
+
+exec sp_C_UsuarioxOpcion
+@idOpcion = '',
+@idUsuario = '',
+@error = '',
+@info = '',
+@id = ''
+
+
 
 -- Pregunta ------------------------------------------------------------------------
 select * from Pregunta 

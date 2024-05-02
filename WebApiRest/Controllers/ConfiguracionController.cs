@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Newtonsoft.Json;
 using System.Drawing;
+using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -56,6 +57,7 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> UpdateList([FromBody] List<Configuracion> configuracion)
         {
             Response response = new();
+            string userId = User.FindFirst("id").Value;
 
             foreach (var item in configuracion)
             {
@@ -70,6 +72,7 @@ namespace WebApiRest.Controllers
             {
                 foreach (var item in configuracion)
                 {
+                    item.IdUsuario = new Guid(userId);
                     response = await data.UpdateConfiguracion(item);
                 }
                 if (response.Info.Contains("old_value"))
@@ -88,6 +91,8 @@ namespace WebApiRest.Controllers
         {
             Response response = new();
             List<Configuracion> configuracion = JsonConvert.DeserializeObject<List<Configuracion>>(jsonConfig);
+
+            string userId = User.FindFirst("id").Value;            
 
             foreach (var item in configuracion)
             {
@@ -145,6 +150,7 @@ namespace WebApiRest.Controllers
             {
                 for (int i = 0; i < configuracion.Count; i++)
                 {
+                    configuracion[i].IdUsuario = new Guid(userId);
                     response = await data.UpdateConfiguracion(configuracion[i]);
                     if (response.Error == 0 && rutasImages[i] != "")
                     {
