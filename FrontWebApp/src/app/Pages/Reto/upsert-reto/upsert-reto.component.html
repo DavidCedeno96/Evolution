@@ -18,10 +18,17 @@
         >Recompensas</a
       >
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="reto.tipoReto === 'Encuesta'">
       <a
         class="nav-link {{ sectionIndex === 2 ? 'active' : 'pointer' }}"
         (click)="setSection(2, 'nav')"
+        >Requisitos</a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link {{ sectionIndex === 3 ? 'active' : 'pointer' }}"
+        (click)="setSection(3, 'nav')"
         >Adicionales</a
       >
     </li>
@@ -39,8 +46,13 @@
         <p class="txt text-secondary fs-5">Recompensas</p>
       </div>
 
+      <!-- Requisitos -->
+      <div *ngIf="sectionIndex === 2 && reto.tipoReto === 'Encuesta'">
+        <p class="txt text-secondary fs-5">Requisitos</p>
+      </div>
+
       <!-- Adicionales -->
-      <div *ngIf="sectionIndex === 2">
+      <div *ngIf="sectionIndex === 3">
         <p class="txt text-secondary fs-5">Adicionales</p>
       </div>
     </div>
@@ -63,7 +75,7 @@
             class="d-block"
             *ngIf="formulario.get('nombre')?.hasError('maxlength')"
           >
-            Máximo 30 caracteres
+            Máximo 40 caracteres
           </span>
           <span
             class="d-block"
@@ -80,7 +92,7 @@
         </div>
       </div>
       <div class="col-12 col-md-4" *ngIf="type === 'editar'">
-        <label for="ret-cobt" class="form-label">Tipo Reto</label>
+        <label for="ret-tipret1" class="form-label">Tipo de Reto</label>
         <input
           type="text"
           class="form-control"
@@ -89,7 +101,7 @@
         />
       </div>
       <div class="col-12 col-md-4" *ngIf="type === 'crear'">
-        <label for="ret-cobt" class="form-label">Tipo Reto*</label>
+        <label for="ret-tipret" class="form-label">Tipo de Reto*</label>
         <select
           class="form-select {{
             formulario.get('idTipoReto')?.errors && verErrorsInputs
@@ -97,7 +109,7 @@
               : ''
           }}"
           formControlName="idTipoReto"
-          id="ret-cobt"
+          id="ret-tipret"
           (change)="selectedTipoRetoName($event)"
         >
           <option value="">Seleccione...</option>
@@ -115,7 +127,7 @@
         </div>
       </div>
       <div class="col-12 col-md-4" *ngIf="type === 'editar'">
-        <label for="ret-equipo" class="form-label"
+        <label for="ret-equipo1" class="form-label"
           >Forma de Participación</label
         >
         <input
@@ -296,7 +308,7 @@
         </div>
       </div>
       <div class="col-12 col-md-6 col-lg-3">
-        <label for="ret-cobt" class="form-label">Créditos Obtenidos</label>
+        <label for="ret-credOb" class="form-label">Créditos Obtenidos</label>
         <input
           type="text"
           class="form-control {{
@@ -305,7 +317,7 @@
               : ''
           }}"
           formControlName="creditosObtenidos"
-          id="ret-cobt"
+          id="ret-credOb"
         />
         <div class="invalid-feedback">
           <span
@@ -335,7 +347,7 @@
         </div>
       </div>
       <div class="col-12 col-md-6 col-lg-3">
-        <label for="ret-cobt" class="form-label">Tiempo máximo (h:m:s)*</label>
+        <label for="ret-tiemM" class="form-label">Tiempo máximo (h:m:s)*</label>
         <input
           type="time"
           step="1"
@@ -344,6 +356,7 @@
               ? 'is-invalid'
               : ''
           }}"
+          id="ret-tiemM"
           formControlName="tiempo_h"
           (input)="setTiempo()"
         />
@@ -385,7 +398,7 @@
           /> -->
       </div>
       <div class="col-12 col-md-6 col-lg-4">
-        <label for="ret-cobt" class="form-label"
+        <label for="ret-cmin" class="form-label"
           >Criterio mínimo de superación (%)*</label
         >
         <input
@@ -396,7 +409,7 @@
               : ''
           }}"
           formControlName="criterioMinimo"
-          id="ret-cobt"
+          id="ret-cmin"
         />
         <div class="invalid-feedback">
           <span
@@ -427,7 +440,65 @@
       </div>
     </div>
 
-    <div class="row g-3" *ngIf="sectionIndex === 2">
+    <div
+      class="row g-3"
+      *ngIf="sectionIndex === 2 && reto.tipoReto === 'Encuesta'"
+    >
+      <div class="col-12 col-md-4" *ngIf="type === 'editar'">
+        <label for="ret-tipEn1" class="form-label">Tipo de Encuesta</label>
+        <input
+          type="text"
+          class="form-control"
+          [value]="reto.tipoEncuesta"
+          disabled
+        />
+      </div>
+      <div class="col-12 col-md-4" *ngIf="type === 'crear'">
+        <label for="tipo-tipEn" class="form-label">Tipo de Encuesta*</label>
+        <select
+          class="form-select {{
+            formulario.get('idTipoEncuesta')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          formControlName="idTipoEncuesta"
+          id="ret-tipEn"
+        >
+          <option value="">Seleccione...</option>
+          <option
+            *ngFor="let item of tipoEncuesta"
+            [value]="item.idTipoEncuesta"
+          >
+            {{ item.nombre }}
+          </option>
+        </select>
+        <div class="invalid-feedback">
+          <span
+            class="d-block"
+            *ngIf="formulario.get('idTipoEncuesta')?.hasError('required')"
+          >
+            Campo obligatorio
+          </span>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-check form-switch">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            role="switch"
+            id="ops-requeridas"
+            [checked]="reto.opsRequeridas"
+            (change)="setOpsRequeridas($event)"
+          />
+          <label class="form-check-label" for="ops-requeridas"
+            >Contestar todas las preguntas</label
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3" *ngIf="sectionIndex === 3">
       <div class="col-12 col-md-6 col-lg-4">
         <label for="ret-inst" class="form-label">Instrucciones</label>
         <textarea
@@ -528,7 +599,7 @@
         <button
           type="button"
           class="btn btn-secondary mb-3 mb-md-0 me-md-2"
-          *ngIf="sectionIndex > 0 && sectionIndex <= 2"
+          *ngIf="sectionIndex > 0 && sectionIndex <= 3"
           (click)="setSection(sectionIndex - 1, 'anterior')"
         >
           <i class="fa-solid fa-chevron-left me-2"></i>Anterior
@@ -536,7 +607,7 @@
         <button
           type="button"
           class="btn btn-secondary mb-3 mb-md-0 me-md-2"
-          *ngIf="sectionIndex >= 0 && sectionIndex < 2"
+          *ngIf="sectionIndex >= 0 && sectionIndex < 3"
           (click)="setSection(sectionIndex + 1, 'siguiente')"
         >
           Siguiente<i class="fa-solid fa-chevron-right ms-2"></i>
@@ -545,7 +616,7 @@
         <button
           type="submit"
           class="btn btn-primary mb-3 mb-md-0 me-md-2"
-          *ngIf="sectionIndex === 2 && type === 'crear'"
+          *ngIf="sectionIndex === 3 && type === 'crear'"
         >
           <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
         </button>

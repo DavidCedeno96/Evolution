@@ -287,6 +287,8 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
       imagen: '',
       idTipoReto: '7c8c2672-2233-486a-a184-f0b51eb4a331',
       tipoReto: '',
+      idTipoEncuesta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+      tipoEncuesta: '',
       idComportamiento: '7c8c2672-2233-486a-a184-f0b51eb4a331',
       comportamientoPregunta: '',
       estado: 0,
@@ -294,6 +296,7 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
       usuariosAsignados: 0,
       equiposAsignados: 0,
       enEquipo: 0,
+      opsRequeridas: 0,
     };
 
     usuarioReto = {

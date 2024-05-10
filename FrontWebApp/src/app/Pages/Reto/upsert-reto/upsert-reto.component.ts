@@ -7,7 +7,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ComportamientoPregunta, TipoReto } from 'src/app/Models/Adicional';
+import {
+  ComportamientoPregunta,
+  TipoEncuesta,
+  TipoReto,
+} from 'src/app/Models/Adicional';
 import { Reto } from 'src/app/Models/Reto';
 import {
   AlertError,
@@ -83,19 +87,23 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     imagen: '',
     idTipoReto: '',
     tipoReto: '',
+    idTipoEncuesta: '',
+    tipoEncuesta: '',
     idComportamiento: '',
     comportamientoPregunta: '',
     totalPreguntas: 0,
     usuariosAsignados: 0,
     equiposAsignados: 0,
     enEquipo: -1,
+    opsRequeridas: 1,
     estado: 0,
   };
 
   tipoReto: TipoReto[] = [];
+  tipoEncuesta: TipoEncuesta[] = [];
   comportPreg: ComportamientoPregunta[] = [];
 
-  sectionsByTipoReto: number[] = [1, 1, 1];
+  sectionsByTipoReto: number[] = [1, 1, 1, 1];
 
   constructor(
     private route: ActivatedRoute,
@@ -110,11 +118,12 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
         this.reto.nombre,
         [
           Validators.required,
-          Validators.maxLength(30),
+          Validators.maxLength(40),
           Validators.pattern(exp_invalidos),
         ],
       ],
       idTipoReto: [this.reto.idTipoReto, [Validators.required]],
+      idTipoEncuesta: [this.reto.idTipoEncuesta, [Validators.required]],
       enEquipo: [
         this.reto.enEquipo,
         [
@@ -179,6 +188,8 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
       imagen: [this.reto.imagen],
 
       idComportamiento: [this.reto.idComportamiento, [Validators.required]],
+
+      opsRequeridas: [this.reto.opsRequeridas],
     });
   }
 
@@ -254,8 +265,10 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   cargarAdicionales() {
     this.adicionalServicio.getListReto(1).subscribe({
       next: (data: any) => {
-        let { tipoRetoList, comportPreguntaList } = data.response;
+        let { tipoRetoList, tipoEncuestaList, comportPreguntaList } =
+          data.response;
         this.tipoReto = tipoRetoList.lista;
+        this.tipoEncuesta = tipoEncuestaList.lista;
         this.comportPreg = comportPreguntaList.lista;
       },
       error: (e) => {
@@ -382,7 +395,9 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     formData.append('criterioMinimo', this.reto.criterioMinimo.toString());
     formData.append('instrucciones', this.reto.instrucciones.trim());
     formData.append('idTipoReto', this.reto.idTipoReto.trim());
+    formData.append('idTipoEncuesta', this.reto.idTipoEncuesta.trim());
     formData.append('idComportamiento', this.reto.idComportamiento.trim());
+    formData.append('opsRequeridas', this.reto.opsRequeridas.toString().trim());
 
     if (this.selectedImage) {
       formData.append('archivo', this.selectedImage);
@@ -435,15 +450,26 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
 
   setSectionsByTipoReto(tipoReto: string) {
     if (tipoReto === 'Trivia') {
-      this.sectionsByTipoReto[1] = 1;
+      this.sectionsByTipoReto[1] = 1; // es Trivia
+      this.sectionsByTipoReto[2] = 0; // es Encuesta
 
-      this.formulario.patchValue({
-        tiempo_ms: 0,
-        criterioMinimo: 0,
-        puntosRecompensa: 0,
-      });
+      if (this.type === 'crear') {
+        this.formulario.patchValue({
+          tiempo_ms: 0,
+          criterioMinimo: 0,
+          puntosRecompensa: 0,
+          idTipoEncuesta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+        });
+      }
     } else if (tipoReto === 'Encuesta') {
-      this.sectionsByTipoReto[1] = 0;
+      this.sectionsByTipoReto[1] = 0; // es Trivia
+      this.sectionsByTipoReto[2] = 1; // es Encuesta
+
+      if (this.type === 'crear') {
+        this.formulario.patchValue({
+          idTipoEncuesta: '',
+        });
+      }
 
       this.formulario.patchValue({
         tiempo_ms: 300000,
@@ -460,30 +486,12 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
 
     if (tipo === 'siguiente') {
       for (let i = 0; i < this.sectionsByTipoReto.length; i++) {
-        if (this.sectionsByTipoReto[i] === 0) {
+        if (this.sectionsByTipoReto[index] === 0) {
           index += 1;
         }
       }
 
-      switch (index) {
-        case 1: {
-          this.formulario.get('nombre')?.errors ||
-          this.formulario.get('idTipoReto')?.errors
-            ? (error = true)
-            : (error = false);
-          break;
-        }
-        case 2: {
-          this.formulario.get('vidas')?.errors ||
-          this.formulario.get('puntosRecompensa')?.errors ||
-          this.formulario.get('creditosObtenidos')?.errors ||
-          this.formulario.get('tiempo_ms')?.errors ||
-          this.formulario.get('criterioMinimo')?.errors
-            ? (error = true)
-            : (error = false);
-          break;
-        }
-      }
+      error = this.getValidSection(this.sectionIndex);
 
       if (error) {
         this.verErrorsInputs = true;
@@ -494,22 +502,14 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
       }
     } else if (tipo === 'anterior') {
       for (let i = this.sectionsByTipoReto.length - 1; i >= 0; i--) {
-        if (this.sectionsByTipoReto[i] === 0) {
+        if (this.sectionsByTipoReto[index] === 0) {
           index -= 1;
         }
       }
 
       this.sectionIndex = index;
     } else if ('nav') {
-      this.formulario.get('nombre')?.errors ||
-      this.formulario.get('idTipoReto')?.errors ||
-      this.formulario.get('vidas')?.errors ||
-      this.formulario.get('puntosRecompensa')?.errors ||
-      this.formulario.get('creditosObtenidos')?.errors ||
-      this.formulario.get('tiempo_ms')?.errors ||
-      this.formulario.get('criterioMinimo')?.errors
-        ? (error = true)
-        : (error = false);
+      error = this.getValidSection(-1);
 
       if (error) {
         this.verErrorsInputs = true;
@@ -519,6 +519,51 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
         this.sectionIndex = index;
       }
     }
+  }
+
+  getValidSection(section: number): boolean {
+    let valid: boolean = true;
+    switch (section) {
+      case 0: {
+        this.formulario.get('nombre')?.errors ||
+        this.formulario.get('idTipoReto')?.errors ||
+        this.formulario.get('enEquipo')?.errors
+          ? (valid = true)
+          : (valid = false);
+        break;
+      }
+      case 1: {
+        this.formulario.get('vidas')?.errors ||
+        this.formulario.get('puntosRecompensa')?.errors ||
+        this.formulario.get('creditosObtenidos')?.errors ||
+        this.formulario.get('tiempo_ms')?.errors ||
+        this.formulario.get('criterioMinimo')?.errors
+          ? (valid = true)
+          : (valid = false);
+        break;
+      }
+      case 2: {
+        this.formulario.get('idTipoEncuesta')?.errors
+          ? (valid = true)
+          : (valid = false);
+        break;
+      }
+      default: {
+        this.formulario.get('nombre')?.errors ||
+        this.formulario.get('idTipoReto')?.errors ||
+        this.formulario.get('idTipoEncuesta')?.errors ||
+        this.formulario.get('enEquipo')?.errors ||
+        this.formulario.get('vidas')?.errors ||
+        this.formulario.get('puntosRecompensa')?.errors ||
+        this.formulario.get('creditosObtenidos')?.errors ||
+        this.formulario.get('tiempo_ms')?.errors ||
+        this.formulario.get('criterioMinimo')?.errors
+          ? (valid = true)
+          : (valid = false);
+      }
+    }
+
+    return valid;
   }
 
   setTiempo() {
@@ -534,11 +579,17 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     this.formulario.patchValue({
       tiempo_ms: totalMilisegundos,
     });
+  }
 
-    /* console.log(
-      typeof this.formulario.get(['tiempo_h'])?.value,
-      this.formulario.get(['tiempo_h'])?.value,
-      totalMilisegundos
-    ); */
+  setOpsRequeridas(event: Event) {
+    let checked = (event.target as HTMLInputElement).checked;
+
+    checked
+      ? this.formulario.patchValue({
+          opsRequeridas: 1,
+        })
+      : this.formulario.patchValue({
+          opsRequeridas: 0,
+        });
   }
 }

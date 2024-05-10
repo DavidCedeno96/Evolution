@@ -473,7 +473,9 @@ export const GetBreadcrumb = () => {
         break;
       }
 
-      case '/upsert-pregunta':
+      case '/upsert-pregunta/trivia':
+      case '/upsert-pregunta/encuesta/voto':
+      case '/upsert-pregunta/encuesta/satisfaccion':
       case '/view-pregunta': {
         lista = [
           {

@@ -16,8 +16,8 @@ export class PreguntaService {
     private usuarioServicio: UsuarioService
   ) {}
 
-  getArchivo(): Observable<Blob> {
-    return this.http.get('assets/archivos/FormatoPreguntasReto.xlsx', {
+  getArchivo(nombreArchivo: string): Observable<Blob> {
+    return this.http.get(`assets/archivos/${nombreArchivo}`, {
       responseType: 'blob',
     });
   }

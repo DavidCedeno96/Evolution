@@ -18,7 +18,7 @@ namespace WebApiRest.Data
 
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
-            SqlCommand cmd = new("sp_B_tipoReto", sqlConnection)
+            SqlCommand cmd = new("sp_B_TipoReto", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
             };

@@ -80,13 +80,13 @@
                   </span>
                 </div>
                 <div class="flex align-items-center gap-3">
-                  <strong>Fecha de apertura:</strong>
+                  <strong>Fecha de Apertura:</strong>
                   <span class="text-truncate">
                     {{ dateCompare(reto.fechaApertura) }}
                   </span>
                 </div>
                 <div class="flex align-items-center gap-3">
-                  <strong>Fecha de cierre:</strong>
+                  <strong>Fecha de Cierre:</strong>
                   <span class="text-truncate">
                     {{ dateCompare(reto.fechaCierre) }}
                   </span>
@@ -103,7 +103,7 @@
                       </span>
                     </div>
                     <div>
-                      <strong>Tiempo máximo:</strong>
+                      <strong>Tiempo Máximo:</strong>
                       <span class="">
                         {{ formatTiempo(reto.tiempo_ms) }}
                         {{ getTypeTime(reto.tiempo_ms) }}
@@ -121,6 +121,14 @@
                         {{ reto.creditosObtenidos }}
                       </span>
                     </div>
+                  </div>
+
+                  <div
+                    class="text-truncate"
+                    *ngIf="reto.tipoReto === 'Encuesta'"
+                  >
+                    <strong>Tipo de Encuesta:</strong>
+                    <span> {{ reto.tipoEncuesta }} </span>
                   </div>
 
                   <div class="text-truncate">

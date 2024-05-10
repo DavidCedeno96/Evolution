@@ -20,3 +20,11 @@
   height: 100%;
   top: 0;
 }
+
+.form-check .form-check-input.is-invalid {
+  border-width: 2px;
+}
+
+.form-check-input.is-invalid + .form-check-label {
+  font-weight: bold; /* Negrita cuando el input es inválido */
+}

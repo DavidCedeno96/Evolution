@@ -193,13 +193,28 @@ export class RetoService {
     });
   }
 
-  updateUsuario_reto(usuarioReto: Usuario_Reto): Observable<Usuario_Reto> {
+  updateUsuario_retoTrivia(
+    usuarioReto: Usuario_Reto
+  ): Observable<Usuario_Reto> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
     return this.http.put<Usuario_Reto>(
-      `${this.apiURL}/updateUsuarioReto`,
+      `${this.apiURL}/updateUsuarioReto/trivia`,
       usuarioReto,
+      {
+        headers: headers,
+      }
+    );
+  }
+
+  updateUsuario_retoEncuesta(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.put<FormData>(
+      `${this.apiURL}/updateUsuarioReto/encuesta`,
+      formData,
       {
         headers: headers,
       }

@@ -46,7 +46,7 @@ WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'TipoReto';
+WHERE tc.TABLE_NAME = 'Reto';
 
 ---
 SELECT @@VERSION;
@@ -74,10 +74,13 @@ SELECT @@VERSION;
 --Configuracion
 --Inicio
 --CorreoEnvio
+--TipoReto
+--TipoEncuesta
 
 -- OTROS INSERTS ---------------------------------------------------------
 --Insert into Usuario (nombre, apellido, correo, celular, idRol, pais, ciudad, clave) values
 --('Benito','Camelas','benito@gmail.com','0954712456','jug','Puerto Rico', 'Santo Domingo','12345')
+
 
 -- ------------------------------------------------------------
 select * from Constants
@@ -847,7 +850,7 @@ exec sp_B_tipoReto
 select * from Opcion
 
 exec sp_B_OpcionByIdPregunta		
-@idPregunta = '43C4C9C4-B885-4BC4-83CB-1E3A257C3530',
+@idPregunta = '170D9F8D-3DF7-433E-9C2A-3758C9AC57CF',
 @estado = -1,
 @error = '',
 @info = '',
@@ -856,6 +859,7 @@ exec sp_B_OpcionByIdPregunta
 exec sp_C_Opcion		
 @nombre = 'Ambato',
 @correcta = 0,
+@valor = 0, 
 @idPregunta = 'EFE6E2F4-091C-4B53-958C-CC1EDC252445',
 @error = '',
 @info = '',
@@ -865,6 +869,7 @@ exec sp_U_Opcion
 @idOpcion = '8EE73190-C353-420B-9453-92C1E9F075E6',
 @nombre = 'Ambato',
 @correcta = '',
+@valor = 0,
 @idPregunta = 'EFE6E2F4-091C-4B53-958C-CC1EDC252445',
 @error = '',
 @info = '',
@@ -885,7 +890,7 @@ exec sp_D_OpcionByNoIds
 
 -- UsuarioxOpcion ------------------------------------------------------------------------
 select * from UsuarioxOpcion
-select Count(*) as 'cantVotos' from UsuarioxOpcion where idOpcion = '848DFB3C-C8F8-4322-A5E2-11F6CF0089B2'
+select Count(*) as 'cantVotos' from UsuarioxOpcion where idOpcion = '8C05CBC7-C867-497D-800F-777B52422FC8'
 
 exec sp_C_UsuarioxOpcion
 @idOpcion = '',
@@ -898,6 +903,10 @@ exec sp_C_UsuarioxOpcion
 
 -- Pregunta ------------------------------------------------------------------------
 select * from Pregunta 
+
+select * from Pregunta  where nombre like '%Que te perecio Femsa en producción audiovisual?%'
+select * from Opcion where idPregunta = '7E82E7AB-A0C1-452E-9F3B-584015181F5A'
+select * from Opcion where idPregunta = '00046450-01F9-4F73-B3F3-C5A00D11446C'
 
 exec sp_B_PreguntaByIdReto		
 @estado = -1,
@@ -942,7 +951,7 @@ exec sp_D_Pregunta
 @id = ''
 
 -- Reto ------------------------------------------------------------------------
--- select * from Reto
+-- select * from reto
 
 exec sp_B_Reto
 @estado = -1,
@@ -951,7 +960,7 @@ exec sp_B_Reto
 @id = ''
 
 exec sp_B_RetoById	
-@idReto = '27C5527F-3EA3-431B-BEDF-65841EAF5663',
+@idReto = '428164a1-24f7-4c0c-8a6c-6278c23bffb5',
 @estado = -1,
 @error = '',
 @info = '',
@@ -981,7 +990,9 @@ exec sp_C_Reto
 @instrucciones = '',
 @imagen = '',
 @idTipoReto = '63AA060B-CDE4-49C0-9D60-AAF069DF1533',
+@idTipoEncuesta = '63AA060B-CDE4-49C0-9D60-AAF069DF1533',
 @idComportamiento = '1DD28D88-34C7-4394-AB3D-525726001730',
+@opsRequeridas = 0,
 @enEquipo = 0,
 @error = '',
 @info = '',
@@ -1001,6 +1012,7 @@ exec sp_U_Reto
 @imagen = '',
 @idTipoReto = '63AA060B-CDE4-49C0-9D60-AAF069DF1533',
 @idComportamiento = '1DD28D88-34C7-4394-AB3D-525726001730',
+@opsRequeridas = 0,
 @error = '',
 @info = '',
 @id = ''
@@ -1222,12 +1234,19 @@ Where ur.tieneEquipo = 1
 Group by ue.idEquipo, ur.idReto, e.idEquipo, e.nombre, e.imagen, e.estado
 
 -- Tipo de Reto ------------------------------------------------------------------------
-exec sp_B_tipoReto		
+exec sp_B_TipoReto		
 @estado = -1,
 @error = '',
 @info = '',
 @id = ''
 
+
+-- Tipo de Encuesta ------------------------------------------------------------------------
+exec sp_B_TipoEncuesta		
+@estado = 1,
+@error = '',
+@info = '',
+@id = ''
 
 -- Comportamiento Pregunta ------------------------------------------------------------------------
 exec sp_B_ComporPregu		

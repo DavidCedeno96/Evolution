@@ -15,6 +15,8 @@ export interface Reto {
   imagen: string;
   idTipoReto: string;
   tipoReto: string;
+  idTipoEncuesta: string;
+  tipoEncuesta: string;
   idComportamiento: string;
   comportamientoPregunta: string;
   estado: number;
@@ -22,6 +24,7 @@ export interface Reto {
   usuariosAsignados: number;
   equiposAsignados: number;
   enEquipo: number;
+  opsRequeridas: number;
 }
 
 export interface Usuario_Reto {

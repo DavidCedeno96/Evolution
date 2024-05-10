@@ -37,6 +37,13 @@ export interface TipoReto {
   estado: number;
 }
 
+export interface TipoEncuesta {
+  idTipoEncuesta: string;
+  nombre: string;
+  descripcion: string;
+  estado: number;
+}
+
 export interface ComportamientoPregunta {
   idComportamiento: string;
   nombre: string;

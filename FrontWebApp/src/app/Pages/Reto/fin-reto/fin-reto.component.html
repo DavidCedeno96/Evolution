@@ -24,7 +24,7 @@
       <div *ngIf="ur.vidas !== -1">
         <span> <strong>Vidas:</strong> {{ ur.vidas }} </span>
       </div>
-      <div>
+      <div *ngIf="ur.puntos > 0">
         <span> <strong>Puntos obtenidos:</strong> {{ ur.puntos }}</span>
       </div>
       <div *ngIf="!ur.reto.enEquipo && ur.puntos > 0">

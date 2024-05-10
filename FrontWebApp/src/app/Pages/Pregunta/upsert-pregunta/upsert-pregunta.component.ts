@@ -45,28 +45,6 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
 
   formulario!: FormGroup;
   preguntaOpciones: PreguntaOpciones = {
-    reto: {
-      idReto: '7c8c2672-2233-486a-a184-f0b51eb4a331',
-      nombre: '',
-      fechaApertura: new Date(),
-      fechaCierre: new Date(),
-      vidas: 0,
-      tiempo_ms: 0,
-      puntosRecompensa: 0,
-      creditosObtenidos: 0,
-      instrucciones: '',
-      criterioMinimo: 0,
-      imagen: '',
-      idTipoReto: '7c8c2672-2233-486a-a184-f0b51eb4a331',
-      tipoReto: '',
-      idComportamiento: '7c8c2672-2233-486a-a184-f0b51eb4a331',
-      comportamientoPregunta: '',
-      estado: 0,
-      totalPreguntas: 0,
-      usuariosAsignados: 0,
-      equiposAsignados: 0,
-      enEquipo: 0,
-    },
     pregunta: {
       idPregunta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
       idReto: '7c8c2672-2233-486a-a184-f0b51eb4a331',
@@ -133,7 +111,7 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
   cargarPregunta(idPregunta: string) {
     this.preguntaServicio.getItem(-1, idPregunta).subscribe({
       next: (data: any) => {
-        let { error, pregunta, opcionList } = data.response;
+        let { error, opcionList } = data.response;
         if (error === 0) {
           this.preguntaOpciones = data.response;
           this.auxOpcionList = opcionList;
@@ -270,6 +248,7 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
         nombre: '',
         correcta: 0,
         cantVotos: 0,
+        valor: 0,
       };
       opcion.nombre = this.formulario.get(['opcion' + this.opcion[i]])?.value;
 
@@ -309,6 +288,7 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
         nombre: '',
         correcta: 0,
         cantVotos: 0,
+        valor: 0,
       });
       if (this.auxOpcionList.length > 0 && i < this.auxOpcionList.length) {
         item[i] = this.auxOpcionList[i];

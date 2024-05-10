@@ -63,12 +63,15 @@ export class ViewRetoComponent implements OnInit, AfterViewInit {
     imagen: '',
     idTipoReto: '7c8c2672-2233-486a-a184-f0b51eb4a331',
     tipoReto: '',
+    idTipoEncuesta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    tipoEncuesta: '',
     idComportamiento: '7c8c2672-2233-486a-a184-f0b51eb4a331',
     comportamientoPregunta: '',
     totalPreguntas: 0,
     usuariosAsignados: 0,
     equiposAsignados: 0,
     enEquipo: 0,
+    opsRequeridas: 0,
     estado: 0,
   };
 
@@ -163,12 +166,12 @@ export class ViewRetoComponent implements OnInit, AfterViewInit {
   setEstado(reto: Reto, estado: number) {
     if (
       estado &&
-      !reto.totalPreguntas &&
+      reto.totalPreguntas < 5 &&
       (reto.tipoReto === 'Trivia' || reto.tipoReto === 'Encuesta')
     ) {
       this.alertError(
         TitleErrorForm,
-        'No se puede activar el reto porque no tiene preguntas'
+        'No se puede activar el reto porque debe tener al menos 5 preguntas'
       );
     } else if (
       estado &&

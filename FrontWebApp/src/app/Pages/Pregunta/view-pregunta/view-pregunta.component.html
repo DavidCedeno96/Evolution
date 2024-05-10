@@ -2,18 +2,13 @@
   <h5 class="my-5 text-center txt text-primary text-uppercase">preguntas</h5>
   <div class="row g-3 mb-4">
     <div class="col-6 col-md-auto d-grid d-md-block">
-      <a
-        class="btn btn-primary icon"
-        (click)="
-          changeRoute('/upsert-pregunta', { type: 'crear', reto: idReto })
-        "
-      >
+      <a class="btn btn-primary icon" (click)="getUpsertRoute()">
         <div class="icon-text buton">
           <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
         </div>
       </a>
     </div>
-    <div class="col-6 col-md-6 d-grid d-md-block">
+    <div class="col-6 col-md-auto d-grid d-md-block">
       <button
         class="btn btn-secondary icon"
         data-bs-toggle="modal"
@@ -23,6 +18,12 @@
           <mat-icon svgIcon="importar"></mat-icon><span>Importar</span>
         </div>
       </button>
+    </div>
+    <div
+      class="col-6 col-md-6 d-grid d-md-block"
+      *ngIf="reto.tipoReto !== 'Trivia'"
+    >
+      <button class="btn btn-secondary">Resultados</button>
     </div>
   </div>
 
@@ -62,8 +63,17 @@
                 </button>
               </li>
               <li>Solo se permiten archivos en formato .xlsx</li>
-              <li>Cada pregunta debe tener su opcion correcta.</li>
-              <li>Debe tener mínimo dos opciones y maximo cuatro.</li>
+              <li [classList]="reto.tipoReto !== 'Trivia' ? 'd-none' : ''">
+                Cada pregunta debe tener su opcion correcta.
+              </li>
+              <li
+                [classList]="
+                  reto.tipoEncuesta !== 'Satisfacción' ? 'd-none' : ''
+                "
+              >
+                Cada opción debe tener su valor correspondiente.
+              </li>
+              <li>Debe tener mínimo dos opciones y máximo {{ maxOptions }}.</li>
               <li>No se permiten campos vacios en la pregunta.</li>
               <li>No se aceptan los caracteres &#60;, &#62; o =</li>
               <li>
@@ -160,12 +170,11 @@
                           >{{ op.nombre }}</span
                         >
                         <div
-                          class="d-inline"
-                          *ngIf="item.reto.tipoReto === 'Encuesta'"
+                          class="d-inline ms-2"
+                          *ngIf="reto.tipoEncuesta === 'Satisfacción'"
                         >
-                          <span class="mx-2">-</span>
                           <span class="text-black-50"
-                            >votos: {{ op.cantVotos }}</span
+                            >valor: {{ op.valor }}</span
                           >
                         </div>
                       </li>
@@ -190,13 +199,7 @@
                     <li>
                       <a
                         class="dropdown-item pointer"
-                        (click)="
-                          changeRoute('/upsert-pregunta', {
-                            type: 'editar',
-                            pregunta: item.pregunta.idPregunta,
-                            reto: idReto
-                          })
-                        "
+                        (click)="getUpsertRoute()"
                         ><i class="fa-regular fa-pen-to-square me-2"></i
                         >Editar</a
                       >

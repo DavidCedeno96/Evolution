@@ -14,6 +14,7 @@ namespace WebApiRest.Controllers
         readonly EmpresaData empresaData = new();
         readonly AreaData areaData = new();
         readonly TipoRetoData tipoRetoData = new();
+        readonly TipoEncuestaData tipoEncuestaData = new();
         readonly ComportPreguntaData comportPreguntaData = new();
         readonly CategoriaNoticiaData categoriaNoticiaData = new();
         readonly CategoriaRecompensaData categoriaRecompensaData = new();
@@ -43,6 +44,7 @@ namespace WebApiRest.Controllers
             Adicional response = new()
             {
                 TipoRetoList = await tipoRetoData.GetTipoRetoList(estado),
+                TipoEncuestaList = await tipoEncuestaData.GetTipoEncuestaList(estado),
                 ComportPreguntaList = await comportPreguntaData.GetComportPreguntaList(estado),
             };
 

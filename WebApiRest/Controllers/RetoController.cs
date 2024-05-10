@@ -12,7 +12,8 @@ namespace WebApiRest.Controllers
     [ApiController]
     public class RetoController : ControllerBase
     {
-        readonly RetoData data = new();        
+        readonly RetoData data = new();
+        readonly OpcionData dataOpcion = new();
 
         private readonly IWebHostEnvironment _env;
         private readonly string nombreCarpeta = "Reto";        
@@ -240,16 +241,59 @@ namespace WebApiRest.Controllers
         }
 
         [HttpPut]
-        [Route("updateUsuarioReto")]
+        [Route("updateUsuarioReto/trivia")]
         [Authorize]
-        public async Task<IActionResult> UpdateUsuario_Reto([FromBody] Usuario_Reto usuarioReto)
+        public async Task<IActionResult> UpdateUsuario_RetoTrivia([FromBody] Usuario_Reto usuarioReto)
         {
-
             Claim userClaim = User.FindFirst("id");
             usuarioReto.Usuario.IdUsuario = new Guid(userClaim.Value);
 
+            usuarioReto.Completado = 1;
             Response response = await data.UpdateUsuario_Reto(usuarioReto);
             return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpPut]
+        [Route("updateUsuarioReto/encuesta")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUsuario_RetoEncuesta([FromForm] Guid idReto, [FromForm] string jsonList)
+        {
+            Claim userClaim = User.FindFirst("id");
+            List<string> listaIdsOpciones = JsonConvert.DeserializeObject<List<string>>(jsonList);
+
+            Usuario_Reto usuarioReto = new() 
+            { 
+                Usuario = new Usuario()
+                {
+                    IdUsuario = new Guid(userClaim.Value)
+                },
+                Reto = new Reto()
+                {
+                    IdReto = idReto
+                },
+                Puntos = -1,
+                Tiempo = -1,
+                Vidas = -1,
+                Completado = 1
+            };
+
+            UsuarioxOpcion uxo = new()
+            {
+                IdUsuario = new Guid(userClaim.Value)
+            };            
+
+            Response response = await data.UpdateUsuario_Reto(usuarioReto);
+
+            if(response.Error == 0 && listaIdsOpciones.Count > 0)
+            {
+                foreach (string idOpcion in listaIdsOpciones)
+                {                
+                    uxo.IdOpcion = new Guid(idOpcion);
+                    await dataOpcion.CreateUsuarioxOpcion(uxo);
+                }
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });            
         }
 
         [HttpPut]

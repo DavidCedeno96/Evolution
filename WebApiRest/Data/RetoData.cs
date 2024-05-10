@@ -49,8 +49,11 @@ namespace WebApiRest.Data
                         Imagen = dr["imagen"].ToString(),
                         IdTipoReto = new Guid(dr["idTipoReto"].ToString()),
                         TipoReto = dr["tipoReto"].ToString(),
+                        IdTipoEncuesta = new Guid(dr["idTipoEncuesta"].ToString()),
+                        TipoEncuesta = dr["tipoEncuesta"].ToString(),
                         IdComportamiento = new Guid(dr["idComportamiento"].ToString()),
                         ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
+                        OpsRequeridas = Convert.ToInt32(dr["opsRequeridas"].ToString()),
                         CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
@@ -119,8 +122,11 @@ namespace WebApiRest.Data
                         Imagen = dr["imagen"].ToString(),
                         IdTipoReto = new Guid(dr["idTipoReto"].ToString()),
                         TipoReto = dr["tipoReto"].ToString(),
+                        IdTipoEncuesta = new Guid(dr["idTipoEncuesta"].ToString()),
+                        TipoEncuesta = dr["tipoEncuesta"].ToString(),
                         IdComportamiento = new Guid(dr["idComportamiento"].ToString()),
                         ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
+                        OpsRequeridas = Convert.ToInt32(dr["opsRequeridas"].ToString()),
                         CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
@@ -673,8 +679,11 @@ namespace WebApiRest.Data
                         Imagen = dr["imagen"].ToString(),
                         IdTipoReto = new Guid(dr["idTipoReto"].ToString()),
                         TipoReto = dr["tipoReto"].ToString(),
+                        IdTipoEncuesta = new Guid(dr["idTipoEncuesta"].ToString()),
+                        TipoEncuesta = dr["tipoEncuesta"].ToString(),
                         IdComportamiento = new Guid(dr["idComportamiento"].ToString()),
                         ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
+                        OpsRequeridas = Convert.ToInt32(dr["opsRequeridas"].ToString()),
                         CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                         TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),                        
@@ -723,7 +732,9 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@instrucciones", WC.GetTrim(reto.Instrucciones));
             cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(reto.Imagen));
             cmd.Parameters.AddWithValue("@idTipoReto", reto.IdTipoReto);
+            cmd.Parameters.AddWithValue("@idTipoEncuesta", reto.IdTipoEncuesta);
             cmd.Parameters.AddWithValue("@idComportamiento", reto.IdComportamiento);
+            cmd.Parameters.AddWithValue("@opsRequeridas", reto.OpsRequeridas);
             cmd.Parameters.AddWithValue("@enEquipo", reto.EnEquipo);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
@@ -814,7 +825,8 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@instrucciones", WC.GetTrim(reto.Instrucciones));
             cmd.Parameters.AddWithValue("@imagen", WC.GetTrim(reto.Imagen));
             cmd.Parameters.AddWithValue("@idTipoReto", reto.IdTipoReto);
-            cmd.Parameters.AddWithValue("@idComportamiento", reto.IdComportamiento);            
+            cmd.Parameters.AddWithValue("@idComportamiento", reto.IdComportamiento);
+            cmd.Parameters.AddWithValue("@opsRequeridas", reto.OpsRequeridas);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;

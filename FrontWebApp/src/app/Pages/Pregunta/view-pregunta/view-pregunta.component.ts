@@ -8,7 +8,8 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Pregunta, PreguntaOpciones } from 'src/app/Models/Pregunta';
+import { PreguntaOpciones } from 'src/app/Models/Pregunta';
+import { Reto } from 'src/app/Models/Reto';
 import {
   AlertError,
   ChangeRoute,
@@ -48,36 +49,43 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
   selectedFile: File | null = null;
   errorArchivo: boolean = false;
 
+  maxOptions: string = 'cinco';
+  exportNameArchive: string = '';
+
   info: string = '';
   idReto: string = '';
 
   formulario!: FormGroup;
-  auxPreguntaOpciones: PreguntaOpciones[] = [];
 
+  reto: Reto = {
+    idReto: '',
+    nombre: '',
+    fechaApertura: new Date(),
+    fechaCierre: new Date(),
+    vidas: 0,
+    tiempo_ms: 0,
+    puntosRecompensa: 0,
+    creditosObtenidos: 0,
+    instrucciones: '',
+    criterioMinimo: 0,
+    imagen: '',
+    idTipoReto: '',
+    tipoReto: '',
+    idTipoEncuesta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    tipoEncuesta: '',
+    idComportamiento: '',
+    comportamientoPregunta: '',
+    estado: 0,
+    totalPreguntas: 0,
+    usuariosAsignados: 0,
+    equiposAsignados: 0,
+    enEquipo: 0,
+    opsRequeridas: 0,
+  };
+
+  auxPreguntaOpciones: PreguntaOpciones[] = [];
   preguntaOpciones: PreguntaOpciones[] = [
     {
-      reto: {
-        idReto: '',
-        nombre: '',
-        fechaApertura: new Date(),
-        fechaCierre: new Date(),
-        vidas: 0,
-        tiempo_ms: 0,
-        puntosRecompensa: 0,
-        creditosObtenidos: 0,
-        instrucciones: '',
-        criterioMinimo: 0,
-        imagen: '',
-        idTipoReto: '',
-        tipoReto: '',
-        idComportamiento: '',
-        comportamientoPregunta: '',
-        estado: 0,
-        totalPreguntas: 0,
-        usuariosAsignados: 0,
-        equiposAsignados: 0,
-        enEquipo: 0,
-      },
       pregunta: {
         idPregunta: '',
         idReto: '',
@@ -90,6 +98,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
           nombre: '',
           correcta: 0,
           cantVotos: 0,
+          valor: 0,
         },
       ],
     },
@@ -139,11 +148,29 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
   cargarData() {
     this.preguntaServicio.getList(-1, this.idReto).subscribe({
       next: (data: any) => {
-        let { error, info, list } = data.response;
+        let { error, info, list, reto } = data.response;
         if (error === 0) {
           this.preguntaOpciones = list;
           this.auxPreguntaOpciones = list;
+          this.reto = reto;
           this.info = SinRegistros;
+
+          switch (this.reto.tipoReto) {
+            case 'Trivia': {
+              this.maxOptions = 'cuatro';
+              this.exportNameArchive = 'FormatoPreguntasRetoTrivia.xlsx';
+              break;
+            }
+            case 'Encuesta': {
+              if (this.reto.tipoEncuesta === 'Voto') {
+                this.exportNameArchive =
+                  'FormatoPreguntasRetoEncuestaVoto.xlsx';
+              } else if (this.reto.tipoEncuesta === 'Satisfacción') {
+                this.exportNameArchive =
+                  'FormatoPreguntasRetoEncuestaSatisfaccion.xlsx';
+              }
+            }
+          }
         } else {
           this.alertError(TitleErrorForm, info);
         }
@@ -239,7 +266,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
 
   exportArchivo() {
     this.loading(true, false);
-    this.preguntaServicio.getArchivo().subscribe({
+    this.preguntaServicio.getArchivo(this.exportNameArchive).subscribe({
       next: (data: Blob) => {
         const urlObject = window.URL.createObjectURL(data);
         const element = document.createElement('a');
@@ -254,7 +281,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
         });
       },
       error: (e) => {
-        console.log(e);
+        console.error(e);
       },
     });
   }
@@ -262,7 +289,6 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
   onFileSelected(event: Event) {
     this.selectedFile = (event.target as HTMLInputElement).files![0];
     this.errorArchivo = false;
-    console.log(this.selectedFile.name);
   }
 
   confirmEliminar(id: string) {
@@ -306,6 +332,37 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
     let text = (event.target as HTMLInputElement).value;
     if (!text.trim()) {
       this.preguntaOpciones = this.auxPreguntaOpciones;
+    }
+  }
+
+  getUpsertRoute() {
+    switch (this.reto.tipoReto) {
+      case 'Trivia': {
+        this.changeRoute('/upsert-pregunta/trivia', {
+          type: 'crear',
+          reto: this.idReto,
+        });
+        break;
+      }
+      case 'Encuesta': {
+        if (this.reto.tipoEncuesta === 'Voto') {
+          this.changeRoute('/upsert-pregunta/encuesta/voto', {
+            type: 'crear',
+            reto: this.idReto,
+          });
+        } else if (this.reto.tipoEncuesta === 'Satisfacción') {
+          this.changeRoute('/upsert-pregunta/encuesta/satisfaccion', {
+            type: 'crear',
+            reto: this.idReto,
+          });
+        } else {
+          this.changeRoute('/view-reto', {});
+        }
+        break;
+      }
+      default: {
+        this.changeRoute('/view-reto', {});
+      }
     }
   }
 

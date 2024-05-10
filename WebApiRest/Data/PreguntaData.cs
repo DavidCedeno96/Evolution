@@ -76,6 +76,8 @@ namespace WebApiRest.Data
                 List = new() 
             };
 
+            RetoItem retoItem = await retoData.GetReto(estado, idReto);
+
             SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
 
             SqlCommand cmd = new("sp_B_PreguntaByIdReto", sqlConnection)
@@ -89,7 +91,7 @@ namespace WebApiRest.Data
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
-
+                    
             try
             {
                 await sqlConnection.OpenAsync();
@@ -97,11 +99,9 @@ namespace WebApiRest.Data
                 while (await dr.ReadAsync())
                 {
                     OpcionList opcionList = await opcionData.GetOpcionList(estado, new Guid(dr["idPregunta"].ToString()));
-                    RetoItem retoItem = await retoData.GetReto(estado, idReto);
 
                     list.List.Add(new Pregunta_OpcionList()
-                    {
-                        Reto = retoItem.Reto,
+                    {                        
                         Pregunta = new Pregunta()
                         {
                             IdPregunta = new Guid(dr["idPregunta"].ToString()),
@@ -115,11 +115,13 @@ namespace WebApiRest.Data
                     });
                 }
 
+                list.Reto = retoItem.Reto;
                 list.Info = WC.GetSatisfactorio();
                 list.Error = 0;
             }
             catch (Exception ex)
             {
+                list.Reto = null;
                 list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
                 list.Error = 1;
                 list.List = null;

@@ -43,6 +43,7 @@ namespace WebApiRest.Data
                         Correcta = Convert.ToInt32(dr["correcta"].ToString()),
                         IdPregunta = new Guid(dr["idPregunta"].ToString()),
                         CantVotos = Convert.ToInt32(dr["cantVotos"].ToString()),
+                        Valor = Convert.ToInt32(dr["valor"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
@@ -78,7 +79,47 @@ namespace WebApiRest.Data
 
             cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(opcion.Nombre));
             cmd.Parameters.AddWithValue("@correcta", opcion.Correcta);
+            cmd.Parameters.AddWithValue("@valor", opcion.Valor);
             cmd.Parameters.AddWithValue("@idPregunta", opcion.IdPregunta);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+                response.Id = cmd.Parameters["@id"].Value.ToString();
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+        }
+
+        public async Task<Response> CreateUsuarioxOpcion(UsuarioxOpcion uxo)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_C_UsuarioxOpcion", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idOpcion", uxo.IdOpcion);
+            cmd.Parameters.AddWithValue("@idUsuario", uxo.IdUsuario);            
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -119,6 +160,7 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@idOpcion", opcion.IdOpcion);
             cmd.Parameters.AddWithValue("@nombre", WC.GetTrim(opcion.Nombre));
             cmd.Parameters.AddWithValue("@correcta", opcion.Correcta);
+            cmd.Parameters.AddWithValue("@valor", opcion.Valor);
             cmd.Parameters.AddWithValue("@idPregunta", opcion.IdPregunta);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;

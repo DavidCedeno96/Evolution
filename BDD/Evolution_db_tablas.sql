@@ -276,9 +276,18 @@ create table ComportamientoPregunta(
 	fechaModificacion datetime default getdate()
 );
 
+create table TipoEncuesta(
+	idTipoEncuesta uniqueidentifier primary key default newid(),
+	nombre varchar(20) unique not null,
+	descripcion varchar(250),
+	estado int default 1,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+);
+
 create table Reto(
 	idReto uniqueidentifier primary key default newid(),
-	nombre varchar(30) unique not null,
+	nombre varchar(40) unique not null,
 	fechaApetura datetime,
 	fechaCierre datetime,
 	estado int default 1,
@@ -293,7 +302,9 @@ create table Reto(
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate(),
 	criterioMinimo int default 100 NOT NULL,
-	enEquipo int default 0 not null
+	enEquipo int default 0 not null,
+	idTipoEncuesta uniqueidentifier references TipoEncuesta(idTipoEncuesta) not null,
+	opsRequeridas int not null default 0 
 );
 
 create table Equipo(
@@ -327,6 +338,7 @@ create table Opcion(
 	nombre varchar(200) not null,
 	correcta int default 0,
 	estado int default 1,
+	valor int default 0 not null,
 	idPregunta uniqueidentifier references Pregunta(idPregunta) not null,
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate()
@@ -352,14 +364,14 @@ create table Usuario_Reto(
 	tieneEquipo int default 0 not null
 );
 
-create table Puzzle(
-	idPuzzle uniqueidentifier primary key default newid(),
-	imagen varchar(50) not null,
-	descripcion varchar(250),
-	idReto uniqueidentifier references Reto(idReto) not null,
-	fechaCreacion datetime default getdate(),
-	fechaModificacion datetime default getdate()
-);
+--create table Puzzle(
+--	idPuzzle uniqueidentifier primary key default newid(),
+--	imagen varchar(50) not null,
+--	descripcion varchar(250),
+--	idReto uniqueidentifier references Reto(idReto) not null,
+--	fechaCreacion datetime default getdate(),
+--	fechaModificacion datetime default getdate()
+--);
 
 --create table Laberinto(
 --	idLaberinto uniqueidentifier primary key default newid(),

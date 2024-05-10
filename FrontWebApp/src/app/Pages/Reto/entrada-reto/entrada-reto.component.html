@@ -16,11 +16,15 @@
 
     <div class="col-12 col-md-4 col-xxl-8">
       <h4>Instrucciones</h4>
-      <p *ngIf="!reto.instrucciones">
+      <p *ngIf="!reto.instrucciones && reto.tipoReto === 'Trivia'">
         Contesta correctamente las preguntas para ganar puntos y avanza rápido
         para llegar primero a la meta. Tienes un tiempo total de
         <strong>{{ formatTiempo_ms }} </strong>
         {{ getTypeTime(reto.tiempo_ms) }} ¡Diviértete!
+      </p>
+      <p *ngIf="!reto.instrucciones && reto.tipoReto === 'Encuesta'">
+        Lee bien las preguntas y contesta todas de acuerdo a tu criterio
+        ¡Diviértete!
       </p>
       <p *ngIf="reto.instrucciones">
         {{ reto.instrucciones }}

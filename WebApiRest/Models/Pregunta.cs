@@ -20,8 +20,7 @@
     public class Pregunta_OpcionList
     {
         public string Info { get; set; }
-        public int Error { get; set; }
-        public Reto Reto { get; set; }
+        public int Error { get; set; }        
         public Pregunta Pregunta { get; set; }
         public List<Opcion> OpcionList { get; set; }
     }
@@ -30,6 +29,7 @@
     {
         public string Info { get; set; }
         public int Error { get; set; }
+        public Reto Reto { get; set; }
         public List<Pregunta_OpcionList> List { get; set; }
     }
 }

@@ -13,14 +13,15 @@ namespace WebApiRest.Controllers
     public class PreguntaController : ControllerBase
     {        
         readonly PreguntaData dataPregunta = new();
-        readonly OpcionData dataOpcion = new();
+        readonly OpcionData dataOpcion = new();        
 
         [HttpGet]
         [Route("listByIdReto/{estado}/{idReto}")]
         [Authorize]
         public async Task<IActionResult> GetListByIdReto([FromRoute] int estado, [FromRoute] Guid idReto)
         {
-            PreguntaList_opciones response = await dataPregunta.GetPreguntaList_opciones(estado, idReto);                        
+            PreguntaList_opciones response = await dataPregunta.GetPreguntaList_opciones(estado, idReto);            
+
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -161,7 +162,7 @@ namespace WebApiRest.Controllers
         }
 
         [HttpPost]
-        [Route("import/{idReto}")]
+        [Route("import/trivia/{idReto}")]
         [Authorize(Roles = "adm,sadm")]
         public async Task<IActionResult> ImportList([FromForm] IFormFile archivo, [FromRoute] Guid idReto)
         {
@@ -270,6 +271,7 @@ namespace WebApiRest.Controllers
                                     foreach (var op in item.OpcionList)
                                     {
                                         op.IdPregunta = idPregunta;
+                                        op.Valor = 0;
                                         result = await dataOpcion.CreateOpcion(op);
                                     }
                                     if (result.Error == 0)

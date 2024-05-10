@@ -88,6 +88,8 @@ import { RedSocialPerfilComponent } from './Pages/RedSocial/red-social-perfil/re
 import { RankingUsersComponent } from './Pages/Ranking/ranking-users/ranking-users.component';
 import { RankingTeamsComponent } from './Pages/Ranking/ranking-teams/ranking-teams.component';
 import { EncuestaComponent } from './Components/encuesta/encuesta.component';
+import { UpsertPreguntaSatisfaccionComponent } from './Pages/Pregunta/upsert-pregunta-satisfaccion/upsert-pregunta-satisfaccion.component';
+import { UpsertPreguntaVotoComponent } from './Pages/Pregunta/upsert-pregunta-voto/upsert-pregunta-voto.component';
 
 @NgModule({
   declarations: [
@@ -146,6 +148,8 @@ import { EncuestaComponent } from './Components/encuesta/encuesta.component';
     RankingUsersComponent,
     RankingTeamsComponent,
     EncuestaComponent,
+    UpsertPreguntaSatisfaccionComponent,
+    UpsertPreguntaVotoComponent,
   ],
   imports: [
     BrowserModule,

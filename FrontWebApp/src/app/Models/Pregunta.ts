@@ -1,4 +1,4 @@
-import { Reto } from './Reto';
+//import { Reto } from './Reto';
 
 export interface Pregunta {
   idPregunta: string;
@@ -12,10 +12,10 @@ export interface Opcion {
   nombre: string;
   correcta: number;
   cantVotos: number;
+  valor: number;
 }
 
 export interface PreguntaOpciones {
-  reto: Reto;
   pregunta: Pregunta;
   opcionList: Opcion[];
 }

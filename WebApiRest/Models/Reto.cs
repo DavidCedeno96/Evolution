@@ -16,8 +16,11 @@
         public string Imagen { get; set; }
         public Guid IdTipoReto { get; set; }
         public string TipoReto { get; set; }
+        public Guid IdTipoEncuesta { get; set; }
+        public string TipoEncuesta { get; set; }
         public Guid IdComportamiento { get; set; }
         public string ComportamientoPregunta { get; set; }
+        public int OpsRequeridas { get; set; }
         public int TotalPreguntas { get; set; }
         public int UsuariosAsignados { get; set; }
         public int EquiposAsignados { get; set; }

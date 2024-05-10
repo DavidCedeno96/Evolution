@@ -6,6 +6,7 @@
         public string Nombre { get; set; }
         public int Correcta { get; set; }
         public int CantVotos { get; set; }
+        public int Valor { get; set; }
         public int  Estado { get; set; }
         public Guid IdPregunta { get; set; }
         public DateTime FechaCreacion { get; set; }
@@ -17,5 +18,13 @@
         public string Info { get; set; }
         public int Error { get; set; }
         public List<Opcion> Lista { get; set; }
+    }
+
+    public class UsuarioxOpcion
+    {
+        public Guid IdOpcion { get; set; }
+        public Guid IdUsuario { get; set; }        
+        public DateTime FechaCreacion { get; set; }
+        public DateTime FechaModificacion { get; set; }
     }
 }
