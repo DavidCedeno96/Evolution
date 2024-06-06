@@ -62,8 +62,13 @@
             class="txt text-primary text-decoration-none"
             *ngIf="item.url != url && item.estado === 1"
             [routerLink]="item.url"
-            >{{ item.nombre }}</a
           >
+            <div *ngIf="item.nombre === 'Inicio'" class="icon-text">
+              <mat-icon svgIcon="casa"></mat-icon
+              ><span class="me-0">{{ item.nombre }}</span>
+            </div>
+            <span *ngIf="item.nombre !== 'Inicio'">{{ item.nombre }}</span>
+          </a>
 
           <span
             class="text-black-50"

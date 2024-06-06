@@ -1,0 +1,42 @@
+<div>
+  <div *ngIf="!ur.length">{{ info }}</div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of paginatedItems()">
+      <div
+        class="shadow-lg p-3 mb-2 bg-body rounded pointer"
+        (click)="selectReto(item)"
+      >
+        <div class="row g-3">
+          <div class="col-3 text-center">
+            <img
+              [src]="getImage(item.reto.imagen, 'retro', 'default-reto.jpg')"
+              class="img-thumbnail"
+              width="100"
+              alt="{{ item.reto.nombre }}"
+            />
+          </div>
+          <div class="col-9">
+            <span class="txt text-secondary fw-semibold me-2">{{
+              item.reto.nombre
+            }}</span>
+            <small class="d-block fw-semibold txt text-primary">{{
+              item.reto.tipoReto
+            }}</small>
+            <small class="d-block"
+              >Usuarios a verificar: {{ item.reto.usuariosAsignados }}</small
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-content-center">
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="first"
+      [rows]="rows"
+      [totalRecords]="totalItems()"
+    ></p-paginator>
+  </div>
+</div>

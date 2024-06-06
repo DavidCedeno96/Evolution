@@ -10,6 +10,7 @@ import {
   GetImage,
   Loading,
   MsgError,
+  SinRegistros,
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
@@ -64,6 +65,7 @@ export class UserRetoComponent implements OnInit {
         if (error === 0) {
           this.ur = lista;
           this.auxUr = lista;
+          this.info = SinRegistros;
         } else {
           this.alertError(TitleErrorForm, info);
         }
@@ -142,7 +144,7 @@ export class UserRetoComponent implements OnInit {
       fechaCValida = false;
     }
 
-    if (ur.completado === 1) {
+    if (ur.completado > 0) {
       this.changeRoute('/fin-reto', { reto: ur.reto.idReto });
     } else if (!ur.reto.estado) {
       this.alertWarning('', 'El reto está desactivado');

@@ -194,8 +194,8 @@ body {
   background: var(--Primario);
 }
 
-/****** OJITO DE LA CONTRASEÑA ******/
-.toggle-password {
+/****** ICONO EN INPUT ******/
+.toggle-icon {
   position: absolute;
   top: 50%;
   right: 10px;
@@ -205,7 +205,7 @@ body {
   color: var(--form-items-border);
 }
 
-.toggle-password.error {
+.toggle-icon.error {
   top: 31%;
   right: 30px;
 }

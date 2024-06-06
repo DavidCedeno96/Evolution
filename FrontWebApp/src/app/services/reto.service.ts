@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { servicioURL } from '../Utils/Constants';
+import { GetArchivo, API_URL } from '../Utils/Constants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Equipo_Reto, Reto, Usuario_Reto } from '../Models/Reto';
@@ -9,7 +9,7 @@ import { UsuarioService } from './usuario.service';
   providedIn: 'root',
 })
 export class RetoService {
-  private apiURL: string = servicioURL + '/api/reto';
+  private apiURL: string = API_URL + '/api/reto';
 
   constructor(
     private http: HttpClient,
@@ -58,12 +58,15 @@ export class RetoService {
     });
   }
 
-  getUsuario_RetoByIdReto(idReto: string): Observable<Usuario_Reto[]> {
+  getUsuario_RetoByIdReto(
+    idReto: string,
+    validador: number
+  ): Observable<Usuario_Reto[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
     return this.http.get<Usuario_Reto[]>(
-      `${this.apiURL}/usuarioRetoByIdReto/${idReto}`,
+      `${this.apiURL}/usuarioRetoByIdReto/${idReto}/${validador}`,
       {
         headers: headers,
       }
@@ -120,6 +123,30 @@ export class RetoService {
     );
   }
 
+  getRetosXValidar(top: number): Observable<Usuario_Reto[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<Usuario_Reto[]>(
+      `${this.apiURL}/retosXvalidar/${top}`,
+      {
+        headers: headers,
+      }
+    );
+  }
+
+  getRetosXValidarUsuarios(idReto: string): Observable<Usuario_Reto[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<Usuario_Reto[]>(
+      `${this.apiURL}/retosXvalidar/usuarios/${idReto}`,
+      {
+        headers: headers,
+      }
+    );
+  }
+
   createUsuario_Reto(usuario_reto: Usuario_Reto): Observable<Usuario_Reto> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
@@ -162,19 +189,6 @@ export class RetoService {
     );
   }
 
-  /* enviarArchivo(formData: FormData, idReto: string): Observable<FormData> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
-    });
-    return this.http.post<FormData>(
-      `${this.apiURL}/importUsuarioReto/${idReto}`,
-      formData,
-      {
-        headers: headers,
-      }
-    );
-  } */
-
   create(formData: FormData): Observable<FormData> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
@@ -214,6 +228,50 @@ export class RetoService {
     });
     return this.http.put<FormData>(
       `${this.apiURL}/updateUsuarioReto/encuesta`,
+      formData,
+      {
+        headers: headers,
+      }
+    );
+  }
+
+  updateUsuario_retoSeg_evaluacion(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.put<FormData>(
+      `${this.apiURL}/updateUsuarioReto/seguimiento_evaluacion`,
+      formData,
+      {
+        headers: headers,
+      }
+    );
+  }
+
+  updateUsuario_retoRecoleccionPerdiente(
+    formData: FormData
+  ): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.put<FormData>(
+      `${this.apiURL}/updateUsuarioReto/recoleccion/pendiente`,
+      formData,
+      {
+        headers: headers,
+      }
+    );
+  }
+
+  updateUsuario_retoRecoleccionFinalizado(
+    formData: FormData,
+    puntos: number
+  ): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.put<FormData>(
+      `${this.apiURL}/updateUsuarioReto/recoleccion/finalizado/${puntos}`,
       formData,
       {
         headers: headers,

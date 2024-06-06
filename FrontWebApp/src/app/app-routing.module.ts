@@ -55,6 +55,11 @@ import { RankingUsersComponent } from './Pages/Ranking/ranking-users/ranking-use
 import { RankingTeamsComponent } from './Pages/Ranking/ranking-teams/ranking-teams.component';
 import { UpsertPreguntaVotoComponent } from './Pages/Pregunta/upsert-pregunta-voto/upsert-pregunta-voto.component';
 import { UpsertPreguntaSatisfaccionComponent } from './Pages/Pregunta/upsert-pregunta-satisfaccion/upsert-pregunta-satisfaccion.component';
+import { ResultsComponent } from './Pages/Pregunta/results/results.component';
+import { UpsertPreguntaSegEvaComponent } from './Pages/Pregunta/upsert-pregunta-seg-eva/upsert-pregunta-seg-eva.component';
+import { ValidacionesComponent } from './Pages/Reto/validaciones/validaciones.component';
+import { ValidacionesUsersComponent } from './Pages/Reto/validaciones-users/validaciones-users.component';
+import { ComportamientoComponent } from './Components/comportamiento/comportamiento.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -220,6 +225,16 @@ const routes: Routes = [
     canActivate: [authGuardPlayer],
   },
   {
+    path: 'validaciones',
+    component: ValidacionesComponent,
+    canActivate: [authGuardPlayer],
+  },
+  {
+    path: 'validaciones/users',
+    component: ValidacionesUsersComponent,
+    canActivate: [authGuardPlayer],
+  },
+  {
     path: 'asig-user-reto',
     component: AsigUserRetoComponent,
     canActivate: [authGuardAdmin],
@@ -233,6 +248,11 @@ const routes: Routes = [
     path: 'mass-actions-asig-user-reto',
     component: MassActionsAsigUserRetoComponent,
     canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'validar-comportamiento',
+    component: ComportamientoComponent,
+    canActivate: [authGuardPlayer],
   },
   {
     path: 'view-pregunta',
@@ -252,6 +272,16 @@ const routes: Routes = [
   {
     path: 'upsert-pregunta/encuesta/satisfaccion',
     component: UpsertPreguntaSatisfaccionComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'upsert-pregunta/seguimiento-evaluacion',
+    component: UpsertPreguntaSegEvaComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'results',
+    component: ResultsComponent,
     canActivate: [authGuardAdmin],
   },
   {

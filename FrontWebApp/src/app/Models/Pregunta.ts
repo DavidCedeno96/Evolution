@@ -9,6 +9,8 @@ export interface Pregunta {
 export interface Opcion {
   idOpcion: string;
   idPregunta: string;
+  idTipoEntrada: string;
+  tipoEntrada: string;
   nombre: string;
   correcta: number;
   cantVotos: number;

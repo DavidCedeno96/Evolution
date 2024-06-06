@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { servicioURL } from '../Utils/Constants';
+import { API_URL } from '../Utils/Constants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UsuarioService } from './usuario.service';
 import { Medalla } from '../Models/Medalla';
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MedallaService {
-  private apiURL: string = servicioURL + '/api/medalla';
+  private apiURL: string = API_URL + '/api/medalla';
 
   constructor(
     private http: HttpClient,

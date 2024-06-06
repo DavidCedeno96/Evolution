@@ -39,7 +39,7 @@
     aria-labelledby="asignarUsuarios_retos"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-sm-down">
       <form
         class="modal-content"
         [formGroup]="formulario"
@@ -213,8 +213,11 @@
                   </div>
                   <div>
                     <strong>Reto superado:</strong>
-                    <span class="">
+                    <span *ngIf="usuarioReto.completado < 2">
                       {{ usuarioReto.completado ? "Si" : "No" }}
+                    </span>
+                    <span *ngIf="usuarioReto.completado === 2">
+                      Pendiente de verificar
                     </span>
                   </div>
                 </div>

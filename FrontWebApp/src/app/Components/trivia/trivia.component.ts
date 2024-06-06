@@ -54,6 +54,8 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
   contador: any;
   porcentajePorPregunta: number = 0;
   porcentajeTotal: number = 0;
+  preguntasCorrectas: number = 0;
+  preguntasIncorrectas: number = 0;
 
   reto: Reto = {
     idReto: '',
@@ -73,12 +75,19 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
     tipoEncuesta: '',
     idComportamiento: '',
     comportamientoPregunta: '',
+    idTipoArchivo: '',
+    tipoArchivo: '',
+    idTipoValidador: '',
+    tipoValidador: '',
     totalPreguntas: 0,
     usuariosAsignados: 0,
     equiposAsignados: 0,
+    validadores: 0,
+    puedeValidar: 0,
     enEquipo: 0,
     estado: 0,
     opsRequeridas: 0,
+    items: 0,
   };
 
   randomPreguntaOpciones: PreguntaOpciones[] = [];
@@ -94,6 +103,8 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
         {
           idOpcion: '',
           idPregunta: '',
+          idTipoEntrada: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          tipoEntrada: '',
           nombre: '1) Tiburón blanco; 2) elefante; 3) escorpión',
           correcta: 0,
           cantVotos: 0,
@@ -102,6 +113,8 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
         {
           idOpcion: '',
           idPregunta: '',
+          idTipoEntrada: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          tipoEntrada: '',
           nombre: '1) Leon; 2) elefante; 3) escorpión',
           correcta: 0,
           cantVotos: 0,
@@ -110,6 +123,8 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
         {
           idOpcion: '',
           idPregunta: '',
+          idTipoEntrada: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          tipoEntrada: '',
           nombre: '1) Hiena; 2) Oso polar; 3) Lobo gris',
           correcta: 0,
           cantVotos: 0,
@@ -118,6 +133,8 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
         {
           idOpcion: '',
           idPregunta: '',
+          idTipoEntrada: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          tipoEntrada: '',
           nombre: '1) Tigre; 2) águila; 3) gato',
           correcta: 1,
           cantVotos: 0,
@@ -297,8 +314,10 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedIndex = index;
     if (correcta === 1) {
       this.opCorrecta = true;
+      this.preguntasCorrectas += 1;
     } else {
       this.opCorrecta = false;
+      this.preguntasIncorrectas += 1;
     }
   }
 
@@ -460,12 +479,19 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
       tipoEncuesta: '',
       idComportamiento: '7c8c2672-2233-486a-a184-f0b51eb4a331',
       comportamientoPregunta: '',
+      idTipoArchivo: '',
+      tipoArchivo: '',
+      idTipoValidador: '',
+      tipoValidador: '',
       estado: 0,
       totalPreguntas: 0,
       usuariosAsignados: 0,
       equiposAsignados: 0,
+      validadores: 0,
+      puedeValidar: 0,
       enEquipo: 0,
       opsRequeridas: 0,
+      items: 0,
     };
 
     usuarioReto = {
@@ -481,6 +507,9 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
       completado: 1,
       posicion: 0,
       tieneEquipo: 0,
+      archivos: [],
+      correctas: this.preguntasCorrectas,
+      incorrectas: this.preguntasIncorrectas,
       fechaCreacion: new Date(),
       fechaModificacion: new Date(),
     };

@@ -1,2 +1,9 @@
 <app-trivia *ngIf="reto.tipoReto === 'Trivia'"></app-trivia>
 <app-encuesta *ngIf="reto.tipoReto === 'Encuesta'"></app-encuesta>
+<app-seguimiento-evaluacion
+  *ngIf="reto.tipoReto === 'Seguimiento o Evaluación'"
+></app-seguimiento-evaluacion>
+<app-recoleccion *ngIf="reto.tipoReto === 'Recolección'"></app-recoleccion>
+<app-comportamiento
+  *ngIf="reto.tipoReto === 'Comportamiento'"
+></app-comportamiento>

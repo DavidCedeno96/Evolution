@@ -40,6 +40,15 @@ namespace WebApiRest.Utilities
             return Path.Combine(rutaPrincipal, nombreArchivo.Trim());
         }
 
+        public static string GetFileExtension(IFormFile file)
+        {
+            if (file != null)
+            {                
+                return Path.GetExtension(file.FileName); //.xlsx .pdf .png .jpg
+            }
+            return "";
+        }
+
         public static string GetTrim(string cadena)
         {
             if (cadena != null)
@@ -98,6 +107,18 @@ namespace WebApiRest.Utilities
             return $"_{hora}-{minuto}-{segundo}-{miliSegundo}";
         }
 
+        public static string GetLetraByNumero(int numero)
+        {
+            string letra = "";
+            while (numero > 0)
+            {
+                numero--;
+                letra = (char)('A' + (numero % 26)) + letra;
+                numero /= 26;
+            }
+            return letra;
+        }
+
         public static void EliminarArchivosAntiguos(IWebHostEnvironment env, string nombreCarpeta, string infoNombreArchivo)
         {
             string rutaArchivos = Path.Combine(env.ContentRootPath, "wwwroot", "Content", "Archivos", nombreCarpeta);
@@ -112,6 +133,28 @@ namespace WebApiRest.Utilities
             if (archivosAntiguos.Count > 0)
             {
                 foreach (var archivo in archivosAntiguos)
+                {
+                    if (File.Exists(archivo.FullName))
+                    {
+                        File.Delete(archivo.FullName);
+                    }
+                }
+            }
+        }
+
+        public static void EliminarArchivo(IWebHostEnvironment env, string nombreCarpeta, string infoNombreArchivo)
+        {
+            string rutaArchivos = Path.Combine(env.ContentRootPath, "wwwroot", "Content", "Archivos", nombreCarpeta);
+            string[] infoArchivos = Directory.GetFiles(rutaArchivos);
+
+            List<FileInfo> archivos = infoArchivos
+                .Select(archivo => new FileInfo(archivo))
+                .Where(info => info.Name.Contains(infoNombreArchivo))
+                .ToList();
+
+            if (archivos.Count > 0)
+            {
+                foreach (var archivo in archivos)
                 {
                     if (File.Exists(archivo.FullName))
                     {

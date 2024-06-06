@@ -2,6 +2,8 @@
 using System.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
+using NPOI.POIFS.Crypt.Dsig;
+using MathNet.Numerics.Distributions;
 
 namespace WebApiRest.Data
 {
@@ -9,7 +11,7 @@ namespace WebApiRest.Data
     {
         private readonly Conexion conexion = new();
 
-        public async Task<RetoList> GetRetoList(int estado)
+        public async Task<RetoList> GetRetoList(int estado, Guid idUsuario)
         {
             RetoList list = new()
             {
@@ -24,6 +26,7 @@ namespace WebApiRest.Data
             };
 
             cmd.Parameters.AddWithValue("@estado", estado);
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -53,13 +56,20 @@ namespace WebApiRest.Data
                         TipoEncuesta = dr["tipoEncuesta"].ToString(),
                         IdComportamiento = new Guid(dr["idComportamiento"].ToString()),
                         ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
+                        IdTipoValidador = new Guid(dr["idTipoValidador"].ToString()),
+                        TipoValidador = dr["tipoValidador"].ToString(),
+                        IdTipoArchivo = new Guid(dr["idTipoArchivo"].ToString()),
+                        TipoArchivo = dr["tipoArchivo"].ToString(),
                         OpsRequeridas = Convert.ToInt32(dr["opsRequeridas"].ToString()),
                         CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
                         UsuariosAsignados = Convert.ToInt32(dr["usuariosAsignados"].ToString()),
                         EquiposAsignados = Convert.ToInt32(dr["equiposAsignados"].ToString()),
+                        Validadores = Convert.ToInt32(dr["validadores"].ToString()),
+                        PuedeValidar = Convert.ToInt32(dr["puedeValidar"].ToString()),
                         EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
+                        Items = Convert.ToInt32(dr["items"].ToString()),                        
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     });
@@ -82,7 +92,7 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<RetoList> GetRetoList(string buscar)
+        public async Task<RetoList> GetRetoList(string buscar, Guid idUsuario)
         {
             RetoList list = new()
             {
@@ -97,6 +107,7 @@ namespace WebApiRest.Data
             };
 
             cmd.Parameters.AddWithValue("@buscar", WC.GetTrim(buscar));
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -126,13 +137,20 @@ namespace WebApiRest.Data
                         TipoEncuesta = dr["tipoEncuesta"].ToString(),
                         IdComportamiento = new Guid(dr["idComportamiento"].ToString()),
                         ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
+                        IdTipoValidador = new Guid(dr["idTipoValidador"].ToString()),
+                        TipoValidador = dr["tipoValidador"].ToString(),
+                        IdTipoArchivo = new Guid(dr["idTipoArchivo"].ToString()),
+                        TipoArchivo = dr["tipoArchivo"].ToString(),
                         OpsRequeridas = Convert.ToInt32(dr["opsRequeridas"].ToString()),
                         CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
                         TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
                         UsuariosAsignados = Convert.ToInt32(dr["usuariosAsignados"].ToString()),
                         EquiposAsignados = Convert.ToInt32(dr["equiposAsignados"].ToString()),
+                        Validadores = Convert.ToInt32(dr["validadores"].ToString()),
+                        PuedeValidar = Convert.ToInt32(dr["puedeValidar"].ToString()),
                         EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
+                        Items = Convert.ToInt32(dr["items"].ToString()),                        
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     });
@@ -202,10 +220,13 @@ namespace WebApiRest.Data
                             TipoReto = dr["tipoReto"].ToString(),
                             IdComportamiento = new Guid(dr["idComportamiento"].ToString()),
                             ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
+                            IdTipoValidador = new Guid(dr["idTipoValidador"].ToString()),
+                            TipoValidador = dr["tipoValidador"].ToString(),
                             CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                             Estado = Convert.ToInt32(dr["estado"].ToString()),
                             TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),                            
                             EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
+                            Items = Convert.ToInt32(dr["items"].ToString()),                            
                         },
                         Usuario = new Usuario()
                         {                            
@@ -279,12 +300,20 @@ namespace WebApiRest.Data
                             Imagen = dr["imagen"].ToString(),
                             IdTipoReto = new Guid(dr["idTipoReto"].ToString()),
                             TipoReto = dr["tipoReto"].ToString(),
+                            IdTipoEncuesta = new Guid(dr["idTipoEncuesta"].ToString()),
+                            TipoEncuesta = dr["tipoEncuesta"].ToString(),
                             IdComportamiento = new Guid(dr["idComportamiento"].ToString()),
                             ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
+                            IdTipoValidador = new Guid(dr["idTipoValidador"].ToString()),
+                            TipoValidador = dr["tipoValidador"].ToString(),
+                            IdTipoArchivo = new Guid(dr["idTipoArchivo"].ToString()),
+                            TipoArchivo = dr["tipoArchivo"].ToString(),
+                            OpsRequeridas = Convert.ToInt32(dr["opsRequeridas"].ToString()),
                             CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                             Estado = Convert.ToInt32(dr["estado"].ToString()),
                             TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),                            
-                            EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),                           
+                            EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
+                            Items = Convert.ToInt32(dr["items"].ToString()),                            
                         },
                         Usuario = new Usuario()
                         {
@@ -294,6 +323,8 @@ namespace WebApiRest.Data
                         Puntos = Convert.ToInt32(dr["puntos"].ToString()),
                         Tiempo = Convert.ToInt32(dr["tiempo"].ToString()),
                         Vidas = Convert.ToInt32(dr["vidas"].ToString()),
+                        Correctas = Convert.ToInt32(dr["correctas"].ToString()),
+                        Incorrectas = Convert.ToInt32(dr["incorrectas"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     };
@@ -363,10 +394,13 @@ namespace WebApiRest.Data
                             TipoReto = dr["tipoReto"].ToString(),
                             IdComportamiento = new Guid(dr["idComportamiento"].ToString()),
                             ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
+                            IdTipoValidador = new Guid(dr["idTipoValidador"].ToString()),
+                            TipoValidador = dr["tipoValidador"].ToString(),
                             CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                             Estado = Convert.ToInt32(dr["estado"].ToString()),
                             TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),                            
                             EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
+                            Items = Convert.ToInt32(dr["items"].ToString()),                            
                         },
                         Usuario = new Usuario()
                         {
@@ -514,7 +548,7 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<Usuario_RetoList> GetUsuarioRetoList(Guid idReto) 
+        public async Task<Usuario_RetoList> GetUsuarioRetoList(Guid idReto, int validador) 
         {
             Usuario_RetoList list = new()
             {
@@ -529,6 +563,7 @@ namespace WebApiRest.Data
             };
 
             cmd.Parameters.AddWithValue("@idReto", idReto);
+            cmd.Parameters.AddWithValue("@validador", validador);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -558,6 +593,7 @@ namespace WebApiRest.Data
                             IdReto = new Guid(dr["idReto"].ToString()),
                         },      
                         Completado = Convert.ToInt32(dr["completado"].ToString()),
+                        Validador = Convert.ToInt32(dr["validador"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     });
@@ -664,7 +700,7 @@ namespace WebApiRest.Data
                 await sqlConnection.OpenAsync();
                 SqlDataReader dr = await cmd.ExecuteReaderAsync();
                 if (await dr.ReadAsync())
-                {
+                {                                        
                     item.Reto = new Reto()
                     {
                         IdReto = new Guid(dr["idReto"].ToString()),
@@ -683,11 +719,16 @@ namespace WebApiRest.Data
                         TipoEncuesta = dr["tipoEncuesta"].ToString(),
                         IdComportamiento = new Guid(dr["idComportamiento"].ToString()),
                         ComportamientoPregunta = dr["comportamientoPregunta"].ToString(),
+                        IdTipoValidador = new Guid(dr["idTipoValidador"].ToString()),
+                        TipoValidador = dr["tipoValidador"].ToString(),
+                        IdTipoArchivo = new Guid(dr["idTipoArchivo"].ToString()),
+                        TipoArchivo = dr["tipoArchivo"].ToString(),
                         OpsRequeridas = Convert.ToInt32(dr["opsRequeridas"].ToString()),
                         CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                         TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
-                        Estado = Convert.ToInt32(dr["estado"].ToString()),                        
+                        Estado = Convert.ToInt32(dr["estado"].ToString()), 
                         EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
+                        Items = Convert.ToInt32(dr["items"].ToString()),                        
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                     };
@@ -696,12 +737,15 @@ namespace WebApiRest.Data
 
                 item.Info = cmd.Parameters["@info"].Value.ToString();
                 item.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+
+                item.UserValidadorLista = await GetUsuarioRetoList(idReto, 1);
             }
             catch (Exception ex)
             {
                 item.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
                 item.Error = 1;
                 item.Reto = null;
+                item.UserValidadorLista = null;
             }
             finally
             {
@@ -709,6 +753,235 @@ namespace WebApiRest.Data
             }
 
             return item;
+        }
+
+        public async Task<Response> GetUsuario_RetoValidador(Guid idReto, Guid idUsuario)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_B_Usuario_RetoValidador", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idReto", idReto);
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+        }
+
+        public async Task<Usuario_RetoList> GetUsuario_RetoxValidarByValidador(Guid idUsuario, int top)
+        {
+            Usuario_RetoList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_Usuario_RetoxValidarByValidador", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            
+            cmd.Parameters.AddWithValue("@idUserValidador", idUsuario);
+            cmd.Parameters.AddWithValue("@top", top);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    list.Lista.Add(new Usuario_Reto()
+                    {
+                        Usuario = new Usuario()
+                        {
+                            IdUsuario = new Guid(dr["idUsuario"].ToString()),                            
+                        },
+                        Reto = new Reto()
+                        {
+                            IdReto = new Guid(dr["idReto"].ToString()),
+                            Imagen = dr["imagen"].ToString(),
+                            Nombre = dr["nombre"].ToString(),
+                            TipoReto = dr["tipoReto"].ToString(),
+                            Estado = Convert.ToInt32(dr["estado"].ToString()),
+                            UsuariosAsignados = Convert.ToInt32(dr["usuariosXvalidar"].ToString())
+                        },                        
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString()),                        
+                    });
+                }
+
+                list.Info = WC.GetSatisfactorio();
+                list.Error = 0;
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+        }
+
+        public async Task<Usuario_RetoList> GetUsuario_RetoxValidarByReto(Guid idReto)
+        {
+            Usuario_RetoList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_Usuario_RetoxValidarByReto", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idReto", idReto);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    UsuarioxArchivoList archivos = await GetUsuarioXarchivos(new Guid(dr["idReto"].ToString()), new Guid(dr["idUsuario"].ToString()));
+
+                    list.Lista.Add(new Usuario_Reto()
+                    {
+                        Usuario = new Usuario()
+                        {
+                            IdUsuario = new Guid(dr["idUsuario"].ToString()),
+                            Foto = dr["foto"].ToString(),
+                            Nombre = dr["nombre"].ToString(),
+                            Apellido = dr["apellido"].ToString(),
+                            Correo = dr["correo"].ToString(),                            
+                            
+                        },
+                        Reto = new Reto()
+                        {
+                            IdReto = new Guid(dr["idReto"].ToString()),
+                            EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
+                            Items = Convert.ToInt32(dr["itemsRecogidos"].ToString()),
+                            TipoArchivo = dr["tipoArchivo"].ToString(),
+                            IdTipoReto = new Guid(dr["idTipoReto"].ToString()),
+                            TipoReto = dr["tipoReto"].ToString(),
+                        },
+                        Completado = Convert.ToInt32(dr["completado"].ToString()),
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString()),
+                        Archivos = archivos.Lista
+                    });
+                }
+
+                list.Info = WC.GetSatisfactorio();
+                list.Error = 0;
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+        }
+
+        public async Task<UsuarioxArchivoList> GetUsuarioXarchivos(Guid idReto, Guid idUsuario)
+        {
+            UsuarioxArchivoList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_UsuarioxArchivoByIdRetoYIdUser", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idReto", idReto);
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    list.Lista.Add(new UsuarioxArchivo()
+                    {
+                        IdReto = new Guid(dr["idReto"].ToString()),
+                        IdUsuario = new Guid(dr["idUsuario"].ToString()),
+                        Archivo = dr["archivo"].ToString(),
+                        Url = dr["url"].ToString(),
+                        FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
+                        FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString()),                        
+                    });
+                }
+
+                list.Info = WC.GetSatisfactorio();
+                list.Error = 0;
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
         }
 
         public async Task<Response> CreateReto(Reto reto)
@@ -734,6 +1007,9 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@idTipoReto", reto.IdTipoReto);
             cmd.Parameters.AddWithValue("@idTipoEncuesta", reto.IdTipoEncuesta);
             cmd.Parameters.AddWithValue("@idComportamiento", reto.IdComportamiento);
+            cmd.Parameters.AddWithValue("@idTipoValidador", reto.IdTipoValidador);
+            cmd.Parameters.AddWithValue("@idTipoArchivo", reto.IdTipoArchivo);
+            cmd.Parameters.AddWithValue("@items", reto.Items);            
             cmd.Parameters.AddWithValue("@opsRequeridas", reto.OpsRequeridas);
             cmd.Parameters.AddWithValue("@enEquipo", reto.EnEquipo);
 
@@ -748,12 +1024,14 @@ namespace WebApiRest.Data
 
                 response.Info = cmd.Parameters["@info"].Value.ToString();
                 response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+                response.Id = cmd.Parameters["@id"].Value.ToString();
 
             }
             catch (Exception ex)
             {
                 response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
                 response.Error = 1;
+                response.Id = "0";
             }
             finally
             {
@@ -775,6 +1053,48 @@ namespace WebApiRest.Data
 
             cmd.Parameters.AddWithValue("@idEquipo", idEquipo);
             cmd.Parameters.AddWithValue("@idReto", idReto);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+                response.Id = cmd.Parameters["@id"].Value.ToString();
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
+                response.Id = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+        }
+
+        public async Task<Response> CreateUsuarioxArchivo(UsuarioxArchivo usuarioxArchivo)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_C_UsuarioxArchivo", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idReto", usuarioxArchivo.IdReto);
+            cmd.Parameters.AddWithValue("@idUsuario", usuarioxArchivo.IdUsuario);
+            cmd.Parameters.AddWithValue("@archivo", WC.GetTrim(usuarioxArchivo.Archivo));
+            cmd.Parameters.AddWithValue("@url", WC.GetTrim(usuarioxArchivo.Url));
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -869,7 +1189,9 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@puntos", ur.Puntos);
             cmd.Parameters.AddWithValue("@tiempo", ur.Tiempo);
             cmd.Parameters.AddWithValue("@vidas", ur.Vidas);
-            cmd.Parameters.AddWithValue("@completado", ur.Completado);            
+            cmd.Parameters.AddWithValue("@completado", ur.Completado);
+            cmd.Parameters.AddWithValue("@correctas", ur.Correctas);
+            cmd.Parameters.AddWithValue("@incorrectas", ur.Incorrectas);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -949,7 +1271,11 @@ namespace WebApiRest.Data
 
             cmd.Parameters.AddWithValue("@correo", WC.GetTrim(usuarioReto.Usuario.Correo));
             cmd.Parameters.AddWithValue("@idReto", usuarioReto.Reto.IdReto);
-            cmd.Parameters.AddWithValue("@tieneEquipo", usuarioReto.TieneEquipo);            
+            cmd.Parameters.AddWithValue("@puntos", usuarioReto.Puntos);
+            cmd.Parameters.AddWithValue("@tiempo", usuarioReto.Tiempo);
+            cmd.Parameters.AddWithValue("@vidas", usuarioReto.Vidas);
+            cmd.Parameters.AddWithValue("@tieneEquipo", usuarioReto.TieneEquipo);
+            cmd.Parameters.AddWithValue("@validador", usuarioReto.Validador);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -1132,6 +1458,6 @@ namespace WebApiRest.Data
             }
 
             return response;
-        }
+        }        
     }
 }

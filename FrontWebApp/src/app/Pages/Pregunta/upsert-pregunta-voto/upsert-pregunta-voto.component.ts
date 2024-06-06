@@ -28,7 +28,7 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
 
   auxIdPregunta: string = '';
   auxOpcionList: Opcion[] = [];
-  opcion: string[] = ['A', 'B', 'C', 'D', 'E'];
+  opcion: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
   numClicksSave: number = 0;
 
@@ -134,7 +134,7 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
   }
 
   cargaOpciones(totalOpciones: number, preguntaOpciones: PreguntaOpciones) {
-    if (totalOpciones > 1 && totalOpciones < 6) {
+    if (totalOpciones > 1 && totalOpciones < 11) {
       this.formulario.patchValue({
         pregunta: preguntaOpciones.pregunta.nombre,
         totalOpciones: totalOpciones,
@@ -243,6 +243,8 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
       let opcion: Opcion = {
         idOpcion: '7c8c2672-2233-486a-a184-f0b51eb4a331',
         idPregunta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+        idTipoEntrada: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+        tipoEntrada: '',
         nombre: '',
         correcta: 0,
         cantVotos: 0,
@@ -264,7 +266,7 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
 
   selectTotalOpciones(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    if (Number(selectedValue) < 6) {
+    if (Number(selectedValue) < 11) {
       this.preguntaOpciones.opcionList = this.opcionItem(Number(selectedValue));
       this.auxOpcionList = this.opcionItem(Number(selectedValue));
     } else {
@@ -280,6 +282,8 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
       item.push({
         idOpcion: '7c8c2672-2233-486a-a184-f0b51eb4a331',
         idPregunta: this.auxIdPregunta,
+        idTipoEntrada: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+        tipoEntrada: '',
         nombre: '',
         correcta: 0,
         cantVotos: 0,
@@ -287,19 +291,15 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
       });
       if (this.auxOpcionList.length > 0 && i < this.auxOpcionList.length) {
         item[i] = this.auxOpcionList[i];
-        this.agregarControlform(
-          i,
-          this.auxOpcionList[i].nombre,
-          this.getOpLetraByIndex()
-        );
+        this.agregarControlform(i, this.auxOpcionList[i].nombre);
       } else {
-        this.agregarControlform(i, '', '');
+        this.agregarControlform(i, '');
       }
     }
     return item;
   }
 
-  agregarControlform(index: number, value: string, opCorrecta: string) {
+  agregarControlform(index: number, value: string) {
     this.formulario.addControl(
       `opcion${this.opcion[index]}`,
       this.formBuilder.control(value, [
@@ -308,11 +308,6 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
         Validators.pattern(exp_invalidos),
       ])
     );
-
-    /* this.formulario.addControl(
-      `opcionCorrecta`,
-      this.formBuilder.control(opCorrecta, [Validators.required])
-    ); */
   }
 
   eliminarControlform(termino: string) {
@@ -321,15 +316,5 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
         this.formulario.removeControl(controlName);
       }
     });
-  }
-
-  getOpLetraByIndex(): string {
-    let letra: string = '';
-    for (let i = 0; i < this.auxOpcionList.length; i++) {
-      if (this.auxOpcionList[i].correcta === 1) {
-        letra = this.opcion[i];
-      }
-    }
-    return letra;
   }
 }

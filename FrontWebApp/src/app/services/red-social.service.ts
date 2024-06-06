@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { servicioURL } from '../Utils/Constants';
+import { API_URL } from '../Utils/Constants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UsuarioService } from './usuario.service';
 import { Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { RedSocial_Reaccion, Usuario_RedSocial } from '../Models/RedSocial';
   providedIn: 'root',
 })
 export class RedSocialService {
-  private apiURL: string = servicioURL + '/api/redSocial';
+  private apiURL: string = API_URL + '/api/redSocial';
 
   constructor(
     private http: HttpClient,

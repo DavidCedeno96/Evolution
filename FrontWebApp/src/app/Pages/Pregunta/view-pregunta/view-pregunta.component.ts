@@ -51,8 +51,10 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
 
   maxOptions: string = 'cinco';
   exportNameArchive: string = '';
+  importNameRoute: string = '';
 
   info: string = '';
+  infoArchivo: string = '';
   idReto: string = '';
 
   formulario!: FormGroup;
@@ -75,12 +77,19 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
     tipoEncuesta: '',
     idComportamiento: '',
     comportamientoPregunta: '',
+    idTipoArchivo: '',
+    tipoArchivo: '',
+    idTipoValidador: '',
+    tipoValidador: '',
     estado: 0,
     totalPreguntas: 0,
     usuariosAsignados: 0,
     equiposAsignados: 0,
+    validadores: 0,
+    puedeValidar: 0,
     enEquipo: 0,
     opsRequeridas: 0,
+    items: 0,
   };
 
   auxPreguntaOpciones: PreguntaOpciones[] = [];
@@ -95,6 +104,8 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
         {
           idOpcion: '',
           idPregunta: '',
+          idTipoEntrada: '',
+          tipoEntrada: '',
           nombre: '',
           correcta: 0,
           cantVotos: 0,
@@ -159,16 +170,26 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
             case 'Trivia': {
               this.maxOptions = 'cuatro';
               this.exportNameArchive = 'FormatoPreguntasRetoTrivia.xlsx';
+              this.importNameRoute = 'trivia';
               break;
             }
             case 'Encuesta': {
               if (this.reto.tipoEncuesta === 'Voto') {
+                this.maxOptions = 'diez';
                 this.exportNameArchive =
                   'FormatoPreguntasRetoEncuestaVoto.xlsx';
+                this.importNameRoute = 'encuesta/voto';
               } else if (this.reto.tipoEncuesta === 'Satisfacción') {
                 this.exportNameArchive =
                   'FormatoPreguntasRetoEncuestaSatisfaccion.xlsx';
+                this.importNameRoute = 'encuesta/satisfaccion';
               }
+              break;
+            }
+            case 'Seguimiento o Evaluación': {
+              this.exportNameArchive = 'FormatoPreguntasRetoSeg_eva.xlsx';
+              this.importNameRoute = 'seguimiento_evaluacion';
+              break;
             }
           }
         } else {
@@ -229,38 +250,40 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
       const formData = new FormData();
       formData.append('archivo', this.selectedFile);
 
-      this.preguntaServicio.enviarArchivo(formData, this.idReto).subscribe({
-        next: (data: any) => {
-          const { info, error } = data.response;
-          this.info = info;
-          if (error === 0) {
-            this.errorArchivo = false;
-            this.limpiarArchivo();
-            this.cargarData();
-            this.messageService.add({
-              severity: 'success',
-              summary: MsgOk,
-              detail: 'Preguntas creadas',
-            });
-          } else {
-            this.errorArchivo = true;
-          }
-          this.loading(false, false);
-        },
-        error: (e) => {
-          this.limpiarArchivo();
-          console.error(e);
-          if (e.status === 401 || e.status === 403) {
-            this.router.navigate(['/']);
-          } else {
+      this.preguntaServicio
+        .enviarArchivo(formData, this.idReto, this.importNameRoute)
+        .subscribe({
+          next: (data: any) => {
+            const { info, error } = data.response;
+            this.infoArchivo = info;
+            if (error === 0) {
+              this.errorArchivo = false;
+              this.limpiarArchivo();
+              this.cargarData();
+              this.messageService.add({
+                severity: 'success',
+                summary: MsgOk,
+                detail: 'Preguntas creadas',
+              });
+            } else {
+              this.errorArchivo = true;
+            }
             this.loading(false, false);
-            this.alertError(TitleErrorArchivo, MsgErrorArchivo);
-          }
-        },
-      });
+          },
+          error: (e) => {
+            this.limpiarArchivo();
+            console.error(e);
+            if (e.status === 401 || e.status === 403) {
+              this.router.navigate(['/']);
+            } else {
+              this.loading(false, false);
+              this.alertError(TitleErrorArchivo, MsgErrorArchivo);
+            }
+          },
+        });
     } else {
       this.errorArchivo = true;
-      this.info = 'Ingrese un archivo en formato .xlsx';
+      this.infoArchivo = 'Ingrese un archivo en formato .xlsx';
     }
   }
 
@@ -335,35 +358,56 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getUpsertRoute() {
+  getUpsertRoute(
+    type: string,
+    idReto: string,
+    idPregunta: string = '7c8c2672-2233-486a-a184-f0b51eb4a331'
+  ) {
     switch (this.reto.tipoReto) {
       case 'Trivia': {
         this.changeRoute('/upsert-pregunta/trivia', {
-          type: 'crear',
-          reto: this.idReto,
+          type: type,
+          reto: idReto,
+          pregunta: idPregunta,
         });
         break;
       }
       case 'Encuesta': {
         if (this.reto.tipoEncuesta === 'Voto') {
           this.changeRoute('/upsert-pregunta/encuesta/voto', {
-            type: 'crear',
-            reto: this.idReto,
+            type: type,
+            reto: idReto,
+            pregunta: idPregunta,
           });
         } else if (this.reto.tipoEncuesta === 'Satisfacción') {
           this.changeRoute('/upsert-pregunta/encuesta/satisfaccion', {
-            type: 'crear',
-            reto: this.idReto,
+            type: type,
+            reto: idReto,
+            pregunta: idPregunta,
           });
         } else {
           this.changeRoute('/view-reto', {});
         }
         break;
       }
+      case 'Seguimiento o Evaluación': {
+        this.changeRoute('/upsert-pregunta/seguimiento-evaluacion', {
+          type: type,
+          reto: idReto,
+          pregunta: idPregunta,
+        });
+        break;
+      }
       default: {
         this.changeRoute('/view-reto', {});
       }
     }
+  }
+
+  splitList(list: any[], index: number, numGroup: number): any[] {
+    const startIndex = (index - 1) * numGroup;
+    const endIndex = startIndex + numGroup;
+    return list.slice(startIndex, endIndex);
   }
 
   limpiarArchivo() {

@@ -501,6 +501,52 @@
             </a>
           </div>
         </div>
+
+        <div *ngIf="item.nombre === 'Retos por calificar'">
+          <div class="text-center col-12" *ngIf="!urXvalidar.length">
+            <span>Sin retos por calificar</span>
+          </div>
+
+          <div class="card mb-3" *ngIf="urXvalidar.length">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" *ngFor="let item of urXvalidar">
+                <div class="row g-3">
+                  <div class="col-2 text-center">
+                    <img
+                      [src]="
+                        getImage(item.reto.imagen, 'retro', 'default-reto.jpg')
+                      "
+                      class="img-thumbnail"
+                      width="60"
+                      alt="{{ item.reto.nombre }}"
+                    />
+                  </div>
+                  <div class="col-9">
+                    <span class="txt text-secondary fw-semibold me-2">{{
+                      item.reto.nombre
+                    }}</span>
+                    <small class="d-block fw-semibold txt text-primary">{{
+                      item.reto.tipoReto
+                    }}</small>
+                    <small class="d-block"
+                      >Usuarios a verificar:
+                      {{ item.reto.usuariosAsignados }}</small
+                    >
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="d-grid d-lg-block" *ngIf="urXvalidar.length">
+            <button
+              class="btn btn-secondary btn-sm"
+              (click)="irAVista('retosXvalidar')"
+            >
+              Ver todos los retos
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

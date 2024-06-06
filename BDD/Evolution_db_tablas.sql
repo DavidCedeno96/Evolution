@@ -258,9 +258,27 @@ create table Configuracion(
 	fechaModificacion datetime default getdate()
 );
 
-create table tipoReto(
+create table TipoValidador(
+	idTipoValidador uniqueidentifier primary key default newid(),
+	nombre varchar(40) unique not null,
+	descripcion varchar(250),
+	estado int default 1,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+);
+
+create table TipoReto(
 	idTipoReto uniqueidentifier primary key default newid(),
 	nombre varchar(30) unique not null,
+	descripcion varchar(250),
+	estado int default 1,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+);
+
+create table TipoArchivo(
+	idTipoArchivo uniqueidentifier primary key default newid(),
+	nombre varchar(20) unique not null,
 	descripcion varchar(250),
 	estado int default 1,
 	fechaCreacion datetime default getdate(),
@@ -299,12 +317,14 @@ create table Reto(
 	imagen varchar(50),
 	idTipoReto uniqueidentifier references TipoReto(idTipoReto) not null,
 	idComportamiento uniqueidentifier references ComportamientoPregunta(idComportamiento) not null,
-	fechaCreacion datetime default getdate(),
-	fechaModificacion datetime default getdate(),
 	criterioMinimo int default 100 NOT NULL,
 	enEquipo int default 0 not null,
 	idTipoEncuesta uniqueidentifier references TipoEncuesta(idTipoEncuesta) not null,
-	opsRequeridas int not null default 0 
+	idTipoArchivo uniqueidentifier references TipoArchivo(idTipoArchivo) not null,
+	opsRequeridas int not null default 0, 
+	items int not null default 0,	
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate(),
 );
 
 create table Equipo(
@@ -333,6 +353,15 @@ create table Pregunta(
 	fechaModificacion datetime default getdate()
 );
 
+create table TipoEntrada(
+	idTipoEntrada uniqueidentifier primary key default newid(),
+	nombre varchar(20) unique not null,
+	descripcion varchar(250),
+	estado int default 1,	
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+);
+
 create table Opcion(
 	idOpcion uniqueidentifier primary key default newid(),
 	nombre varchar(200) not null,
@@ -340,6 +369,7 @@ create table Opcion(
 	estado int default 1,
 	valor int default 0 not null,
 	idPregunta uniqueidentifier references Pregunta(idPregunta) not null,
+	idTipoEntrada uniqueidentifier references TipoEntrada(idTipoEntrada) not null,
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate()
 );
@@ -347,6 +377,16 @@ create table Opcion(
 create table UsuarioxOpcion(
 	idOpcion uniqueidentifier not null,
 	idUsuario uniqueidentifier not null,
+	respuesta varchar(350),
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate()
+)
+
+create table UsuarioxArchivo(
+	idReto uniqueidentifier not null,
+	idUsuario uniqueidentifier not null,
+	archivo varchar(100) not null,
+	url varchar(150),
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate()
 )
@@ -357,11 +397,14 @@ create table Usuario_Reto(
 	puntos int default 0 not null,
 	tiempo int default 0 not null,
 	vidas int default 0 not null,
-	fechaCreacion datetime default getdate(),
-	fechaModificacion datetime default getdate(),
 	completado int default 0 not null,
 	fechaAsignacion datetime default getdate(),
-	tieneEquipo int default 0 not null
+	tieneEquipo int default 0 not null,
+	validador int not null default 0,
+	incorrectas int not null default 0,
+	correctas int not null default 0,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate(),
 );
 
 --create table Puzzle(

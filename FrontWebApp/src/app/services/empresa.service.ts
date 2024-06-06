@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UsuarioService } from './usuario.service';
-import { servicioURL } from '../Utils/Constants';
+import { API_URL } from '../Utils/Constants';
 import { Empresa } from '../Models/Adicional';
 import { Observable } from 'rxjs';
 
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class EmpresaService {
-  private apiURL: string = servicioURL + '/api/empresa';
+  private apiURL: string = API_URL + '/api/empresa';
 
   constructor(
     private http: HttpClient,

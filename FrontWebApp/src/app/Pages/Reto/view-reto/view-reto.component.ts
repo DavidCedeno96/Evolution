@@ -67,11 +67,18 @@ export class ViewRetoComponent implements OnInit, AfterViewInit {
     tipoEncuesta: '',
     idComportamiento: '7c8c2672-2233-486a-a184-f0b51eb4a331',
     comportamientoPregunta: '',
+    idTipoArchivo: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    tipoArchivo: '',
+    idTipoValidador: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    tipoValidador: '',
     totalPreguntas: 0,
     usuariosAsignados: 0,
     equiposAsignados: 0,
+    validadores: 0,
+    puedeValidar: 0,
     enEquipo: 0,
     opsRequeridas: 0,
+    items: 0,
     estado: 0,
   };
 
@@ -167,18 +174,16 @@ export class ViewRetoComponent implements OnInit, AfterViewInit {
     if (
       estado &&
       reto.totalPreguntas < 5 &&
-      (reto.tipoReto === 'Trivia' || reto.tipoReto === 'Encuesta')
+      (reto.tipoReto === 'Trivia' ||
+        reto.tipoReto === 'Encuesta' ||
+        reto.tipoReto === 'Seguimiento o Evaluación' ||
+        reto.tipoReto === 'Comportamiento')
     ) {
       this.alertError(
         TitleErrorForm,
         'No se puede activar el reto porque debe tener al menos 5 preguntas'
       );
-    } else if (
-      estado &&
-      !reto.usuariosAsignados &&
-      !reto.equiposAsignados &&
-      (reto.tipoReto === 'Trivia' || reto.tipoReto === 'Encuesta')
-    ) {
+    } else if (estado && !reto.usuariosAsignados && !reto.equiposAsignados) {
       this.alertError(
         TitleErrorForm,
         `No se puede activar el reto porque no se asignó ${

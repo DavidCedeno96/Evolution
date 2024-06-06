@@ -2,7 +2,7 @@
   <h5 class="my-5 text-center txt text-primary text-uppercase">preguntas</h5>
   <div class="row g-3 mb-4">
     <div class="col-6 col-md-auto d-grid d-md-block">
-      <a class="btn btn-primary icon" (click)="getUpsertRoute()">
+      <a class="btn btn-primary icon" (click)="getUpsertRoute('crear', idReto)">
         <div class="icon-text buton">
           <mat-icon svgIcon="agregar"></mat-icon><span>Crear</span>
         </div>
@@ -21,9 +21,18 @@
     </div>
     <div
       class="col-6 col-md-6 d-grid d-md-block"
-      *ngIf="reto.tipoReto !== 'Trivia'"
+      *ngIf="reto.tipoReto === 'Encuesta' && preguntaOpciones.length"
     >
-      <button class="btn btn-secondary">Resultados</button>
+      <a
+        class="btn btn-secondary icon"
+        (click)="changeRoute('/results', {        
+        reto: idReto,        
+      })"
+      >
+        <div class="icon-text buton">
+          <mat-icon svgIcon="grafico"></mat-icon><span>Resultados</span>
+        </div>
+      </a>
     </div>
   </div>
 
@@ -63,18 +72,21 @@
                 </button>
               </li>
               <li>Solo se permiten archivos en formato .xlsx</li>
-              <li [classList]="reto.tipoReto !== 'Trivia' ? 'd-none' : ''">
+              <li *ngIf="reto.tipoReto === 'Trivia'">
                 Cada pregunta debe tener su opcion correcta.
               </li>
-              <li
-                [classList]="
-                  reto.tipoEncuesta !== 'Satisfacción' ? 'd-none' : ''
-                "
-              >
-                Cada opción debe tener su valor correspondiente.
+              <li *ngIf="reto.tipoEncuesta !== 'Satisfacción'">
+                Debe tener mínimo dos opciones y máximo {{ maxOptions }}.
               </li>
-              <li>Debe tener mínimo dos opciones y máximo {{ maxOptions }}.</li>
-              <li>No se permiten campos vacios en la pregunta.</li>
+              <li *ngIf="reto.tipoEncuesta === 'Satisfacción'">
+                Debe tener {{ maxOptions }} opciones con sus respectivas
+                escalas.
+              </li>
+              <li>
+                Los campos que tienen (*) son obligatorios y no se permiten
+                campos vacios.
+              </li>
+              <li>No quitar o modificar los encabezados del formato.</li>
               <li>No se aceptan los caracteres &#60;, &#62; o =</li>
               <li>
                 Si no se cumpen con los requisitos mencionados anteriormente no
@@ -84,18 +96,18 @@
           </div>
           <form class="row g-3 mb-3">
             <div class="col-12">
-              <label for="archivoExcel" class="form-label ms-2 fw-medium"
+              <label for="archivoExcel-pre" class="form-label ms-2 fw-medium"
                 >Archivo*</label
               >
               <input
                 type="file"
                 class="form-control {{ errorArchivo ? 'is-invalid' : '' }}"
-                id="archivoExcel"
+                id="archivoExcel-pre"
                 (change)="onFileSelected($event)"
                 #valueArchivo
                 accept=".xlsx"
               />
-              <div class="invalid-feedback">{{ info }}</div>
+              <div class="invalid-feedback">{{ infoArchivo }}</div>
             </div>
           </form>
         </div>
@@ -150,17 +162,21 @@
         <div class="col-12">
           <div class="p-4 gap-4">
             <div class="row g-3 text-center text-md-start align-items-center">
-              <div class="col-12 col-md-3">
+              <div class="col-12 col-md-4 col-lg-3">
                 <h6>
                   {{ item.pregunta.nombre }}
                 </h6>
               </div>
 
-              <div class="col-12 col-md-6">
-                <div class="flex align-items-center gap-3">
-                  <div>
+              <div class="col-12 col-md-6 col-lg-7" *ngIf="item.opcionList">
+                <div class="row text-center text-md-start align-items-center">
+                  <div
+                    class="col-12 {{
+                      item.opcionList.length > 5 ? 'col-lg-6' : 'col-lg-12'
+                    }}"
+                  >
                     <ol class="letterUpper">
-                      <li *ngFor="let op of item.opcionList">
+                      <li *ngFor="let op of splitList(item.opcionList, 1, 5)">
                         <span
                           class="me-2 {{
                             op.correcta === 1
@@ -174,7 +190,48 @@
                           *ngIf="reto.tipoEncuesta === 'Satisfacción'"
                         >
                           <span class="text-black-50"
-                            >valor: {{ op.valor }}</span
+                            >escala: {{ op.valor }}</span
+                          >
+                        </div>
+                        <!-- <div
+                          class="d-inline ms-2"
+                          *ngIf="op.tipoEntrada !== 'Otro'"
+                        >
+                          <span class="text-black-50"
+                            >entrada: {{ op.tipoEntrada }}</span
+                          >
+                        </div> -->
+                      </li>
+                    </ol>
+                  </div>
+                  <div
+                    class="col-12 col-lg-6"
+                    *ngIf="item.opcionList.length > 5"
+                  >
+                    <ol class="letterUpper" start="6">
+                      <li *ngFor="let op of splitList(item.opcionList, 2, 5)">
+                        <span
+                          class="me-2 {{
+                            op.correcta === 1
+                              ? 'fw-bold txt text-secondary'
+                              : 'text-muted'
+                          }}"
+                          >{{ op.nombre }}</span
+                        >
+                        <div
+                          class="d-inline ms-2"
+                          *ngIf="reto.tipoEncuesta === 'Satisfacción'"
+                        >
+                          <span class="text-black-50"
+                            >escala: {{ op.valor }}</span
+                          >
+                        </div>
+                        <div
+                          class="d-inline ms-2"
+                          *ngIf="op.tipoEntrada !== 'Otro'"
+                        >
+                          <span class="text-black-50"
+                            >entrada: {{ op.tipoEntrada }}</span
                           >
                         </div>
                       </li>
@@ -183,7 +240,7 @@
                 </div>
               </div>
 
-              <div class="col-12 col-md-1 col-lg-2 text-md-end">
+              <div class="col-12 col-md-auto text-md-end">
                 <div class="dropdown">
                   <button
                     class="btn btn-tertiary normal only-icon"
@@ -199,7 +256,13 @@
                     <li>
                       <a
                         class="dropdown-item pointer"
-                        (click)="getUpsertRoute()"
+                        (click)="
+                          getUpsertRoute(
+                            'editar',
+                            item.pregunta.idReto,
+                            item.pregunta.idPregunta
+                          )
+                        "
                         ><i class="fa-regular fa-pen-to-square me-2"></i
                         >Editar</a
                       >

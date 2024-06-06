@@ -13,7 +13,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
 // Este es para la apiRest
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+
+// Es para el Traductor
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 /* FORMS */
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -29,6 +33,8 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
+import { CalendarModule } from 'primeng/calendar';
+import { InputMaskModule } from 'primeng/inputmask';
 
 /* PÁGINAS */
 import { LoginComponent } from './Pages/login/login.component';
@@ -90,6 +96,19 @@ import { RankingTeamsComponent } from './Pages/Ranking/ranking-teams/ranking-tea
 import { EncuestaComponent } from './Components/encuesta/encuesta.component';
 import { UpsertPreguntaSatisfaccionComponent } from './Pages/Pregunta/upsert-pregunta-satisfaccion/upsert-pregunta-satisfaccion.component';
 import { UpsertPreguntaVotoComponent } from './Pages/Pregunta/upsert-pregunta-voto/upsert-pregunta-voto.component';
+import { ResultsComponent } from './Pages/Pregunta/results/results.component';
+import { UpsertPreguntaSegEvaComponent } from './Pages/Pregunta/upsert-pregunta-seg-eva/upsert-pregunta-seg-eva.component';
+import { GraficoComponent } from './Components/grafico/grafico.component';
+import { SeguimientoEvaluacionComponent } from './Components/seguimiento-evaluacion/seguimiento-evaluacion.component';
+import { RecoleccionComponent } from './Components/recoleccion/recoleccion.component';
+import { ComportamientoComponent } from './Components/comportamiento/comportamiento.component';
+import { ValidacionesComponent } from './Pages/Reto/validaciones/validaciones.component';
+import { ValidacionesUsersComponent } from './Pages/Reto/validaciones-users/validaciones-users.component';
+import { InstruccionesRetoComponent } from './Components/instrucciones-reto/instrucciones-reto.component';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   declarations: [
@@ -150,6 +169,15 @@ import { UpsertPreguntaVotoComponent } from './Pages/Pregunta/upsert-pregunta-vo
     EncuestaComponent,
     UpsertPreguntaSatisfaccionComponent,
     UpsertPreguntaVotoComponent,
+    ResultsComponent,
+    UpsertPreguntaSegEvaComponent,
+    GraficoComponent,
+    SeguimientoEvaluacionComponent,
+    RecoleccionComponent,
+    ComportamientoComponent,
+    ValidacionesComponent,
+    ValidacionesUsersComponent,
+    InstruccionesRetoComponent,
   ],
   imports: [
     BrowserModule,
@@ -168,15 +196,24 @@ import { UpsertPreguntaVotoComponent } from './Pages/Pregunta/upsert-pregunta-vo
     ConfirmDialogModule,
     DialogModule,
     ToastModule,
+    CalendarModule,
+    InputMaskModule,
     CommonModule,
     MatTooltipModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
     NgCircleProgressModule.forRoot({
       responsive: true,
       showSubtitle: false,
       showBackground: false,
       showInnerStroke: true,
       animation: true,
-      animationDuration: 1000,
+      animationDuration: 400,
       radius: 15,
       outerStrokeWidth: 3,
       innerStrokeWidth: 3,

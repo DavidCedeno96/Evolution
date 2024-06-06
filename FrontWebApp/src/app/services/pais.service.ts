@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { servicioURL } from '../Utils/Constants';
+import { API_URL } from '../Utils/Constants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UsuarioService } from './usuario.service';
 import { Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { Pais } from '../Models/Adicional';
   providedIn: 'root',
 })
 export class PaisService {
-  private apiURL: string = servicioURL + '/api/pais';
+  private apiURL: string = API_URL + '/api/pais';
 
   constructor(
     private http: HttpClient,

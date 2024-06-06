@@ -1,1 +1,14 @@
+.imageRedonda {
+  padding: 4px;
+  width: 55px;
+  height: 55px;
+  border-radius: 160px;
+  border: 1px solid #dbdbdb;
+  object-fit: cover;
+  object-position: center;
+}
 
+.toggle-icon.aux-error {
+  top: 50%;
+  right: 30px;
+}

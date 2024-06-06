@@ -57,12 +57,19 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
     tipoEncuesta: '',
     idComportamiento: '',
     comportamientoPregunta: '',
+    idTipoArchivo: '',
+    tipoArchivo: '',
+    idTipoValidador: '',
+    tipoValidador: '',
     totalPreguntas: 0,
     usuariosAsignados: 0,
     equiposAsignados: 0,
     enEquipo: 0,
+    validadores: 0,
+    puedeValidar: 0,
     estado: 0,
     opsRequeridas: 0,
+    items: 0,
   };
 
   randomPreguntaOpciones: PreguntaOpciones[] = [];
@@ -78,6 +85,8 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
         {
           idOpcion: '',
           idPregunta: '',
+          idTipoEntrada: '',
+          tipoEntrada: '',
           nombre: '1) Tiburón blanco; 2) elefante; 3) escorpión',
           correcta: 0,
           cantVotos: 0,
@@ -86,6 +95,8 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
         {
           idOpcion: '',
           idPregunta: '',
+          idTipoEntrada: '',
+          tipoEntrada: '',
           nombre: '1) Leon; 2) elefante; 3) escorpión',
           correcta: 0,
           cantVotos: 0,
@@ -94,6 +105,8 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
         {
           idOpcion: '',
           idPregunta: '',
+          idTipoEntrada: '',
+          tipoEntrada: '',
           nombre: '1) Hiena; 2) Oso polar; 3) Lobo gris',
           correcta: 0,
           cantVotos: 0,
@@ -102,6 +115,8 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
         {
           idOpcion: '',
           idPregunta: '',
+          idTipoEntrada: '',
+          tipoEntrada: '',
           nombre: '1) Tigre; 2) águila; 3) gato',
           correcta: 1,
           cantVotos: 0,
@@ -124,10 +139,11 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.load(true, false);
     this.getRouteParams();
-    this.cargarReto();
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    this.cargarReto();
+  }
 
   getRouteParams() {
     this.route.queryParams.subscribe((params) => {
@@ -227,7 +243,7 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
   finalizarEncuesta() {
     this.load(true, false);
 
-    if (this.formulario.valid) {
+    if (this.formulario.valid || this.reto.opsRequeridas === 0) {
       this.verErrorsInputs = false;
 
       this.retoService.updateUsuario_retoEncuesta(this.setData()).subscribe({
@@ -310,7 +326,7 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
           let auxItem = item.split('_|_')[1];
           let id = item.split('_|_')[2];
 
-          let pregunta = `${this.getNumberPregunta(id)} ${auxItem}`;
+          let pregunta = `${this.getNumberPregunta(id)}. ${auxItem}`;
 
           list.push(pregunta);
         }

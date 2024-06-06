@@ -2,10 +2,12 @@
   <div
     class="row g-3 text-center text-xxl-start align-items-center mx-2 mx-md-5 my-2"
   >
-    <div class="col-12 col-md-auto me-3">
+    <div class="text-center">
       <h3 class="text-truncate txt text-primary mb-3">
         {{ reto.nombre }}
       </h3>
+    </div>
+    <div class="col-12 col-md-auto me-3">
       <img
         [src]="getImage(reto.imagen, 'reto', 'default-reto.jpg')"
         class="img-thumbnail"
@@ -16,24 +18,15 @@
 
     <div class="col-12 col-md-4 col-xxl-8">
       <h4>Instrucciones</h4>
-      <p *ngIf="!reto.instrucciones && reto.tipoReto === 'Trivia'">
-        Contesta correctamente las preguntas para ganar puntos y avanza rápido
-        para llegar primero a la meta. Tienes un tiempo total de
-        <strong>{{ formatTiempo_ms }} </strong>
-        {{ getTypeTime(reto.tiempo_ms) }} ¡Diviértete!
-      </p>
-      <p *ngIf="!reto.instrucciones && reto.tipoReto === 'Encuesta'">
-        Lee bien las preguntas y contesta todas de acuerdo a tu criterio
-        ¡Diviértete!
-      </p>
-      <p *ngIf="reto.instrucciones">
-        {{ reto.instrucciones }}
-      </p>
+      <app-instrucciones-reto
+        [reto]="reto"
+        [formatTiempo_ms]="formatTiempo_ms"
+      ></app-instrucciones-reto>
     </div>
     <div class="col-12 text-center text-md-end d-grid d-md-block">
       <button
         class="btn btn-primary icon mb-3 mb-md-0 me-md-2"
-        (click)="comenzar(reto.idReto)"
+        (click)="comenzar(reto)"
       >
         <div class="icon-text buton">
           <mat-icon svgIcon="gamepad"></mat-icon><span>Comenzar</span>

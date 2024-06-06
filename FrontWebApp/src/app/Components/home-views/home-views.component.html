@@ -574,6 +574,57 @@
     </div>
   </div>
 
+  <div *ngIf="tipoVista === 'Retos por calificar'">
+    <div class="card mb-3">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div class="row g-3">
+            <div class="col-2 text-center">
+              <img
+                src="assets/img/default/default-reto.jpg"
+                class="img-thumbnail"
+                width="60"
+                alt="reto"
+              />
+            </div>
+            <div class="col-9">
+              <span class="txt text-secondary fw-semibold me-2">Reto 1</span>
+              <small class="d-block fw-semibold txt text-primary"
+                >Recolección</small
+              >
+              <small class="d-block">Usuarios a verificar: 23</small>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row g-3">
+            <div class="col-2 text-center">
+              <img
+                src="assets/img/default/default-reto.jpg"
+                class="img-thumbnail"
+                width="60"
+                alt="reto"
+              />
+            </div>
+            <div class="col-9">
+              <span class="txt text-secondary fw-semibold me-2">Reto 2</span>
+              <small class="d-block fw-semibold txt text-primary"
+                >Comportamiento</small
+              >
+              <small class="d-block">Usuarios a verificar: 24</small>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="d-grid d-lg-block">
+      <button type="button" class="btn btn-secondary btn-sm">
+        Ver todos los retos
+      </button>
+    </div>
+  </div>
+
   <div *ngIf="tipoVista === ''">
     <h6>por defecto</h6>
   </div>

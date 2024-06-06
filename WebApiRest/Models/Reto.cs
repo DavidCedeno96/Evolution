@@ -20,11 +20,18 @@
         public string TipoEncuesta { get; set; }
         public Guid IdComportamiento { get; set; }
         public string ComportamientoPregunta { get; set; }
+        public string TipoArchivo { get; set; }
+        public Guid IdTipoArchivo { get; set; }
+        public string TipoValidador { get; set; }
+        public Guid IdTipoValidador { get; set; }        
         public int OpsRequeridas { get; set; }
         public int TotalPreguntas { get; set; }
         public int UsuariosAsignados { get; set; }
         public int EquiposAsignados { get; set; }
+        public int Validadores { get; set; }
+        public int PuedeValidar { get; set; }
         public int EnEquipo { get; set; }
+        public int Items { get; set; }             
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
     }
@@ -33,13 +40,14 @@
     {
         public string Info { get; set; }
         public int Error { get; set; }
+        public Usuario_RetoList UserValidadorLista { get; set; }
         public Reto Reto { get; set; }
     }
 
     public class RetoList
     {
         public string Info { get; set; }
-        public int Error { get; set; }
+        public int Error { get; set; }        
         public List<Reto> Lista { get; set; }
     }
 
@@ -72,6 +80,10 @@
         public int TotalRetos { get; set; }
         public int Completado { get; set; }
         public int TieneEquipo { get; set; }
+        public int Validador { get; set; }
+        public int Correctas { get; set; }
+        public int Incorrectas { get; set; }
+        public List<UsuarioxArchivo> Archivos { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }        
     }
@@ -90,5 +102,20 @@
         public Usuario_Reto Ur { get; set; }
     }
 
+    public class UsuarioxArchivo
+    {
+        public Guid IdReto { get; set; }
+        public Guid IdUsuario { get; set; }
+        public string Archivo { get; set; }
+        public string Url { get; set; }
+        public DateTime FechaCreacion { get; set; }
+        public DateTime FechaModificacion { get; set; }
+    }
 
+    public class UsuarioxArchivoList
+    {
+        public string Info { get; set; }
+        public int Error { get; set; }
+        public List<UsuarioxArchivo> Lista { get; set; }
+    }
 }

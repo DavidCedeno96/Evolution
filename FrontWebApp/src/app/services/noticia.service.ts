@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { servicioURL } from '../Utils/Constants';
+import { API_URL } from '../Utils/Constants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UsuarioService } from './usuario.service';
 import { Observable } from 'rxjs';
@@ -14,7 +14,7 @@ import {
   providedIn: 'root',
 })
 export class NoticiaService {
-  private apiURL: string = servicioURL + '/api/noticia';
+  private apiURL: string = API_URL + '/api/noticia';
 
   constructor(
     private http: HttpClient,

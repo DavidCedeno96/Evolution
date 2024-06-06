@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UsuarioService } from './usuario.service';
-import { servicioURL } from '../Utils/Constants';
+import { API_URL } from '../Utils/Constants';
 import { Observable } from 'rxjs';
 import { Nivel, Usuario_Nivel } from '../Models/Nivel';
 
@@ -9,7 +9,7 @@ import { Nivel, Usuario_Nivel } from '../Models/Nivel';
   providedIn: 'root',
 })
 export class NivelService {
-  private apiURL: string = servicioURL + '/api/nivel';
+  private apiURL: string = API_URL + '/api/nivel';
 
   constructor(
     private http: HttpClient,

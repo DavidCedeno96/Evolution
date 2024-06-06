@@ -2,15 +2,18 @@ import { DatePipe } from '@angular/common';
 import { inject } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ConfigAppService } from '../services/config-app.service';
 import Swal from 'sweetalert2';
 
-/* CONSTANTES */
-export const servicioURL: string = 'http://192.168.100.91:8087';
-//export const servicioURL: string = 'http://localhost:49090';
+const config = new ConfigAppService();
 
-export const playMoveUrl: string = 'https://www.google.com';
+/* CONSTANTES */
+
+export const API_URL = config.restUrl;
+export const PLAY_MOVE = config.playMove;
 
 export const ImgSizeMax: number = 200 * 1024;
+export const FileSizeMax: number = 150 * 1024;
 export const ImgSizeMaxConfig: number = 350 * 1024;
 export const ImgWidthMax: number = 360;
 export const ImgHeightMax: number = 360;
@@ -47,7 +50,7 @@ export const MsgErrorConexion: string =
 
 export const HtmlLicencias: string =
   '<a style="display: block; margin-top: 10px;" href="' +
-  playMoveUrl +
+  PLAY_MOVE +
   '" target="_blank">Comprar más licencias</a>';
 
 export var UpsertMsg: string = '';
@@ -153,6 +156,19 @@ export const GetTypeTime = () => {
   };
 };
 
+export const GetColors = () => {
+  return (numColors: number, opacidad: number): string[] => {
+    let colors: string[] = [];
+    for (let i = 0; i < numColors; i++) {
+      let r = Math.floor(Math.random() * 256);
+      let g = Math.floor(Math.random() * 256);
+      let b = Math.floor(Math.random() * 256);
+      colors.push(`rgb(${r}, ${g}, ${b}, ${opacidad})`);
+    }
+    return colors;
+  };
+};
+
 export const ChangeRoute = () => {
   const router = inject(Router);
   return (ruta: string, params: object) => {
@@ -167,7 +183,7 @@ export const GetImage = () => {
     defaultImage: string
   ): string => {
     if (image !== 'N/A' && image !== '') {
-      return `${servicioURL}/Content/Images/${serverDirectorio}/${image}`;
+      return `${API_URL}/Content/Images/${serverDirectorio}/${image}`;
     }
     return `assets/img/default/${defaultImage}`;
   };
@@ -176,7 +192,7 @@ export const GetImage = () => {
 export const GetArchivo = () => {
   return (archivo: string, serverDirectorio: string): string => {
     if (archivo !== 'N/A' && archivo !== '') {
-      return `${servicioURL}/Content/Archivos/${serverDirectorio}/${archivo}`;
+      return `${API_URL}/Content/Archivos/${serverDirectorio}/${archivo}`;
     }
     return 'N/A';
   };

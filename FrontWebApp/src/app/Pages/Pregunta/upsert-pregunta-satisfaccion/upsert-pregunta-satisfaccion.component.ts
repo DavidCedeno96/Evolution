@@ -12,6 +12,7 @@ import {
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
+import { OptionsList } from 'src/app/Utils/DefaultLists';
 import { exp_invalidos, exp_numeros } from 'src/app/Utils/RegularExpressions';
 import { PreguntaService } from 'src/app/services/pregunta.service';
 
@@ -53,6 +54,8 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
     opcionList: [],
   };
 
+  defaultOptions: Opcion[] = OptionsList;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -87,7 +90,7 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
       switch (this.type) {
         case 'crear': {
           this.titulo = 'nueva pregunta';
-          this.cargaOpciones(0, this.preguntaOpciones);
+          this.cargaOpciones(5, this.preguntaOpciones);
           break;
         }
         case 'editar': {
@@ -146,9 +149,6 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
   }
 
   upsert() {
-    console.log(this.formulario.valid);
-    console.log(this.formulario.value);
-
     this.numClicksSave += 1;
     if (this.formulario.valid) {
       this.verErrorsInputs = false;
@@ -242,6 +242,8 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
       let opcion: Opcion = {
         idOpcion: '7c8c2672-2233-486a-a184-f0b51eb4a331',
         idPregunta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+        idTipoEntrada: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+        tipoEntrada: '',
         nombre: '',
         correcta: 0,
         cantVotos: 0,
@@ -260,8 +262,6 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
 
       this.preguntaOpciones.opcionList[i] = opcion;
     }
-
-    console.log('Esto', this.preguntaOpciones.opcionList);
   }
 
   selectTotalOpciones(event: Event) {
@@ -283,6 +283,8 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
       item.push({
         idOpcion: '7c8c2672-2233-486a-a184-f0b51eb4a331',
         idPregunta: this.auxIdPregunta,
+        idTipoEntrada: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+        tipoEntrada: '',
         nombre: '',
         correcta: 0,
         cantVotos: 0,
@@ -293,16 +295,20 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
         this.agregarControlform(
           i,
           this.auxOpcionList[i].nombre,
-          this.getOpLetraByIndex()
+          this.auxOpcionList[i].valor
         );
       } else {
-        this.agregarControlform(i, '', '');
+        this.agregarControlform(
+          i,
+          this.defaultOptions[i].nombre,
+          this.defaultOptions[i].valor
+        );
       }
     }
     return item;
   }
 
-  agregarControlform(index: number, valueOpcion: string, valor: string) {
+  agregarControlform(index: number, valueOpcion: string, valor: number) {
     this.formulario.addControl(
       `opcion${this.opcion[index]}`,
       this.formBuilder.control(valueOpcion, [
@@ -329,15 +335,5 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
         this.formulario.removeControl(controlName);
       }
     });
-  }
-
-  getOpLetraByIndex(): string {
-    let letra: string = '';
-    for (let i = 0; i < this.auxOpcionList.length; i++) {
-      if (this.auxOpcionList[i].correcta === 1) {
-        letra = this.opcion[i];
-      }
-    }
-    return letra;
   }
 }

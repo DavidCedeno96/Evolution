@@ -1,5 +1,6 @@
 import { Links } from '../Models/Links';
 import { ConfigInicio } from '../Models/Configuracion';
+import { Opcion } from '../Models/Pregunta';
 
 /* WIDGETS DEL INICIO */
 export const ConfigInicioList: ConfigInicio[] = [
@@ -141,6 +142,22 @@ export const ConfigInicioList: ConfigInicio[] = [
   },
   {
     idConfigInicio: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    nombre: 'Retos por calificar',
+    indice: 0,
+    estado: 0,
+    idRol: 'adm',
+    color: '',
+  },
+  {
+    idConfigInicio: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    nombre: 'Retos por calificar',
+    indice: 0,
+    estado: 0,
+    idRol: 'jug',
+    color: '',
+  },
+  {
+    idConfigInicio: '7c8c2672-2233-486a-a184-f0b51eb4a331',
     nombre: 'Uso del plan',
     indice: 0,
     estado: 0,
@@ -151,7 +168,7 @@ export const ConfigInicioList: ConfigInicio[] = [
 
 /* RUTA DE NAVEGACIÓN (Migaja de pan) */
 export const GetBreadcrumb = () => {
-  return (url: string): Links[] => {
+  return (url: string, idRol: string): Links[] => {
     let lista: Links[] = [];
     let auxUrl: string = url.split('?')[0];
     let auxUrlType: string = url.split('?')[1] || 'N/A';
@@ -346,6 +363,73 @@ export const GetBreadcrumb = () => {
         break;
       }
 
+      case '/validaciones': {
+        lista = [
+          {
+            url: '/home',
+            nombre: 'Inicio',
+            estado: 1,
+          },
+          {
+            url: '/user-reto',
+            nombre: 'Retos',
+            estado: 1,
+          },
+          {
+            url: '/validaciones',
+            nombre: 'Verificar reto',
+            estado: 1,
+          },
+        ];
+        break;
+      }
+
+      case '/validaciones/users': {
+        if (idRol === 'jug') {
+          lista = [
+            {
+              url: '/home',
+              nombre: 'Inicio',
+              estado: 1,
+            },
+            {
+              url: '/user-reto',
+              nombre: 'Retos',
+              estado: 1,
+            },
+            {
+              url: '/validaciones',
+              nombre: 'Verificar reto',
+              estado: 1,
+            },
+            {
+              url: '/validaciones/users',
+              nombre: 'Usuarios',
+              estado: 0,
+            },
+          ];
+        } else if (idRol === 'adm' || idRol === 'sadm') {
+          lista = [
+            {
+              url: '/home',
+              nombre: 'Inicio',
+              estado: 1,
+            },
+            {
+              url: '/view-reto',
+              nombre: 'Retos',
+              estado: 1,
+            },
+            {
+              url: '/validaciones/users',
+              nombre: 'Usuarios',
+              estado: 0,
+            },
+          ];
+        }
+        break;
+      }
+
       case '/fin-reto': {
         lista = [
           {
@@ -476,6 +560,7 @@ export const GetBreadcrumb = () => {
       case '/upsert-pregunta/trivia':
       case '/upsert-pregunta/encuesta/voto':
       case '/upsert-pregunta/encuesta/satisfaccion':
+      case '/upsert-pregunta/seguimiento-evaluacion':
       case '/view-pregunta': {
         lista = [
           {
@@ -491,6 +576,32 @@ export const GetBreadcrumb = () => {
           {
             url: '/view-pregunta',
             nombre: 'Preguntas',
+            estado: 0,
+          },
+        ];
+        break;
+      }
+
+      case '/results': {
+        lista = [
+          {
+            url: '/home',
+            nombre: 'Inicio',
+            estado: 1,
+          },
+          {
+            url: '/view-reto',
+            nombre: 'Retos',
+            estado: 1,
+          },
+          {
+            url: '/view-pregunta',
+            nombre: 'Preguntas',
+            estado: 0,
+          },
+          {
+            url: '/results',
+            nombre: 'Resultados',
             estado: 0,
           },
         ];
@@ -931,8 +1042,79 @@ export const GetNavItemPills = () => {
         ];
         break;
       }
+
+      case '/validaciones':
+      case '/user-reto': {
+        lista = [
+          {
+            url: '/user-reto',
+            nombre: 'Mis Retos',
+            estado: 1,
+          },
+          {
+            url: '/validaciones',
+            nombre: 'Retos por verificar',
+            estado: 1,
+          },
+        ];
+        break;
+      }
     }
 
     return lista;
   };
 };
+
+/* OPCIONES DEL RETO DE TIPO ENCUESTA SATISFACCION */
+export const OptionsList: Opcion[] = [
+  {
+    idOpcion: '',
+    idPregunta: '',
+    idTipoEntrada: '',
+    tipoEntrada: '',
+    nombre: 'Totalmente en desacuerdo',
+    correcta: 0,
+    cantVotos: 0,
+    valor: 1,
+  },
+  {
+    idOpcion: '',
+    idPregunta: '',
+    idTipoEntrada: '',
+    tipoEntrada: '',
+    nombre: 'En desacuerdo',
+    correcta: 0,
+    cantVotos: 0,
+    valor: 2,
+  },
+  {
+    idOpcion: '',
+    idPregunta: '',
+    idTipoEntrada: '',
+    tipoEntrada: '',
+    nombre: 'Neutral',
+    correcta: 0,
+    cantVotos: 0,
+    valor: 3,
+  },
+  {
+    idOpcion: '',
+    idPregunta: '',
+    idTipoEntrada: '',
+    tipoEntrada: '',
+    nombre: 'De acuerdo',
+    correcta: 0,
+    cantVotos: 0,
+    valor: 4,
+  },
+  {
+    idOpcion: '',
+    idPregunta: '',
+    idTipoEntrada: '',
+    tipoEntrada: '',
+    nombre: 'Totalmente de acuerdo',
+    correcta: 0,
+    cantVotos: 0,
+    valor: 5,
+  },
+];

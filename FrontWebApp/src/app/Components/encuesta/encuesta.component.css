@@ -28,3 +28,7 @@
 .form-check-input.is-invalid + .form-check-label {
   font-weight: bold; /* Negrita cuando el input es inválido */
 }
+
+mat-icon {
+  transform: scale(1.4);
+}

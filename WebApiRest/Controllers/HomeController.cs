@@ -61,6 +61,7 @@ namespace WebApiRest.Controllers
             Usuario_EquipoList rankingPorEquipos = await dataEquipo.GetUsuarioEquipoList(new Guid(userId), 10);
             Usuario_RetoList misRetosAsignados = await dataReto.GetUsuarioRetoList(10, new Guid(userId), 0);
             LicenciaList licencias = await dataLicencia.GetLicenciaList(-1);
+            Usuario_RetoList retosXvalidar = await dataReto.GetUsuario_RetoxValidarByValidador(new Guid(userId), 2);
             DatasetPuntosList datasetList = Charts.ChartPuntos(chartList);
 
             if (miNivel.Lista.Count == 0)
@@ -106,6 +107,7 @@ namespace WebApiRest.Controllers
             response.Lista.Add(rankingPorEquipos.Id);
             response.Lista.Add(misRetosAsignados.Lista);
             response.Lista.Add(licencias.Lista);
+            response.Lista.Add(retosXvalidar.Lista);
 
 
             if (homeList.Error > 0)
@@ -177,6 +179,11 @@ namespace WebApiRest.Controllers
             {
                 hayError = true;
                 errorInfo += ", Licencias: " + licencias.Info;
+            }
+            if (retosXvalidar.Error > 0)
+            {
+                hayError = true;
+                errorInfo += ", Retos por validar: " + retosXvalidar.Info;
             }
 
 

@@ -15,6 +15,9 @@ namespace WebApiRest.Controllers
         readonly AreaData areaData = new();
         readonly TipoRetoData tipoRetoData = new();
         readonly TipoEncuestaData tipoEncuestaData = new();
+        readonly TipoEntradaData tipoEntradaData = new();
+        readonly TipoValidadorData tipoValidadordata = new();
+        readonly TipoArchivoData tipoArchivoData = new();
         readonly ComportPreguntaData comportPreguntaData = new();
         readonly CategoriaNoticiaData categoriaNoticiaData = new();
         readonly CategoriaRecompensaData categoriaRecompensaData = new();
@@ -45,7 +48,9 @@ namespace WebApiRest.Controllers
             {
                 TipoRetoList = await tipoRetoData.GetTipoRetoList(estado),
                 TipoEncuestaList = await tipoEncuestaData.GetTipoEncuestaList(estado),
+                TipoValidadorList = await tipoValidadordata.GetTipoValidadorList(estado),
                 ComportPreguntaList = await comportPreguntaData.GetComportPreguntaList(estado),
+                TipoArchivoList = await tipoArchivoData.GetTipoArchivoList(estado),
             };
 
             return StatusCode(StatusCodes.Status200OK, new { response });
@@ -86,6 +91,19 @@ namespace WebApiRest.Controllers
             Adicional response = new()
             {
                 CondicionList = await condicionData.GetCondicionList(estado),
+            };
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("opcion/{estado}")]
+        [Authorize]
+        public async Task<IActionResult> Opcion([FromRoute] int estado)
+        {
+            Adicional response = new()
+            {
+                TipoEntradaList = await tipoEntradaData.GetTipoEntradaList(estado),
             };
 
             return StatusCode(StatusCodes.Status200OK, new { response });

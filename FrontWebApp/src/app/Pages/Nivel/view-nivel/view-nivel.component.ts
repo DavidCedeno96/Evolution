@@ -54,6 +54,7 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
   errorArchivo: boolean = false;
 
   info: string = '';
+  infoArchivo: string = '';
 
   formulario!: FormGroup;
   auxNivel: Nivel[] = [];
@@ -170,7 +171,7 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
       this.nivelServicio.enviarArchivo(formData).subscribe({
         next: (data: any) => {
           const { info, error } = data.response;
-          this.info = info;
+          this.infoArchivo = info;
           if (error === 0) {
             this.errorArchivo = false;
             this.limpiarArchivo();
@@ -198,7 +199,7 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
       });
     } else {
       this.errorArchivo = true;
-      this.info = 'Ingrese un archivo en formato .xlsx';
+      this.infoArchivo = 'Ingrese un archivo en formato .xlsx';
     }
   }
 

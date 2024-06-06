@@ -47,11 +47,18 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
     tipoEncuesta: '',
     idComportamiento: '',
     comportamientoPregunta: '',
+    idTipoArchivo: '',
+    tipoArchivo: '',
+    idTipoValidador: '',
+    tipoValidador: '',
     totalPreguntas: 0,
     usuariosAsignados: 0,
     equiposAsignados: 0,
     opsRequeridas: 0,
+    validadores: 0,
+    puedeValidar: 0,
     enEquipo: 0,
+    items: 0,
     estado: 0,
   };
 
@@ -130,9 +137,9 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
     });
   }
 
-  comenzar(idReto: string) {
-    if (this.reto.totalPreguntas > 0) {
-      this.changeRoute('/juego-reto', { reto: idReto });
+  comenzar(reto: Reto) {
+    if (this.reto.totalPreguntas > 0 || reto.tipoReto === 'Recolección') {
+      this.changeRoute('/juego-reto', { reto: reto.idReto });
     } else {
       this.alertError('Error', 'El reto no tiene preguntas');
     }

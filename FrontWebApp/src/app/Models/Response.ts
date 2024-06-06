@@ -1,6 +1,6 @@
 export interface Response {
-  error: string;
+  error: number;
   info: string;
   id: string;
-  campo: number;
+  campo: string;
 }

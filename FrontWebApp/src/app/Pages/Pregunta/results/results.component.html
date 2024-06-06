@@ -1,0 +1,42 @@
+<div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
+  <h5 class="mt-5 text-center txt text-primary text-uppercase">resultados</h5>
+
+  <button class="btn btn-secondary icon mb-4" (click)="exportarArchivo()">
+    <div class="icon-text buton">
+      <mat-icon svgIcon="exportar"></mat-icon><span>Exportar</span>
+    </div>
+  </button>
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of paginatedItems()">
+      <div class="card">
+        <!-- <div class="card-header fw-semibold">
+          <span class="align-self-center">{{ item.pregunta.nombre }}</span>
+        </div> -->
+        <div class="card-body p-0 pt-2 px-2">
+          <app-grafico
+            [chartData]="
+              getChartHorizontalBar(item.opcionList, item.pregunta.nombre)
+            "
+          ></app-grafico>
+        </div>
+        <span class="p-3 text-black-50 text-end"
+          >Total de votos: {{ getTotalVotos(item.opcionList) }}</span
+        >
+        <!-- <div class="card-footer">
+          <span>Total de votos: {{ getTotalVotos(item.opcionList) }}</span>
+        </div> -->
+      </div>
+    </div>
+
+    <div class="flex justify-content-center">
+      <p-paginator
+        (onPageChange)="onPageChange($event)"
+        [first]="first"
+        [rows]="rows"
+        [totalRecords]="totalItems()"
+      ></p-paginator>
+    </div>
+  </div>
+</div>
+
+<p-toast [styleClass]="'col-10 col-md-6 col-lg-3'"></p-toast>

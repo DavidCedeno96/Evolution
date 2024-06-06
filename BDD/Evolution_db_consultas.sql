@@ -24,7 +24,7 @@ INNER JOIN sys.trigger_events te ON tr.object_id = te.object_id
 INNER JOIN sys.objects o ON tr.parent_id = o.object_id
 --WHERE te.type = 1;
 
---- RESTRICCIONES
+--- RESTRICCIONES: FK, PK, Unique
 SELECT 
 	tc.CONSTRAINT_TYPE,
     tc.CONSTRAINT_NAME,
@@ -34,19 +34,30 @@ FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
 JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
     ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME
 WHERE 
-    tc.TABLE_NAME = 'Usuario_Equipo' AND 
-    tc.CONSTRAINT_TYPE = 'UNIQUE'    
+    tc.TABLE_NAME = 'UsuarioxArchivo' AND 
+    tc.CONSTRAINT_TYPE = 'UNIQUE' OR   
+	tc.CONSTRAINT_TYPE = 'CHECK';
 
----- RESTRICCIONES
-SELECT *
-FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
-WHERE TABLE_NAME = 'Noticia' AND CONSTRAINT_TYPE = 'CHECK';
+---- RESTRICCIONES: Predeterminadas
+SELECT 
+	so.name, 
+	so.xtype, 	
+	so.crdate, 
+	sc.name, 
+	sc.isnullable, 
+	sob.name
+FROM SYSOBJECTS so 
+    INNER JOIN SYSCOLUMNS sc ON sc.cdefault = so.id
+	INNER JOIN SYSOBJECTS sob ON sob.id = sc.id
+WHERE
+	sob.name = 'Reto' AND 
+	sc.name = 'cantComport'	
 
 
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Reto';
+WHERE tc.TABLE_NAME = 'UsuarioxArchivo';
 
 ---
 SELECT @@VERSION;
@@ -76,6 +87,9 @@ SELECT @@VERSION;
 --CorreoEnvio
 --TipoReto
 --TipoEncuesta
+--TipoEntrada
+--TipoValidador
+--TipoArchivo
 
 -- OTROS INSERTS ---------------------------------------------------------
 --Insert into Usuario (nombre, apellido, correo, celular, idRol, pais, ciudad, clave) values
@@ -102,8 +116,8 @@ exec sp_B_Inicio
 @info = '',
 @id = ''
 
-select * from Inicio where nombre = 'Mis retos asignados'
--- update Inicio set nombre = 'Mis retos pendientes' where nombre = 'Mis retos asignados'
+select * from Inicio where nombre = 'Verificar retos'
+-- update Inicio set nombre = 'Retos por calificar' where nombre = 'Verificar retos'
 
 exec sp_B_InicioByIdRol	
 @idRol = 'adm',
@@ -839,18 +853,12 @@ exec sp_B_ComporPregu
 @info = '',
 @id = ''
 
--- Tipo de Reto ------------------------------------------------------------------
-exec sp_B_tipoReto
-@estado = -1,
-@error = '',
-@info = '',
-@id = ''
-
 -- Opcion ------------------------------------------------------------------------
 select * from Opcion
+select * from Pregunta
 
 exec sp_B_OpcionByIdPregunta		
-@idPregunta = '170D9F8D-3DF7-433E-9C2A-3758C9AC57CF',
+@idPregunta = 'BC51AA83-4654-4BE0-878F-087BDE6893EC',
 @estado = -1,
 @error = '',
 @info = '',
@@ -861,6 +869,7 @@ exec sp_C_Opcion
 @correcta = 0,
 @valor = 0, 
 @idPregunta = 'EFE6E2F4-091C-4B53-958C-CC1EDC252445',
+@idTipoEntrada = 'EFE6E2F4-091C-4B53-958C-CC1EDC252445',
 @error = '',
 @info = '',
 @id = ''
@@ -871,6 +880,7 @@ exec sp_U_Opcion
 @correcta = '',
 @valor = 0,
 @idPregunta = 'EFE6E2F4-091C-4B53-958C-CC1EDC252445',
+@idTipoEntrada = 'EFE6E2F4-091C-4B53-958C-CC1EDC252445',
 @error = '',
 @info = '',
 @id = ''
@@ -895,6 +905,29 @@ select Count(*) as 'cantVotos' from UsuarioxOpcion where idOpcion = '8C05CBC7-C8
 exec sp_C_UsuarioxOpcion
 @idOpcion = '',
 @idUsuario = '',
+@respuesta = '',
+@error = '',
+@info = '',
+@id = ''
+
+-- UsuarioxArchivo ------------------------------------------------------------------------
+select * from UsuarioxArchivo
+
+select * from Usuario
+select * from Reto
+
+exec sp_C_UsuarioxArchivo			
+@idReto = '1895C363-0443-4E24-B55D-3F410C435D23',
+@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
+@archivo = 'mi archivo1.png',
+@url = '',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_UsuarioxArchivoByIdRetoYIdUser	
+@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
+@idReto = 'A2C5DE8F-B48A-49D3-AD4D-06A664B321D3',
 @error = '',
 @info = '',
 @id = ''
@@ -902,15 +935,16 @@ exec sp_C_UsuarioxOpcion
 
 
 -- Pregunta ------------------------------------------------------------------------
-select * from Pregunta 
+select * from Pregunta where nombre = 'primera prueba'
 
 select * from Pregunta  where nombre like '%Que te perecio Femsa en producción audiovisual?%'
-select * from Opcion where idPregunta = '7E82E7AB-A0C1-452E-9F3B-584015181F5A'
+select * from Opcion where idPregunta = '5E89EFAE-A8E6-4AAD-9347-A117E6DF00CA'
 select * from Opcion where idPregunta = '00046450-01F9-4F73-B3F3-C5A00D11446C'
+
 
 exec sp_B_PreguntaByIdReto		
 @estado = -1,
-@idReto = '21a9d4c2-0ead-4cc5-b4c7-1c264676dd30',
+@idReto = '701e4b94-1e54-4de4-9128-239ded5eaa06',
 @error = '',
 @info = '',
 @id = ''
@@ -952,14 +986,23 @@ exec sp_D_Pregunta
 
 -- Reto ------------------------------------------------------------------------
 -- select * from reto
+-- select * from usuario
+
+-- mi encuesta 1
+select * from TipoArchivo where estado = 1
+update Reto set idTipoArchivo = '7E6182BB-635F-40BC-9602-27E368C6C905' where idReto = '1895C363-0443-4E24-B55D-3F410C435D23'
+
+insert into TipoArchivo (nombre, descripcion, estado) values
+('Video','Es para los retos que se tengan que subir un video pero hay que guardar la url del video ya sea de Vimeo o de Youtube',1)
 
 exec sp_B_Reto
 @estado = -1,
+@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
 @error = '',
 @info = '',
 @id = ''
 
-exec sp_B_RetoById	
+exec sp_B_RetoById
 @idReto = '428164a1-24f7-4c0c-8a6c-6278c23bffb5',
 @estado = -1,
 @error = '',
@@ -968,6 +1011,7 @@ exec sp_B_RetoById
 
 exec sp_B_RetoByAll
 @buscar = 'reto',
+@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
 @error = '',
 @info = '',
 @id = ''
@@ -992,6 +1036,9 @@ exec sp_C_Reto
 @idTipoReto = '63AA060B-CDE4-49C0-9D60-AAF069DF1533',
 @idTipoEncuesta = '63AA060B-CDE4-49C0-9D60-AAF069DF1533',
 @idComportamiento = '1DD28D88-34C7-4394-AB3D-525726001730',
+@idTipoValidador = '1DD28D88-34C7-4394-AB3D-525726001730',
+@idTipoArchivo = '1DD28D88-34C7-4394-AB3D-525726001730',
+@items = 0,
 @opsRequeridas = 0,
 @enEquipo = 0,
 @error = '',
@@ -1024,7 +1071,7 @@ exec sp_U_RetoByEstado
 @info = '',
 @id = ''
 
-select * from Usuario_Reto
+select * from Usuario_Reto where CAST(fechaCreacion AS DATE) = '2024-05-28';
 --delete from Reto where fechaCreacion = '2024-03-07 09:35:53.787'
 exec sp_B_Usuario_RetoByIdUsuario		
 @idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
@@ -1045,6 +1092,7 @@ exec sp_B_Usuario_RetoByIdUsuarioByAll
 
 exec sp_B_Usuario_RetoByIdReto
 @idReto = '27C5527F-3EA3-431B-BEDF-65841EAF5663',
+@validador = 0,
 @error = '',
 @info = '',
 @id = ''
@@ -1056,6 +1104,7 @@ exec sp_B_Usuario_RetoByIdUsuarioYIdReto
 @error = '',
 @info = '',
 @id = ''
+
 
 select * from Usuario
 exec sp_B_Usuario_RetoSumaPuntos
@@ -1071,10 +1120,34 @@ exec sp_B_Usuario_RetoPtosMesesAños
 @info = '',
 @id = ''
 
-exec sp_C_Usuario_Reto
-@correo = 'david@hotmail.com',
+exec sp_B_Usuario_RetoValidador
 @idReto = '81642C08-9711-469B-B831-18C682B5122A',
+@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_Usuario_RetoxValidarByValidador
+@idUserValidador = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
+@top = 1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_Usuario_RetoxValidarByReto
+@idReto = 'A2C5DE8F-B48A-49D3-AD4D-06A664B321D3',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_C_Usuario_Reto
+@correo = 'admin@hotmail.com',
+@idReto = '1895C363-0443-4E24-B55D-3F410C435D23',
+@puntos = -1,
+@tiempo = -1,
+@vidas = -1,
 @tieneEquipo = 0,
+@validador = 1,
 @error = '',
 @info = '',
 @id = ''
@@ -1093,6 +1166,8 @@ exec sp_U_Usuario_Reto
 @tiempo = 100,
 @vidas = -1,
 @completado = 1,
+@correctas = -1,
+@incorrectas = -1,
 @error = '',
 @info = '',
 @id = ''
@@ -1105,7 +1180,7 @@ exec sp_D_Usuario_Reto
 @id = ''
 
 select * from Usuario_Reto
-select * from Usuario
+select * from Usuario where idUsuario = '015e40dd-58ce-401e-a0a9-075874bc0b68'
 
 -- Equipos ------------------------------------------------------------------------
 select * from Equipo
@@ -1244,6 +1319,34 @@ exec sp_B_TipoReto
 -- Tipo de Encuesta ------------------------------------------------------------------------
 exec sp_B_TipoEncuesta		
 @estado = 1,
+@error = '',
+@info = '',
+@id = ''
+
+-- Tipo de Entrada ------------------------------------------------------------------------
+exec sp_B_TipoEntrada
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+-- Tipo de Validador ------------------------------------------------------------------------
+exec sp_B_TipoValidador
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+-- Tipo de Archivo ------------------------------------------------------------------------
+exec sp_B_TipoArchivo
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_TipoValidadorById		
+@idTipoValidador = 'ED15D366-E0EA-4D90-A5DF-A4AED453D1FE',
+@estado = -1,
 @error = '',
 @info = '',
 @id = ''

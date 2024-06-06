@@ -88,3 +88,5 @@ C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiR
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Archivos\Nivel\_default.xlsx
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Archivos\Recompensa\_default.xlsx
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Images\Equipo\_default.png
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Archivos\Pregunta\_default.xlsx
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\wwwroot\Content\Archivos\Recoleccion\_default.xlsx

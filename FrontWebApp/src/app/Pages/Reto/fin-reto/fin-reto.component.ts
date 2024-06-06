@@ -2,7 +2,12 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Reto, Usuario_Reto } from 'src/app/Models/Reto';
 import { Usuario } from 'src/app/Models/Usuario';
-import { GetImage, Loading } from 'src/app/Utils/Constants';
+import {
+  FormatTiempo,
+  GetImage,
+  GetTypeTime,
+  Loading,
+} from 'src/app/Utils/Constants';
 import { RetoService } from 'src/app/services/reto.service';
 
 @Component({
@@ -13,6 +18,8 @@ import { RetoService } from 'src/app/services/reto.service';
 export class FinRetoComponent implements OnInit, AfterViewInit {
   load = Loading();
   getImage = GetImage();
+  formatTiempo = FormatTiempo();
+  getTypeTime = GetTypeTime();
 
   id: string = '';
 
@@ -58,11 +65,18 @@ export class FinRetoComponent implements OnInit, AfterViewInit {
     tipoEncuesta: '',
     idComportamiento: '',
     comportamientoPregunta: '',
+    idTipoArchivo: '',
+    tipoArchivo: '',
+    idTipoValidador: '',
+    tipoValidador: '',
     totalPreguntas: 0,
     usuariosAsignados: 0,
     equiposAsignados: 0,
     opsRequeridas: 0,
+    validadores: 0,
+    puedeValidar: 0,
     enEquipo: 0,
+    items: 0,
     estado: 0,
   };
 
@@ -76,6 +90,9 @@ export class FinRetoComponent implements OnInit, AfterViewInit {
     posicion: 0,
     completado: 0,
     tieneEquipo: 0,
+    archivos: [],
+    correctas: 0,
+    incorrectas: 0,
     fechaCreacion: new Date(),
     fechaModificacion: new Date(),
   };
@@ -108,15 +125,13 @@ export class FinRetoComponent implements OnInit, AfterViewInit {
   cargarData(idReto: string) {
     this.retoService.getUsuario_RetoByIdUsuarioYIdReto(idReto).subscribe({
       next: (data: any) => {
-        //console.log(data);
-
         let { error, ur } = data.response;
         if (error === 0) {
           this.ur = ur;
 
           let estado: number = 1;
 
-          if (ur.reto.completado === 0) {
+          if (ur.completado === 0) {
             estado = 0;
           }
 

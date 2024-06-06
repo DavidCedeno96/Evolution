@@ -68,7 +68,7 @@ export class AppComponent implements OnInit, AfterContentInit {
         next: (data: any) => {
           this.url = data.url;
 
-          this.breadcrumbList = this.getBreadcrumb(this.url);
+          this.breadcrumbList = this.getBreadcrumb(this.url, this.idRol);
           this.pillsList = this.getNavItemPills(this.url);
 
           if (this.url === '/') {

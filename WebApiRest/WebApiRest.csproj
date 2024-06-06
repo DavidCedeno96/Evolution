@@ -31,6 +31,12 @@
     <Content Update="wwwroot\Content\Archivos\Nivel\_default.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\Content\Archivos\Pregunta\_default.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Content\Archivos\Recoleccion\_default.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\Content\Archivos\Recompensa\_default.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -70,6 +76,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\Content\Archivos\Recoleccion\" />
+    <Folder Include="wwwroot\Content\Archivos\Pregunta\" />
     <Folder Include="wwwroot\Content\Archivos\Usuario\" />
     <Folder Include="wwwroot\Content\Images\Medalla\" />
     <Folder Include="wwwroot\Content\Images\Config\" />

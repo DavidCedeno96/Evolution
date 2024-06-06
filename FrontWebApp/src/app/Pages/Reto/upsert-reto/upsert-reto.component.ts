@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -9,10 +15,13 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ComportamientoPregunta,
+  TipoArchivo,
   TipoEncuesta,
   TipoReto,
+  TipoValidador,
 } from 'src/app/Models/Adicional';
-import { Reto } from 'src/app/Models/Reto';
+import { Reto, Usuario_Reto } from 'src/app/Models/Reto';
+import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
   DateCompare,
@@ -33,11 +42,13 @@ import {
 } from 'src/app/Utils/Constants';
 import {
   CaracterInvalid,
+  MaxCantItems,
   exp_invalidos,
   exp_numeros,
 } from 'src/app/Utils/RegularExpressions';
 import { AdicionalService } from 'src/app/services/adicional.service';
 import { RetoService } from 'src/app/services/reto.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-upsert-reto',
@@ -52,14 +63,22 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   formatTiempo = FormatTiempo();
   dateFormatInput = DateFormatInput();
   dateCompare = DateCompare();
-  //objectInvalid = ObjectInvalid();
   caracterInvalid = CaracterInvalid();
+  maxCantItems = MaxCantItems(5);
   sugerenciaImagen = SugerenciaImagen;
+
+  @ViewChild('closeModalAsignar') closeModalAsignar!: ElementRef;
+  @ViewChild('openModalAsignar') openModalAsignar!: ElementRef;
 
   sectionIndex: number = 0;
 
   type: string = '';
   titulo: string = '';
+
+  usuarioReto: Usuario_Reto[] = [];
+  usuarios: Usuario[] = [];
+  correosValidadores: string[] = [];
+  permitirVerificadores: boolean = false;
 
   verErrorsInputs: boolean = false;
 
@@ -72,6 +91,7 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   info: string = '';
 
   formulario!: FormGroup;
+  frmUsuario!: FormGroup;
 
   reto: Reto = {
     idReto: '7c8c2672-2233-486a-a184-f0b51eb4a331',
@@ -91,25 +111,33 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     tipoEncuesta: '',
     idComportamiento: '',
     comportamientoPregunta: '',
+    idTipoArchivo: '',
+    tipoArchivo: '',
+    idTipoValidador: '',
+    tipoValidador: '',
     totalPreguntas: 0,
     usuariosAsignados: 0,
     equiposAsignados: 0,
+    validadores: 0,
+    puedeValidar: 0,
     enEquipo: -1,
     opsRequeridas: 1,
+    items: 0,
     estado: 0,
   };
 
   tipoReto: TipoReto[] = [];
   tipoEncuesta: TipoEncuesta[] = [];
+  tipoValidador: TipoValidador[] = [];
+  tipoArchivo: TipoArchivo[] = [];
   comportPreg: ComportamientoPregunta[] = [];
-
-  sectionsByTipoReto: number[] = [1, 1, 1, 1];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private retoServicio: RetoService,
     private adicionalServicio: AdicionalService,
+    private usuarioServicio: UsuarioService,
     private formBuilder: FormBuilder
   ) {
     this.formulario = this.formBuilder.group({
@@ -189,7 +217,36 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
 
       idComportamiento: [this.reto.idComportamiento, [Validators.required]],
 
+      idTipoValidador: [this.reto.idTipoValidador, [Validators.required]],
+
+      idTipoArchivo: [this.reto.idTipoArchivo, [Validators.required]],
+
       opsRequeridas: [this.reto.opsRequeridas],
+
+      items: [
+        this.reto.items,
+        [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(1000),
+          Validators.pattern(exp_numeros),
+        ],
+      ],
+
+      correosValid: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(7),
+          Validators.maxLength(400),
+          this.caracterInvalid,
+          this.maxCantItems,
+        ],
+      ],
+    });
+
+    this.frmUsuario = this.formBuilder.group({
+      buscar: ['', [Validators.required]],
     });
   }
 
@@ -234,16 +291,35 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   cargarData(idReto: string) {
     this.retoServicio.getItem(-1, idReto).subscribe({
       next: (data: any) => {
-        let { error, reto } = data.response;
-        if (error === 0) {
+        let { error, reto, userValidadorLista } = data.response;
+        if (error === 0 && userValidadorLista.error === 0) {
           reto.fechaApertura = this.dateFormatInput(reto.fechaApertura);
           reto.fechaCierre = this.dateFormatInput(reto.fechaCierre);
 
+          this.usuarioReto = userValidadorLista.lista;
           this.reto = reto;
           this.formulario.patchValue(reto);
           this.formulario.patchValue({
             tiempo_h: this.formatTiempo(reto.tiempo_ms),
           });
+
+          //Aqui poner los usuarios Validadores
+          if (this.usuarioReto.length) {
+            this.permitirVerificadores = true;
+            let correosValidadores: string[] = [];
+            this.usuarioReto.forEach((ur) => {
+              correosValidadores.push(ur.usuario.correo.trim());
+            });
+
+            this.formulario.patchValue({
+              correosValid: correosValidadores.join('\n'),
+            });
+          } else {
+            this.permitirVerificadores = false;
+            this.formulario.patchValue({
+              correosValid: 'usuario@default.com',
+            });
+          }
 
           this.setSectionsByTipoReto(this.reto.tipoReto);
         } else {
@@ -265,11 +341,44 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   cargarAdicionales() {
     this.adicionalServicio.getListReto(1).subscribe({
       next: (data: any) => {
-        let { tipoRetoList, tipoEncuestaList, comportPreguntaList } =
-          data.response;
+        let {
+          tipoRetoList,
+          tipoEncuestaList,
+          tipoValidadorList,
+          tipoArchivoList,
+          comportPreguntaList,
+        } = data.response;
+
         this.tipoReto = tipoRetoList.lista;
         this.tipoEncuesta = tipoEncuestaList.lista;
+        this.tipoValidador = tipoValidadorList.lista;
+        this.tipoArchivo = tipoArchivoList.lista;
         this.comportPreg = comportPreguntaList.lista;
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.alertError(TitleError, MsgError);
+        }
+      },
+    });
+  }
+
+  getUserBuscado(texto: string) {
+    this.usuarioServicio.getBuscarList(texto).subscribe({
+      next: (data: any) => {
+        let { error, info, lista } = data.response;
+        this.info = info;
+        this.error = error;
+        this.correosValidadores = [];
+        if (error === 0) {
+          this.usuarios = lista;
+        } else {
+          this.usuarios = [];
+        }
+        this.loading(false, false);
       },
       error: (e) => {
         console.error(e);
@@ -397,11 +506,27 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     formData.append('idTipoReto', this.reto.idTipoReto.trim());
     formData.append('idTipoEncuesta', this.reto.idTipoEncuesta.trim());
     formData.append('idComportamiento', this.reto.idComportamiento.trim());
+    formData.append('idTipoValidador', this.reto.idTipoValidador.trim());
+    formData.append('idTipoArchivo', this.reto.idTipoArchivo.trim());
+    formData.append('items', this.reto.items.toString());
     formData.append('opsRequeridas', this.reto.opsRequeridas.toString().trim());
 
     if (this.selectedImage) {
       formData.append('archivo', this.selectedImage);
     }
+
+    let correos = this.formulario.get(['correosValid'])?.value;
+
+    let listCorreos = correos
+      .split('\n')
+      .map((correosIds: string) => correosIds.trim());
+
+    listCorreos = listCorreos.filter(
+      (correo: string, index: number, self: string[]) =>
+        correo !== '' && index === self.indexOf(correo)
+    );
+
+    formData.append('jsonList', JSON.stringify(listCorreos));
 
     return formData;
   }
@@ -449,74 +574,125 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   }
 
   setSectionsByTipoReto(tipoReto: string) {
-    if (tipoReto === 'Trivia') {
-      this.sectionsByTipoReto[1] = 1; // es Trivia
-      this.sectionsByTipoReto[2] = 0; // es Encuesta
+    switch (tipoReto) {
+      case 'Trivia': {
+        if (this.type === 'crear') {
+          this.formulario.patchValue({
+            tiempo_ms: 0,
+            criterioMinimo: 0,
+            idTipoEncuesta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+            idComportamiento: '',
+            idTipoArchivo: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          });
+        }
 
-      if (this.type === 'crear') {
         this.formulario.patchValue({
-          tiempo_ms: 0,
-          criterioMinimo: 0,
-          puntosRecompensa: 0,
+          items: 1,
+          idTipoValidador: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          correosValid: 'usuario@default.com',
+        });
+        break;
+      }
+      case 'Encuesta': {
+        if (this.type === 'crear') {
+          this.formulario.patchValue({
+            idTipoEncuesta: '',
+            idComportamiento: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+            idTipoArchivo: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          });
+        }
+
+        this.formulario.patchValue({
+          tiempo_ms: 300000,
+          criterioMinimo: 1,
+
+          items: 1,
+          idTipoValidador: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          correosValid: 'usuario@default.com',
+        });
+        break;
+      }
+      case 'Seguimiento o Evaluación': {
+        if (this.type === 'crear') {
+          this.formulario.patchValue({
+            idTipoEncuesta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+            idComportamiento: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+            idTipoArchivo: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          });
+        }
+
+        this.formulario.patchValue({
+          tiempo_ms: 300000,
+          criterioMinimo: 1,
+
+          items: 1,
+          idTipoValidador: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          correosValid: 'usuario@default.com',
+        });
+        break;
+      }
+      case 'Recolección': {
+        if (this.type === 'crear') {
+          this.formulario.patchValue({
+            items: 0,
+            idTipoValidador: '',
+            correosValid: '',
+            idTipoArchivo: '',
+          });
+        }
+
+        this.formulario.patchValue({
           idTipoEncuesta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          idComportamiento: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          tiempo_ms: 300000,
+          criterioMinimo: 1,
         });
+        break;
       }
-    } else if (tipoReto === 'Encuesta') {
-      this.sectionsByTipoReto[1] = 0; // es Trivia
-      this.sectionsByTipoReto[2] = 1; // es Encuesta
+      case 'Comportamiento': {
+        if (this.type === 'crear') {
+          this.formulario.patchValue({
+            idTipoValidador: '',
+            correosValid: '',
+            idTipoArchivo: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          });
+        }
 
-      if (this.type === 'crear') {
         this.formulario.patchValue({
-          idTipoEncuesta: '',
-        });
-      }
+          items: 1,
 
-      this.formulario.patchValue({
-        tiempo_ms: 300000,
-        criterioMinimo: 1,
-        puntosRecompensa: 1,
-      });
+          idTipoEncuesta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          idComportamiento: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+          tiempo_ms: 300000,
+          criterioMinimo: 1,
+        });
+        break;
+      }
     }
   }
 
   setSection(index: number, tipo: string) {
     /* console.log(this.formulario.valid);
     console.log(this.formulario.value); */
-    let error: boolean = false;
+    let error: boolean = this.getValidSection(this.sectionIndex);
 
-    if (tipo === 'siguiente') {
-      for (let i = 0; i < this.sectionsByTipoReto.length; i++) {
-        if (this.sectionsByTipoReto[index] === 0) {
-          index += 1;
-        }
+    switch (tipo) {
+      case 'siguiente': {
+        error
+          ? this.alertError(TitleErrorForm, MsgErrorForm)
+          : (this.sectionIndex = index);
+
+        break;
       }
-
-      error = this.getValidSection(this.sectionIndex);
-
-      if (error) {
-        this.verErrorsInputs = true;
-        this.alertError(TitleErrorForm, MsgErrorForm);
-      } else {
-        this.verErrorsInputs = false;
+      case 'anterior': {
         this.sectionIndex = index;
+        break;
       }
-    } else if (tipo === 'anterior') {
-      for (let i = this.sectionsByTipoReto.length - 1; i >= 0; i--) {
-        if (this.sectionsByTipoReto[index] === 0) {
-          index -= 1;
-        }
-      }
-
-      this.sectionIndex = index;
-    } else if ('nav') {
-      error = this.getValidSection(-1);
-
-      if (error) {
-        this.verErrorsInputs = true;
-        this.alertError(TitleErrorForm, MsgErrorForm);
-      } else {
-        this.verErrorsInputs = false;
-        this.sectionIndex = index;
+      case 'nav': {
+        error
+          ? this.alertError(TitleErrorForm, MsgErrorForm)
+          : (this.sectionIndex = index);
+        break;
       }
     }
   }
@@ -533,17 +709,22 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
         break;
       }
       case 1: {
-        this.formulario.get('vidas')?.errors ||
-        this.formulario.get('puntosRecompensa')?.errors ||
-        this.formulario.get('creditosObtenidos')?.errors ||
+        this.formulario.get('idComportamiento')?.errors ||
+        this.formulario.get('idTipoEncuesta')?.errors ||
+        this.formulario.get('criterioMinimo')?.errors ||
         this.formulario.get('tiempo_ms')?.errors ||
-        this.formulario.get('criterioMinimo')?.errors
+        this.formulario.get('items')?.errors ||
+        this.formulario.get('idTipoValidador')?.errors ||
+        this.formulario.get('idTipoArchivo')?.errors ||
+        this.formulario.get('correosValid')?.errors
           ? (valid = true)
           : (valid = false);
         break;
       }
       case 2: {
-        this.formulario.get('idTipoEncuesta')?.errors
+        this.formulario.get('puntosRecompensa')?.errors ||
+        this.formulario.get('creditosObtenidos')?.errors ||
+        this.formulario.get('vidas')?.errors
           ? (valid = true)
           : (valid = false);
         break;
@@ -551,17 +732,23 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
       default: {
         this.formulario.get('nombre')?.errors ||
         this.formulario.get('idTipoReto')?.errors ||
-        this.formulario.get('idTipoEncuesta')?.errors ||
         this.formulario.get('enEquipo')?.errors ||
-        this.formulario.get('vidas')?.errors ||
+        this.formulario.get('idComportamiento')?.errors ||
+        this.formulario.get('idTipoEncuesta')?.errors ||
+        this.formulario.get('criterioMinimo')?.errors ||
+        this.formulario.get('tiempo_ms')?.errors ||
+        this.formulario.get('items')?.errors ||
+        this.formulario.get('idTipoValidador')?.errors ||
+        this.formulario.get('idTipoArchivo')?.errors ||
+        this.formulario.get('correosValid')?.errors ||
         this.formulario.get('puntosRecompensa')?.errors ||
         this.formulario.get('creditosObtenidos')?.errors ||
-        this.formulario.get('tiempo_ms')?.errors ||
-        this.formulario.get('criterioMinimo')?.errors
+        this.formulario.get('vidas')?.errors
           ? (valid = true)
           : (valid = false);
       }
     }
+    this.verErrorsInputs = valid;
 
     return valid;
   }
@@ -591,5 +778,135 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
       : this.formulario.patchValue({
           opsRequeridas: 0,
         });
+  }
+
+  selectTipoValidador(event: Event) {
+    let selectedItem = event.target as HTMLSelectElement;
+    let tipoValidador = selectedItem.options[selectedItem.selectedIndex].text;
+
+    if (tipoValidador === 'Usuario') {
+      this.permitirVerificadores = true;
+      this.formulario.patchValue({
+        correosValid: '',
+      });
+    } else {
+      this.permitirVerificadores = false;
+      this.formulario.patchValue({
+        correosValid: 'usuario@default.com',
+      });
+    }
+  }
+
+  selectUsuario(correo: string, event: Event) {
+    let checked = (event.target as HTMLInputElement).checked;
+
+    if (checked) {
+      if (!this.correosValidadores.includes(correo)) {
+        this.correosValidadores.push(correo);
+      }
+    } else {
+      if (this.correosValidadores.includes(correo)) {
+        let i = this.correosValidadores.indexOf(correo);
+        this.correosValidadores.splice(i, 1);
+      }
+    }
+  }
+
+  submitFormBuscar(event: any) {
+    const botonClickeado = event.submitter.value;
+    switch (botonClickeado) {
+      case 'buscar': {
+        this.setBuscar();
+        break;
+      }
+      case 'agregar': {
+        if (this.usuarios.length) {
+          this.agregarUsuario();
+        }
+        break;
+      }
+      default: {
+        this.loading(false, false);
+        console.error('Error de para asignar');
+        break;
+      }
+    }
+  }
+
+  setBuscar() {
+    let buscar = this.frmUsuario.get(['buscar'])?.value;
+    if (buscar.trim() !== '') {
+      this.loading(true, false);
+      this.getUserBuscado(buscar);
+    } else {
+      this.usuarios = [];
+    }
+  }
+
+  defaultList(event: Event) {
+    let text = (event.target as HTMLInputElement).value;
+    if (!text.trim()) {
+      this.usuarios = [];
+      this.error = 0;
+      this.frmUsuario.patchValue({ buscar: '' });
+    }
+  }
+
+  agregarUsuario() {
+    let correos: string = this.formulario.get(['correosValid'])?.value;
+    this.correosValidadores.forEach((correo) => {
+      // Si no contiene entonces va a agregar:
+      if (!correos.includes(correo)) {
+        correos = `${correos}\n${correo}`;
+
+        this.formulario.patchValue({ correosValid: correos.trim() });
+      }
+    });
+
+    this.limpiarCampos(false);
+  }
+
+  quitarUsuario(correo: string) {
+    let correos: string = this.formulario.get(['correosValid'])?.value;
+
+    if (correos.includes(correo)) {
+      let auxCorreos: string[] = correos
+        .split(/\r\n|\r|\n/, -1)
+        .filter(function (item) {
+          return item.trim() !== '';
+        });
+
+      let indiceAEliminar = auxCorreos.indexOf(correo);
+
+      auxCorreos.splice(indiceAEliminar, 1);
+
+      this.formulario.patchValue({ correosValid: auxCorreos.join('\n') });
+    }
+  }
+
+  getCorreosValid(): string[] {
+    let correos: string = this.formulario.get(['correosValid'])?.value;
+
+    let auxCorreos: string[] = correos
+      .split(/\r\n|\r|\n/, -1)
+      .filter(function (item) {
+        return item.trim() !== '';
+      });
+
+    return auxCorreos;
+  }
+
+  openModal() {
+    this.openModalAsignar.nativeElement.click();
+  }
+
+  limpiarCampos(btnCloseClickeado: boolean) {
+    if (!btnCloseClickeado) {
+      this.closeModalAsignar.nativeElement.click();
+    }
+    this.frmUsuario.patchValue({ buscar: '' });
+    this.correosValidadores = [];
+    this.usuarios = [];
+    this.verErrorsInputs = false;
   }
 }

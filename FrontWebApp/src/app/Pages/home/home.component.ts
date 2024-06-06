@@ -27,7 +27,7 @@ import {
   MsgError,
   TitleError,
   TitleErrorForm,
-  playMoveUrl,
+  PLAY_MOVE,
 } from 'src/app/Utils/Constants';
 import { HomeService } from 'src/app/services/home.service';
 import { NivelService } from 'src/app/services/nivel.service';
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   dateCompare = DateCompare();
   changeRoute = ChangeRoute();
-  playMoveUrl = playMoveUrl;
+  playMoveUrl = PLAY_MOVE;
 
   @ViewChildren('canvas') canvas!: QueryList<ElementRef>;
 
@@ -107,6 +107,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   equiposRanking: Usuario_Equipo[] = [];
   retosAsignados: Usuario_Reto[] = [];
   licencias: Licencia[] = [];
+  urXvalidar: Usuario_Reto[] = [];
 
   indexMesesChart: number = 0;
   auxMeses: string[] = [];
@@ -194,6 +195,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.idEquipo = lista[14];
           this.retosAsignados = lista[15];
           this.licencias = lista[16];
+          this.urXvalidar = lista[17];
 
           datasetList.forEach((item: any) => {
             if (item.data.length > this.indexMesesChart) {
@@ -303,6 +305,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.changeRoute('/view-reto', {});
         } else {
           this.changeRoute('/user-reto', {});
+        }
+        break;
+      }
+      case 'retosXvalidar': {
+        if (this.usuario.idRol === 'adm' || this.usuario.idRol === 'sadm') {
+          this.changeRoute('/view-reto', {});
+        } else {
+          this.changeRoute('/validaciones', {});
         }
         break;
       }

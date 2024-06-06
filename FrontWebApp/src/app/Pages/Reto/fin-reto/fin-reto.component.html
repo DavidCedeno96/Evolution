@@ -1,43 +1,102 @@
-<div class="shadow-lg p-3 mb-2 bg-body rounded">
-  <div
-    class="row g-3 text-center text-xxl-start align-items-center mx-2 mx-md-5 my-2"
-  >
-    <div class="col-12 col-md-auto me-3">
-      <h4>Reto Finalizado</h4>
-      <img
-        [src]="getImage(ur.reto.imagen, 'reto', 'default-reto.jpg')"
-        class="img-thumbnail"
-        width="300"
-        alt=""
-      />
+<div
+  class="shadow-lg bg-white px-4 py-2 rounded col-md-7 col-lg-6 col-xxl-4 mx-auto"
+>
+  <h5 class="mt-5 mb-3 text-center txt text-primary text-uppercase">
+    Reto Finalizado
+  </h5>
+
+  <div class="text-center mb-3">
+    <h5 class="txt text-secondary mb-3">
+      {{ ur.reto.nombre }}
+    </h5>
+    <div class="txt text-tertiary">
+      <h6 *ngIf="ur.reto.enEquipo">Reto en Equipo</h6>
+      <h6 *ngIf="!ur.reto.enEquipo">Reto Individual</h6>
     </div>
 
-    <div class="col-12 col-md-4 col-xxl-8">
-      <h4 class="text-truncate txt text-primary mb-3">{{ ur.reto.nombre }}</h4>
-      <h5 class="txt text-secondary">{{ ur.reto.tipoReto }}</h5>
-      <span class="txt text-tertiary d-block mb-3" *ngIf="ur.reto.enEquipo"
-        >Reto en Equipo</span
-      >
-      <span class="txt text-tertiary d-block mb-2" *ngIf="!ur.reto.enEquipo"
-        >Reto Individual</span
-      >
-      <div *ngIf="ur.vidas !== -1">
-        <span> <strong>Vidas:</strong> {{ ur.vidas }} </span>
-      </div>
-      <div *ngIf="ur.puntos > 0">
-        <span> <strong>Puntos obtenidos:</strong> {{ ur.puntos }}</span>
-      </div>
-      <div *ngIf="!ur.reto.enEquipo && ur.puntos > 0">
-        <span>
-          <strong>Créditos obtenidos:</strong>
-          {{ ur.reto.creditosObtenidos }}</span
-        >
+    <img
+      [src]="getImage(ur.reto.imagen, 'reto', 'default-reto.jpg')"
+      class="img-thumbnail"
+      width="160"
+      alt=""
+    />
+  </div>
+  <div class="mb-4">
+    <div class="row g-0 px-1 border-bottom align-items-center">
+      <div class="col-7 fw-semibold p-2">Tipo de reto</div>
+      <div class="col-5 p-2">
+        {{ ur.reto.tipoReto }}
       </div>
     </div>
-    <div class="col-12 text-center text-md-end d-grid d-md-block">
-      <a class="btn btn-primary" routerLink="/user-reto">
-        <i class="fa-solid fa-angle-left me-2"></i>Retos
-      </a>
+    <div *ngIf="ur.completado === 1">
+      <div class="row g-0 px-1 border-bottom align-items-center">
+        <div class="col-7 fw-semibold p-2">Estado</div>
+        <div class="col-5 p-2">
+          <span *ngIf="ur.puntos > 0">Reto superado</span>
+          <span *ngIf="ur.puntos === 0">Reto no superado</span>
+        </div>
+      </div>
+      <div
+        class="row g-0 px-1 border-bottom align-items-center"
+        *ngIf="ur.vidas > -1"
+      >
+        <div class="col-7 fw-semibold p-2">Vidas</div>
+        <div class="col-5 p-2">
+          {{ ur.vidas }}
+        </div>
+      </div>
+      <div
+        class="row g-0 px-1 border-bottom align-items-center"
+        *ngIf="ur.tiempo > 0"
+      >
+        <div class="col-7 fw-semibold p-2">Tiempo</div>
+        <div class="col-5 p-2">
+          {{ formatTiempo(ur.tiempo) }}
+          {{ getTypeTime(ur.tiempo) }}
+        </div>
+      </div>
+      <div
+        class="row g-0 px-1 border-bottom align-items-center"
+        *ngIf="ur.incorrectas > -1"
+      >
+        <div class="col-7 fw-semibold p-2">Preguntas incorrectas</div>
+        <div class="col-5 p-2">
+          {{ ur.incorrectas }}
+        </div>
+      </div>
+      <div
+        class="row g-0 px-1 border-bottom align-items-center"
+        *ngIf="ur.correctas > -1"
+      >
+        <div class="col-7 fw-semibold p-2">Preguntas correctas</div>
+        <div class="col-5 p-2">
+          {{ ur.correctas }}
+        </div>
+      </div>
+      <div class="row g-0 px-1 border-bottom align-items-center">
+        <div class="col-7 fw-semibold p-2">Puntos obtenidos</div>
+        <div class="col-5 p-2">
+          {{ ur.puntos }}
+        </div>
+      </div>
+      <div class="row g-0 px-1 border-bottom align-items-center">
+        <div class="col-7 fw-semibold p-2">Créditos obtenidos</div>
+        <div class="col-5 p-2">
+          {{ ur.puntos > 0 ? ur.reto.creditosObtenidos : 0 }}
+        </div>
+      </div>
     </div>
+    <div *ngIf="ur.completado === 2">
+      <div class="row g-0 px-1 border-bottom align-items-center">
+        <div class="col-7 fw-semibold p-2">Estado</div>
+        <div class="col-5 p-2">Reto pendiente de validación</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 text-center text-md-end d-grid d-md-block mb-4">
+    <a class="btn btn-primary" routerLink="/user-reto">
+      <i class="fa-solid fa-angle-left me-2"></i>Retos
+    </a>
   </div>
 </div>

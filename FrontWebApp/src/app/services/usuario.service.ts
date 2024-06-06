@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { servicioURL } from '../Utils/Constants';
+import { API_URL } from '../Utils/Constants';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Usuario } from '../Models/Usuario';
@@ -10,11 +10,11 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root',
 })
 export class UsuarioService {
-  private apiURL: string = servicioURL + '/api/usuario';
+  private apiURL: string = API_URL + '/api/usuario';
 
   helper = new JwtHelperService();
   private timeoutId!: number;
-  private tiempoDeInactividad: number = 300000; // esta en milisegundos
+  private tiempoDeInactividad: number = 1500000; // esta en milisegundos
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -288,7 +288,7 @@ export class UsuarioService {
     clearTimeout(this.timeoutId);
     this.timeoutId = window.setTimeout(() => {
       if (this.loggedIn()) {
-        console.log('Cerrando sesion por inactividad');
+        console.log('Cerrando sesion por inactividad', new Date());
         this.logout();
       }
     }, this.tiempoDeInactividad);

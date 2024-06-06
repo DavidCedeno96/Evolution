@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Reto } from 'src/app/Models/Reto';
 import { DateCompare, Loading } from 'src/app/Utils/Constants';
@@ -9,7 +9,7 @@ import { RetoService } from 'src/app/services/reto.service';
   templateUrl: './juego-reto.component.html',
   styleUrls: ['./juego-reto.component.css'],
 })
-export class JuegoRetoComponent implements OnInit {
+export class JuegoRetoComponent implements OnInit, AfterViewInit {
   load = Loading();
   dateCompare = DateCompare();
 
@@ -31,13 +31,20 @@ export class JuegoRetoComponent implements OnInit {
     tipoReto: '',
     idTipoEncuesta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
     tipoEncuesta: '',
+    idTipoArchivo: '',
+    tipoArchivo: '',
     idComportamiento: '',
     comportamientoPregunta: '',
+    idTipoValidador: '',
+    tipoValidador: '',
     totalPreguntas: 0,
     usuariosAsignados: 0,
     equiposAsignados: 0,
     opsRequeridas: 0,
+    validadores: 0,
+    puedeValidar: 0,
     enEquipo: 0,
+    items: 0,
     estado: 0,
   };
 
@@ -50,6 +57,9 @@ export class JuegoRetoComponent implements OnInit {
   ngOnInit(): void {
     this.load(true, false);
     this.getRouteParams();
+  }
+
+  ngAfterViewInit(): void {
     this.getData();
   }
 
@@ -89,8 +99,8 @@ export class JuegoRetoComponent implements OnInit {
 
           if (
             estado === 0 ||
-            ur.reto.totalPreguntas < 1 ||
-            ur.reto.completado === 1
+            ur.reto.completado === 1 ||
+            (ur.reto.totalPreguntas < 1 && ur.reto.tipoReto !== 'Recolección')
           ) {
             this.router.navigate(['/user-reto']);
           }

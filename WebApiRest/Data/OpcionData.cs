@@ -2,6 +2,7 @@
 using System.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
+using Microsoft.Extensions.Options;
 
 namespace WebApiRest.Data
 {
@@ -42,6 +43,8 @@ namespace WebApiRest.Data
                         Nombre = dr["nombre"].ToString(),
                         Correcta = Convert.ToInt32(dr["correcta"].ToString()),
                         IdPregunta = new Guid(dr["idPregunta"].ToString()),
+                        IdTipoEntrada = new Guid(dr["idTipoEntrada"].ToString()),
+                        TipoEntrada = dr["tipoEntrada"].ToString(),
                         CantVotos = Convert.ToInt32(dr["cantVotos"].ToString()),
                         Valor = Convert.ToInt32(dr["valor"].ToString()),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),
@@ -81,6 +84,7 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@correcta", opcion.Correcta);
             cmd.Parameters.AddWithValue("@valor", opcion.Valor);
             cmd.Parameters.AddWithValue("@idPregunta", opcion.IdPregunta);
+            cmd.Parameters.AddWithValue("@idTipoEntrada", opcion.IdTipoEntrada);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -119,7 +123,8 @@ namespace WebApiRest.Data
             };
 
             cmd.Parameters.AddWithValue("@idOpcion", uxo.IdOpcion);
-            cmd.Parameters.AddWithValue("@idUsuario", uxo.IdUsuario);            
+            cmd.Parameters.AddWithValue("@idUsuario", uxo.IdUsuario);
+            cmd.Parameters.AddWithValue("@respuesta", WC.GetTrim(uxo.Respuesta));
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -162,6 +167,7 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@correcta", opcion.Correcta);
             cmd.Parameters.AddWithValue("@valor", opcion.Valor);
             cmd.Parameters.AddWithValue("@idPregunta", opcion.IdPregunta);
+            cmd.Parameters.AddWithValue("@idTipoEntrada", opcion.IdTipoEntrada);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;

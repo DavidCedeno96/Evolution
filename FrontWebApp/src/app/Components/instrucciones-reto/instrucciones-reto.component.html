@@ -1,0 +1,23 @@
+<p *ngIf="!reto.instrucciones && reto.tipoReto === 'Trivia'">
+  Contesta correctamente las preguntas para ganar puntos y avanza rápido para
+  llegar primero a la meta. Tienes un tiempo total de
+  <strong>{{ formatTiempo_ms }} </strong>
+  {{ getTypeTime(reto.tiempo_ms) }} ¡Diviértete!
+</p>
+<p
+  *ngIf="
+    !reto.instrucciones &&
+    (reto.tipoReto === 'Encuesta' ||
+      reto.tipoReto === 'Seguimiento o Evaluación')
+  "
+>
+  Lee bien las preguntas y contesta todas de acuerdo a tu criterio ¡Diviértete!
+</p>
+<p *ngIf="!reto.instrucciones && reto.tipoReto === 'Recolección'">
+  Recoge todos los items para competar el reto, recuerda que solo debes recoger
+  {{ reto.items }} items, y el tipo de archivo que debes subir es
+  {{ reto.tipoArchivo }} ¡Diviértete!
+</p>
+<p *ngIf="reto.instrucciones">
+  {{ reto.instrucciones }}
+</p>

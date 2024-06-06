@@ -1,0 +1,160 @@
+<div class="my-3 my-md-4">
+  <div class="col-lg-8 mx-auto">
+    <div class="bg bg-primary text-white rounded p-3 mb-3">
+      <h6 class="p-0 m-0">
+        <div class="icon-text">
+          <mat-icon svgIcon="recopilacion"></mat-icon
+          ><span class="ms-2">{{ reto.nombre }}</span>
+        </div>
+      </h6>
+    </div>
+    <div class="mb-3 card">
+      <div class="px-3 pt-3">
+        <app-instrucciones-reto [reto]="reto"></app-instrucciones-reto>
+      </div>
+    </div>
+
+    <form (ngSubmit)="finalizar()">
+      <div class="mb-3">
+        <div class="card bg-light">
+          <div class="card-body">
+            <label for="items-recog" class="form-label"
+              >Items recogiodos: {{ previewFiles.length }}</label
+            >
+            <input
+              *ngIf="reto.tipoArchivo !== 'Video'"
+              type="file"
+              id="items-recog"
+              class="form-control"
+              [accept]="tipoArchivo"
+              (change)="onFileSelected($event)"
+              (click)="limpiarInput()"
+              #fileInput
+              multiple
+            />
+            <form
+              class="d-md-flex w-100"
+              *ngIf="reto.tipoArchivo === 'Video'"
+              [formGroup]="formulario"
+              (ngSubmit)="agregarUrlVideo()"
+            >
+              <div class="input-group flex-grow-1 me-md-3 mb-3 mb-md-0">
+                <input
+                  type="text"
+                  class="form-control {{
+                    formulario.get('url')?.errors && verErrorsInputs
+                      ? 'is-invalid'
+                      : ''
+                  }}"
+                  formControlName="url"
+                  placeholder="Ingrese la url del video"
+                />
+                <div class="invalid-feedback">
+                  <span
+                    class="d-block"
+                    *ngIf="formulario.get('url')?.hasError('minlength')"
+                  >
+                    Mínimo 20 caracteres
+                  </span>
+                  <span
+                    class="d-block"
+                    *ngIf="formulario.get('url')?.hasError('maxlength')"
+                  >
+                    Máximo hasta 145 caracteres
+                  </span>
+                  <span
+                    class="d-block"
+                    *ngIf="formulario.get('url')?.hasError('caracterInvalid')"
+                  >
+                    Contiene caracteres inválidos
+                  </span>
+                  <span
+                    class="d-block"
+                    *ngIf="formulario.get('url')?.hasError('required')"
+                  >
+                    Campo obligatorio
+                  </span>
+                </div>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-secondary">Agregar</button>
+              </div>
+            </form>
+            <small class="d-block">{{ sugerenciaArchivo }} </small>
+            <div
+              class="row g-3 mt-1 text-center {{
+                previewFiles.length >= 2
+                  ? 'text-md-center text-lg-start'
+                  : 'text-md-start'
+              }}"
+              *ngIf="previewFiles.length"
+            >
+              <div
+                class="col-12 col-md-6 col-lg-4"
+                *ngFor="let imgs of previewFiles; index as i"
+              >
+                <div class="col-12 text-truncate">
+                  <small
+                    class="txt text-secondary"
+                    *ngIf="reto.tipoArchivo !== 'Video'"
+                    >{{ files[i].name }}</small
+                  >
+                  <small
+                    class="txt text-secondary"
+                    *ngIf="reto.tipoArchivo === 'Video'"
+                    >{{ urlsVideos[i] }}</small
+                  >
+                </div>
+                <div class="image-container">
+                  <img [src]="imgs" class="img-thumbnail" [alt]="'img' + i" />
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    (click)="deleteFile(i)"
+                  >
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-end d-grid d-md-block">
+        <button class="btn btn-primary" type="submit">
+          <i class="fa-regular fa-floppy-disk me-2"></i>Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p-dialog
+  [header]="headerDialog"
+  [(visible)]="modal"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '50vw' }"
+>
+  <div class="card mt-4 mt-lg-0">
+    <ul class="list-group list-group-flush">
+      <li
+        *ngFor="let item of responseFiles"
+        class="list-group-item d-flex justify-content-between {{
+          item.error ? 'text-danger' : 'text-success'
+        }}"
+      >
+        <div class="text-break">
+          <span class="d-block fw-semibold">{{ item.id }}</span>
+          <small class="d-block">{{ item.info }}</small>
+        </div>
+        <div class="d-none d-md-block align-self-center">
+          <i class="fa-regular fa-circle-check" *ngIf="!item.error"></i>
+          <i class="fa-regular fa-circle-xmark" *ngIf="item.error"></i>
+        </div>
+      </li>
+    </ul>
+  </div>
+</p-dialog>

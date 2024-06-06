@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { servicioURL } from '../Utils/Constants';
+import { API_URL } from '../Utils/Constants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UsuarioService } from './usuario.service';
 import { PreguntaOpciones } from '../Models/Pregunta';
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class PreguntaService {
-  private apiURL: string = servicioURL + '/api/pregunta';
+  private apiURL: string = API_URL + '/api/pregunta';
 
   constructor(
     private http: HttpClient,
@@ -94,14 +94,30 @@ export class PreguntaService {
     });
   }
 
-  enviarArchivo(formData: FormData, idReto: string): Observable<FormData> {
+  enviarArchivo(
+    formData: FormData,
+    idReto: string,
+    tipoReto: string
+  ): Observable<FormData> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
     //headers.append('Access-Control-Allow-Credentials', 'true');
     return this.http.post<FormData>(
-      `${this.apiURL}/import/${idReto}`,
+      `${this.apiURL}/import/${tipoReto}/${idReto}`,
       formData,
+      {
+        headers: headers,
+      }
+    );
+  }
+
+  reporteResultados(estado: number, idReto: string): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<any>(
+      `${this.apiURL}/export/results/${estado}/${idReto}`,
       {
         headers: headers,
       }

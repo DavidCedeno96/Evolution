@@ -89,7 +89,7 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
   }
 
   cargarData() {
-    this.retoServicio.getUsuario_RetoByIdReto(this.idReto).subscribe({
+    this.retoServicio.getUsuario_RetoByIdReto(this.idReto, 0).subscribe({
       next: (data: any) => {
         let { error, info, lista } = data.response;
         if (error === 0) {
@@ -291,12 +291,19 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
       tipoEncuesta: '',
       idComportamiento: '7c8c2672-2233-486a-a184-f0b51eb4a331',
       comportamientoPregunta: '',
+      idTipoArchivo: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+      tipoArchivo: '',
+      idTipoValidador: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+      tipoValidador: '',
       estado: 0,
       totalPreguntas: 0,
       usuariosAsignados: 0,
       equiposAsignados: 0,
+      validadores: 0,
+      puedeValidar: 0,
       enEquipo: 0,
       opsRequeridas: 0,
+      items: 0,
     };
 
     usuarioReto = {
@@ -309,6 +316,9 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
       posicion: 0,
       completado: 0,
       tieneEquipo: 0,
+      archivos: [],
+      correctas: 0,
+      incorrectas: 0,
       fechaCreacion: new Date(),
       fechaModificacion: new Date(),
     };

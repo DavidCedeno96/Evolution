@@ -1,3 +1,4 @@
 ol.letterUpper {
   list-style-type: upper-alpha;
+  margin: 0;
 }

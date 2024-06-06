@@ -48,8 +48,8 @@
       <ng-template let-reto pTemplate="listItem">
         <div class="col-12">
           <div class="p-4 gap-4">
-            <div class="row g-3 text-center text-md-start align-items-center">
-              <div class="col-12 col-md-auto">
+            <div class="row g-3 text-center text-lg-start align-items-center">
+              <div class="col-12 col-lg-auto">
                 <img
                   class="img-thumbnail"
                   [src]="getImage(reto.imagen, 'reto', 'default-reto.jpg')"
@@ -57,7 +57,7 @@
                   [alt]="reto.imagen"
                 />
               </div>
-              <div class="col-12 col-md-4">
+              <div class="col-12 col-lg-4">
                 <h5 class="txt text-secondary">
                   {{ reto.nombre }}
                 </h5>
@@ -93,7 +93,7 @@
                 </div>
               </div>
 
-              <div class="col-12 col-md-3">
+              <div class="col-12 col-lg-3">
                 <div class="flex align-items-center gap-3">
                   <div *ngIf="reto.tipoReto === 'Trivia'">
                     <div>
@@ -131,10 +131,35 @@
                     <span> {{ reto.tipoEncuesta }} </span>
                   </div>
 
-                  <div class="text-truncate">
+                  <div
+                    class="text-truncate"
+                    *ngIf="reto.tipoReto !== 'Recolección'"
+                  >
                     <strong>Cantidad de Preguntas:</strong>
                     <span> {{ reto.totalPreguntas }} </span>
                   </div>
+                  <div
+                    class="text-truncate"
+                    *ngIf="
+                      reto.tipoReto === 'Recolección' ||
+                      reto.tipoReto === 'Comportamiento'
+                    "
+                  >
+                    <strong>Tipo de verificación:</strong>
+                    <span> {{ reto.tipoValidador }} </span>
+                  </div>
+                  <div class="text-truncate" *ngIf="reto.validadores > 0">
+                    <strong>Verificadores:</strong>
+                    <span> {{ reto.validadores }} </span>
+                  </div>
+                  <div
+                    class="text-truncate"
+                    *ngIf="reto.tipoReto === 'Recolección'"
+                  >
+                    <strong>Cantidad de items:</strong>
+                    <span> {{ reto.items }} </span>
+                  </div>
+
                   <div class="text-truncate" *ngIf="!reto.enEquipo">
                     <strong>Usuarios Asignados:</strong>
                     <span> {{ reto.usuariosAsignados }} </span>
@@ -146,7 +171,7 @@
                 </div>
               </div>
 
-              <div class="col-12 col-md-1 col-lg-2 text-md-end">
+              <div class="col-12 col-lg-2 text-lg-end">
                 <div class="dropdown">
                   <button
                     class="btn btn-tertiary normal only-icon"
@@ -196,7 +221,7 @@
                         <i class="fa-solid fa-users me-2"></i>Asignar Equipos</a
                       >
                     </li>
-                    <li>
+                    <li *ngIf="reto.tipoReto !== 'Recolección'">
                       <a
                         class="dropdown-item pointer"
                         (click)="
@@ -205,6 +230,19 @@
                           })
                         "
                         ><i class="fa-solid fa-question me-2"></i>Preguntas</a
+                      >
+                    </li>
+
+                    <li *ngIf="reto.puedeValidar > 0">
+                      <a
+                        class="dropdown-item pointer"
+                        (click)="
+                          changeRoute('/validaciones/users', {
+                            reto: reto.idReto
+                          })
+                        "
+                        ><i class="fa-regular fa-square-check me-2"></i
+                        >Verificar reto</a
                       >
                     </li>
 

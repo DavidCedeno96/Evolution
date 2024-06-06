@@ -111,6 +111,38 @@ export class IconModule {
         'assets/icons/varita-magica.svg'
       )
     );
+    this._matIconRegistry.addSvgIcon(
+      'grafico',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/grafico.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
+      'grafico-circular',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/grafico-circular.svg'
+      )
+    );
+
+    /********** RETOS **********/
+    this._matIconRegistry.addSvgIcon(
+      'planificacion',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/planificacion.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
+      'recopilacion',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/recopilacion-de-datos.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
+      'encuesta',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/lista-de-verificacion.svg'
+      )
+    );
 
     /********** OTROS **********/
     this._matIconRegistry.addSvgIcon(

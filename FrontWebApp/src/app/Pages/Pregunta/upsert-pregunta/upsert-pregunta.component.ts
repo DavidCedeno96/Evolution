@@ -245,6 +245,8 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
       let opcion: Opcion = {
         idOpcion: '7c8c2672-2233-486a-a184-f0b51eb4a331',
         idPregunta: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+        idTipoEntrada: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+        tipoEntrada: '',
         nombre: '',
         correcta: 0,
         cantVotos: 0,
@@ -285,6 +287,8 @@ export class UpsertPreguntaComponent implements OnInit, AfterViewInit {
       item.push({
         idOpcion: '7c8c2672-2233-486a-a184-f0b51eb4a331',
         idPregunta: this.auxIdPregunta,
+        idTipoEntrada: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+        tipoEntrada: '',
         nombre: '',
         correcta: 0,
         cantVotos: 0,

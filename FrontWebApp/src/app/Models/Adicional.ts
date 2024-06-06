@@ -44,6 +44,27 @@ export interface TipoEncuesta {
   estado: number;
 }
 
+export interface TipoEntrada {
+  idTipoEntrada: string;
+  nombre: string;
+  descripcion: string;
+  estado: number;
+}
+
+export interface TipoValidador {
+  idTipoValidador: string;
+  nombre: string;
+  descripcion: string;
+  estado: number;
+}
+
+export interface TipoArchivo {
+  idTipoArchivo: string;
+  nombre: string;
+  descripcion: string;
+  estado: number;
+}
+
 export interface ComportamientoPregunta {
   idComportamiento: string;
   nombre: string;

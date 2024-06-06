@@ -20,6 +20,30 @@ export const CaracterInvalid = () => {
   };
 };
 
+export const MaxCantItems = (maxItems: number) => {
+  return (control: AbstractControl): { [key: string]: boolean } | null => {
+    const value = control.value;
+    var resultado = true;
+
+    let listItems: string[] = value
+      .split('\n')
+      .map((items: string) => items.trim());
+
+    listItems = listItems.filter(
+      (item: string, index: number, self: string[]) =>
+        item !== '' && index === self.indexOf(item)
+    );
+
+    listItems.length > maxItems ? (resultado = false) : (resultado = true);
+
+    if (value === '' || resultado) {
+      return null;
+    }
+
+    return { maxCantItems: true };
+  };
+};
+
 export const ContrasenaInvalid = () => {
   return (control: AbstractControl): { [key: string]: boolean } | null => {
     const value = control.value;
