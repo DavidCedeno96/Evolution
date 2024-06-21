@@ -109,6 +109,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
           correcta: 0,
           cantVotos: 0,
           valor: 0,
+          cantVotosXvalor: 0,
         },
         {
           idOpcion: '',
@@ -119,6 +120,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
           correcta: 0,
           cantVotos: 0,
           valor: 0,
+          cantVotosXvalor: 0,
         },
         {
           idOpcion: '',
@@ -129,6 +131,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
           correcta: 0,
           cantVotos: 0,
           valor: 0,
+          cantVotosXvalor: 0,
         },
         {
           idOpcion: '',
@@ -139,6 +142,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
           correcta: 1,
           cantVotos: 0,
           valor: 0,
+          cantVotosXvalor: 0,
         },
       ],
     },
@@ -171,7 +175,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
     this.route.queryParams.subscribe((params) => {
       this.idReto = params['reto'];
       if (this.idReto === '' || !params['reto']) {
-        history.back();
+        this.changeRoute('/404', {});
       }
     });
   }
@@ -224,7 +228,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -258,8 +262,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.load(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -425,8 +428,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.load(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -508,6 +510,8 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
       posicion: 0,
       tieneEquipo: 0,
       archivos: [],
+      totalOpsValidador: 0,
+      totalOpsValidaciones: 0,
       correctas: this.preguntasCorrectas,
       incorrectas: this.preguntasIncorrectas,
       fechaCreacion: new Date(),

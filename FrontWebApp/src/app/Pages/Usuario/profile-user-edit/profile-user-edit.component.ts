@@ -5,6 +5,7 @@ import { Area, Ciudad, Empresa, Pais } from 'src/app/Models/Adicional';
 import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
+  ChangeRoute,
   GetImage,
   ImgHeightMax,
   ImgSizeMax,
@@ -37,6 +38,7 @@ export class ProfileUserEditComponent implements OnInit, AfterViewInit {
   setUpsert = SetUpsert();
   contrasenaInvalid = ContrasenaInvalid();
   getImage = GetImage();
+  changeRoute = ChangeRoute();
   sugerenciaImagen = SugerenciaImagen;
 
   verPassword: boolean = false;
@@ -172,7 +174,7 @@ export class ProfileUserEditComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -192,7 +194,7 @@ export class ProfileUserEditComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -242,8 +244,7 @@ export class ProfileUserEditComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });

@@ -81,7 +81,7 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       let idReto = params['reto'];
       if (!params['reto']) {
-        history.back();
+        this.changeRoute('/404', {});
       }
       this.id = idReto;
     });
@@ -131,7 +131,7 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });

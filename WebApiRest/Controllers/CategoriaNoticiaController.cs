@@ -22,9 +22,9 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
-        [Route("buscar/{texto}")]
+        [Route("buscar")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Buscar([FromRoute] string texto)
+        public async Task<IActionResult> Buscar([FromQuery] string texto)
         {
             CategoriaList response = await data.GetCategoriaNoticiaList(texto);
             return StatusCode(StatusCodes.Status200OK, new { response });

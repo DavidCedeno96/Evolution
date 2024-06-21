@@ -5,6 +5,8 @@ using MailKit.Security;
 using MimeKit.Text;
 using MimeKit;
 using WebApiRest.Models;
+using NPOI.HSSF.UserModel;
+using System.Net.Http.Headers;
 
 namespace WebApiRest.Utilities
 {
@@ -26,7 +28,7 @@ namespace WebApiRest.Utilities
         private static readonly string errorClave = "Debe tener al menos 5 caracteres de longitud, contener al menos un número, contener al menos una letra mayúscula, contener al menos una letra minúscula o solo los siguientes caracteres #@_-.";
         private static readonly string errorEstado = "Estado Incorrecto";
         private static readonly string invalid = "Tiene cacarteres invalidos";
-        private static readonly string max50 = "Máximo 50 caracteres";        
+        private static readonly string max50 = "Máximo 50 caracteres";          
 
         public static string GetRutaImagen(IWebHostEnvironment env, string nombreImagen, string nombreCarpeta)
         {
@@ -37,6 +39,11 @@ namespace WebApiRest.Utilities
         public static string GetRutaArchivo(IWebHostEnvironment env, string nombreArchivo, string nombreCarpeta)
         {
             string rutaPrincipal = Path.Combine(env.ContentRootPath, "wwwroot", "Content", "Archivos", nombreCarpeta);
+
+            if(string.IsNullOrEmpty(nombreArchivo)) { 
+                return rutaPrincipal; 
+            }
+
             return Path.Combine(rutaPrincipal, nombreArchivo.Trim());
         }
 
@@ -44,7 +51,7 @@ namespace WebApiRest.Utilities
         {
             if (file != null)
             {                
-                return Path.GetExtension(file.FileName); //.xlsx .pdf .png .jpg
+                return Path.GetExtension(file.FileName).ToLower(); //.xlsx .pdf .png .jpg
             }
             return "";
         }
@@ -62,7 +69,7 @@ namespace WebApiRest.Utilities
         {
             if (file != null)
             {
-                if(!GetArchivoPermitido("jpg/jpeg/png", file.Name))
+                if(GetArchivoPermitido("jpg/jpeg/png", file.FileName))
                 {
                     using var stream = file.OpenReadStream();
                     using var image = SixLabors.ImageSharp.Image.Load(stream);
@@ -79,6 +86,12 @@ namespace WebApiRest.Utilities
             }
         }
 
+        public static string GetUniqueFileName(IFormFile file, string info)
+        {
+            Guid newId = Guid.NewGuid();            
+            return $"{info}_{newId}{GetFileExtension(file)}";
+        }
+
         public static byte[] GetBytes(string texto)
         {
             if (!string.IsNullOrEmpty(texto))
@@ -86,6 +99,13 @@ namespace WebApiRest.Utilities
                 return Encoding.UTF8.GetBytes(texto);
             }
             return null;
+        }
+
+        public static byte[] GetBytesExcel(HSSFWorkbook workbook)
+        {
+            using MemoryStream ms = new();
+            workbook.Write(ms);
+            return ms.ToArray();
         }
 
         public static string GetString(byte[] byteArray)
@@ -167,14 +187,18 @@ namespace WebApiRest.Utilities
         public static bool GetArchivoPermitido(string tipos, string nombreArchivo)
         {
             string extension = Path.GetExtension(nombreArchivo.ToLower());
-            List<string> tiposList = tipos.Split("/").ToList();
-            foreach (string tipo in tiposList)
+
+            if (!string.IsNullOrEmpty(tipos))
             {
-                if (extension.Contains(tipo))
+                List<string> tiposList = tipos.Split("/").ToList();
+                foreach (string tipo in tiposList)
                 {
-                    return true;
+                    if (extension.Contains(tipo))
+                    {
+                        return true;
+                    }
                 }
-            }
+            }            
 
             return false;
         }
@@ -241,7 +265,7 @@ namespace WebApiRest.Utilities
             }
 
             return response;
-        }
+        }        
 
         public static string GetSatisfactorio()
         {

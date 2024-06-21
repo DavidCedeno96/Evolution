@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Nivel } from 'src/app/Models/Nivel';
 import {
   AlertError,
+  ChangeRoute,
   DateCompare,
   GetImage,
   Loading,
@@ -22,6 +23,7 @@ export class UserNivelComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   dateCompare = DateCompare();
+  changeRoute = ChangeRoute();
 
   niveles: Nivel[] = [];
 
@@ -51,8 +53,7 @@ export class UserNivelComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });

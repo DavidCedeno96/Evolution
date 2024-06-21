@@ -14,6 +14,7 @@ import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
   AlertSuccess,
+  ChangeRoute,
   GetImage,
   Loading,
   MsgError,
@@ -34,6 +35,7 @@ export class UserRecompensaComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   alertSuccess = AlertSuccess();
+  changeRoute = ChangeRoute();
   loading = Loading();
 
   @ViewChild('closeModal') closeModal!: ElementRef;
@@ -137,8 +139,7 @@ export class UserRecompensaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -155,7 +156,7 @@ export class UserRecompensaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -219,8 +220,7 @@ export class UserRecompensaComponent implements OnInit, AfterViewInit {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
-            this.alertError(TitleError, MsgError);
-            this.loading(false, false);
+            this.changeRoute('/404', {});
           }
         },
       });
@@ -260,7 +260,7 @@ export class UserRecompensaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });

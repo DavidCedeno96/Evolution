@@ -83,7 +83,7 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
       let idPregunta = params['pregunta'];
       this.idReto = params['reto'];
       if (idPregunta === '' && this.idReto === '' && this.type === 'editar') {
-        history.back();
+        this.changeRoute('/404', {});
       }
       switch (this.type) {
         case 'crear': {
@@ -99,8 +99,7 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
           break;
         }
         default: {
-          this.titulo = '';
-          history.back();
+          this.changeRoute('/404', {});
           break;
         }
       }
@@ -127,7 +126,7 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -167,8 +166,7 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
           break;
         }
         default: {
-          this.loading(false, false);
-          history.back();
+          this.changeRoute('/404', {});
           break;
         }
       }
@@ -199,8 +197,7 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -226,8 +223,7 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -249,6 +245,7 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
         correcta: 0,
         cantVotos: 0,
         valor: 0,
+        cantVotosXvalor: 0,
       };
       opcion.nombre = this.formulario.get(['opcion' + this.opcion[i]])?.value;
 
@@ -288,6 +285,7 @@ export class UpsertPreguntaVotoComponent implements OnInit, AfterViewInit {
         correcta: 0,
         cantVotos: 0,
         valor: 0,
+        cantVotosXvalor: 0,
       });
       if (this.auxOpcionList.length > 0 && i < this.auxOpcionList.length) {
         item[i] = this.auxOpcionList[i];

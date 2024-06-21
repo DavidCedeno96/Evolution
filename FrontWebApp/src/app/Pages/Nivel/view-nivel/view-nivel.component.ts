@@ -120,8 +120,7 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -154,7 +153,7 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -220,7 +219,8 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
         });
       },
       error: (e) => {
-        console.log(e);
+        console.error(e);
+        this.changeRoute('/404', {});
       },
     });
   }
@@ -230,13 +230,26 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
       this.loading(true, false);
       this.nivelServicio.reporteNivel(-1).subscribe({
         next: (data: any) => {
-          let { info, error } = data.response;
+          let { info, error, file } = data.response;
           if (error === 0) {
-            let url = this.getArchivo(info, 'Nivel');
-            const element = document.createElement('a');
-            element.download = `Niveles.xls`;
-            element.href = url;
-            element.click();
+            const byteArray = new Uint8Array(
+              atob(file)
+                .split('')
+                .map((char) => char.charCodeAt(0))
+            );
+
+            const blob = new Blob([byteArray], {
+              type: 'application/vnd.ms-excel',
+            });
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Niveles.xls';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
 
             this.messageService.add({
               severity: 'success',
@@ -253,8 +266,7 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
-            this.loading(false, false);
-            this.alertError(TitleErrorArchivo, MsgErrorArchivo);
+            this.changeRoute('/404', {});
           }
         },
       });
@@ -299,7 +311,7 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });

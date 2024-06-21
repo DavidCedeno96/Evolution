@@ -46,9 +46,9 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
-        [Route("buscar/{texto}")]
+        [Route("buscar")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Buscar([FromRoute] string texto)
+        public async Task<IActionResult> Buscar([FromQuery] string texto)
         {
             NivelList response = await data.GetNivelList(texto);
             return StatusCode(StatusCodes.Status200OK, new { response });
@@ -71,11 +71,11 @@ namespace WebApiRest.Controllers
             Response response = new();
             DataTable dt = new();
 
-            string hora = WC.GetHoraActual(DateTime.Now);
-            string nombreArchivo = $"Niveles{hora}.xls";
-            string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, nombreCarpeta);
+            //string hora = WC.GetHoraActual(DateTime.Now);
+            //string nombreArchivo = $"Niveles{hora}.xls";
+            //string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, nombreCarpeta);
 
-            WC.EliminarArchivosAntiguos(_env, nombreCarpeta, "Niveles");
+            //WC.EliminarArchivosAntiguos(_env, nombreCarpeta, "Niveles");
 
             dt.Columns.Add("NOMBRE", typeof(string));
             dt.Columns.Add("DESCRIPCIÓN", typeof(string));
@@ -101,7 +101,7 @@ namespace WebApiRest.Controllers
                     }
 
                     HSSFWorkbook workbook = new();
-                    ISheet hoja = workbook.CreateSheet("Salas");
+                    ISheet hoja = workbook.CreateSheet("Niveles");
                     IRow headerRow = hoja.CreateRow(0);
 
                     for (int i = 0; i < dt.Columns.Count; i++)
@@ -120,11 +120,12 @@ namespace WebApiRest.Controllers
                     }
 
                     //Aqui crea el archivo
-                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
-                    workbook.Write(fileStream);
-                    fileStream.Dispose();
+                    //FileStream fileStream = new(rutaArchivo, FileMode.Create);
+                    //workbook.Write(fileStream);
+                    //fileStream.Dispose();
 
-                    response.Info = nombreArchivo;
+                    response.Info = WC.GetSatisfactorio();
+                    response.File = WC.GetBytesExcel(workbook);
                     response.Error = 0;
                 }
                 else
@@ -152,10 +153,11 @@ namespace WebApiRest.Controllers
 
             if (archivo != null && response.Error == 0)
             {
+                string fileName = WC.GetUniqueFileName(archivo, "niv");
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png/gif", nombreCarpeta);
-                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, fileName, nombreCarpeta);
 
-                nivel.Imagen = archivo.FileName.Trim();
+                nivel.Imagen = fileName;
             }
             else
             {
@@ -187,10 +189,11 @@ namespace WebApiRest.Controllers
 
             if (archivo != null && response.Error == 0)
             {
+                string fileName = WC.GetUniqueFileName(archivo, "niv");
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png/gif", nombreCarpeta);
-                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, fileName, nombreCarpeta);
 
-                nivel.Imagen = archivo.FileName.Trim();
+                nivel.Imagen = fileName;
             }
             else
             {

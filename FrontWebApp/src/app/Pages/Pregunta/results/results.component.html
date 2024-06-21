@@ -1,11 +1,12 @@
 <div class="shadow-lg bg-white px-4 py-2 px-lg-5 rounded">
   <h5 class="mt-5 text-center txt text-primary text-uppercase">resultados</h5>
 
-  <button class="btn btn-secondary icon mb-4" (click)="exportarArchivo()">
+  <button class="btn btn-secondary icon mb-4" (click)="onExport()">
     <div class="icon-text buton">
       <mat-icon svgIcon="exportar"></mat-icon><span>Exportar</span>
     </div>
   </button>
+
   <div class="row g-3 mb-4">
     <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of paginatedItems()">
       <div class="card">
@@ -14,9 +15,15 @@
         </div> -->
         <div class="card-body p-0 pt-2 px-2">
           <app-grafico
+            *ngIf="reto.tipoReto !== 'Comportamiento'"
             [chartData]="
               getChartHorizontalBar(item.opcionList, item.pregunta.nombre)
             "
+          ></app-grafico>
+
+          <app-grafico
+            *ngIf="reto.tipoReto === 'Comportamiento'"
+            [chartData]="getChartRadar(item.opcionList, item.pregunta.nombre)"
           ></app-grafico>
         </div>
         <span class="p-3 text-black-50 text-end"

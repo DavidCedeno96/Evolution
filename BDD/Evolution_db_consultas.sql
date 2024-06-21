@@ -57,7 +57,7 @@ WHERE
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'UsuarioxArchivo';
+WHERE tc.TABLE_NAME = 'Novedad';
 
 ---
 SELECT @@VERSION;
@@ -858,11 +858,20 @@ select * from Opcion
 select * from Pregunta
 
 exec sp_B_OpcionByIdPregunta		
-@idPregunta = 'BC51AA83-4654-4BE0-878F-087BDE6893EC',
+@idPregunta = 'F0B0AC75-B7BB-472F-B612-20A394E71343',
 @estado = -1,
 @error = '',
 @info = '',
 @id = ''
+
+exec sp_B_OpcionByIdPreguntaIdUsuario		
+@idPregunta = 'F0B0AC75-B7BB-472F-B612-20A394E71343',
+@idUsuario = '015E40DD-58CE-401E-A0A9-075874BC0B68',
+@estado = -1,
+@error = '',
+@info = '',
+@id = ''
+
 
 exec sp_C_Opcion		
 @nombre = 'Ambato',
@@ -906,6 +915,7 @@ exec sp_C_UsuarioxOpcion
 @idOpcion = '',
 @idUsuario = '',
 @respuesta = '',
+@idUserValidador = '',
 @error = '',
 @info = '',
 @id = ''
@@ -927,7 +937,7 @@ exec sp_C_UsuarioxArchivo
 
 exec sp_B_UsuarioxArchivoByIdRetoYIdUser	
 @idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
-@idReto = 'A2C5DE8F-B48A-49D3-AD4D-06A664B321D3',
+@idReto = 'DDF75D8B-E869-4C4B-8A47-547E77E7F632',
 @error = '',
 @info = '',
 @id = ''
@@ -944,7 +954,7 @@ select * from Opcion where idPregunta = '00046450-01F9-4F73-B3F3-C5A00D11446C'
 
 exec sp_B_PreguntaByIdReto		
 @estado = -1,
-@idReto = '701e4b94-1e54-4de4-9128-239ded5eaa06',
+@idReto = '0B3439F9-F94D-4E28-B758-89668B4D020F',
 @error = '',
 @info = '',
 @id = ''
@@ -1003,14 +1013,14 @@ exec sp_B_Reto
 @id = ''
 
 exec sp_B_RetoById
-@idReto = '428164a1-24f7-4c0c-8a6c-6278c23bffb5',
+@idReto = 'C214AB54-5ED2-4F61-A075-2196497BAB4B',
 @estado = -1,
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_B_RetoByAll
-@buscar = 'reto',
+@buscar = '%',
 @idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
 @error = '',
 @info = '',
@@ -1098,8 +1108,8 @@ exec sp_B_Usuario_RetoByIdReto
 @id = ''
 
 exec sp_B_Usuario_RetoByIdUsuarioYIdReto		
-@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
-@idReto = '27C5527F-3EA3-431B-BEDF-65841EAF5663',			
+@idUsuario = '91DB7BAE-7D2F-423D-B595-D227C63CA0A6',
+@idReto = '0b3439f9-f94d-4e28-b758-89668b4d020f',			
 @completado = -1,
 @error = '',
 @info = '',
@@ -1129,13 +1139,14 @@ exec sp_B_Usuario_RetoValidador
 
 exec sp_B_Usuario_RetoxValidarByValidador
 @idUserValidador = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
-@top = 1,
+@top = -1,
 @error = '',
 @info = '',
 @id = ''
 
 exec sp_B_Usuario_RetoxValidarByReto
-@idReto = 'A2C5DE8F-B48A-49D3-AD4D-06A664B321D3',
+@idReto = '0b3439f9-f94d-4e28-b758-89668b4d020f',
+@idUserValidador = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
 @error = '',
 @info = '',
 @id = ''
@@ -1383,6 +1394,42 @@ exec sp_C_Licencia
 @id = ''
 
 -- delete from Licencia where idLicencia = '88A01598-B763-4A27-B13F-9A477D93F61E' 
+-- Novedad ------------------------------------------------------------------------
+select * from Novedad
+select * from Reto
+select * from Usuario
+select * from Notificacion
+
+-- update Novedad set fechaCreacion = '2024-01-20 16:08:24.113' where idNovedad = '48B47339-53B9-40E2-8A04-33732B9C2814'
+
+exec sp_B_NovedadByIdUsuario		
+@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_U_NovedadByEstado
+@idNovedad = '48B47339-53B9-40E2-8A04-33732B9C2814',
+@idUsuario = '48B47339-53B9-40E2-8A04-33732B9C2814',
+@estado = 1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_D_Novedad	
+@idNovedad = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
+@idUsuario = '48B47339-53B9-40E2-8A04-33732B9C2814',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_D_NovedadByIdUsuario	
+@idUsuario = '42C77DB8-7FD5-45CB-AB1A-EB331C7DFB61',
+@error = '',
+@info = '',
+@id = ''
+
+
 
 -- Notificación ------------------------------------------------------------------------
 exec sp_B_Notificacion		

@@ -5,13 +5,16 @@ using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
+using System.IO;
+using System.IO.Compression;
+using MathNet.Numerics.Distributions;
 
 namespace WebApiRest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class RetoController : ControllerBase
-    {
+    {        
         readonly RetoData data = new();
         readonly OpcionData dataOpcion = new();
         readonly TipoValidadorData dataTipoValidador = new();
@@ -35,9 +38,9 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
-        [Route("buscar/{texto}")]
+        [Route("buscar")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> List([FromRoute] string texto)
+        public async Task<IActionResult> List([FromQuery] string texto)
         {
             string userId = User.FindFirst("id").Value;
             RetoList response = await data.GetRetoList(texto, new Guid(userId));
@@ -93,9 +96,9 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
-        [Route("buscarUsuarioRetoByIdUsuario/{texto}")]
+        [Route("buscarUsuarioRetoByIdUsuario")]
         [Authorize]
-        public async Task<IActionResult> GetUsuarioRetoByIdUsuario([FromRoute] string texto)
+        public async Task<IActionResult> GetUsuarioRetoByIdUsuario([FromQuery] string texto)
         {
             string userId = User.FindFirst("id").Value;
             Usuario_RetoList response = await data.GetUsuarioRetoList(texto, new Guid(userId), -1);
@@ -126,8 +129,45 @@ namespace WebApiRest.Controllers
         [Route("retosXvalidar/usuarios/{idReto}")]
         [Authorize]
         public async Task<IActionResult> GetRetosXvalidarUsuarios([FromRoute] Guid idReto)
-        {            
-            Usuario_RetoList response = await data.GetUsuario_RetoxValidarByReto(idReto);
+        {
+            string userId = User.FindFirst("id").Value;
+            Usuario_RetoList response = await data.GetUsuario_RetoxValidarByReto(idReto, new Guid(userId));
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("descargar-zip/archivos/{idReto}/{idUsuario}")]
+        [Authorize]
+        public async Task<IActionResult> GetZipArchivos([FromRoute] Guid idReto, [FromRoute] Guid idUsuario)
+        {
+            UsuarioxArchivoList response = await data.GetUsuarioXarchivos(idReto, idUsuario);
+
+            if(response.Error == 0)
+            {                                
+                if(response.Lista.Count > 0)
+                {
+                    using var memoryStream = new MemoryStream();
+                    using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                    {
+                        foreach (var fileName in response.Lista)
+                        {
+                            string rutaArchivo = WC.GetRutaArchivo(_env, fileName.Archivo, "Recoleccion");
+
+                            if (System.IO.File.Exists(rutaArchivo))
+                            {
+                                var entry = archive.CreateEntry(fileName.Archivo, CompressionLevel.Fastest);
+                                using var fileStream = new FileStream(rutaArchivo, FileMode.Open);
+                                using var entryStream = entry.Open();
+                                fileStream.CopyTo(entryStream);
+                            }
+                        }
+                    }
+
+                    memoryStream.Position = 0;
+                    response.File = memoryStream.ToArray();                    
+                }
+            }    
+            
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -144,10 +184,11 @@ namespace WebApiRest.Controllers
 
             if (archivo != null && response.Error == 0)
             {
+                string fileName = WC.GetUniqueFileName(archivo, "ret");
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
-                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, fileName, nombreCarpeta);
 
-                reto.Imagen = archivo.FileName.Trim();
+                reto.Imagen = fileName;
             }
             else
             {
@@ -194,7 +235,7 @@ namespace WebApiRest.Controllers
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }
+        }        
 
         [HttpPost]
         [Route("createUsuarioReto")]
@@ -249,6 +290,68 @@ namespace WebApiRest.Controllers
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
+        [HttpPost]
+        [Route("create/usuarioxOpcion/comportamiento")]
+        [Authorize]
+        public async Task<IActionResult> CreateUsuarioxOpcionByValidador([FromForm] Guid idReto, [FromForm] Guid idUsuario, [FromForm] string jsonList)
+        {
+            Claim userClaim = User.FindFirst("id"); //=> Este es el validador
+            Response response = await data.GetUsuario_RetoValidador(idReto, new Guid(userClaim.Value));
+
+            if(response.Error == 0)
+            {
+                UsuarioxOpcion uxo = new()
+                {
+                    IdUsuario = idUsuario,
+                    IdUserValidador = userClaim.Value,
+                };            
+
+                if (!string.IsNullOrEmpty(jsonList))
+                {
+                    List<string> listaIdsOpciones = JsonConvert.DeserializeObject<List<string>>(jsonList);
+
+                    foreach (string idOpcion in listaIdsOpciones)
+                    {
+                        if (!string.IsNullOrEmpty(idOpcion))
+                        {
+                            uxo.IdOpcion = new Guid(idOpcion);
+                            response = await dataOpcion.CreateUsuarioxOpcion(uxo);
+                        }
+                    }
+
+                    if(response.Error == 0)
+                    {                        
+                        Usuario_Reto usuarioReto = new()
+                        {
+                            Usuario = new Usuario()
+                            {
+                                IdUsuario = idUsuario
+                            },
+                            Reto = new Reto()
+                            {
+                                IdReto = idReto
+                            },
+                            Puntos = 1,
+                            Tiempo = -1,
+                            Vidas = -1,
+                            Completado = 1,
+                            Correctas = -1,
+                            Incorrectas = -1
+                        };
+
+                        await data.UpdateUsuario_Reto(usuarioReto);
+                    }
+                }
+                else
+                {
+                    response.Info = "Sin opciones";
+                    response.Error = 1;
+                }
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
         [HttpPut]
         [Route("update")]
         [Authorize(Roles = "adm,sadm")]
@@ -259,10 +362,11 @@ namespace WebApiRest.Controllers
 
             if (archivo != null && response.Error == 0)
             {
+                string fileName = WC.GetUniqueFileName(archivo, "ret");
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
-                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, fileName, nombreCarpeta);
 
-                reto.Imagen = archivo.FileName.Trim();
+                reto.Imagen = fileName;
             }
             else
             {
@@ -414,9 +518,12 @@ namespace WebApiRest.Controllers
         [HttpPut]
         [Route("updateUsuarioReto/recoleccion/pendiente")]
         [Authorize]
-        public async Task<IActionResult> UpdateUsuario_RetoRecleccionP([FromForm] Guid idReto, [FromForm] List<IFormFile> files, [FromForm] string urlsVideos)
-        {
-            Claim userClaim = User.FindFirst("id");                       
+        public async Task<IActionResult> UpdateUsuario_RetoRecleccionP([FromForm] Guid idReto, [FromForm] List<IFormFile> files, [FromForm] string videosNombres)
+        {            
+            Claim userClaim = User.FindFirst("id");
+
+            RetoItem retoResponse = await data.GetReto(1, idReto);
+            Response response = new();
 
             Usuario_Reto usuarioReto = new()
             {
@@ -442,40 +549,91 @@ namespace WebApiRest.Controllers
                 IdUsuario = new Guid(userClaim.Value)
             };
 
-            Response response = await data.UpdateUsuario_Reto(usuarioReto);
-
-            if (response.Error == 0 && files.Count > 0)
+            if(retoResponse.Error == 0)
             {
-                foreach (IFormFile file in files)
-                {
-                    Guid newId = Guid.NewGuid();
-                    string nombreArchivo = $"{idReto}_{newId}{WC.GetFileExtension(file)}";
-                    string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, "Recoleccion");
-
-                    //Aqui guarda el archivo
-                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
-                    await file.CopyToAsync(fileStream);
-                    await fileStream.DisposeAsync();
-
-                    uxa.Archivo = nombreArchivo;
-                    await data.CreateUsuarioxArchivo(uxa);
+                int fileMaxSize;                
+                switch (retoResponse.Reto.TipoArchivo)
+                {                    
+                    case "Imagen/png jpg jpeg":
+                        {
+                            fileMaxSize = 200;                            
+                            break;
+                        }
+                    default:
+                        {
+                            fileMaxSize = 150;                            
+                            break;
+                        }
                 }
-            }
 
-            if(response.Error == 0 && !string.IsNullOrEmpty(urlsVideos))
-            {
-                List<string> listUrls = JsonConvert.DeserializeObject<List<string>>(urlsVideos);
-
-                foreach (string url in listUrls)
+                
+                if (files.Count > 0)
                 {
-                    Guid newId = Guid.NewGuid();
-                    string nombreArchivo = $"url_{newId}";
-                    uxa.Archivo = nombreArchivo;
-                    uxa.Url = url;
+                    response = VF.ValidarArchivos(_env, files, retoResponse.Reto.Extension, "Recoleccion", fileMaxSize, 0, 0);
 
-                    await data.CreateUsuarioxArchivo(uxa);
+                    if(response.Error == 0)
+                    {
+                        Response responseUpdate = await data.UpdateUsuario_Reto(usuarioReto);       
+                        
+                        if(responseUpdate.Error == 0)
+                        {
+                            foreach (IFormFile file in files)
+                            {
+                                Guid newId = Guid.NewGuid();
+                                string nombreArchivo = $"{idReto}_{newId}{WC.GetFileExtension(file)}";
+                                string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, "Recoleccion");
+
+                                //Aqui guarda el archivo
+                                FileStream fileStream = new(rutaArchivo, FileMode.Create);
+                                await file.CopyToAsync(fileStream);
+                                await fileStream.DisposeAsync();
+
+                                uxa.Archivo = nombreArchivo;
+
+                                await data.CreateUsuarioxArchivo(uxa);
+                            }
+                        }
+                        else
+                        {
+                            response = responseUpdate;
+                        }
+                    }
                 }
+                    
+                if (!string.IsNullOrEmpty(videosNombres))
+                {
+                    List<string> listaVideosNombres = JsonConvert.DeserializeObject<List<string>>(videosNombres);
+
+                    response = VF.ValidarCaracteres(listaVideosNombres);
+
+                    if (response.Error == 0)
+                    {
+                        Response responseUpdate = await data.UpdateUsuario_Reto(usuarioReto);
+
+                        if (responseUpdate.Error == 0)
+                        {
+                            foreach (string videoNombre in listaVideosNombres)
+                            {
+                                Guid newId = Guid.NewGuid();
+                                string nombreArchivo = $"url_{newId}";
+                                uxa.Archivo = nombreArchivo;
+                                uxa.Url = videoNombre;
+
+                                await data.CreateUsuarioxArchivo(uxa);
+                            }
+                        }
+                        else
+                        {
+                            response = responseUpdate;
+                        }
+                    }                    
+                }                
             }
+            else
+            {                
+                response.Error = 1;
+                response.Info = retoResponse.Info;
+            }            
 
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
@@ -513,6 +671,59 @@ namespace WebApiRest.Controllers
 
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
+
+        [HttpPut]
+        [Route("updateUsuarioReto/recoleccion/finalizado/masivo/{puntos}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUsuario_RetoRecleccionFM([FromForm] Guid idReto, [FromForm] string idsUsuario, [FromRoute] int puntos)
+        {
+            Claim userClaim = User.FindFirst("id");
+            Response response = await data.GetUsuario_RetoValidador(idReto, new Guid(userClaim.Value));
+
+            if(response.Error == 0)
+            {
+                if (!string.IsNullOrEmpty(idsUsuario))
+                {
+                    List<string> listIdsUsuario = JsonConvert.DeserializeObject<List<string>>(idsUsuario);
+
+                    response = VF.ValidarCaracteres(listIdsUsuario);
+
+                    if (response.Error == 0)
+                    {
+                        foreach (string idUsuario in listIdsUsuario)
+                        {                        
+                            Usuario_Reto usuarioReto = new()
+                            {
+                                Usuario = new Usuario()
+                                {
+                                    IdUsuario = new Guid(idUsuario)
+                                },
+                                Reto = new Reto()
+                                {
+                                    IdReto = idReto
+                                },
+                                Puntos = puntos,
+                                Tiempo = -1,
+                                Vidas = -1,
+                                Completado = 1,
+                                Correctas = -1,
+                                Incorrectas = -1
+                            };
+
+                            response = await data.UpdateUsuario_Reto(usuarioReto);
+                        }                    
+                    }
+                }
+                else
+                {
+                    response.Info = "Sin usuarios a verificar";
+                    response.Error = 1;
+                }
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
 
         [HttpPut]
         [Route("updateEstado")]

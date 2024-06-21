@@ -111,14 +111,26 @@ create table Usuario(
 	ciudad varchar(30),
 	empresa varchar(40),
 	idArea uniqueidentifier references Area(idArea) null,
-	fechaCreacion datetime default getdate(),
-	fechaModificacion datetime default getdate(),
 	clave varbinary(MAX) not null,
 	idCiudad uniqueidentifier references Ciudad(idCiudad) null,
 	fechaLogin datetime,
 	puntos int not null default 0,
 	creditos int not null default 0,
-	id varchar(20) unique not null
+	id varchar(20) unique not null,
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate(),
+);
+
+create table Novedad(
+	idNovedad uniqueidentifier primary key default newid(),
+	mensaje varchar(250) not null,
+	auxMsg varchar(100),
+	idUsuario uniqueidentifier references Usuario(idUsuario) not null,
+	idTabla uniqueidentifier,
+	tabla varchar(30),	
+	ruta varchar(60),
+	fechaCreacion datetime default getdate(),
+	fechaModificacion datetime default getdate(),
 );
 
 create table Nivel(
@@ -280,6 +292,7 @@ create table TipoArchivo(
 	idTipoArchivo uniqueidentifier primary key default newid(),
 	nombre varchar(20) unique not null,
 	descripcion varchar(250),
+	extension varchar(20) not null,
 	estado int default 1,
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate()
@@ -378,6 +391,7 @@ create table UsuarioxOpcion(
 	idOpcion uniqueidentifier not null,
 	idUsuario uniqueidentifier not null,
 	respuesta varchar(350),
+	idUserValidador uniqueidentifier,
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate()
 )

@@ -14,7 +14,7 @@ export class UsuarioService {
 
   helper = new JwtHelperService();
   private timeoutId!: number;
-  private tiempoDeInactividad: number = 1500000; // esta en milisegundos
+  private tiempoDeInactividad: number = 1200000; // esta en milisegundos
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -46,7 +46,7 @@ export class UsuarioService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.getToken()}`,
     });
-    return this.http.get<Usuario[]>(`${this.apiURL}/buscar/${texto}`, {
+    return this.http.get<Usuario[]>(`${this.apiURL}/buscar?texto=${texto}`, {
       headers: headers,
     });
   }
@@ -295,14 +295,14 @@ export class UsuarioService {
   }
 
   startWatching() {
-    console.log('Start');
+    //console.log('Start');
     this.resetTimer();
     document.addEventListener('mousemove', () => this.resetTimer());
     document.addEventListener('keydown', () => this.resetTimer());
   }
 
   clearWatching() {
-    console.log('Stop');
+    //console.log('Stop');
     clearTimeout(this.timeoutId);
   }
 }

@@ -5,7 +5,7 @@ import { Nivel } from 'src/app/Models/Nivel';
 import { Recompensa } from 'src/app/Models/Recompensa';
 import { Usuario_Reto } from 'src/app/Models/Reto';
 import { Usuario } from 'src/app/Models/Usuario';
-import { GetImage, Loading } from 'src/app/Utils/Constants';
+import { ChangeRoute, GetImage, Loading } from 'src/app/Utils/Constants';
 import { RedSocialService } from 'src/app/services/red-social.service';
 
 @Component({
@@ -16,6 +16,7 @@ import { RedSocialService } from 'src/app/services/red-social.service';
 export class RedUserComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   loading = Loading();
+  changeRoute = ChangeRoute();
 
   idRed: string = '';
 
@@ -80,7 +81,7 @@ export class RedUserComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       this.idRed = params['red'];
       if (this.idRed === '') {
-        history.back();
+        this.changeRoute('/404', {});
       }
     });
   }
@@ -110,7 +111,7 @@ export class RedUserComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });

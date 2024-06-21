@@ -10,6 +10,12 @@ export class IconModule {
   ) {
     /********** MENU **********/
     this._matIconRegistry.addSvgIcon(
+      'bell',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/packard-bell.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
       'casa',
       this._domZanitizer.bypassSecurityTrustResourceUrl('assets/icons/casa.svg')
     );
@@ -141,6 +147,12 @@ export class IconModule {
       'encuesta',
       this._domZanitizer.bypassSecurityTrustResourceUrl(
         'assets/icons/lista-de-verificacion.svg'
+      )
+    );
+    this._matIconRegistry.addSvgIcon(
+      'preguntas',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/preguntas-mas-frecuentes.svg'
       )
     );
 

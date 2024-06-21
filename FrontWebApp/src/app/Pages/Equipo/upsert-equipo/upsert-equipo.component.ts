@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Equipo } from 'src/app/Models/Equipo';
 import {
   AlertError,
+  ChangeRoute,
   GetImage,
   ImgHeightMax,
   ImgSizeMax,
@@ -33,6 +34,7 @@ export class UpsertEquipoComponent implements OnInit, AfterViewInit {
   loading = Loading();
   setUpsert = SetUpsert();
   caracterInvalid = CaracterInvalid();
+  changeRoute = ChangeRoute();
   sugerenciaImagen = SugerenciaImagen;
 
   type: string = '';
@@ -101,7 +103,7 @@ export class UpsertEquipoComponent implements OnInit, AfterViewInit {
       this.type = params['type'];
       let idEquipo = params['equipo'];
       if (idEquipo === '' && this.type === 'editar') {
-        history.back();
+        this.changeRoute('/404', {});
       }
       switch (this.type) {
         case 'crear': {
@@ -115,7 +117,7 @@ export class UpsertEquipoComponent implements OnInit, AfterViewInit {
         }
         default: {
           this.titulo = '';
-          history.back();
+          this.changeRoute('/404', {});
           break;
         }
       }
@@ -139,7 +141,7 @@ export class UpsertEquipoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -162,8 +164,7 @@ export class UpsertEquipoComponent implements OnInit, AfterViewInit {
           break;
         }
         default: {
-          this.loading(false, false);
-          history.back();
+          this.changeRoute('/404', {});
           break;
         }
       }
@@ -194,8 +195,7 @@ export class UpsertEquipoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -221,8 +221,7 @@ export class UpsertEquipoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });

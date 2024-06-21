@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Configuracion } from 'src/app/Models/Configuracion';
 import {
   AlertError,
+  ChangeRoute,
   GetImage,
   ImgSizeMaxConfig,
   Loading,
@@ -24,6 +25,7 @@ export class MarcaComponent implements OnInit, AfterViewInit {
   loading = Loading();
   getImage = GetImage();
   alertError = AlertError();
+  changeRoute = ChangeRoute();
 
   configIndex: number = 0;
 
@@ -152,7 +154,11 @@ export class MarcaComponent implements OnInit, AfterViewInit {
       },
       error: (e) => {
         console.error(e);
-        this.alertError(TitleError, MsgError);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.changeRoute('/404', {});
+        }
       },
     });
   }
@@ -229,8 +235,7 @@ export class MarcaComponent implements OnInit, AfterViewInit {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
-            this.alertError(TitleError, MsgError);
-            this.loading(false, false);
+            this.changeRoute('/404', {});
           }
         },
       });
@@ -259,8 +264,7 @@ export class MarcaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });

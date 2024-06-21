@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Reto, Usuario_Reto } from 'src/app/Models/Reto';
 import { Usuario } from 'src/app/Models/Usuario';
 import {
+  ChangeRoute,
   FormatTiempo,
   GetImage,
   GetTypeTime,
@@ -20,6 +21,7 @@ export class FinRetoComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   formatTiempo = FormatTiempo();
   getTypeTime = GetTypeTime();
+  changeRoute = ChangeRoute();
 
   id: string = '';
 
@@ -91,6 +93,8 @@ export class FinRetoComponent implements OnInit, AfterViewInit {
     completado: 0,
     tieneEquipo: 0,
     archivos: [],
+    totalOpsValidador: 0,
+    totalOpsValidaciones: 0,
     correctas: 0,
     incorrectas: 0,
     fechaCreacion: new Date(),
@@ -116,7 +120,7 @@ export class FinRetoComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       let idReto = params['reto'];
       if (!params['reto']) {
-        history.back();
+        this.changeRoute('/404', {});
       }
       this.id = idReto;
     });
@@ -150,7 +154,7 @@ export class FinRetoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });

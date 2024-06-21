@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MathNet.Numerics.Distributions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -52,9 +53,9 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
-        [Route("buscar/{texto}")]
+        [Route("buscar")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> List([FromRoute] string texto)
+        public async Task<IActionResult> List([FromQuery] string texto)
         {
             UsuarioList response = await data.GetUsuarioList(texto);
             return StatusCode(StatusCodes.Status200OK, new { response });
@@ -123,11 +124,11 @@ namespace WebApiRest.Controllers
             Response response = new();
             DataTable dt = new();
 
-            string hora = WC.GetHoraActual(DateTime.Now);
-            string nombreArchivo = $"Usuarios{hora}.xls";
-            string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, nombreCarpeta);
+            //string hora = WC.GetHoraActual(DateTime.Now);
+            //string nombreArchivo = $"Usuarios{hora}.xls";
+            //string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, nombreCarpeta);
 
-            WC.EliminarArchivosAntiguos(_env, nombreCarpeta, "Usuarios");
+            //WC.EliminarArchivosAntiguos(_env, nombreCarpeta, "Usuarios");
 
             dt.Columns.Add("NOMBRE", typeof(string));
             dt.Columns.Add("APELLIDO", typeof(string));
@@ -165,7 +166,7 @@ namespace WebApiRest.Controllers
                     }
 
                     HSSFWorkbook workbook = new();
-                    ISheet hoja = workbook.CreateSheet("Salas");
+                    ISheet hoja = workbook.CreateSheet("Usuarios");
                     IRow headerRow = hoja.CreateRow(0);
 
                     for (int i = 0; i < dt.Columns.Count; i++)
@@ -184,11 +185,12 @@ namespace WebApiRest.Controllers
                     }
 
                     //Aqui crea el archivo
-                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
-                    workbook.Write(fileStream);
-                    fileStream.Dispose();
+                    //FileStream fileStream = new(rutaArchivo, FileMode.Create);
+                    //workbook.Write(fileStream);
+                    //fileStream.Dispose();
 
-                    response.Info = nombreArchivo;
+                    response.Info = WC.GetSatisfactorio();
+                    response.File = WC.GetBytesExcel(workbook);
                     response.Error = 0;
                 }
                 else
@@ -308,7 +310,7 @@ namespace WebApiRest.Controllers
 
             if (response.Error == 0)
             {                                
-                if (usuario.Contrasena.Equals(response.Usuario.Contrasena))
+                if (WC.GetTrim(usuario.Contrasena).Equals(response.Usuario.Contrasena))
                 {
                     var keyBytes = Encoding.ASCII.GetBytes(settings.SecretKey);
                     var claims = new ClaimsIdentity();
@@ -342,8 +344,8 @@ namespace WebApiRest.Controllers
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }        
-
+        }
+       
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "adm,sadm")]
@@ -354,10 +356,11 @@ namespace WebApiRest.Controllers
 
             if (archivo != null && response.Error == 0)
             {
+                string fileName = WC.GetUniqueFileName(archivo, "usr");
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
-                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, fileName, nombreCarpeta);
 
-                usuario.Foto = archivo.FileName.Trim();
+                usuario.Foto = fileName;
             }
             else
             {
@@ -491,10 +494,11 @@ namespace WebApiRest.Controllers
 
             if (archivo != null && response.Error == 0)
             {
+                string fileName = WC.GetUniqueFileName(archivo, "usr");
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
-                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, fileName, nombreCarpeta);
 
-                usuario.Foto = archivo.FileName.Trim();
+                usuario.Foto = fileName;
             }
             else
             {

@@ -35,8 +35,18 @@
     </button>
     <ul class="navbar-nav ms-3 mb-0">
       <li class="nav-item">
-        <a class="nav-link active" aria-current="page" routerLink=""
-          ><i class="fa-solid fa-bell"></i>
+        <a
+          class="nav-link active pointer badge-icon"
+          data-bs-toggle="modal"
+          data-bs-target="#notificaciones"
+        >
+          <i class="fa-regular fa-bell"></i>
+          <span class="badge x1 bg bg-tertiary" *ngIf="novedades.length > 99"
+            >99+</span
+          >
+          <span class="badge bg bg-tertiary" *ngIf="novedades.length < 100">{{
+            cantNovedades
+          }}</span>
         </a>
       </li>
     </ul>
@@ -335,6 +345,23 @@
   />
 </footer>
 <!-- End Footer -->
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="notificaciones"
+  tabindex="-1"
+  aria-labelledby="notificacionesLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <app-novedades
+      [novedades]="novedades"
+      (numItem)="onNotifyChild($event)"
+    ></app-novedades>
+  </div>
+</div>
+<!-- End Modal -->
 
 <!-- Este no se que sera -->
 <!-- <div [ngSwitch]="selection.value">

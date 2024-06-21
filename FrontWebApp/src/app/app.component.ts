@@ -24,13 +24,15 @@ import {
 import { Configuracion } from './Models/Configuracion';
 import { GetBreadcrumb, GetNavItemPills } from './Utils/DefaultLists';
 import { Links } from './Models/Links';
+import { NovedadService } from './services/novedad.service';
+import { Novedad } from './Models/Novedad';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit, AfterContentInit {
+export class AppComponent implements OnInit {
   alertError = AlertError();
   getImage = GetImage();
   getBreadcrumb = GetBreadcrumb();
@@ -55,12 +57,16 @@ export class AppComponent implements OnInit, AfterContentInit {
   imgHeader: string = '';
   imgFooter: string = '';
 
+  novedades: Novedad[] = [];
+  cantNovedades: number = 0;
+
   constructor(
     private router: Router,
     private renderer: Renderer2,
     private el: ElementRef,
     private usuarioServicio: UsuarioService,
-    private configuracionService: ConfiguracionService
+    private configuracionService: ConfiguracionService,
+    private novedadService: NovedadService
   ) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -68,7 +74,6 @@ export class AppComponent implements OnInit, AfterContentInit {
         next: (data: any) => {
           this.url = data.url;
 
-          this.breadcrumbList = this.getBreadcrumb(this.url, this.idRol);
           this.pillsList = this.getNavItemPills(this.url);
 
           if (this.url === '/') {
@@ -81,6 +86,7 @@ export class AppComponent implements OnInit, AfterContentInit {
             this.url.includes('/activate-user')
           ) {
             this.showNavbar = false;
+            this.breadcrumbList = [];
           } else {
             this.showNavbar = true;
             if (usuarioServicio.loggedIn()) {
@@ -88,6 +94,10 @@ export class AppComponent implements OnInit, AfterContentInit {
               this.rolName = this.usuarioServicio.getRolName();
               this.userName = this.usuarioServicio.getUserName();
               this.userFoto = this.usuarioServicio.getUserFoto();
+
+              this.breadcrumbList = this.getBreadcrumb(this.url, this.idRol);
+
+              this.cargarNovedad();
             }
           }
 
@@ -107,7 +117,10 @@ export class AppComponent implements OnInit, AfterContentInit {
     }
   }
 
-  ngAfterContentInit(): void {}
+  onNotifyChild(data: { value: number; eliminarTodo: boolean }): void {
+    let { value, eliminarTodo } = data;
+    eliminarTodo ? (this.cantNovedades = 0) : (this.cantNovedades += value);
+  }
 
   cargarConfig() {
     let hostElement = this.el.nativeElement;
@@ -142,7 +155,38 @@ export class AppComponent implements OnInit, AfterContentInit {
       },
       error: (e) => {
         console.error(e);
-        this.alertError(TitleError, MsgErrorConexion);
+        if (this.usuarioServicio.loggedIn()) {
+          if (e.status === 401 || e.status === 403) {
+            this.router.navigate(['/']);
+          } else {
+            this.changeRoute('/404', {});
+          }
+        } else {
+          this.alertError(TitleErrorForm, MsgError);
+        }
+      },
+    });
+  }
+
+  cargarNovedad() {
+    this.novedadService.getList().subscribe({
+      next: (data: any) => {
+        console.log(data);
+        let { error, info, lista } = data.response;
+        if (error === 0) {
+          this.novedades = lista;
+          this.cantNovedades = Number(info.split(':')[1]);
+        } else {
+          this.alertError(TitleErrorForm, info);
+        }
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.changeRoute('/404', {});
+        }
       },
     });
   }

@@ -1,0 +1,8 @@
+<div class="video-container" *ngIf="url !== ''">
+  <iframe
+    [src]="url | safeResourceUrl"
+    title="video"
+    allow="autoplay"
+    allowfullscreen
+  ></iframe>
+</div>

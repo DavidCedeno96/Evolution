@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { IconModule } from './icons/icons.module';
+import { IconModule } from './securityTrustHtml/icons.module';
 
 @NgModule({
   declarations: [],

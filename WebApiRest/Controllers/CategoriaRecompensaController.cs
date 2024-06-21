@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.POIFS.Crypt.Dsig;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -24,9 +22,9 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
-        [Route("buscar/{texto}")]
+        [Route("buscar")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Buscar([FromRoute] string texto)
+        public async Task<IActionResult> Buscar([FromQuery] string texto)
         {
             CategoriaList response = await data.GetCategoriaRecompensaList(texto);
             return StatusCode(StatusCodes.Status200OK, new { response });

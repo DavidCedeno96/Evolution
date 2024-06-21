@@ -318,7 +318,8 @@ namespace WebApiRest.Data
                         Usuario = new Usuario()
                         {
                             IdUsuario = new Guid(dr["idUsuario"].ToString()),
-                        },                        
+                        },
+                        TotalOpsValidaciones = Convert.ToInt32(dr["totalOpsValidaciones"].ToString()),
                         Completado = Convert.ToInt32(dr["completado"].ToString()),
                         Puntos = Convert.ToInt32(dr["puntos"].ToString()),
                         Tiempo = Convert.ToInt32(dr["tiempo"].ToString()),
@@ -591,7 +592,9 @@ namespace WebApiRest.Data
                         Reto = new Reto()
                         {
                             IdReto = new Guid(dr["idReto"].ToString()),
-                        },      
+                            IdTipoReto = new Guid(dr["idTipoReto"].ToString()),                            
+                            TipoReto = dr["tipoReto"].ToString(),
+                        },                              
                         Completado = Convert.ToInt32(dr["completado"].ToString()),
                         Validador = Convert.ToInt32(dr["validador"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
@@ -723,6 +726,7 @@ namespace WebApiRest.Data
                         TipoValidador = dr["tipoValidador"].ToString(),
                         IdTipoArchivo = new Guid(dr["idTipoArchivo"].ToString()),
                         TipoArchivo = dr["tipoArchivo"].ToString(),
+                        Extension = dr["extensionArchivo"].ToString(),
                         OpsRequeridas = Convert.ToInt32(dr["opsRequeridas"].ToString()),
                         CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
                         TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),
@@ -857,7 +861,7 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<Usuario_RetoList> GetUsuario_RetoxValidarByReto(Guid idReto)
+        public async Task<Usuario_RetoList> GetUsuario_RetoxValidarByReto(Guid idReto, Guid idUserValidador)
         {
             Usuario_RetoList list = new()
             {
@@ -872,6 +876,7 @@ namespace WebApiRest.Data
             };
 
             cmd.Parameters.AddWithValue("@idReto", idReto);
+            cmd.Parameters.AddWithValue("@idUserValidador", idUserValidador);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -894,7 +899,6 @@ namespace WebApiRest.Data
                             Nombre = dr["nombre"].ToString(),
                             Apellido = dr["apellido"].ToString(),
                             Correo = dr["correo"].ToString(),                            
-                            
                         },
                         Reto = new Reto()
                         {
@@ -905,6 +909,7 @@ namespace WebApiRest.Data
                             IdTipoReto = new Guid(dr["idTipoReto"].ToString()),
                             TipoReto = dr["tipoReto"].ToString(),
                         },
+                        TotalOpsValidador = Convert.ToInt32(dr["totalOpsValidador"].ToString()),
                         Completado = Convert.ToInt32(dr["completado"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString()),
@@ -1121,7 +1126,7 @@ namespace WebApiRest.Data
             }
 
             return response;
-        }
+        }        
 
         public async Task<Response> UpdateReto(Reto reto)
         {

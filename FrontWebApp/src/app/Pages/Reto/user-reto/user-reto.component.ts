@@ -76,8 +76,7 @@ export class UserRetoComponent implements OnInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.load(false, false);
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -110,7 +109,7 @@ export class UserRetoComponent implements OnInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });

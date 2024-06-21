@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Categoria } from 'src/app/Models/Adicional';
 import {
   AlertError,
+  ChangeRoute,
   Loading,
   MsgError,
   MsgErrorForm,
@@ -26,6 +27,7 @@ export class UpsertCategoriaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   setUpsert = SetUpsert();
+  changeRoute = ChangeRoute();
   caracterInvalid = CaracterInvalid();
 
   type: string = '';
@@ -88,7 +90,7 @@ export class UpsertCategoriaComponent implements OnInit, AfterViewInit {
       this.type = params['type'];
       let idCategoria = params['categoria'];
       if (idCategoria === '' && this.type === 'editar') {
-        history.back();
+        this.changeRoute('/404', {});
       }
       switch (this.type) {
         case 'crear': {
@@ -102,7 +104,7 @@ export class UpsertCategoriaComponent implements OnInit, AfterViewInit {
         }
         default: {
           this.titulo = '';
-          history.back();
+          this.changeRoute('/404', {});
           break;
         }
       }
@@ -126,7 +128,7 @@ export class UpsertCategoriaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -149,8 +151,7 @@ export class UpsertCategoriaComponent implements OnInit, AfterViewInit {
           break;
         }
         default: {
-          this.loading(false, false);
-          history.back();
+          this.changeRoute('/404', {});
           break;
         }
       }
@@ -181,8 +182,7 @@ export class UpsertCategoriaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -208,8 +208,7 @@ export class UpsertCategoriaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });

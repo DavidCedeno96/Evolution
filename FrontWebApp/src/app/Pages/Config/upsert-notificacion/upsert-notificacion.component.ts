@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Notificacion } from 'src/app/Models/Notificacion';
 import {
   AlertError,
+  ChangeRoute,
   Loading,
   MsgError,
   MsgErrorForm,
@@ -24,6 +25,7 @@ export class UpsertNotificacionComponent implements OnInit, AfterViewInit {
   loading = Loading();
   caracterInvalid = CaracterInvalid();
   setUpsert = SetUpsert();
+  changeRoute = ChangeRoute();
 
   id: string = '';
   titulo: string = 'Editar Notificación';
@@ -89,7 +91,7 @@ export class UpsertNotificacionComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       let idNotificacion = params['notificacion'];
       if (!params['notificacion']) {
-        history.back();
+        this.changeRoute('/404', {});
       } else {
         this.id = idNotificacion;
       }
@@ -118,7 +120,7 @@ export class UpsertNotificacionComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -155,8 +157,7 @@ export class UpsertNotificacionComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });

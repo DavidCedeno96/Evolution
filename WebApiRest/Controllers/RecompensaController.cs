@@ -42,9 +42,9 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
-        [Route("buscar")]
+        [Route("buscar/{idCategoria}")]
         [Authorize]
-        public async Task<IActionResult> Buscar([FromQuery] string texto, [FromQuery] string idCategoria)
+        public async Task<IActionResult> Buscar([FromRoute] string idCategoria, [FromQuery] string texto)
         {
             RecompensaList response = await data.GetRecompensaList(texto, idCategoria);
             return StatusCode(StatusCodes.Status200OK, new { response });
@@ -67,11 +67,11 @@ namespace WebApiRest.Controllers
             Response response = new();
             DataTable dt = new();
 
-            string hora = WC.GetHoraActual(DateTime.Now);
-            string nombreArchivo = $"Recompensas{hora}.xls";
-            string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, nombreCarpeta);
+            //string hora = WC.GetHoraActual(DateTime.Now);
+            //string nombreArchivo = $"Recompensas{hora}.xls";
+            //string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, nombreCarpeta);
 
-            WC.EliminarArchivosAntiguos(_env, nombreCarpeta, "Recompensas");
+            //WC.EliminarArchivosAntiguos(_env, nombreCarpeta, "Recompensas");
 
             dt.Columns.Add("NOMBRE", typeof(string));
             dt.Columns.Add("DESCRIPCIÓN", typeof(string));
@@ -118,11 +118,12 @@ namespace WebApiRest.Controllers
                     }
 
                     //Aqui crea el archivo
-                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
-                    workbook.Write(fileStream);
-                    fileStream.Dispose();
+                    //FileStream fileStream = new(rutaArchivo, FileMode.Create);
+                    //workbook.Write(fileStream);
+                    //fileStream.Dispose();
 
-                    response.Info = nombreArchivo;
+                    response.Info = WC.GetSatisfactorio();
+                    response.File = WC.GetBytesExcel(workbook);
                     response.Error = 0;
                 }
                 else
@@ -150,10 +151,11 @@ namespace WebApiRest.Controllers
 
             if (archivo != null && response.Error == 0)
             {
+                string fileName = WC.GetUniqueFileName(archivo, "rec");
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
-                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, fileName, nombreCarpeta);
 
-                recompensa.Imagen = archivo.FileName.Trim();
+                recompensa.Imagen = fileName;
             }
             else
             {
@@ -185,10 +187,11 @@ namespace WebApiRest.Controllers
 
             if (archivo != null && response.Error == 0)
             {
+                string fileName = WC.GetUniqueFileName(archivo, "rec");
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
-                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, fileName, nombreCarpeta);
 
-                recompensa.Imagen = archivo.FileName.Trim();
+                recompensa.Imagen = fileName;
             }
             else
             {

@@ -4,7 +4,10 @@ import { Opcion, PreguntaOpciones } from 'src/app/Models/Pregunta';
 import { Chart } from 'chart.js/auto';
 import {
   AlertError,
+  ChangeRoute,
+  FontFamily,
   GetArchivo,
+  GetColor,
   GetColors,
   Loading,
   MsgArchivoDescargado,
@@ -16,6 +19,7 @@ import {
 } from 'src/app/Utils/Constants';
 import { PreguntaService } from 'src/app/services/pregunta.service';
 import { MessageService } from 'primeng/api';
+import { Reto } from 'src/app/Models/Reto';
 
 @Component({
   selector: 'app-results',
@@ -27,7 +31,9 @@ export class ResultsComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   getColors = GetColors();
+  getColor = GetColor();
   getArchivo = GetArchivo();
+  changeRoute = ChangeRoute();
 
   first: number = 0;
   rows: number = 6; // items por página
@@ -54,10 +60,44 @@ export class ResultsComponent implements OnInit, AfterViewInit {
           correcta: 0,
           cantVotos: 0,
           valor: 0,
+          cantVotosXvalor: 0,
         },
       ],
     },
   ];
+
+  reto: Reto = {
+    idReto: '7c8c2672-2233-486a-a184-f0b51eb4a331',
+    nombre: '',
+    fechaApertura: new Date(),
+    fechaCierre: new Date(),
+    vidas: 0,
+    tiempo_ms: 0,
+    puntosRecompensa: 0,
+    creditosObtenidos: 0,
+    instrucciones: '',
+    criterioMinimo: 0,
+    imagen: '',
+    idTipoReto: '',
+    tipoReto: '',
+    idTipoEncuesta: '',
+    tipoEncuesta: '',
+    idComportamiento: '',
+    comportamientoPregunta: '',
+    idTipoArchivo: '',
+    tipoArchivo: '',
+    idTipoValidador: '',
+    tipoValidador: '',
+    totalPreguntas: 0,
+    usuariosAsignados: 0,
+    equiposAsignados: 0,
+    validadores: 0,
+    puedeValidar: 0,
+    enEquipo: -1,
+    opsRequeridas: 1,
+    items: 0,
+    estado: 0,
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -79,7 +119,7 @@ export class ResultsComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       this.idReto = params['reto'];
       if (this.idReto === '' || !params['reto']) {
-        history.back();
+        this.changeRoute('/404', {});
       }
     });
   }
@@ -87,9 +127,10 @@ export class ResultsComponent implements OnInit, AfterViewInit {
   cargarData() {
     this.preguntaServicio.getList(-1, this.idReto).subscribe({
       next: (data: any) => {
-        let { error, info, list } = data.response;
+        let { error, info, list, reto } = data.response;
         if (error === 0) {
           this.preguntaOpciones = list;
+          this.reto = reto;
 
           this.info = SinRegistros;
         } else {
@@ -102,24 +143,96 @@ export class ResultsComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
   }
 
-  exportarArchivo() {
+  onExport() {
     if (this.preguntaOpciones.length) {
-      this.loading(true, false);
-      this.preguntaServicio.reporteResultados(-1, this.idReto).subscribe({
+      if (this.reto.tipoReto === 'Comportamiento') {
+        this.exportarArchivoComportamiento();
+      } else {
+        this.exportarArchivo();
+      }
+    } else {
+      this.alertError(TitleErrorArchivo, SinRegistros);
+    }
+  }
+
+  exportarArchivo() {
+    this.loading(true, false);
+    this.preguntaServicio.reporteResultados(-1, this.idReto).subscribe({
+      next: (data: any) => {
+        let { info, error, file } = data.response;
+        if (error === 0) {
+          const byteArray = new Uint8Array(
+            atob(file)
+              .split('')
+              .map((char) => char.charCodeAt(0))
+          );
+
+          const blob = new Blob([byteArray], {
+            type: 'application/vnd.ms-excel',
+          });
+
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'Resultados.xls';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+
+          this.messageService.add({
+            severity: 'success',
+            summary: MsgOk,
+            detail: MsgArchivoDescargado,
+          });
+        } else {
+          this.alertError(TitleErrorArchivo, info);
+        }
+        this.loading(false, false, 1000);
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.changeRoute('/404', {});
+        }
+      },
+    });
+  }
+
+  exportarArchivoComportamiento() {
+    this.loading(true, false);
+    this.preguntaServicio
+      .reporteResultadosComportamiento(-1, this.idReto)
+      .subscribe({
         next: (data: any) => {
-          let { info, error } = data.response;
+          let { info, error, file } = data.response;
           if (error === 0) {
-            let url = this.getArchivo(info, 'Pregunta');
-            const element = document.createElement('a');
-            element.download = `Preguntas.xls`;
-            element.href = url;
-            element.click();
+            const byteArray = new Uint8Array(
+              atob(file)
+                .split('')
+                .map((char) => char.charCodeAt(0))
+            );
+
+            const blob = new Blob([byteArray], {
+              type: 'application/vnd.ms-excel',
+            });
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Resultados.xls';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
 
             this.messageService.add({
               severity: 'success',
@@ -136,14 +249,10 @@ export class ResultsComponent implements OnInit, AfterViewInit {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
-            this.loading(false, false, 600);
-            this.alertError(TitleErrorArchivo, MsgErrorArchivo);
+            this.changeRoute('/404', {});
           }
         },
       });
-    } else {
-      this.alertError(TitleErrorArchivo, SinRegistros);
-    }
   }
 
   getTotalVotos(options: Opcion[]): number {
@@ -193,11 +302,72 @@ export class ResultsComponent implements OnInit, AfterViewInit {
             },
             font: {
               size: 15,
-              family:
-                "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', 'Liberation Sans', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
+              family: FontFamily,
               weight: 'normal',
             },
           },
+        },
+      },
+    };
+  }
+
+  getChartRadar(options: Opcion[], pregunta: string) {
+    let label = 'Cantidad de votos por escala';
+    let listOptions: string[] = options.map((item: Opcion) => item.nombre);
+    let listCantVotosXvalor: number[] = options.map(
+      (item: Opcion) => item.cantVotosXvalor
+    );
+
+    let color: string[] = this.getColor(0.2);
+
+    const data = {
+      labels: listOptions,
+      datasets: [
+        {
+          label,
+          data: listCantVotosXvalor,
+          fill: true,
+          backgroundColor: color[0],
+          borderColor: color[1],
+          pointBackgroundColor: color[1],
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: color[1],
+        },
+      ],
+    };
+
+    return {
+      type: 'radar',
+      data: data,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: '',
+          },
+          title: {
+            display: true,
+            text: this.getTextLines(pregunta),
+            padding: {
+              top: 20,
+              bottom: 30,
+            },
+            font: {
+              size: 15,
+              family: FontFamily,
+              weight: 'normal',
+            },
+          },
+          filler: {
+            propagate: false,
+          },
+          'samples-filler-analyser': {
+            target: 'chart-analyser',
+          },
+        },
+        interaction: {
+          intersect: false,
         },
       },
     };
@@ -238,8 +408,7 @@ export class ResultsComponent implements OnInit, AfterViewInit {
             text: this.getTextLines(pregunta),
             font: {
               size: 17,
-              family:
-                "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', 'Liberation Sans', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
+              family: FontFamily,
               weight: 'normal',
             },
           },

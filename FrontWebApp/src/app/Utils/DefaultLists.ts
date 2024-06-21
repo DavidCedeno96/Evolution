@@ -561,6 +561,7 @@ export const GetBreadcrumb = () => {
       case '/upsert-pregunta/encuesta/voto':
       case '/upsert-pregunta/encuesta/satisfaccion':
       case '/upsert-pregunta/seguimiento-evaluacion':
+      case '/upsert-pregunta/comportamiento':
       case '/view-pregunta': {
         lista = [
           {
@@ -1066,7 +1067,7 @@ export const GetNavItemPills = () => {
 };
 
 /* OPCIONES DEL RETO DE TIPO ENCUESTA SATISFACCION */
-export const OptionsList: Opcion[] = [
+export const OptionsListSatisfaccion: Opcion[] = [
   {
     idOpcion: '',
     idPregunta: '',
@@ -1076,6 +1077,7 @@ export const OptionsList: Opcion[] = [
     correcta: 0,
     cantVotos: 0,
     valor: 1,
+    cantVotosXvalor: 0,
   },
   {
     idOpcion: '',
@@ -1086,6 +1088,7 @@ export const OptionsList: Opcion[] = [
     correcta: 0,
     cantVotos: 0,
     valor: 2,
+    cantVotosXvalor: 0,
   },
   {
     idOpcion: '',
@@ -1096,6 +1099,7 @@ export const OptionsList: Opcion[] = [
     correcta: 0,
     cantVotos: 0,
     valor: 3,
+    cantVotosXvalor: 0,
   },
   {
     idOpcion: '',
@@ -1106,6 +1110,7 @@ export const OptionsList: Opcion[] = [
     correcta: 0,
     cantVotos: 0,
     valor: 4,
+    cantVotosXvalor: 0,
   },
   {
     idOpcion: '',
@@ -1116,5 +1121,65 @@ export const OptionsList: Opcion[] = [
     correcta: 0,
     cantVotos: 0,
     valor: 5,
+    cantVotosXvalor: 0,
+  },
+];
+
+/* OPCIONES DEL RETO DE TIPO COMPORTAMIENTO */
+export const OptionsListComportamiento: Opcion[] = [
+  {
+    idOpcion: '',
+    idPregunta: '',
+    idTipoEntrada: '',
+    tipoEntrada: '',
+    nombre: 'Nunca',
+    correcta: 0,
+    cantVotos: 0,
+    valor: 1,
+    cantVotosXvalor: 0,
+  },
+  {
+    idOpcion: '',
+    idPregunta: '',
+    idTipoEntrada: '',
+    tipoEntrada: '',
+    nombre: 'Rara Vez',
+    correcta: 0,
+    cantVotos: 0,
+    valor: 2,
+    cantVotosXvalor: 0,
+  },
+  {
+    idOpcion: '',
+    idPregunta: '',
+    idTipoEntrada: '',
+    tipoEntrada: '',
+    nombre: 'A Veces',
+    correcta: 0,
+    cantVotos: 0,
+    valor: 3,
+    cantVotosXvalor: 0,
+  },
+  {
+    idOpcion: '',
+    idPregunta: '',
+    idTipoEntrada: '',
+    tipoEntrada: '',
+    nombre: 'Frecuentemente',
+    correcta: 0,
+    cantVotos: 0,
+    valor: 4,
+    cantVotosXvalor: 0,
+  },
+  {
+    idOpcion: '',
+    idPregunta: '',
+    idTipoEntrada: '',
+    tipoEntrada: '',
+    nombre: 'Siempre',
+    correcta: 0,
+    cantVotos: 0,
+    valor: 5,
+    cantVotosXvalor: 0,
   },
 ];

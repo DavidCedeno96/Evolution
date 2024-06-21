@@ -18,13 +18,11 @@ import {
   MsgActivado,
   MsgArchivoDescargado,
   MsgDesactivado,
-  MsgError,
   MsgErrorArchivo,
   MsgFormatoDescargado,
   MsgOk,
   SetUpsert,
   SinRegistros,
-  TitleError,
   TitleErrorArchivo,
   TitleErrorForm,
   Upsert,
@@ -130,8 +128,7 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -164,7 +161,7 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -237,8 +234,7 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
       },
       error: (e) => {
         console.error(e);
-        this.alertError(TitleError, MsgError);
-        this.loading(false, false);
+        this.changeRoute('/404', {});
       },
     });
   }
@@ -248,13 +244,26 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
       this.loading(true, false);
       this.usuarioServicio.reporteUsuarios(-1).subscribe({
         next: (data: any) => {
-          let { info, error } = data.response;
+          let { info, error, file } = data.response;
           if (error === 0) {
-            let url = this.getArchivo(info, 'Usuario');
-            const element = document.createElement('a');
-            element.download = `Usuarios.xls`;
-            element.href = url;
-            element.click();
+            const byteArray = new Uint8Array(
+              atob(file)
+                .split('')
+                .map((char) => char.charCodeAt(0))
+            );
+
+            const blob = new Blob([byteArray], {
+              type: 'application/vnd.ms-excel',
+            });
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Usuarios.xls';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
 
             this.messageService.add({
               severity: 'success',
@@ -271,8 +280,7 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
-            this.loading(false, false);
-            this.alertError(TitleErrorArchivo, MsgErrorArchivo);
+            this.changeRoute('/404', {});
           }
         },
       });
@@ -306,7 +314,7 @@ export class ViewUserComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });

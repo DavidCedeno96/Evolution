@@ -22,6 +22,7 @@
         public string ComportamientoPregunta { get; set; }
         public string TipoArchivo { get; set; }
         public Guid IdTipoArchivo { get; set; }
+        public string Extension { get; set; }
         public string TipoValidador { get; set; }
         public Guid IdTipoValidador { get; set; }        
         public int OpsRequeridas { get; set; }
@@ -81,6 +82,8 @@
         public int Completado { get; set; }
         public int TieneEquipo { get; set; }
         public int Validador { get; set; }
+        public int TotalOpsValidador { get; set; }
+        public int TotalOpsValidaciones { get; set; }
         public int Correctas { get; set; }
         public int Incorrectas { get; set; }
         public List<UsuarioxArchivo> Archivos { get; set; }
@@ -116,6 +119,7 @@
     {
         public string Info { get; set; }
         public int Error { get; set; }
+        public byte[] File { get; set; }
         public List<UsuarioxArchivo> Lista { get; set; }
     }
 }

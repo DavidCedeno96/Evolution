@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Response } from 'src/app/Models/Response';
 import {
   AlertError,
+  ChangeRoute,
   Loading,
   MsgError,
   MsgErrorForm,
@@ -21,6 +22,7 @@ import { RetoService } from 'src/app/services/reto.service';
 export class MassActionsAsigUserRetoComponent implements OnInit {
   alertError = AlertError();
   loading = Loading();
+  changeRoute = ChangeRoute();
 
   verErrorsInputs: boolean = false;
 
@@ -58,7 +60,7 @@ export class MassActionsAsigUserRetoComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.idReto = params['reto'];
       if (this.idReto === '' || !params['reto']) {
-        history.back();
+        this.changeRoute('/404', {});
       }
     });
   }
@@ -103,8 +105,7 @@ export class MassActionsAsigUserRetoComponent implements OnInit {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
-            this.alertError(TitleError, MsgError);
-            this.loading(false, false);
+            this.changeRoute('/404', {});
           }
         },
       });

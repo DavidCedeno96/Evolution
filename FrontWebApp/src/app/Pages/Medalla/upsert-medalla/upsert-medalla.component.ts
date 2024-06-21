@@ -5,6 +5,7 @@ import { Condicion } from 'src/app/Models/Adicional';
 import { Medalla } from 'src/app/Models/Medalla';
 import {
   AlertError,
+  ChangeRoute,
   GetImage,
   ImgHeightMax,
   ImgSizeMax,
@@ -36,6 +37,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
   loading = Loading();
   setUpsert = SetUpsert();
   caracterInvalid = CaracterInvalid();
+  changeRoute = ChangeRoute();
   sugerenciaImagen = SugerenciaImagen;
 
   type: string = '';
@@ -121,7 +123,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
       this.type = params['type'];
       let idMedalla = params['medalla'];
       if (idMedalla === '' && this.type === 'editar') {
-        history.back();
+        this.changeRoute('/404', {});
       }
       switch (this.type) {
         case 'crear': {
@@ -135,7 +137,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
         }
         default: {
           this.titulo = '';
-          history.back();
+          this.changeRoute('/404', {});
           break;
         }
       }
@@ -160,7 +162,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -177,7 +179,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -200,8 +202,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
           break;
         }
         default: {
-          this.loading(false, false);
-          history.back();
+          this.changeRoute('/404', {});
           break;
         }
       }
@@ -232,8 +233,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -259,8 +259,7 @@ export class UpsertMedallaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });

@@ -130,10 +130,12 @@ namespace WebApiRest.Controllers
             {
                 if (imagenes[i].Img != null && response.Error == 0)
                 {
-                    response = VF.ValidarArchivo(_env, imagenes[i].Img, "jpg/jpeg/png", nombreCarpeta, 350, imagenes[i].WidthMax, imagenes[i].HeightMax);
-                    rutasImages.Add(WC.GetRutaImagen(_env, imagenes[i].Img.FileName, nombreCarpeta));
+                    string fileName = WC.GetUniqueFileName(imagenes[i].Img, "conf");
 
-                    configuracion[i].Valor = imagenes[i].Img.FileName;
+                    response = VF.ValidarArchivo(_env, imagenes[i].Img, "jpg/jpeg/png", nombreCarpeta, 350, imagenes[i].WidthMax, imagenes[i].HeightMax);
+                    rutasImages.Add(WC.GetRutaImagen(_env, fileName, nombreCarpeta));
+
+                    configuracion[i].Valor = fileName;
                     if (response.Error > 0)
                     {
                         break;

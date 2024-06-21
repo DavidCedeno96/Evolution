@@ -212,7 +212,7 @@
                     </span>
                   </div>
                   <div>
-                    <strong>Reto superado:</strong>
+                    <strong>Reto completado:</strong>
                     <span *ngIf="usuarioReto.completado < 2">
                       {{ usuarioReto.completado ? "Si" : "No" }}
                     </span>
@@ -220,6 +220,20 @@
                       Pendiente de verificar
                     </span>
                   </div>
+                  <!-- <div
+                    *ngIf="
+                      usuarioReto.completado === 1 &&
+                      usuarioReto.reto.tipoReto === 'Comportamiento'
+                    "
+                  >
+                    <button
+                      class="btn btn-tertiary btn-sm"
+                      data-bs-toggle="modal"
+                      data-bs-target="#resultadosComport"
+                    >
+                      Ver Resultados
+                    </button>
+                  </div> -->
                 </div>
               </div>
               <div class="col-12 col-md-1 col-lg-2 text-md-end">
@@ -261,3 +275,32 @@
     ></button>
   </ng-template>
 </p-confirmDialog>
+
+<!-- MODAL -->
+<div
+  class="modal fade"
+  id="resultadosComport"
+  tabindex="-1"
+  aria-labelledby="resultadosComportLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="resultadosComportLabel">Resultados</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">...</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-tertiary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -51,7 +51,7 @@ export class PreguntaService {
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
     return this.http.get<PreguntaOpciones[]>(
-      `${this.apiURL}/buscar/${texto}/${idReto}`,
+      `${this.apiURL}/buscar/${idReto}?texto=${texto}`,
       {
         headers: headers,
       }
@@ -118,6 +118,21 @@ export class PreguntaService {
     });
     return this.http.get<any>(
       `${this.apiURL}/export/results/${estado}/${idReto}`,
+      {
+        headers: headers,
+      }
+    );
+  }
+
+  reporteResultadosComportamiento(
+    estado: number,
+    idReto: string
+  ): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<any>(
+      `${this.apiURL}/export/results/comportamiento/${estado}/${idReto}`,
       {
         headers: headers,
       }

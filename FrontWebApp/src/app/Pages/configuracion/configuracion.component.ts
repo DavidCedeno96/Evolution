@@ -14,6 +14,7 @@ import { ConfigInicio, Configuracion } from 'src/app/Models/Configuracion';
 import {
   AlertError,
   AlertWarning,
+  ChangeRoute,
   GetImage,
   ImgSizeMaxConfig,
   Loading,
@@ -33,7 +34,6 @@ import { PaisService } from 'src/app/services/pais.service';
 import { ConfigInicioList } from 'src/app/Utils/DefaultLists';
 import { HomeService } from 'src/app/services/home.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
-import { Notificacion } from 'src/app/Models/Notificacion';
 
 @Component({
   selector: 'app-configuracion',
@@ -46,6 +46,7 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
   alertWarning = AlertWarning();
   loading = Loading();
   getImage = GetImage();
+  changeRoute = ChangeRoute();
 
   configIndex: number = 0;
   configIndexInicio: number = 0;
@@ -302,7 +303,11 @@ export class ConfiguracionComponent implements OnInit, AfterViewInit {
       },
       error: (e) => {
         console.error(e);
-        this.alertError(TitleError, MsgError);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.changeRoute('/404', {});
+        }
       },
     });
   }

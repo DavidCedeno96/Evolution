@@ -5,11 +5,10 @@ import { Area, Ciudad } from 'src/app/Models/Adicional';
 import { Usuario_Reto } from 'src/app/Models/Reto';
 import {
   AlertError,
+  ChangeRoute,
   GetImage,
   Loading,
-  MsgError,
   SinRegistros,
-  TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { AdicionalService } from 'src/app/services/adicional.service';
@@ -25,6 +24,7 @@ export class RankingUsersComponent implements OnInit {
   alertError = AlertError();
   loading = Loading();
   getImage = GetImage();
+  changeRoute = ChangeRoute();
 
   info: string = SinRegistros;
 
@@ -75,8 +75,7 @@ export class RankingUsersComponent implements OnInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -91,9 +90,11 @@ export class RankingUsersComponent implements OnInit {
       },
       error: (e) => {
         console.error(e);
-        this.router.navigate(['/']);
-        this.loading(false, false);
-        this.alertError(TitleError, MsgError);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.changeRoute('/404', {});
+        }
       },
     });
   }

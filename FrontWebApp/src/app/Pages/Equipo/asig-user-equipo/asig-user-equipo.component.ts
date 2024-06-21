@@ -83,7 +83,7 @@ export class AsigUserEquipoComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       this.idEquipo = params['equipo'];
       if (this.idEquipo === '' || !params['equipo']) {
-        history.back();
+        this.changeRoute('/404', {});
       }
     });
   }
@@ -104,7 +104,7 @@ export class AsigUserEquipoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -159,7 +159,7 @@ export class AsigUserEquipoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -198,8 +198,7 @@ export class AsigUserEquipoComponent implements OnInit, AfterViewInit {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
-            this.alertError(TitleError, MsgError);
-            this.loading(false, false);
+            this.changeRoute('/404', {});
           }
         },
       });
@@ -238,7 +237,7 @@ export class AsigUserEquipoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });

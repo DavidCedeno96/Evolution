@@ -3,12 +3,7 @@ import { API_URL } from '../Utils/Constants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UsuarioService } from './usuario.service';
 import { Observable } from 'rxjs';
-import {
-  Noticia,
-  Noticia_Reaccion,
-  Reaccion,
-  Usuario_Noticia,
-} from '../Models/Noticia';
+import { Noticia, Noticia_Reaccion, Usuario_Noticia } from '../Models/Noticia';
 
 @Injectable({
   providedIn: 'root',
@@ -55,7 +50,7 @@ export class NoticiaService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
-    return this.http.get<Noticia[]>(`${this.apiURL}/buscar/${texto}`, {
+    return this.http.get<Noticia[]>(`${this.apiURL}/buscar?texto=${texto}`, {
       headers: headers,
     });
   }

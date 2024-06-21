@@ -3,10 +3,9 @@ import { Router } from '@angular/router';
 import { Medalla } from 'src/app/Models/Medalla';
 import {
   AlertError,
+  ChangeRoute,
   GetImage,
   Loading,
-  MsgError,
-  TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { MedallaService } from 'src/app/services/medalla.service';
@@ -20,6 +19,7 @@ export class UserMedallaComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   loading = Loading();
+  changeRoute = ChangeRoute();
 
   medallas: Medalla[] = [];
 
@@ -52,8 +52,7 @@ export class UserMedallaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });

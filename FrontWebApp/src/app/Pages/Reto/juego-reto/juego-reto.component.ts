@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Reto } from 'src/app/Models/Reto';
-import { DateCompare, Loading } from 'src/app/Utils/Constants';
+import { ChangeRoute, DateCompare, Loading } from 'src/app/Utils/Constants';
 import { RetoService } from 'src/app/services/reto.service';
 
 @Component({
@@ -12,6 +12,7 @@ import { RetoService } from 'src/app/services/reto.service';
 export class JuegoRetoComponent implements OnInit, AfterViewInit {
   load = Loading();
   dateCompare = DateCompare();
+  changeRoute = ChangeRoute();
 
   id: string = '';
 
@@ -67,7 +68,7 @@ export class JuegoRetoComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       let idReto = params['reto'];
       if (!params['reto']) {
-        history.back();
+        this.changeRoute('/404', {});
       }
       this.id = idReto;
     });
@@ -114,7 +115,7 @@ export class JuegoRetoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });

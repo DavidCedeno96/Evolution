@@ -12,6 +12,7 @@ import { Usuario } from 'src/app/Models/Usuario';
 import { StorageMap } from '@ngx-pwa/local-storage'; // Importa LocalStorage
 import {
   AlertError,
+  ChangeRoute,
   GetImage,
   Loading,
   MsgError,
@@ -33,6 +34,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   loading = Loading();
   alertError = AlertError();
   getImage = GetImage();
+  changeRoute = ChangeRoute();
 
   helper = new JwtHelperService();
 

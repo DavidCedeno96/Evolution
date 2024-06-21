@@ -1,0 +1,88 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="notificacionesLabel">Notificaciones</h1>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+      #closeModal
+    ></button>
+  </div>
+  <div class="modal-body py-0">
+    <div class="text-center my-3" *ngIf="!novedades.length">
+      No hay ninguna novedad
+    </div>
+    <div *ngIf="novedades.length">
+      <div class="pe-2" style="max-height: 50dvh; overflow-y: auto">
+        <div
+          *ngFor="let item of novedades; index as i"
+          class="{{
+            i === 0
+              ? 'border-bottom'
+              : novedades.length !== i + 1
+              ? 'border-bottom'
+              : ''
+          }} px-1 py-2"
+        >
+          <small class="d-block text-end txt text-primary">{{
+            dateCompare(item.fechaCreacion)
+          }}</small>
+          <p class="fs-5 fw-normal">
+            {{ item.mensaje }}
+          </p>
+          <div class="row g-2">
+            <div class="col-4 col-md-auto d-grid d-md-block">
+              <button
+                class="btn btn-tertiary btn-sm normal"
+                pTooltip="Marcar como no leído"
+                *ngIf="!item.estado"
+                (click)="marcar(item, 1)"
+              >
+                <i class="fa-solid fa-check"></i>
+              </button>
+              <button
+                class="btn btn-primary btn-sm normal"
+                pTooltip="Marcar como leído"
+                *ngIf="item.estado"
+                (click)="marcar(item, 0)"
+              >
+                <i class="fa-solid fa-check-double"></i>
+              </button>
+            </div>
+            <div class="col-4 col-md-auto d-grid d-md-block">
+              <button
+                class="btn btn-primary btn-sm normal"
+                pTooltip="Acceder"
+                (click)="acceder(item)"
+              >
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </button>
+            </div>
+            <div class="col-4 col-md-auto d-grid d-md-block">
+              <button
+                class="btn btn-primary btn-sm normal"
+                pTooltip="Eliminar"
+                (click)="eliminar(item)"
+              >
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary btn-sm" (click)="borrarTodo()">
+      <i class="fa-solid fa-trash-can me-1"></i> Borrar todas
+    </button>
+    <button
+      type="button"
+      class="btn btn-tertiary btn-sm"
+      data-bs-dismiss="modal"
+    >
+      Cerrar
+    </button>
+  </div>
+</div>

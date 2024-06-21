@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Response } from 'src/app/Models/Response';
 import {
   AlertError,
+  ChangeRoute,
   Loading,
   MsgError,
   MsgErrorForm,
@@ -21,6 +22,7 @@ import { exp_invalidos } from 'src/app/Utils/RegularExpressions';
 export class MassActionsAsigUserEquipoComponent implements OnInit {
   alertError = AlertError();
   loading = Loading();
+  changeRoute = ChangeRoute();
 
   verErrorsInputs: boolean = false;
 
@@ -58,7 +60,7 @@ export class MassActionsAsigUserEquipoComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.idEquipo = params['equipo'];
       if (this.idEquipo === '' || !params['equipo']) {
-        history.back();
+        this.changeRoute('/404', {});
       }
     });
   }
@@ -103,8 +105,7 @@ export class MassActionsAsigUserEquipoComponent implements OnInit {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
-            this.alertError(TitleError, MsgError);
-            this.loading(false, false);
+            this.changeRoute('/404', {});
           }
         },
       });

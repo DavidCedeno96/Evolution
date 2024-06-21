@@ -6,6 +6,7 @@
         public string Info { get; set; }
         public string Id { get; set; }
         public string Campo { get; set; }
+        public byte[] File { get; set; }
     }
 
     public class ResponseObjects

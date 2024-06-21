@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GetArchivo, API_URL } from '../Utils/Constants';
+import { API_URL } from '../Utils/Constants';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Equipo_Reto, Reto, Usuario_Reto } from '../Models/Reto';
@@ -44,7 +44,7 @@ export class RetoService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
-    return this.http.get<Reto[]>(`${this.apiURL}/buscar/${texto}`, {
+    return this.http.get<Reto[]>(`${this.apiURL}/buscar?texto=${texto}`, {
       headers: headers,
     });
   }
@@ -104,7 +104,7 @@ export class RetoService {
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
     return this.http.get<Reto[]>(
-      `${this.apiURL}/buscarUsuarioRetoByIdUsuario/${texto}`,
+      `${this.apiURL}/buscarUsuarioRetoByIdUsuario?texto=${texto}`,
       {
         headers: headers,
       }
@@ -147,6 +147,21 @@ export class RetoService {
     );
   }
 
+  getZipArchivos(
+    idReto: string,
+    idUsuario: string
+  ): Observable<Usuario_Reto[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.get<Usuario_Reto[]>(
+      `${this.apiURL}/descargar-zip/archivos/${idReto}/${idUsuario}`,
+      {
+        headers: headers,
+      }
+    );
+  }
+
   createUsuario_Reto(usuario_reto: Usuario_Reto): Observable<Usuario_Reto> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
@@ -182,6 +197,19 @@ export class RetoService {
     });
     return this.http.post<FormData>(
       `${this.apiURL}/createEquipoReto/${idReto}`,
+      formData,
+      {
+        headers: headers,
+      }
+    );
+  }
+
+  createUsuarioxOpciones(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.post<FormData>(
+      `${this.apiURL}/create/usuarioxOpcion/comportamiento`,
       formData,
       {
         headers: headers,
@@ -272,6 +300,22 @@ export class RetoService {
     });
     return this.http.put<FormData>(
       `${this.apiURL}/updateUsuarioReto/recoleccion/finalizado/${puntos}`,
+      formData,
+      {
+        headers: headers,
+      }
+    );
+  }
+
+  updateUsuario_retoRecoleccionFinalizadoMasivo(
+    formData: FormData,
+    puntos: number
+  ): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.put<FormData>(
+      `${this.apiURL}/updateUsuarioReto/recoleccion/finalizado/masivo/${puntos}`,
       formData,
       {
         headers: headers,

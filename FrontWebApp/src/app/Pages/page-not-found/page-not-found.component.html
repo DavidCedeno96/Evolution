@@ -1,0 +1,29 @@
+<div class="text-center">
+  <h5 class="txt text-primary">PÁGINA NO ENCONTRADA</h5>
+  <div class="row g-3 d-flex justify-content-center">
+    <div class="col-8 col-md-12 col-lg-4 col-xxl-12 text-center">
+      <img
+        src="assets/img/default/404NotFound.png"
+        alt=""
+        class="img-fluid"
+        width="500"
+      />
+    </div>
+  </div>
+  <p class="text-black-50 d-none d-md-block">
+    No hemos encontrado la página que buscas, puedes volver a la página anterior
+    o ir al inicio.
+  </p>
+  <small class="text-black-50 d-block d-md-none mb-2">
+    No hemos encontrado la página que buscas, puedes volver a la página anterior
+    o ir al inicio.
+  </small>
+  <button
+    class="btn btn-primary btn-sm icon mb-5"
+    (click)="goLoginOrGoingHome()"
+  >
+    <div class="icon-text buton">
+      <mat-icon svgIcon="casa"></mat-icon><span>Ir al Inicio</span>
+    </div>
+  </button>
+</div>

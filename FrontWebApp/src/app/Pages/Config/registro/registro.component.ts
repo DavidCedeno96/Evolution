@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { Configuracion } from 'src/app/Models/Configuracion';
 import {
   AlertError,
+  ChangeRoute,
   Loading,
   MsgError,
   MsgErrorForm,
@@ -25,6 +26,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class RegistroComponent implements OnInit {
   loading = Loading();
   alertError = AlertError();
+  changeRoute = ChangeRoute();
 
   idUsuario: string = '';
 
@@ -94,7 +96,11 @@ export class RegistroComponent implements OnInit {
       },
       error: (e) => {
         console.error(e);
-        this.alertError(TitleError, MsgError);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.changeRoute('/404', {});
+        }
       },
     });
   }
@@ -121,8 +127,7 @@ export class RegistroComponent implements OnInit {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
-            this.alertError(TitleError, MsgError);
-            this.loading(false, false);
+            this.changeRoute('/404', {});
           }
         },
       });

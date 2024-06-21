@@ -12,6 +12,7 @@ import { Equipo_Reto } from 'src/app/Models/Reto';
 import { Response } from 'src/app/Models/Response';
 import {
   AlertError,
+  ChangeRoute,
   GetImage,
   Loading,
   MsgEliminar,
@@ -36,6 +37,7 @@ export class AsigEquipoRetoComponent implements OnInit, AfterViewInit {
   loading = Loading();
   alertError = AlertError();
   getImage = GetImage();
+  changeRoute = ChangeRoute();
   sinRegistros = SinRegistros;
 
   @ViewChild('closeModalAsignar') closeModalAsignar!: ElementRef;
@@ -73,7 +75,7 @@ export class AsigEquipoRetoComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       this.idReto = params['reto'];
       if (this.idReto === '' || !params['reto']) {
-        history.back();
+        this.changeRoute('/404', {});
       }
     });
   }
@@ -95,7 +97,7 @@ export class AsigEquipoRetoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -118,8 +120,7 @@ export class AsigEquipoRetoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -144,8 +145,7 @@ export class AsigEquipoRetoComponent implements OnInit, AfterViewInit {
             if (e.status === 401 || e.status === 403) {
               this.router.navigate(['/']);
             } else {
-              this.alertError(TitleError, MsgError);
-              this.loading(false, false);
+              this.changeRoute('/404', {});
             }
           },
         });
@@ -184,7 +184,7 @@ export class AsigEquipoRetoComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });

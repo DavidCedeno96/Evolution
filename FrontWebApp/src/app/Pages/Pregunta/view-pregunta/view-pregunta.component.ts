@@ -110,6 +110,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
           correcta: 0,
           cantVotos: 0,
           valor: 0,
+          cantVotosXvalor: 0,
         },
       ],
     },
@@ -151,7 +152,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       this.idReto = params['reto'];
       if (this.idReto === '' || !params['reto']) {
-        history.back();
+        this.changeRoute('/404', {});
       }
     });
   }
@@ -202,7 +203,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -235,8 +236,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.loading(false, false);
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -305,6 +305,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
       },
       error: (e) => {
         console.error(e);
+        this.changeRoute('/404', {});
       },
     });
   }
@@ -344,8 +345,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.loading(false, false);
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -392,6 +392,14 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
       }
       case 'Seguimiento o Evaluación': {
         this.changeRoute('/upsert-pregunta/seguimiento-evaluacion', {
+          type: type,
+          reto: idReto,
+          pregunta: idPregunta,
+        });
+        break;
+      }
+      case 'Comportamiento': {
+        this.changeRoute('/upsert-pregunta/comportamiento', {
           type: type,
           reto: idReto,
           pregunta: idPregunta,

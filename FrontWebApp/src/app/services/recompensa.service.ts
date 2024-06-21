@@ -54,7 +54,7 @@ export class RecompensaService {
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
     return this.http.get<Recompensa[]>(
-      `${this.apiURL}/buscar?texto=${texto}&idCategoria=${idCategoria}`,
+      `${this.apiURL}/buscar/${idCategoria}?texto=${texto}`,
       {
         headers: headers,
       }

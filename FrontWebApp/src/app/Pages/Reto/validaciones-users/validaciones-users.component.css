@@ -1,3 +1,27 @@
-.files-container img {
-  cursor: pointer;
+/* Estilo para el estado cuando el checkbox está seleccionado */
+:host ::ng-deep .p-checkbox-box.p-highlight {
+  background-color: var(--Primario) !important;
+  border: 1px solid #7a7a7a;
+}
+
+:host ::ng-deep .p-checkbox-icon.p-highlight {
+  color: #fff !important;
+}
+
+/* Estilo para el estado cuando el checkbox no está seleccionado */
+:host ::ng-deep .p-checkbox-box {
+  border: 1px solid #cecece;
+}
+
+/* Estilo para el estado cuando el checkbox no está seleccionado y pasamos el mouse por encima*/
+:host ::ng-deep .p-checkbox-box:not(.p-highlight):hover {
+  border: 1px solid #7a7a7a;
+}
+
+.image-container {
+  width: 100%;
+}
+
+mat-icon {
+  transform: scale(1.1);
 }

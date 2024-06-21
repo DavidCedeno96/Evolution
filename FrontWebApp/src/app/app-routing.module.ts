@@ -60,6 +60,7 @@ import { UpsertPreguntaSegEvaComponent } from './Pages/Pregunta/upsert-pregunta-
 import { ValidacionesComponent } from './Pages/Reto/validaciones/validaciones.component';
 import { ValidacionesUsersComponent } from './Pages/Reto/validaciones-users/validaciones-users.component';
 import { ComportamientoComponent } from './Components/comportamiento/comportamiento.component';
+import { PageNotFoundComponent } from './Pages/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -280,6 +281,11 @@ const routes: Routes = [
     canActivate: [authGuardAdmin],
   },
   {
+    path: 'upsert-pregunta/comportamiento',
+    component: UpsertPreguntaSatisfaccionComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
     path: 'results',
     component: ResultsComponent,
     canActivate: [authGuardAdmin],
@@ -338,6 +344,10 @@ const routes: Routes = [
     path: 'config/registro',
     component: RegistroComponent,
     canActivate: [authGuardAdmin],
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
   },
 ];
 

@@ -41,42 +41,31 @@
           </span>
         </div>
       </div>
-      <!-- <div class="col-12 col-md-4 col-lg-3">
-        <label for="pre-nop" class="form-label">Número de opciones</label>
-        <select
-          class="form-select {{
-            formulario.get('totalOpciones')?.errors && verErrorsInputs
-              ? 'is-invalid'
-              : ''
-          }}"
-          formControlName="totalOpciones"
-          (change)="selectTotalOpciones($event)"
-          id="pre-nop"
-        >
-          <option value="">Seleccione...</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
-        <div
-          class="invalid-feedback"
-          *ngIf="formulario.get('totalOpciones')?.errors"
-        >
-          <span
-            class="d-block"
-            *ngIf="formulario.get('totalOpciones')?.hasError('required')"
-          >
-            Seleccione una opción
-          </span>
-        </div>
-      </div> -->
 
       <div
         class="row g-3"
         *ngFor="let pregunta of preguntaOpciones.opcionList; index as i"
       >
-        <div class="col-12 col-md-9 col-lg-10">
+        <div
+          class="col-12 col-md-9 col-lg-10"
+          *ngIf="tipoReto === 'comportamiento'"
+        >
+          <label for="pre-op-{{ i }}" class="form-label"
+            >Opción {{ opcion[i] }}</label
+          >
+          <div>
+            <input
+              type="text"
+              class="form-control"
+              [value]="defaultOptions[i].nombre"
+              disabled
+            />
+          </div>
+        </div>
+        <div
+          class="col-12 col-md-9 col-lg-10"
+          *ngIf="tipoReto !== 'comportamiento'"
+        >
           <label for="pre-op-{{ i }}" class="form-label"
             >Opción {{ opcion[i] }}*</label
           >

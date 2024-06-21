@@ -11,6 +11,7 @@ const config = new ConfigAppService();
 
 export const API_URL = config.restUrl;
 export const PLAY_MOVE = config.playMove;
+export const API_URL_BUNNY_CDN = config.bunny;
 
 export const ImgSizeMax: number = 200 * 1024;
 export const FileSizeMax: number = 150 * 1024;
@@ -44,10 +45,11 @@ export const MsgErrorForm: string =
   'Hay errores en los campos, por favor revisa e intantalo nuevamente.';
 export const TitleError: string = 'Error del servidor';
 export const MsgError: string =
-  'Ha ocurrido un error con el servidor, intentalo más tarde o vuelve a iniciar sesión';
+  'Ha ocurrido un error con el servidor, intentalo más tarde o contactate con el administrador';
 export const MsgErrorConexion: string =
   'Ha ocurrido un error en la conexión, intentalo más tarde o recarga la página';
-
+export const FontFamily: string =
+  "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', 'Liberation Sans', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'";
 export const HtmlLicencias: string =
   '<a style="display: block; margin-top: 10px;" href="' +
   PLAY_MOVE +
@@ -169,10 +171,26 @@ export const GetColors = () => {
   };
 };
 
+export const GetColor = () => {
+  return (opacidad: number): string[] => {
+    let color: string[] = [];
+    let r = Math.floor(Math.random() * 256);
+    let g = Math.floor(Math.random() * 256);
+    let b = Math.floor(Math.random() * 256);
+    color.push(`rgb(${r}, ${g}, ${b}, ${opacidad})`);
+    color.push(`rgb(${r}, ${g}, ${b})`);
+    return color;
+  };
+};
+
 export const ChangeRoute = () => {
   const router = inject(Router);
-  return (ruta: string, params: object) => {
-    router.navigate([ruta], { queryParams: params });
+  return (ruta: string, params: object, refreshPage: boolean = false) => {
+    router.navigate([ruta], { queryParams: params }).then(() => {
+      if (refreshPage) {
+        window.location.reload();
+      }
+    });
   };
 };
 
@@ -195,6 +213,13 @@ export const GetArchivo = () => {
       return `${API_URL}/Content/Archivos/${serverDirectorio}/${archivo}`;
     }
     return 'N/A';
+  };
+};
+
+export const ExtractString = () => {
+  return (text: string, exp: RegExp): string => {
+    const result = text.match(exp);
+    return result ? result[1] : '';
   };
 };
 

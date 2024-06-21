@@ -18,13 +18,13 @@ namespace WebApiRest.Controllers
         readonly OpcionData dataOpcion = new();
         readonly TipoEntradaData tipoEntradaData = new();
 
-        private readonly IWebHostEnvironment _env;
-        private readonly string nombreCarpeta = "Pregunta";
+        //private readonly IWebHostEnvironment _env;
+        //private readonly string nombreCarpeta = "Pregunta";
 
-        public PreguntaController(IWebHostEnvironment env)
-        {
-            _env = env;
-        }
+        //public PreguntaController(IWebHostEnvironment env)
+        //{
+        //    _env = env;
+        //}
 
         [HttpGet]
         [Route("listByIdReto/{estado}/{idReto}")]
@@ -37,13 +37,13 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
-        [Route("buscar/{texto}/{idReto}")]
+        [Route("buscar/{idReto}")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Buscar([FromRoute] string texto, [FromRoute] Guid idReto)
+        public async Task<IActionResult> Buscar([FromRoute] Guid idReto, [FromQuery] string texto)
         {
             PreguntaList_opciones response = await dataPregunta.GetPreguntaList_opciones(texto, idReto);
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }
+        }       
 
         [HttpGet]
         [Route("item/{estado}/{idPregunta}")]
@@ -180,11 +180,11 @@ namespace WebApiRest.Controllers
         {            
             DataTable dt = new();
 
-            string hora = WC.GetHoraActual(DateTime.Now);
-            string nombreArchivo = $"Preguntas{hora}.xls";
-            string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, nombreCarpeta);
+            //string hora = WC.GetHoraActual(DateTime.Now);
+            //string nombreArchivo = $"Preguntas{hora}.xls";
+            //string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, nombreCarpeta);
 
-            WC.EliminarArchivosAntiguos(_env, nombreCarpeta, "Preguntas");
+            //WC.EliminarArchivosAntiguos(_env, nombreCarpeta, "Preguntas");
 
             dt.Columns.Add("PREGUNTA", typeof(string));
             dt.Columns.Add("OPCION A", typeof(string));
@@ -255,11 +255,12 @@ namespace WebApiRest.Controllers
                     }
 
                     //Aqui crea el archivo
-                    FileStream fileStream = new(rutaArchivo, FileMode.Create);
-                    workbook.Write(fileStream);
-                    fileStream.Dispose();
+                    //FileStream fileStream = new(rutaArchivo, FileMode.Create);
+                    //workbook.Write(fileStream);                    
+                    //fileStream.Dispose();
 
-                    response.Info = nombreArchivo;
+                    response.Info = WC.GetSatisfactorio();
+                    response.File = WC.GetBytesExcel(workbook);
                     response.Error = 0;
                 }
                 else
@@ -268,6 +269,85 @@ namespace WebApiRest.Controllers
                     response.Error = 1;
                 }
             }            
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpGet]
+        [Route("export/results/comportamiento/{estado}/{idReto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> ExportListComportamiento([FromRoute] int estado, [FromRoute] Guid idReto)
+        {
+            DataTable dt = new();
+
+            //string hora = WC.GetHoraActual(DateTime.Now);
+            //string nombreArchivo = $"Preguntas{hora}.xls";
+            //string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, nombreCarpeta);
+
+            //WC.EliminarArchivosAntiguos(_env, nombreCarpeta, "Preguntas");
+
+            dt.Columns.Add("PREGUNTA", typeof(string));            
+            dt.Columns.Add("NUNCA", typeof(int));    
+            dt.Columns.Add("RARA VEZ", typeof(int));
+            dt.Columns.Add("A VECES", typeof(int));
+            dt.Columns.Add("FRECUENTEMENTE", typeof(int));
+            dt.Columns.Add("SIEMPRE", typeof(int));                        
+            dt.Columns.Add("TOTAL DE VOTOS", typeof(int));
+
+            PreguntaList_opciones response = await dataPregunta.GetPreguntaList_opciones(estado, idReto);
+
+            if(response.Error == 0)
+            {
+                if(response.List.Count > 0)
+                {
+                    foreach (var item in response.List)
+                    {
+                        int totalVotos = 0;
+                        DataRow row = dt.NewRow();
+                        row[0] = item.Pregunta.Nombre;
+
+                        for (int i = 0; i < item.OpcionList.Count; i++)
+                        {
+                            var op = item.OpcionList[i];
+
+                            row[i + 1] = op.CantVotosXvalor;                            
+
+                            totalVotos += op.CantVotos;
+                        }
+
+                        row[6] = totalVotos;
+                        dt.Rows.Add(row);
+                    }
+
+                    HSSFWorkbook workbook = new();
+                    ISheet hoja = workbook.CreateSheet("Resultados");
+                    IRow headerRow = hoja.CreateRow(0);
+
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        headerRow.CreateCell(i).SetCellValue(dt.Columns[i].ColumnName);
+                    }
+
+                    for (int rowIndex = 0; rowIndex < dt.Rows.Count; rowIndex++)
+                    {
+                        IRow dataRow = hoja.CreateRow(rowIndex + 1);
+
+                        for (int columnIndex = 0; columnIndex < dt.Columns.Count; columnIndex++)
+                        {
+                            dataRow.CreateCell(columnIndex).SetCellValue(dt.Rows[rowIndex][columnIndex].ToString());
+                        }
+                    }
+
+                    response.Info = WC.GetSatisfactorio();
+                    response.File = WC.GetBytesExcel(workbook);
+                    response.Error = 0;
+                }
+                else
+                {
+                    response.Info = "La lista esta vacia";
+                    response.Error = 1;
+                }
+            }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
         }

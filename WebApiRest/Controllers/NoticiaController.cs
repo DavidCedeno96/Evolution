@@ -39,9 +39,9 @@ namespace WebApiRest.Controllers
         }
 
         [HttpGet]
-        [Route("buscar/{texto}")]
+        [Route("buscar")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> Buscar([FromRoute] string texto)
+        public async Task<IActionResult> Buscar([FromQuery] string texto)
         {
             NoticiaList response = await data.GetNoticiaList(texto);
             return StatusCode(StatusCodes.Status200OK, new { response });
@@ -66,10 +66,11 @@ namespace WebApiRest.Controllers
 
             if (archivo != null && response.Error == 0)
             {
+                string fileName = WC.GetUniqueFileName(archivo, "not");
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
-                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, fileName, nombreCarpeta);
 
-                noticia.Imagen = archivo.FileName.Trim();
+                noticia.Imagen = fileName;
             }
             else
             {
@@ -101,10 +102,11 @@ namespace WebApiRest.Controllers
 
             if (archivo != null && response.Error == 0)
             {
+                string fileName = WC.GetUniqueFileName(archivo, "not");
                 response = VF.ValidarArchivo(_env, archivo, "jpg/jpeg/png", nombreCarpeta);
-                rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+                rutaArchivo = WC.GetRutaImagen(_env, fileName, nombreCarpeta);
 
-                noticia.Imagen = archivo.FileName.Trim();
+                noticia.Imagen = fileName;
             }
             else
             {

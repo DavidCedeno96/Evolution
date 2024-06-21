@@ -10,6 +10,7 @@ import { Categoria } from 'src/app/Models/Adicional';
 import { Noticia } from 'src/app/Models/Noticia';
 import {
   AlertError,
+  ChangeRoute,
   DateFormatInput,
   GetImage,
   ImgHeightMax,
@@ -40,6 +41,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   setUpsert = SetUpsert();
+  changeRoute = ChangeRoute();
   dateFormatInput = DateFormatInput();
   caracterInvalid = CaracterInvalid();
   sugerenciaImagen = SugerenciaImagen;
@@ -127,7 +129,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
       this.type = params['type'];
       let idNoticia = params['noticia'];
       if (idNoticia === '' && this.type === 'editar') {
-        history.back();
+        this.changeRoute('/404', {});
       }
       switch (this.type) {
         case 'crear': {
@@ -140,8 +142,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
           break;
         }
         default: {
-          this.titulo = '';
-          history.back();
+          this.changeRoute('/404', {});
           break;
         }
       }
@@ -166,7 +167,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -193,7 +194,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -216,8 +217,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
           break;
         }
         default: {
-          this.loading(false, false);
-          history.back();
+          this.changeRoute('/404', {});
           break;
         }
       }
@@ -248,8 +248,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -275,8 +274,7 @@ export class UpsertNoticiaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });

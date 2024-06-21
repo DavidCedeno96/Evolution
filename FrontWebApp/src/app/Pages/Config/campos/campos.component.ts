@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Area, Ciudad, Empresa, Pais } from 'src/app/Models/Adicional';
 import {
   AlertError,
+  ChangeRoute,
   Loading,
   MsgError,
   TitleError,
@@ -24,6 +25,7 @@ import { PaisService } from 'src/app/services/pais.service';
 export class CamposComponent implements OnInit {
   loading = Loading();
   alertError = AlertError();
+  changeRoute = ChangeRoute();
 
   @ViewChild('openModal') openModal!: ElementRef;
   @ViewChild('closeModal') closeModal!: ElementRef;
@@ -117,7 +119,7 @@ export class CamposComponent implements OnInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -203,8 +205,7 @@ export class CamposComponent implements OnInit {
             if (e.status === 401 || e.status === 403) {
               this.router.navigate(['/']);
             } else {
-              this.alertError(TitleError, MsgError);
-              this.loading(false, false);
+              this.changeRoute('/404', {});
             }
           },
         });
@@ -227,8 +228,7 @@ export class CamposComponent implements OnInit {
             if (e.status === 401 || e.status === 403) {
               this.router.navigate(['/']);
             } else {
-              this.alertError(TitleError, MsgError);
-              this.loading(false, false);
+              this.changeRoute('/404', {});
             }
           },
         });
@@ -251,8 +251,7 @@ export class CamposComponent implements OnInit {
             if (e.status === 401 || e.status === 403) {
               this.router.navigate(['/']);
             } else {
-              this.alertError(TitleError, MsgError);
-              this.loading(false, false);
+              this.changeRoute('/404', {});
             }
           },
         });
@@ -275,8 +274,7 @@ export class CamposComponent implements OnInit {
             if (e.status === 401 || e.status === 403) {
               this.router.navigate(['/']);
             } else {
-              this.alertError(TitleError, MsgError);
-              this.loading(false, false);
+              this.changeRoute('/404', {});
             }
           },
         });
@@ -304,8 +302,7 @@ export class CamposComponent implements OnInit {
             if (e.status === 401 || e.status === 403) {
               this.router.navigate(['/']);
             } else {
-              this.alertError(TitleError, MsgError);
-              this.loading(false, false);
+              this.changeRoute('/404', {});
             }
           },
         });
@@ -328,8 +325,7 @@ export class CamposComponent implements OnInit {
             if (e.status === 401 || e.status === 403) {
               this.router.navigate(['/']);
             } else {
-              this.alertError(TitleError, MsgError);
-              this.loading(false, false);
+              this.changeRoute('/404', {});
             }
           },
         });
@@ -352,8 +348,7 @@ export class CamposComponent implements OnInit {
             if (e.status === 401 || e.status === 403) {
               this.router.navigate(['/']);
             } else {
-              this.alertError(TitleError, MsgError);
-              this.loading(false, false);
+              this.changeRoute('/404', {});
             }
           },
         });
@@ -376,8 +371,7 @@ export class CamposComponent implements OnInit {
             if (e.status === 401 || e.status === 403) {
               this.router.navigate(['/']);
             } else {
-              this.alertError(TitleError, MsgError);
-              this.loading(false, false);
+              this.changeRoute('/404', {});
             }
           },
         });

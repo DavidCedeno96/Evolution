@@ -91,6 +91,7 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
           correcta: 0,
           cantVotos: 0,
           valor: 0,
+          cantVotosXvalor: 0,
         },
         {
           idOpcion: '',
@@ -101,6 +102,7 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
           correcta: 0,
           cantVotos: 0,
           valor: 0,
+          cantVotosXvalor: 0,
         },
         {
           idOpcion: '',
@@ -111,6 +113,7 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
           correcta: 0,
           cantVotos: 0,
           valor: 0,
+          cantVotosXvalor: 0,
         },
         {
           idOpcion: '',
@@ -121,6 +124,7 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
           correcta: 1,
           cantVotos: 0,
           valor: 0,
+          cantVotosXvalor: 0,
         },
       ],
     },
@@ -149,7 +153,7 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       this.idReto = params['reto'];
       if (this.idReto === '' || !params['reto']) {
-        history.back();
+        this.changeRoute('/404', {});
       }
     });
   }
@@ -197,7 +201,7 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -233,8 +237,7 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.load(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -263,8 +266,7 @@ export class EncuestaComponent implements OnInit, AfterViewInit {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
-            this.alertError(TitleError, MsgError);
-            this.load(false, false);
+            this.changeRoute('/404', {});
           }
         },
       });

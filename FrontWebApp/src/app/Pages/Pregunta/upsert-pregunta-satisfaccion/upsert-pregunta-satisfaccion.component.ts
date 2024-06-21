@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { Opcion, PreguntaOpciones } from 'src/app/Models/Pregunta';
 import {
   AlertError,
@@ -12,7 +12,10 @@ import {
   TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
-import { OptionsList } from 'src/app/Utils/DefaultLists';
+import {
+  OptionsListComportamiento,
+  OptionsListSatisfaccion,
+} from 'src/app/Utils/DefaultLists';
 import { exp_invalidos, exp_numeros } from 'src/app/Utils/RegularExpressions';
 import { PreguntaService } from 'src/app/services/pregunta.service';
 
@@ -21,7 +24,9 @@ import { PreguntaService } from 'src/app/services/pregunta.service';
   templateUrl: './upsert-pregunta-satisfaccion.component.html',
   styleUrls: ['./upsert-pregunta-satisfaccion.component.css'],
 })
-export class UpsertPreguntaSatisfaccionComponent implements OnInit {
+export class UpsertPreguntaSatisfaccionComponent
+  implements OnInit, AfterViewInit
+{
   alertError = AlertError();
   changeRoute = ChangeRoute();
   loading = Loading();
@@ -40,6 +45,8 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
 
   idReto: string = '';
   id: string = '';
+  tipoReto: string = '';
+
   campo: string = '';
   error: number = 0;
   info: string = '';
@@ -54,7 +61,7 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
     opcionList: [],
   };
 
-  defaultOptions: Opcion[] = OptionsList;
+  defaultOptions: Opcion[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -73,11 +80,22 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
       ],
       totalOpciones: ['', [Validators.required]],
     });
+
+    this.route.url.subscribe((urlSegments: UrlSegment[]) => {
+      this.tipoReto = urlSegments[1].path;
+      if (this.tipoReto === 'comportamiento') {
+        this.defaultOptions = OptionsListComportamiento;
+      } else {
+        this.defaultOptions = OptionsListSatisfaccion;
+      }
+    });
   }
 
   ngOnInit(): void {
     this.getRouteParams();
   }
+
+  ngAfterViewInit(): void {}
 
   getRouteParams() {
     this.route.queryParams.subscribe((params) => {
@@ -85,7 +103,7 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
       let idPregunta = params['pregunta'];
       this.idReto = params['reto'];
       if (idPregunta === '' && this.idReto === '' && this.type === 'editar') {
-        history.back();
+        this.changeRoute('/404', {});
       }
       switch (this.type) {
         case 'crear': {
@@ -101,8 +119,7 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
           break;
         }
         default: {
-          this.titulo = '';
-          history.back();
+          this.changeRoute('/404', {});
           break;
         }
       }
@@ -129,7 +146,7 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -166,8 +183,7 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
           break;
         }
         default: {
-          this.loading(false, false);
-          history.back();
+          this.changeRoute('/404', {});
           break;
         }
       }
@@ -198,8 +214,7 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -225,8 +240,7 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -248,6 +262,7 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
         correcta: 0,
         cantVotos: 0,
         valor: 0,
+        cantVotosXvalor: 0,
       };
       opcion.nombre = this.formulario.get(['opcion' + this.opcion[i]])?.value;
       opcion.valor = this.formulario.get(['valor' + this.opcion[i]])?.value;
@@ -289,6 +304,7 @@ export class UpsertPreguntaSatisfaccionComponent implements OnInit {
         correcta: 0,
         cantVotos: 0,
         valor: 0,
+        cantVotosXvalor: 0,
       });
       if (this.auxOpcionList.length > 0 && i < this.auxOpcionList.length) {
         item[i] = this.auxOpcionList[i];

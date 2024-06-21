@@ -45,6 +45,8 @@ export interface Usuario_Reto {
   completado: number;
   tieneEquipo: number;
   archivos: UsuarioxArchivo[];
+  totalOpsValidador: number;
+  totalOpsValidaciones: number;
   correctas: number;
   incorrectas: number;
   fechaCreacion: Date;

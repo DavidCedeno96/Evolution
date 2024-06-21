@@ -578,7 +578,7 @@ namespace WebApiRest.Utilities
         {
             Response result = new();
             bool validForm = true;
-            string rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
+            //string rutaArchivo = WC.GetRutaImagen(_env, archivo.FileName, nombreCarpeta);
             Size dimensions = WC.GetImageDimensions(archivo);
 
             if (!WC.GetArchivoPermitido(tipos, archivo.FileName))
@@ -589,29 +589,30 @@ namespace WebApiRest.Utilities
                 validForm = false;
             }
 
-            if (File.Exists(rutaArchivo))
-            {
-                result.Error = 1;
-                result.Info = WC.GetArchivoExistente()+": "+archivo.FileName;
-                result.Campo = "archivo";
-                validForm = false;
-            }
+            //if (File.Exists(rutaArchivo))
+            //{
+            //    result.Error = 1;
+            //    result.Info = WC.GetArchivoExistente()+": "+archivo.FileName;
+            //    result.Campo = "archivo";
+            //    validForm = false;
+            //}
 
-            if (!RE.ValidRE(archivo.FileName, "invalid"))
-            {
-                result.Error = 1;
-                result.Info = WC.GetInvalid();
-                result.Campo = "archivo";
-                validForm = false;
+            //if (!RE.ValidRE(archivo.FileName, "invalid"))
+            //{
+            //    result.Error = 1;
+            //    result.Info = WC.GetInvalid();
+            //    result.Campo = "archivo";
+            //    validForm = false;
 
-            }
-            else if (!RE.ValidRE(archivo.FileName, "50"))
-            {
-                result.Error = 1;
-                result.Info = WC.GetMax50();
-                result.Campo = "archivo";
-                validForm = false;
-            }
+            //}
+
+            //else if (!RE.ValidRE(archivo.FileName, "50"))
+            //{
+            //    result.Error = 1;
+            //    result.Info = WC.GetMax50();
+            //    result.Campo = "archivo";
+            //    validForm = false;
+            //}
 
             if (archivo.Length > pesoMaximoKB * 1024)
             {
@@ -640,5 +641,112 @@ namespace WebApiRest.Utilities
             return result;
 
         }
+
+        public static Response ValidarArchivos(IWebHostEnvironment _env, List<IFormFile> archivos, string tipos, string nombreCarpeta, int pesoMaximo = 200, int widthMax = 360, int heightMax = 360, string tipoPeso = "KB")
+        {
+            Response result = new();
+            bool validForm = true;
+
+            if(archivos.Count > 0)
+            {
+                foreach (IFormFile archivo in archivos)
+                {
+                    string rutaArchivo = WC.GetRutaArchivo(_env, archivo.FileName, nombreCarpeta);
+                    Size dimensions = WC.GetImageDimensions(archivo);
+
+                    if (!WC.GetArchivoPermitido(tipos, archivo.FileName))
+                    {
+                        result.Error = 1;
+                        result.Info = WC.GetErrorArchivo();
+                        result.Campo = "archivo";
+                        validForm = false;
+                    }
+
+                    if (File.Exists(rutaArchivo))
+                    {
+                        result.Error = 1;
+                        result.Info = WC.GetArchivoExistente() + ": " + archivo.FileName;
+                        result.Campo = "archivo";
+                        validForm = false;
+                    }
+
+                    if (!RE.ValidRE(archivo.FileName, "invalid"))
+                    {
+                        result.Error = 1;
+                        result.Info = WC.GetInvalid();
+                        result.Campo = "archivo";
+                        validForm = false;
+
+                    }
+                    else if (!RE.ValidRE(archivo.FileName, "50"))
+                    {
+                        result.Error = 1;
+                        result.Info = WC.GetMax50();
+                        result.Campo = "archivo";
+                        validForm = false;
+                    }
+
+                    if (archivo.Length > pesoMaximo * 1024)
+                    {
+                        result.Error = 1;
+                        result.Info = $"El archivo no puede superar los {pesoMaximo} {tipoPeso}";
+                        result.Campo = "archivo";
+                        validForm = false;
+                    }
+
+                    if (!dimensions.IsEmpty && widthMax > 0 && heightMax > 0)
+                    {
+                        if (dimensions.Width > widthMax || dimensions.Height > heightMax)
+                        {
+                            result.Error = 1;
+                            result.Info = $"El archivo no puede superar los {widthMax}x{heightMax} pixeles";
+                            result.Campo = "archivo";
+                            validForm = false;
+                        }
+                    }
+
+                    if(result.Error == 1) {
+                        break;
+                    }
+                }
+            }
+
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+
+        }
+
+        public static Response ValidarCaracteres(List<string> listCaracteres)
+        {
+            Response result = new();
+            bool validForm = true;
+
+            if(listCaracteres.Count > 0)
+            {
+                foreach (string item in listCaracteres)
+                {
+                    if (!RE.ValidRE(item, "invalid"))
+                    {
+                        result.Error = 1;
+                        result.Info = WC.GetInvalid();
+                        result.Campo = "archivo";
+                        validForm = false;
+                        break;
+                    }
+                }
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }        
     }
 }

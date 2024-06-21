@@ -22,21 +22,35 @@
               >Items recogiodos: {{ previewFiles.length }}</label
             >
             <input
-              *ngIf="reto.tipoArchivo !== 'Video'"
               type="file"
               id="items-recog"
               class="form-control"
-              [accept]="tipoArchivo"
+              [accept]="extArchivo"
               (change)="onFileSelected($event)"
               (click)="limpiarInput()"
               #fileInput
               multiple
             />
-            <form
+
+            <!-- <div>
+              <input
+                type="file"
+                class="form-control"
+                (change)="onFileSelected($event)"
+                (click)="limpiarInput()"
+                #fileInput
+                multiple
+              />
+
+              <button type="button" (click)="enviarAbunny()">
+                guardar video
+              </button>
+            </div> -->
+
+            <!-- <form
               class="d-md-flex w-100"
               *ngIf="reto.tipoArchivo === 'Video'"
               [formGroup]="formulario"
-              (ngSubmit)="agregarUrlVideo()"
             >
               <div class="input-group flex-grow-1 me-md-3 mb-3 mb-md-0">
                 <input
@@ -64,7 +78,7 @@
                   </span>
                   <span
                     class="d-block"
-                    *ngIf="formulario.get('url')?.hasError('caracterInvalid')"
+                    *ngIf="formulario.get('url')?.hasError('pattern')"
                   >
                     Contiene caracteres inválidos
                   </span>
@@ -79,7 +93,7 @@
               <div class="d-grid">
                 <button type="submit" class="btn btn-secondary">Agregar</button>
               </div>
-            </form>
+            </form> -->
             <small class="d-block">{{ sugerenciaArchivo }} </small>
             <div
               class="row g-3 mt-1 text-center {{
@@ -94,16 +108,7 @@
                 *ngFor="let imgs of previewFiles; index as i"
               >
                 <div class="col-12 text-truncate">
-                  <small
-                    class="txt text-secondary"
-                    *ngIf="reto.tipoArchivo !== 'Video'"
-                    >{{ files[i].name }}</small
-                  >
-                  <small
-                    class="txt text-secondary"
-                    *ngIf="reto.tipoArchivo === 'Video'"
-                    >{{ urlsVideos[i] }}</small
-                  >
+                  <small class="txt text-secondary">{{ files[i].name }}</small>
                 </div>
                 <div class="image-container">
                   <img [src]="imgs" class="img-thumbnail" [alt]="'img' + i" />

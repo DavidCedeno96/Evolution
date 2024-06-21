@@ -72,6 +72,38 @@
   transform: scale(0.7);
 }
 
+/****** BADGE ICON ******/
+.badge-icon {
+  position: relative;
+  display: inline-block;
+}
+
+.badge-icon i {
+  font-size: 18px;
+}
+
+.badge-icon .badge {
+  position: absolute;
+  top: 1px;
+  right: -10px;
+  width: 19px;
+  height: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: white;
+  font-size: 11px;
+}
+
+.badge-icon .badge.x1 {
+  top: -1px;
+  right: -14px;
+  width: 24px;
+  height: 23px;
+  font-size: 10px;
+}
+
 /****** LOADING ******/
 .loading-overlay {
   position: fixed;

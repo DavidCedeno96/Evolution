@@ -17,12 +17,13 @@ export class ConfiguracionService {
   ) {}
 
   getList(): Observable<Configuracion[]> {
-    const headers = new HttpHeaders({
+    /* const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
-    });
-    return this.http.get<Configuracion[]>(`${this.apiURL}/list`, {
-      headers: headers,
-    });
+    }); */
+    return this.http.get<Configuracion[]>(
+      `${this.apiURL}/list`
+      //, { headers: headers,}
+    );
   }
 
   update(configuracion: Configuracion): Observable<Configuracion> {

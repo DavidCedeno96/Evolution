@@ -20,6 +20,7 @@ import { RetoService } from 'src/app/services/reto.service';
 import { Response } from 'src/app/Models/Response';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { exp_invalidos } from 'src/app/Utils/RegularExpressions';
+import { BunnyCdnService } from 'src/app/services/bunny-cdn.service';
 
 @Component({
   selector: 'app-recoleccion',
@@ -39,19 +40,22 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
   sugerenciaArchivo: string = '';
   defaultImg: string = '';
 
-  tipoArchivo: string = '';
+  maxSize: string = '150 KB.';
+  fileSizeMax: number = FileSizeMax;
+
+  extArchivo: string = '';
 
   idReto: string = '';
 
   previewFiles: string[] = [];
   files: File[] = [];
-  urlsVideos: string[] = [];
+  videosNames: string[] = [];
   responseFiles: Response[] = [];
   modal: boolean = false;
 
   verErrorsInputs: boolean = false;
 
-  formulario!: FormGroup;
+  //formulario!: FormGroup;
 
   reto: Reto = {
     idReto: '',
@@ -90,9 +94,9 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private retoService: RetoService,
-    private formBuilder: FormBuilder
+    private bunnyCdnService: BunnyCdnService //private formBuilder: FormBuilder
   ) {
-    this.formulario = this.formBuilder.group({
+    /* this.formulario = this.formBuilder.group({
       url: [
         '',
         [
@@ -102,7 +106,7 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
           Validators.pattern(exp_invalidos),
         ],
       ],
-    });
+    }); */
   }
 
   ngOnInit(): void {
@@ -118,7 +122,7 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
     this.route.queryParams.subscribe((params) => {
       this.idReto = params['reto'];
       if (this.idReto === '' || !params['reto']) {
-        history.back();
+        this.changeRoute('/404', {});
       }
     });
   }
@@ -161,7 +165,7 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -169,34 +173,10 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
 
   finalizar() {
     this.load(true, false);
-    if (
-      this.files.length === this.reto.items ||
-      this.urlsVideos.length === this.reto.items
-    ) {
-      this.retoService
-        .updateUsuario_retoRecoleccionPerdiente(this.setData())
-        .subscribe({
-          next: (data: any) => {
-            let { error, info } = data.response;
-            if (error === 0) {
-              this.reproducirSonido(SoundQuizVictory);
-
-              this.changeRoute('/fin-reto', { reto: this.idReto });
-            } else {
-              this.alertError(TitleErrorForm, info); //MsgErrorForm
-            }
-            this.load(false, false);
-          },
-          error: (e) => {
-            console.error(e);
-            if (e.status === 401 || e.status === 403) {
-              this.router.navigate(['/']);
-            } else {
-              this.alertError(TitleError, MsgError);
-              this.load(false, false);
-            }
-          },
-        });
+    if (this.files.length === this.reto.items) {
+      this.reto.tipoArchivo === 'Video'
+        ? this.enviarAbunny()
+        : this.saveRecoleccion();
     } else {
       this.load(false, false);
       this.alertError(
@@ -206,19 +186,65 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
     }
   }
 
+  saveRecoleccion() {
+    this.retoService
+      .updateUsuario_retoRecoleccionPerdiente(this.setData())
+      .subscribe({
+        next: (data: any) => {
+          let { error, info } = data.response;
+          if (error === 0) {
+            this.reproducirSonido(SoundQuizVictory);
+
+            this.changeRoute('/fin-reto', { reto: this.idReto });
+          } else {
+            this.alertError(TitleErrorForm, info); //MsgErrorForm
+          }
+          this.load(false, false);
+        },
+        error: (e) => {
+          console.error(e);
+          if (e.status === 401 || e.status === 403) {
+            this.router.navigate(['/']);
+          } else {
+            this.changeRoute('/404', {});
+          }
+        },
+      });
+  }
+
+  enviarAbunny() {
+    this.bunnyCdnService.subirArchivos(this.files, this.videosNames).subscribe({
+      next: (data: any) => {
+        let { HttpCode, Message } = data[0];
+        if (HttpCode === 201) {
+          this.saveRecoleccion();
+        } else {
+          this.alertError(TitleErrorForm, Message);
+          this.load(false, false);
+        }
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.changeRoute('/404', {});
+        }
+      },
+    });
+  }
+
   setData(): FormData {
     let formData = new FormData();
 
     formData.append('idReto', this.idReto);
 
-    if (this.files.length) {
+    if (this.reto.tipoArchivo === 'Video') {
+      formData.append('videosNombres', JSON.stringify(this.videosNames));
+    } else {
       this.files.forEach((file) => {
         formData.append('files', file, file.name);
       });
-    }
-
-    if (this.urlsVideos.length) {
-      formData.append('urlsVideos', JSON.stringify(this.urlsVideos));
     }
 
     return formData;
@@ -227,39 +253,41 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
   setFileType(tipo: string) {
     switch (tipo) {
       case 'Imagen/png jpg jpeg': {
-        this.tipoArchivo = '.jpg, .jpeg, .png';
-        this.sugerenciaArchivo = 'Tamaño máximo 200 KB. Formatos jpg y png.'; //Dimensiones máximas 360x360 píxeles y
+        this.extArchivo = '.jpg, .jpeg, .png';
+        this.maxSize = '200 KB.';
+        this.sugerenciaArchivo = `Tamaño máximo ${this.maxSize} Formatos jpg y png.`; //Dimensiones máximas 360x360 píxeles y
         break;
       }
       case 'Excel': {
-        this.tipoArchivo = '.xls, .xlsx';
+        this.extArchivo = '.xls, .xlsx';
         this.sugerenciaArchivo = 'Tamaño máximo 150 KB. Formatos xls y xlsx.';
         this.defaultImg = 'assets/img/default/file_excel.png';
         break;
       }
       case 'Word': {
-        this.tipoArchivo = '.doc, .docx';
+        this.extArchivo = '.doc, .docx';
         this.sugerenciaArchivo = 'Tamaño máximo 150 KB. Formatos doc y docx.';
         this.defaultImg = 'assets/img/default/file_word.png';
         break;
       }
       case 'Pdf': {
-        this.tipoArchivo = '.pdf';
+        this.extArchivo = '.pdf';
         this.sugerenciaArchivo = 'Tamaño máximo 150 KB. Formato pdf.';
         this.defaultImg = 'assets/img/default/file_pdf.png';
         break;
       }
       case 'Texto': {
-        this.tipoArchivo = '.txt, text/plain';
+        this.extArchivo = '.txt, text/plain';
         this.sugerenciaArchivo = 'Tamaño máximo 150 KB. Formatos txt.';
         this.defaultImg = 'assets/img/default/file_text.png';
         break;
       }
       case 'Video': {
-        this.tipoArchivo = 'url';
-        this.sugerenciaArchivo = '';
+        this.extArchivo = '.mp4';
+        this.maxSize = '250 MB.';
+        this.sugerenciaArchivo = `Tamaño máximo ${this.maxSize} Formatos mp4.`;
         this.defaultImg = 'assets/img/default/file_video.png';
-        this.headerDialog = 'Url Video';
+        this.fileSizeMax = 250000 * 1024;
         break;
       }
     }
@@ -275,7 +303,7 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
           let nameFile = selectedFiles[i].name.split('.');
           let extension = nameFile[nameFile.length - 1].toLowerCase();
           let reader = new FileReader();
-          if (this.tipoArchivo.includes(extension)) {
+          if (this.extArchivo.includes(extension)) {
             reader.onload = (e: any) => {
               switch (this.reto.tipoArchivo) {
                 case 'Imagen/png jpg jpeg': {
@@ -317,14 +345,15 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
                   };
                   break;
                 }
+                case 'Video':
                 case 'Texto':
                 case 'Pdf':
                 case 'Word':
                 case 'Excel': {
-                  if (selectedFiles[i].size > FileSizeMax) {
+                  if (selectedFiles[i].size > this.fileSizeMax) {
                     this.responseFiles.push({
                       error: 1,
-                      info: 'El archivo no puede superar los 150 KB.',
+                      info: `El archivo no puede superar los ${this.maxSize}`,
                       id: selectedFiles[i].name,
                       campo: '',
                     });
@@ -340,6 +369,10 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
 
                     this.previewFiles.push(this.defaultImg);
                     this.files.push(selectedFiles[i]);
+
+                    if (this.reto.tipoArchivo === 'Video') {
+                      this.videosNames.push(this.setVideoName(extension));
+                    }
                   } else {
                     this.responseFiles.push({
                       error: 1,
@@ -368,10 +401,13 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
     }
   }
 
-  agregarUrlVideo() {
-    /* console.log(this.formulario.valid);
-    console.log(this.formulario.value); */
+  setVideoName(ext: string): string {
+    return `${Date.now()}-${Math.floor(Math.random() * 5000)}-Video-${
+      this.videosNames.length
+    }.${ext}`;
+  }
 
+  /* agregarUrlVideo() {    
     this.responseFiles = [];
 
     if (this.formulario.valid) {
@@ -389,7 +425,7 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
     } else {
       this.verErrorsInputs = true;
     }
-  }
+  } */
 
   itemYaAgregado(lista: File[], archivo: File) {
     return lista.some(
@@ -405,8 +441,9 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
     if (index < this.previewFiles.length) {
       this.previewFiles.splice(index, 1);
 
-      if (this.tipoArchivo === 'url') {
-        this.urlsVideos.splice(index, 1);
+      if (this.reto.tipoArchivo === 'Video') {
+        this.files.splice(index, 1);
+        this.videosNames.splice(index, 1);
       } else {
         this.files.splice(index, 1);
       }
@@ -417,8 +454,8 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
-    this.formulario.patchValue({
+    /* this.formulario.patchValue({
       url: '',
-    });
+    }); */
   }
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Usuario_Equipo } from 'src/app/Models/Equipo';
 import {
   AlertError,
+  ChangeRoute,
   GetImage,
   Loading,
   MsgError,
@@ -22,6 +23,7 @@ export class RankingTeamsComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   loading = Loading();
   getImage = GetImage();
+  changeRoute = ChangeRoute();
 
   idUsuario: string = '';
   idEquipo: string = '';
@@ -62,8 +64,7 @@ export class RankingTeamsComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });

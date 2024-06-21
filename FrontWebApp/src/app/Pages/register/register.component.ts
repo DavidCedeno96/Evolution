@@ -6,6 +6,7 @@ import { Usuario } from 'src/app/Models/Usuario';
 import {
   AlertError,
   AlertSuccess,
+  ChangeRoute,
   ImgHeightMax,
   ImgSizeMax,
   ImgWidthMax,
@@ -34,6 +35,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   alertSuccess = AlertSuccess();
   loading = Loading();
+  changeRoute = ChangeRoute();
   contrasenaInvalid = ContrasenaInvalid();
   sugerenciaImagen = SugerenciaImagen;
 
@@ -177,9 +179,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       },
       error: (e) => {
         console.error(e);
-        this.router.navigate(['/']);
-        this.loading(false, false);
-        this.alertError(TitleError, MsgError);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.changeRoute('/404', {});
+        }
       },
     });
   }
@@ -195,9 +199,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       },
       error: (e) => {
         console.error(e);
-        this.router.navigate(['/']);
-        this.loading(false, false);
-        this.alertError(TitleError, MsgError);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.changeRoute('/404', {});
+        }
       },
     });
   }
@@ -257,9 +263,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         },
         error: (e) => {
           console.error(e);
-          this.router.navigate(['/']);
-          this.loading(false, false);
-          //this.alertError(TitleError, MsgError);
+          if (e.status === 401 || e.status === 403) {
+            this.router.navigate(['/']);
+          } else {
+            this.changeRoute('/404', {});
+          }
         },
       });
     } else {

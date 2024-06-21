@@ -6,6 +6,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   AlertError,
   AlertWarning,
+  ChangeRoute,
   Loading,
   MsgError,
   MsgOk,
@@ -25,6 +26,7 @@ export class InicioComponent implements OnInit {
   alertWarning = AlertWarning();
   loading = Loading();
   alertError = AlertError();
+  changeRoute = ChangeRoute();
 
   configIndexInicio: number = 0;
   estaGuardadoInicio: boolean = true;
@@ -69,7 +71,7 @@ export class InicioComponent implements OnInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -132,8 +134,7 @@ export class InicioComponent implements OnInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          this.alertError(TitleError, MsgError);
-          this.loading(false, false);
+          this.changeRoute('/404', {});
         }
       },
     });

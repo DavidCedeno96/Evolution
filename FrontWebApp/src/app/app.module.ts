@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 
 import { CommonModule } from '@angular/common';
 
+import { SafeResourceUrlPipe } from './shared/securityTrustHtml/safe-url.pipe';
+
 // tooltip
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -35,6 +37,8 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/calendar';
 import { InputMaskModule } from 'primeng/inputmask';
+import { TableModule } from 'primeng/table';
+import { MenuModule } from 'primeng/menu';
 
 /* PÁGINAS */
 import { LoginComponent } from './Pages/login/login.component';
@@ -105,6 +109,9 @@ import { ComportamientoComponent } from './Components/comportamiento/comportamie
 import { ValidacionesComponent } from './Pages/Reto/validaciones/validaciones.component';
 import { ValidacionesUsersComponent } from './Pages/Reto/validaciones-users/validaciones-users.component';
 import { InstruccionesRetoComponent } from './Components/instrucciones-reto/instrucciones-reto.component';
+import { VideoPlayerComponent } from './Components/video-player/video-player.component';
+import { PageNotFoundComponent } from './Pages/page-not-found/page-not-found.component';
+import { NovedadesComponent } from './Components/novedades/novedades.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -178,6 +185,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     ValidacionesComponent,
     ValidacionesUsersComponent,
     InstruccionesRetoComponent,
+    VideoPlayerComponent,
+    SafeResourceUrlPipe,
+    PageNotFoundComponent,
+    NovedadesComponent,
   ],
   imports: [
     BrowserModule,
@@ -198,6 +209,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ToastModule,
     CalendarModule,
     InputMaskModule,
+    TableModule,
+    MenuModule,
     CommonModule,
     MatTooltipModule,
     TranslateModule.forRoot({

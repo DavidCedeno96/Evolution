@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Response } from 'src/app/Models/Response';
 import {
   AlertError,
+  ChangeRoute,
   Loading,
   MsgError,
   MsgErrorForm,
@@ -21,6 +22,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class MassActionsUserComponent implements OnInit {
   alertError = AlertError();
   loading = Loading();
+  changeRoute = ChangeRoute();
 
   listCorreosIds: string[] = [];
   responseList: Response[] = [];
@@ -107,8 +109,7 @@ export class MassActionsUserComponent implements OnInit {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
-            this.alertError(TitleError, MsgError);
-            this.loading(false, false);
+            this.changeRoute('/404', {});
           }
         },
       });

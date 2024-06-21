@@ -47,7 +47,7 @@ export class MedallaService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
-    return this.http.get<Medalla[]>(`${this.apiURL}/buscar/${texto}`, {
+    return this.http.get<Medalla[]>(`${this.apiURL}/buscar?texto=${texto}`, {
       headers: headers,
     });
   }

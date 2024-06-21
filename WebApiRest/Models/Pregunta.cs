@@ -29,6 +29,7 @@
     {
         public string Info { get; set; }
         public int Error { get; set; }
+        public byte[] File { get; set; }
         public Reto Reto { get; set; }
         public List<Pregunta_OpcionList> List { get; set; }
     }

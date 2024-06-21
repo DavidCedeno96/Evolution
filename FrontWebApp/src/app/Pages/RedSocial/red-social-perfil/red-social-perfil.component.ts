@@ -5,7 +5,7 @@ import { Nivel } from 'src/app/Models/Nivel';
 import { Recompensa } from 'src/app/Models/Recompensa';
 import { Usuario_Reto } from 'src/app/Models/Reto';
 import { Usuario } from 'src/app/Models/Usuario';
-import { GetImage, Loading } from 'src/app/Utils/Constants';
+import { ChangeRoute, GetImage, Loading } from 'src/app/Utils/Constants';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -16,6 +16,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class RedSocialPerfilComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   loading = Loading();
+  changeRoute = ChangeRoute();
 
   usuario: Usuario = {
     idUsuario: '',
@@ -97,7 +98,7 @@ export class RedSocialPerfilComponent implements OnInit, AfterViewInit {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
-          history.back();
+          this.changeRoute('/404', {});
         }
       },
     });

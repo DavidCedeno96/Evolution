@@ -15,6 +15,7 @@ export interface Opcion {
   correcta: number;
   cantVotos: number;
   valor: number;
+  cantVotosXvalor: number;
 }
 
 export interface PreguntaOpciones {

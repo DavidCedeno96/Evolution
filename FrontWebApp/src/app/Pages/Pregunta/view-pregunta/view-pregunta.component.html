@@ -21,7 +21,10 @@
     </div>
     <div
       class="col-6 col-md-6 d-grid d-md-block"
-      *ngIf="reto.tipoReto === 'Encuesta' && preguntaOpciones.length"
+      *ngIf="
+        (reto.tipoReto === 'Encuesta' || reto.tipoReto === 'Comportamiento') &&
+        preguntaOpciones.length
+      "
     >
       <a
         class="btn btn-secondary icon"
