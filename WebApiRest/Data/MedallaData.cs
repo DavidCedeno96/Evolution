@@ -157,6 +157,8 @@ namespace WebApiRest.Data
                         IdMedalla = new Guid(dr["idMedalla"].ToString()),
                         Nombre = dr["nombre"].ToString(),        
                         Imagen = dr["imagen"].ToString(),                        
+                        Condicion = dr["condicion"].ToString(),
+                        NumCondicion = Convert.ToInt32(dr["numCondicion"].ToString()),
                         IdUsuario = new Guid(dr["idUsuario"].ToString()),
                         FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                         FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())

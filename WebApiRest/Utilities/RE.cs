@@ -15,8 +15,8 @@ namespace WebApiRest.Utilities
          */
 
         private static readonly string palabras = @"^[a-zA-ZáÁéÉíÍóÓúÚüÜñÑ\s]+$";
-        private static readonly string palabrasNumeros = @"^[\p{L}\s\d]+$";
-        private static readonly string celular = @"^\d{10}$";
+        private static readonly string palabrasNumeros = @"^[\p{L}\s\d]+$";        
+        private static readonly string celular = @"^\d{9}$";
         private static readonly string cedula = @"^\d{10,15}$";
         private static readonly string email = @"^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$";
         private static readonly string clave = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@\.\-_$#])[a-zA-Z\d@\.\-_$#]{5,20}$";
@@ -50,7 +50,7 @@ namespace WebApiRest.Utilities
                     {
                         regex = new Regex(palabrasNumeros);
                         break;
-                    }
+                    }                
                 case "cedula":
                     {
                         regex = new Regex(cedula);

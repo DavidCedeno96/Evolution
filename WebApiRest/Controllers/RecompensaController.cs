@@ -5,6 +5,7 @@ using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Data;
+using System.Net.Mail;
 using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;
@@ -21,6 +22,7 @@ namespace WebApiRest.Controllers
         readonly CorreoEnvioData dataCorreoEnvio = new();
         readonly NotificacionData dataNotificacion = new();
 
+        private EmailService emailService;
         private readonly IWebHostEnvironment _env;
         private readonly string nombreCarpeta = "Recompensa";
 
@@ -269,7 +271,7 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> CreateUsuarioRecompensa([FromBody] Usuario_Recompensa usuarioRecompensa)
         {
             Response response = new();
-            CorreoEnvioItem responseCorreoEnvio = await dataCorreoEnvio.GetCorreoEnvio();
+            CorreoEnvioItem responseCorreoEnvio = await dataCorreoEnvio.GetCorreoEnvio(true);
             NotificacionItem resNotificacion = await dataNotificacion.GetNotificacion("Notificar a los usuarios cuando canjean una recompensa");
 
             Claim userClaim = User.FindFirst("id");
@@ -328,11 +330,20 @@ namespace WebApiRest.Controllers
                                 urlImageRecompensa = $"{url}/Content/Images/Default/default-recompensa.jpg";
                             }
 
-                            response = await WC.EnviarMail(responseCorreoEnvio.CorreoEnvio, responseUser.Usuario.Correo, "Recompensa Canjeada", Html.GetRecompensaCanjeada(urlImageLogo, colorPri,colorSec,colorTer, responseRecompensa.Recompensa.Nombre, urlImageRecompensa, resNotificacion.Notificacion.MsgPersonalizado));
-                        } else
-                        {
-                            response.Info = "Ha ocurrido un error con el usuario o la recompensa al enviar el correo de confirmación";
-                            response.Error = 1;
+                            //response = await WC.EnviarMail(responseCorreoEnvio.CorreoEnvio, responseUser.Usuario.Correo, "Recompensa Canjeada", Html.GetRecompensaCanjeada(urlImageLogo, colorPri,colorSec,colorTer, responseRecompensa.Recompensa.Nombre, urlImageRecompensa, resNotificacion.Notificacion.MsgPersonalizado));
+
+                            List<EmailMessage> emailMessages = new()
+                            {
+                                new EmailMessage
+                                {
+                                    Email = responseUser.Usuario.Correo,
+                                    Subject = "Recompensa Canjeada",
+                                    Body = Html.GetRecompensaCanjeada(urlImageLogo, colorPri,colorSec,colorTer, responseRecompensa.Recompensa.Nombre, urlImageRecompensa, resNotificacion.Notificacion.MsgPersonalizado)
+                                }
+                            };
+
+                            emailService = new(responseCorreoEnvio.CorreoEnvio);
+                            await emailService.SendEmailsInBatches(emailMessages);
                         }
                     }
                 }
@@ -341,6 +352,21 @@ namespace WebApiRest.Controllers
 
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
+
+
+        //[HttpPost]
+        //[Route("prueba")]
+        //public async Task<IActionResult> Prueba([FromBody] List<EmailMessage> emailMessages)
+        //{
+        //    CorreoEnvioItem responseCorreoEnvio = await dataCorreoEnvio.GetCorreoEnvio(true);
+        //    List<Response> responses = new();
+        //    if (responseCorreoEnvio.Error == 0)
+        //    {
+        //        emailService = new(responseCorreoEnvio.CorreoEnvio);
+        //        responses = await emailService.SendEmailsInBatches(emailMessages);
+        //    }
+        //    return StatusCode(StatusCodes.Status200OK, new { responses });
+        //}
 
         [HttpPost]
         [Route("import")]

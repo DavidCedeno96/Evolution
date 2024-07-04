@@ -4,6 +4,7 @@
     {
         public Guid IdNovedad { get; set; }
         public string Mensaje { get; set; }
+        public string AuxMsg { get; set; }
         public Guid IdUsuario { get; set; }
         public Guid IdTabla { get; set; }
         public string Tabla { get; set; }

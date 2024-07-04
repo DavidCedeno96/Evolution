@@ -22,7 +22,8 @@ namespace WebApiRest.Controllers
         [Authorize]
         public async Task<IActionResult> ListByComments()
         {
-            RedSocialList_comentarios response = await data.GetRedSocialList_comentarios();
+            string userId = User.FindFirst("id").Value;
+            RedSocialList_comentarios response = await data.GetRedSocialList_comentarios(new Guid(userId));
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 

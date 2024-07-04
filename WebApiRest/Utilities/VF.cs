@@ -545,6 +545,51 @@ namespace WebApiRest.Utilities
             return result;
         }
 
+        //Correo de envio
+        public static Response ValidarCorreoEnvio(CorreoEnvio correoEnvio)
+        {
+            Response result = new();
+            bool validForm = true;
+            //if (!RE.ValidRE(correoEnvio.Correo, "email"))
+            //{
+            //    result.Error = 1;
+            //    result.Info = WC.GetErrorCorreo();
+            //    result.Campo = "correo";
+            //    validForm = false;
+            //}
+
+            if (!RE.ValidRE(correoEnvio.Correo, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "correo";
+                validForm = false;
+            }
+
+            if (!RE.ValidRE(correoEnvio.Password, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "password";
+                validForm = false;
+            }            
+
+            if (!RE.ValidRE(correoEnvio.Host, "invalid"))
+            {
+                result.Error = 1;
+                result.Info = WC.GetInvalid();
+                result.Campo = "host";
+                validForm = false;
+            }
+
+            if (validForm)
+            {
+                result.Error = 0;
+                result.Info = WC.GetSatisfactorio();
+            }
+            return result;
+        }
+
         //Licencia
         public static Response ValidarLicencia(Licencia licencia)
         {

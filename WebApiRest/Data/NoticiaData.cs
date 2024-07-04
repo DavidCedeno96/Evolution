@@ -9,7 +9,7 @@ namespace WebApiRest.Data
     {
         private readonly Conexion conexion = new();
 
-        public async Task<NoticiaList> GetNoticiaList(int estado)
+        public async Task<NoticiaList> GetNoticiaList(int estado, Guid idUsuario)
         {
             NoticiaList list = new()
             {
@@ -23,6 +23,7 @@ namespace WebApiRest.Data
                 CommandType = CommandType.StoredProcedure
             };
             cmd.Parameters.AddWithValue("@estado", estado);
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -192,7 +193,7 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<NoticiaList_comentarios> GetNoticiaList_comentarios(int estado)
+        public async Task<NoticiaList_comentarios> GetNoticiaList_comentarios(int estado, Guid idUsuario, Guid idNoticia)
         {
 
             NoticiaList_comentarios list = new()
@@ -207,7 +208,13 @@ namespace WebApiRest.Data
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@estado", estado);            
+            cmd.Parameters.AddWithValue("@estado", estado);
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+            if (idNoticia != Guid.Empty)
+            {
+                cmd.Parameters.AddWithValue("@idNoticia", idNoticia);            
+            }
+
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -239,6 +246,7 @@ namespace WebApiRest.Data
                             FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                             FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                         },
+                        UserLiked = Convert.ToInt32(dr["userLiked"].ToString()),
                         ComentarioList = comentarioList.Lista
                     });
                 }

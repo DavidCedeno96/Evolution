@@ -30,10 +30,12 @@ namespace WebApiRest.Controllers
         readonly CiudadData dataCiudad = new();
         readonly AreaData dataArea = new();
         readonly ConfiguracionData dataConfig = new();
-        readonly CorreoEnvioData dataCorreoEnvio = new();        
+        readonly CorreoEnvioData dataCorreoEnvio = new();
+        readonly NotificacionData dataNotificacion = new();
 
-        readonly Settings settings = new();        
+        readonly Settings settings = new();
 
+        private EmailService emailService;
         private readonly IWebHostEnvironment _env;
         private readonly string nombreCarpeta = "Usuario";
 
@@ -55,9 +57,9 @@ namespace WebApiRest.Controllers
         [HttpGet]
         [Route("buscar")]
         [Authorize(Roles = "adm,sadm")]
-        public async Task<IActionResult> List([FromQuery] string texto)
+        public async Task<IActionResult> List([FromQuery] string texto, [FromQuery] int incluirAdmins)
         {
-            UsuarioList response = await data.GetUsuarioList(texto);
+            UsuarioList response = await data.GetUsuarioList(texto, incluirAdmins);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
@@ -394,7 +396,7 @@ namespace WebApiRest.Controllers
         {
             Response response = VF.ValidarUsuario(usuario);
             Response responseUser = await data.GetUsuario(usuario, codigoRegistro);
-            CorreoEnvioItem responseCorreoEnvio = await dataCorreoEnvio.GetCorreoEnvio();
+            CorreoEnvioItem responseCorreoEnvio = await dataCorreoEnvio.GetCorreoEnvio(true);
 
             if (responseUser.Error > 0)
             {
@@ -452,12 +454,25 @@ namespace WebApiRest.Controllers
 
                 string urlActivacion = urlVistaActivarUsuario + tokenCreado;
 
-                response = await WC.EnviarMail(responseCorreoEnvio.CorreoEnvio, usuario.Correo, "Bienvenido a Play Move", Html.GetRegisterUser(url, colorPri, colorSec, colorTer, urlActivacion, usuario.Correo, usuario.Contrasena));
-
-                if(response.Error > 0)
+                List<EmailMessage> emailMessages = new()
                 {
-                    response.Info = "El correo electrónico de envio del administrador esta incorrecto, contactate con el administrador";
-                }
+                    new EmailMessage
+                    {
+                        Email = usuario.Correo,
+                        Subject = "Bienvenido a Play Move",
+                        Body = Html.GetRegisterUser(url, colorPri, colorSec, colorTer, urlActivacion, usuario.Correo, usuario.Contrasena)
+                    }                    
+                };
+
+                emailService = new(responseCorreoEnvio.CorreoEnvio);
+                await emailService.SendEmailsInBatches(emailMessages);
+
+                //response = await WC.EnviarMail(responseCorreoEnvio.CorreoEnvio, usuario.Correo, "Bienvenido a Play Move", Html.GetRegisterUser(url, colorPri, colorSec, colorTer, urlActivacion, usuario.Correo, usuario.Contrasena));
+
+                //if(response.Error > 0)
+                //{
+                //    response.Info = "El correo electrónico de envio del administrador esta incorrecto, contactate con el administrador";
+                //}
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
@@ -672,6 +687,9 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> ImportList([FromForm] IFormFile archivo)
         {
             Response response = new();
+            CorreoEnvioItem responseCorreoEnvio = await dataCorreoEnvio.GetCorreoEnvio(true);
+            NotificacionItem resNotificacion = await dataNotificacion.GetNotificacion("Notificar a los usuarios cuando el administrador crea un nuevo usuario");
+            List<EmailMessage> emailMessages = new();
 
             List<Usuario> lista = new();
 
@@ -804,6 +822,42 @@ namespace WebApiRest.Controllers
                             if (response.Error == 0)
                             {
                                 response = await data.CreateUsuario(item);
+
+                                if(response.Error == 0 && responseCorreoEnvio.Error == 0 && resNotificacion.Error == 0)
+                                {
+                                    string imgaen = responseCorreoEnvio.CorreoEnvio.Imagen;
+                                    string url = responseCorreoEnvio.CorreoEnvio.Url;
+                                    string colorPri = responseCorreoEnvio.CorreoEnvio.ColorPrimario;
+                                    string colorSec = responseCorreoEnvio.CorreoEnvio.ColorSecundario;
+                                    string colorTer = responseCorreoEnvio.CorreoEnvio.ColorTerciario;
+
+                                    string urlIniciarSesion = $"{url}/login";
+
+                                    if (!imgaen.Equals("N/A"))
+                                    {
+                                        url += $"/Content/Images/Config/{imgaen}";
+                                    }
+                                    else
+                                    {
+                                        url += "/Content/Images/Default/default-logoDM.png";
+                                    }
+
+                                    emailMessages.Add(new EmailMessage
+                                    {
+                                        Email = item.Correo,
+                                        Subject = "Bienvenido a Play Move!",
+                                        Body = Html.GetCreateUser(url, colorPri, colorSec, colorTer, urlIniciarSesion, item.Correo, item.Contrasena, resNotificacion.Notificacion.MsgPersonalizado)
+                                    });
+                                }
+                            }
+                        }
+
+                        if (resNotificacion.Error == 0 && responseCorreoEnvio.Error == 0)
+                        {
+                            if (resNotificacion.Notificacion.Estado == 1)
+                            {
+                                emailService = new(responseCorreoEnvio.CorreoEnvio);
+                                await emailService.SendEmailsInBatches(emailMessages);
                             }
                         }
                     }

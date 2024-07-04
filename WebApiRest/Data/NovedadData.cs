@@ -39,6 +39,7 @@ namespace WebApiRest.Data
                     {
                         IdNovedad = new Guid(dr["idNovedad"].ToString()),
                         Mensaje = dr["mensaje"].ToString(),
+                        AuxMsg = dr["auxMsg"].ToString(),
                         Tabla = dr["tabla"].ToString(),     
                         Ruta = dr["ruta"].ToString(),
                         Estado = Convert.ToInt32(dr["estado"].ToString()),

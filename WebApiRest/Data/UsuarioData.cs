@@ -43,6 +43,7 @@ namespace WebApiRest.Data
                         Apellido = dr["apellido"].ToString(),
                         Correo = dr["correo"].ToString(),
                         Id = dr["id"].ToString(),
+                        PaisIso2 = dr["paisIso2"].ToString(),                        
                         Celular = dr["celular"].ToString(),
                         Foto = dr["foto"].ToString(),
                         IdRol = dr["idRol"].ToString(),
@@ -78,7 +79,7 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<UsuarioList> GetUsuarioList(string buscar)
+        public async Task<UsuarioList> GetUsuarioList(string buscar, int incluirAdmins)
         {
             UsuarioList list = new()
             {
@@ -93,6 +94,7 @@ namespace WebApiRest.Data
             };
             
             cmd.Parameters.AddWithValue("@buscar", WC.GetTrim(buscar));
+            cmd.Parameters.AddWithValue("@incluirAdmins", incluirAdmins);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -111,6 +113,7 @@ namespace WebApiRest.Data
                         Apellido = dr["apellido"].ToString(),
                         Correo = dr["correo"].ToString(),
                         Id = dr["id"].ToString(),
+                        PaisIso2 = dr["paisIso2"].ToString(),
                         Celular = dr["celular"].ToString(),
                         Foto = dr["foto"].ToString(),
                         IdRol = dr["idRol"].ToString(),
@@ -180,6 +183,7 @@ namespace WebApiRest.Data
                         Apellido = dr["apellido"].ToString(),
                         Correo = dr["correo"].ToString(),
                         Id = dr["id"].ToString(),
+                        PaisIso2 = dr["paisIso2"].ToString(),
                         Celular = dr["celular"].ToString(),
                         Foto = dr["foto"].ToString(),
                         IdRol = dr["idRol"].ToString(),
@@ -249,6 +253,7 @@ namespace WebApiRest.Data
                         Correo = dr["correo"].ToString(),
                         Id = dr["id"].ToString(),
                         Contrasena = decryptedText,
+                        PaisIso2 = dr["paisIso2"].ToString(),
                         Celular = dr["celular"].ToString(),
                         Foto = dr["foto"].ToString(),
                         IdRol = dr["idRol"].ToString(),
@@ -312,6 +317,8 @@ namespace WebApiRest.Data
                         Apellido = dr["apellido"].ToString(),
                         Correo = dr["correo"].ToString(),
                         Id = dr["id"].ToString(),
+                        PaisIso2 = dr["paisIso2"].ToString(),
+                        PaisCode = dr["paisCode"].ToString(),
                         Celular = dr["celular"].ToString(),
                         Foto = dr["foto"].ToString(),
                         IdRol = dr["idRol"].ToString(),
@@ -392,6 +399,44 @@ namespace WebApiRest.Data
 
         }
 
+        public async Task<Response> GetUsuario(Guid idUsuario)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_B_UsuarioPuntosCreditos", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);            
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+        }
+
         public async Task<Response> CreateUsuario(Usuario usuario)
         {
             Response response = new();
@@ -406,6 +451,8 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@apellido", WC.GetTrim(usuario.Apellido));
             cmd.Parameters.AddWithValue("@correo", WC.GetTrim(usuario.Correo));
             cmd.Parameters.AddWithValue("@idU", WC.GetTrim(usuario.Id));
+            cmd.Parameters.AddWithValue("@paisIso2", WC.GetTrim(usuario.PaisIso2));
+            cmd.Parameters.AddWithValue("@paisCode", WC.GetTrim(usuario.PaisCode));
             cmd.Parameters.AddWithValue("@celular", WC.GetTrim(usuario.Celular));
             cmd.Parameters.AddWithValue("@foto", WC.GetTrim(usuario.Foto));
             cmd.Parameters.AddWithValue("@idRol", WC.GetTrim(usuario.IdRol));
@@ -455,6 +502,8 @@ namespace WebApiRest.Data
             cmd.Parameters.AddWithValue("@apellido", WC.GetTrim(usuario.Apellido));
             cmd.Parameters.AddWithValue("@correo", WC.GetTrim(usuario.Correo));
             cmd.Parameters.AddWithValue("@idU", WC.GetTrim(usuario.Id));
+            cmd.Parameters.AddWithValue("@paisIso2", WC.GetTrim(usuario.PaisIso2));
+            cmd.Parameters.AddWithValue("@paisCode", WC.GetTrim(usuario.PaisCode));
             cmd.Parameters.AddWithValue("@celular", WC.GetTrim(usuario.Celular));
             cmd.Parameters.AddWithValue("@foto", WC.GetTrim(usuario.Foto));
             cmd.Parameters.AddWithValue("@idRol", WC.GetTrim(usuario.IdRol));

@@ -14,6 +14,7 @@ namespace WebApiRest.Utilities
     public class CorreoEnvio
     {
         public Guid IdCorreo { get; set; }
+        public string Nombre { get; set; }
         public string Correo { get; set; }
         public string Password { get; set; }
         public int Puerto { get; set; }
@@ -30,5 +31,12 @@ namespace WebApiRest.Utilities
         public string Info { get; set; }
         public int Error { get; set; }
         public CorreoEnvio CorreoEnvio { get; set; }
+    }
+
+    public class EmailMessage
+    {
+        public string Email { get; set; }
+        public string Subject { get; set; }
+        public string Body { get; set; }
     }
 }

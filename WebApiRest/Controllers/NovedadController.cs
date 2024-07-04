@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.POIFS.Crypt.Dsig;
 using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;
-using WebApiRest.Utilities;
 
 namespace WebApiRest.Controllers
 {
@@ -14,6 +11,7 @@ namespace WebApiRest.Controllers
     public class NovedadController : ControllerBase
     {
         readonly NovedadData data = new();
+        readonly UsuarioData dataUser = new();
 
         [HttpGet]
         [Route("list")]
@@ -22,7 +20,8 @@ namespace WebApiRest.Controllers
         {
             Claim userClaim = User.FindFirst("id");
             NovedadList response = await data.GetNovedadList(new Guid(userClaim.Value));
-            return StatusCode(StatusCodes.Status200OK, new { response });
+            Response userPtsCrts = await dataUser.GetUsuario(new Guid(userClaim.Value));
+            return StatusCode(StatusCodes.Status200OK, new { response, userPtsCrts });
         }
 
         [HttpPut]

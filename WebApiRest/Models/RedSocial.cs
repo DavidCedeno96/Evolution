@@ -48,6 +48,7 @@
         public string Info { get; set; }
         public int Error { get; set; }
         public RedSocial RedSocial { get; set; }
+        public int UserLiked { get; set; }
         public List<Usuario_RedSocial> ComentarioList { get; set; }
     }
 

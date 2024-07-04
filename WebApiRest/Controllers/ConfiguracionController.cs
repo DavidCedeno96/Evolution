@@ -15,7 +15,7 @@ namespace WebApiRest.Controllers
     [ApiController]
     public class ConfiguracionController : ControllerBase
     {
-        readonly ConfiguracionData data = new();
+        readonly ConfiguracionData data = new();        
 
         private readonly IWebHostEnvironment _env;
         private readonly string nombreCarpeta = "Config";

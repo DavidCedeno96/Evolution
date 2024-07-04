@@ -55,6 +55,7 @@
         public string Info { get; set; }
         public int Error { get; set; }
         public Noticia Noticia { get; set; }
+        public int UserLiked { get; set; }
         public List<Usuario_Noticia> ComentarioList { get; set; }
     }
 

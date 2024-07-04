@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using NPOI.Util;
 using NPOI.XSSF.UserModel;
 using System.Data;
 using WebApiRest.Data;
@@ -350,7 +351,7 @@ namespace WebApiRest.Controllers
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }
+        }       
 
         [HttpPost]
         [Route("import/trivia/{idReto}")]
@@ -393,24 +394,29 @@ namespace WebApiRest.Controllers
                                         pregunta.Nombre = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
                                         pregunta.IdReto = idReto;
                                     }
-                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("opcion"))
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("opci"))
                                     {
-                                        listOp.Add(new Opcion
+                                        string op = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());                                        
+                                        if (!string.IsNullOrEmpty(op))
                                         {
-                                            Nombre = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString()),
-                                            Correcta = 0
-                                        });
+                                            listOp.Add(new Opcion
+                                            {
+                                                Nombre = op,
+                                                Correcta = 0
+                                            });
+                                        }
                                     }
                                     else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("correcta"))
                                     {
-                                        string opcCorrecta = "opcion " + WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString().ToLower());
-                                        for (int k = 0; k < 4; k++)
+                                        string opCorrecta = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString().ToLower());
+                                        for (int k = 0; k < listOp.Count; k++)
                                         {
-                                            if (filaEncabezado.GetCell(k + 1).ToString().ToLower().Trim().Equals(opcCorrecta))
+                                            string opEncabezado = filaEncabezado.GetCell(k + 1).ToString().ToLower().Trim();
+                                            if(opEncabezado.Split(" ")[1].Contains(opCorrecta))
                                             {
                                                 listOp[k].Correcta = 1;
                                                 break;
-                                            }
+                                            }                                            
                                         }
                                     }
                                 }
@@ -564,7 +570,7 @@ namespace WebApiRest.Controllers
                                         pregunta.Nombre = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
                                         pregunta.IdReto = idReto;
                                     }
-                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("opcion"))
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("opci"))
                                     {
                                         listOp.Add(new Opcion
                                         {
@@ -714,7 +720,7 @@ namespace WebApiRest.Controllers
                                         pregunta.Nombre = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
                                         pregunta.IdReto = idReto;
                                     }
-                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("opcion"))
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("opci"))
                                     {
                                         string nombreOp = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
 
@@ -892,7 +898,7 @@ namespace WebApiRest.Controllers
                                         pregunta.Nombre = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
                                         pregunta.IdReto = idReto;
                                     }
-                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("opcion"))
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("opci"))
                                     {
                                         string nombreOp = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
 
@@ -1000,6 +1006,165 @@ namespace WebApiRest.Controllers
                             {
                                 response.Error = 1;
                                 response.Info = "En las preguntas u opciones no se permiten caracteres <, > o =";
+                            }
+
+                            response.List.Add(new Pregunta_OpcionList
+                            {
+                                Info = result.Info,
+                                Error = result.Error,
+                                Pregunta = item.Pregunta,
+                                OpcionList = item.OpcionList,
+                            });
+                        }
+                    }
+                    else
+                    {
+                        response.Error = 1;
+                        response.Info = "el Archivo no tiene preguntas válidas";
+                    }
+                }
+                else
+                {
+                    response.Error = 1;
+                    response.Info = "Archivo no permitido";
+                }
+            }
+            else
+            {
+                response.Error = 1;
+                response.Info = "Falta el archivo";
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+
+        [HttpPost]
+        [Route("import/comportamiento/{idReto}")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> ImportListComportamiento([FromForm] IFormFile archivo, [FromRoute] Guid idReto)
+        {
+            bool hayErrorlist = false;
+            Response result = new();
+            PreguntaList_opciones response = new()
+            {
+                List = new()
+            };
+
+            List<Pregunta_OpcionList> lista = new();
+
+            if (archivo != null)
+            {
+                Stream stream = archivo.OpenReadStream();
+                if (Path.GetExtension(archivo.FileName).Equals(".xlsx"))
+                {
+
+                    IWorkbook archivoExcel = new XSSFWorkbook(stream);
+                    ISheet hojaExcel = archivoExcel.GetSheetAt(0);
+                    int cantidadFilas = hojaExcel.LastRowNum + 1;
+
+                    for (int i = 0; i < cantidadFilas; i++)
+                    {
+                        if (i > 0)
+                        {
+                            IRow filaEncabezado = hojaExcel.GetRow(0);
+                            IRow filaData = hojaExcel.GetRow(i);
+                            Pregunta pregunta = new();
+                            List<Opcion> listOp = new();                            
+                            for (int j = 0; j < 6; j++)
+                            {
+                                try
+                                {
+                                    if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("pregunta"))
+                                    {
+                                        pregunta.Nombre = WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString());
+                                        pregunta.IdReto = idReto;
+                                    }                                    
+                                    else if (filaEncabezado.GetCell(j).ToString().ToLower().Contains("escala"))
+                                    {
+                                        int valor = Convert.ToInt32(WC.GetTrim(filaData.GetCell(j, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString()));
+                                        if (valor > 0 && valor < 6)
+                                        {
+                                            string nombreOp = WC.GetOpcionComportamiento(j);
+
+                                            if (!string.IsNullOrEmpty(nombreOp))
+                                            {
+                                                listOp.Add(new Opcion
+                                                {
+                                                    Nombre = nombreOp,
+                                                    Correcta = 0,
+                                                    Valor = valor,
+                                                });                                                
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (Exception) { }
+                            }                            
+
+                            if (!string.IsNullOrEmpty(pregunta.Nombre.Trim()) && listOp.Count == 5)
+                            {
+                                lista.Add(new Pregunta_OpcionList
+                                {
+                                    Pregunta = pregunta,
+                                    OpcionList = listOp,
+                                });
+                            }
+                        }
+                    }
+
+                    if (lista.Count > 0)
+                    {
+                        foreach (var item in lista)
+                        {
+                            Response resultPregunta = VF.ValidarPregunta(item.Pregunta);
+                            Response resultOpcion = new();
+                            foreach (var op in item.OpcionList)
+                            {
+                                resultOpcion = VF.ValidarOpcion(op);
+                                if (resultOpcion.Error > 0)
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (resultPregunta.Error == 0 && resultOpcion.Error == 0)
+                            {
+                                result = await dataPregunta.CreatePregunta(item.Pregunta);
+                                if (result.Error == 0)
+                                {
+                                    Guid idPregunta = new(result.Id);
+                                    foreach (var op in item.OpcionList)
+                                    {
+                                        op.IdPregunta = idPregunta;
+                                        op.IdTipoEntrada = new Guid("7c8c2672-2233-486a-a184-f0b51eb4a331");
+                                        result = await dataOpcion.CreateOpcion(op);
+                                    }
+                                    if (result.Error == 0)
+                                    {
+                                        result.Info = result.Info.Split(",")[0];
+                                    }
+                                }
+                            }
+                            else if (resultPregunta.Error > 0)
+                            {
+                                result.Error = 1;
+                                result.Info = resultPregunta.Info;
+                                result.Campo = resultPregunta.Campo;
+                                hayErrorlist = true;
+                            }
+                            else if (resultOpcion.Error > 0)
+                            {
+                                result.Error = 1;
+                                result.Info = resultOpcion.Info;
+                                result.Campo = resultOpcion.Campo;
+                                hayErrorlist = true;
+                            }
+
+                            if (hayErrorlist)
+                            {
+                                response.Error = 1;
+                                response.Info = "En las preguntas no se permiten caracteres <, > o =";
                             }
 
                             response.List.Add(new Pregunta_OpcionList

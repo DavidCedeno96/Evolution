@@ -1,12 +1,6 @@
-﻿using System.Text;
+﻿using NPOI.HSSF.UserModel;
 using System.Drawing;
-using MailKit.Net.Smtp;
-using MailKit.Security;
-using MimeKit.Text;
-using MimeKit;
-using WebApiRest.Models;
-using NPOI.HSSF.UserModel;
-using System.Net.Http.Headers;
+using System.Text;
 
 namespace WebApiRest.Utilities
 {
@@ -14,8 +8,7 @@ namespace WebApiRest.Utilities
     // Esta clase es para Web Constants
     public static class WC
     {
-        private static readonly string satisfactorio = "Satisfactorio";
-        private static readonly string correoEnviado = "El correo se envió satisfactoriamente";
+        private static readonly string satisfactorio = "Satisfactorio";        
         private static readonly string error = "Ha ocurrido un error, intentalo más tarde";
         private static readonly string archivoExistente = "El archivo ya existe";        
         private static readonly string errorArchivo = "Tipo de archivo no permitido";        
@@ -24,7 +17,7 @@ namespace WebApiRest.Utilities
         private static readonly string errorLetras = "Solo se permiten letras";
         private static readonly string errorNumeros = "Solo se permiten números";
         private static readonly string errorCorreo = "Ingrese un correo válido";
-        private static readonly string errorCelular = "Solo se permiten números y debe ser de 10 dígitos";
+        private static readonly string errorCelular = "Solo se permiten números y debe ser de 9 dígitos";
         private static readonly string errorClave = "Debe tener al menos 5 caracteres de longitud, contener al menos un número, contener al menos una letra mayúscula, contener al menos una letra minúscula o solo los siguientes caracteres #@_-.";
         private static readonly string errorEstado = "Estado Incorrecto";
         private static readonly string invalid = "Tiene cacarteres invalidos";
@@ -234,38 +227,67 @@ namespace WebApiRest.Utilities
             return new string(password);
         }
 
-        public static async Task<Response> EnviarMail(CorreoEnvio correoEnvio, string correoUsuario, string asunto, string body) // EL body SI SE PUEDE PONER UN HTML EN UN STRING
+        //public static async Task<Response> EnviarMail(CorreoEnvio correoEnvio, string correoUsuario, string asunto, string body) // EL body SI SE PUEDE PONER UN HTML EN UN STRING
+        //{
+        //    Response response = new();
+        //    MimeMessage message = new();
+        //    SmtpClient smtpClient = new();                   
+
+        //    message.From.Add(MailboxAddress.Parse(GetTrim(correoEnvio.Correo)));
+        //    message.To.Add(MailboxAddress.Parse(GetTrim(correoUsuario)));
+        //    message.Subject = asunto;
+        //    message.Body = new TextPart(TextFormat.Html) { Text = body };
+
+        //    try
+        //    {
+        //        await smtpClient.ConnectAsync(correoEnvio.Host, correoEnvio.Puerto, SecureSocketOptions.StartTls);
+        //        await smtpClient.AuthenticateAsync(correoEnvio.Correo, correoEnvio.Password);
+        //        await smtpClient.SendAsync(message);
+
+        //        response.Info = correoEnviado;
+        //        response.Error = 0;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        response.Info = ex.Message;
+        //        response.Error = 1;
+        //    }
+        //    finally
+        //    {
+        //        await smtpClient.DisconnectAsync(true);
+        //    }
+
+        //    return response;
+        //}        
+
+        public static string GetOpcionComportamiento(int index)
         {
-            Response response = new();
-            MimeMessage message = new();
-            SmtpClient smtpClient = new();                   
-
-            message.From.Add(MailboxAddress.Parse(GetTrim(correoEnvio.Correo)));
-            message.To.Add(MailboxAddress.Parse(GetTrim(correoUsuario)));
-            message.Subject = asunto;
-            message.Body = new TextPart(TextFormat.Html) { Text = body };
-
-            try
-            {
-                await smtpClient.ConnectAsync(correoEnvio.Host, correoEnvio.Puerto, SecureSocketOptions.StartTls);
-                await smtpClient.AuthenticateAsync(correoEnvio.Correo, correoEnvio.Password);
-                await smtpClient.SendAsync(message);
-
-                response.Info = correoEnviado;
-                response.Error = 0;
+            switch (index) {
+                case 1:
+                    {
+                        return "Nunca";
+                    }
+                case 2:
+                    {
+                        return "Rara Vez";
+                    }
+                case 3:
+                    {
+                        return "A Veces";
+                    }
+                case 4:
+                    {
+                        return "Frecuentemente";
+                    }
+                case 5:
+                    {
+                        return "Siempre";
+                    }
+                default: {
+                        return "";
+                    }
             }
-            catch (Exception ex)
-            {
-                response.Info = ex.Message;
-                response.Error = 1;
-            }
-            finally
-            {
-                await smtpClient.DisconnectAsync(true);
-            }
-
-            return response;
-        }        
+        }
 
         public static string GetSatisfactorio()
         {

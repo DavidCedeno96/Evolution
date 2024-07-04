@@ -9,9 +9,8 @@ namespace WebApiRest.Data
     {
         private readonly Conexion conexion = new();       
 
-        public async Task<RedSocialList_comentarios> GetRedSocialList_comentarios()
+        public async Task<RedSocialList_comentarios> GetRedSocialList_comentarios(Guid idUsuario)
         {
-
             RedSocialList_comentarios list = new()
             {
                 Lista = new()
@@ -22,7 +21,9 @@ namespace WebApiRest.Data
             SqlCommand cmd = new("sp_B_RedSocial", sqlConnection)
             {
                 CommandType = CommandType.StoredProcedure
-            };            
+            };
+
+            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -54,6 +55,7 @@ namespace WebApiRest.Data
                             FechaCreacion = Convert.ToDateTime(dr["fechaCreacion"].ToString()),
                             FechaModificacion = Convert.ToDateTime(dr["fechaModificacion"].ToString())
                         },
+                        UserLiked = Convert.ToInt32(dr["userLiked"].ToString()),
                         ComentarioList = comentarioList.Lista
                     });
                 }

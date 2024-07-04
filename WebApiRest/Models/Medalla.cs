@@ -35,6 +35,8 @@
         public Guid IdMedalla { get; set; }
         public string Nombre { get; set; }
         public string Imagen { get; set; }
+        public string Condicion { get; set; }        
+        public int NumCondicion { get; set; }
         public Guid IdUsuario { get; set; }        
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }

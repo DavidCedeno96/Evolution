@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebApiRest.Data;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
@@ -25,16 +26,18 @@ namespace WebApiRest.Controllers
         [Authorize]
         public async Task<IActionResult> GetList([FromRoute] int estado)
         {
-            NoticiaList response = await data.GetNoticiaList(estado);
+            Claim userClaim = User.FindFirst("id");
+            NoticiaList response = await data.GetNoticiaList(estado, new Guid(userClaim.Value));
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 
         [HttpGet]
         [Route("listByComents/{estado}")]
         [Authorize]
-        public async Task<IActionResult> ByComents([FromRoute] int estado)
+        public async Task<IActionResult> ByComents([FromRoute] int estado, [FromQuery] Guid idNoticia)
         {
-            NoticiaList_comentarios response = await data.GetNoticiaList_comentarios(estado);
+            Claim userClaim = User.FindFirst("id");
+            NoticiaList_comentarios response = await data.GetNoticiaList_comentarios(estado, new Guid(userClaim.Value), idNoticia);
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
 

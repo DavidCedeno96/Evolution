@@ -7,7 +7,9 @@
         public string Apellido { get; set; }
         public string Correo { get; set; }
         public string Id { get; set; }
-        public string Contrasena { get; set; }        
+        public string Contrasena { get; set; }
+        public string PaisIso2 { get; set; }
+        public string PaisCode { get; set; }
         public string Celular { get; set; }
         public string Foto { get; set; }
         public string IdRol { get; set; }

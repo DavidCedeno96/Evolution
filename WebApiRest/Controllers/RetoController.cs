@@ -442,7 +442,7 @@ namespace WebApiRest.Controllers
 
             UsuarioxOpcion uxo = new()
             {
-                IdUsuario = new Guid(userClaim.Value)
+                IdUsuario = new Guid(userClaim.Value),                
             };            
 
             Response response = await data.UpdateUsuario_Reto(usuarioReto);
@@ -490,7 +490,7 @@ namespace WebApiRest.Controllers
 
             UsuarioxOpcion uxo = new()
             {
-                IdUsuario = new Guid(userClaim.Value)
+                IdUsuario = new Guid(userClaim.Value),                
             };
 
             Response response = await data.UpdateUsuario_Reto(usuarioReto);
