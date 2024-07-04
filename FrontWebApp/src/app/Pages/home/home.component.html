@@ -1,5 +1,8 @@
-<div class="row g-3 mt-md-5">
-  <div class="col-12 col-md-6" *ngFor="let item of configInicioItems">
+<div class="row g-4 masonry-grid mt-md-4">
+  <div
+    class="col-12 col-md-6 masonry-grid-item"
+    *ngFor="let item of configInicioItems; index as i"
+  >
     <div class="shadow-lg bg-white rounded">
       <div class="bg bg-primary rounded-top p-1 p-md-2 text-center">
         <span class="txt text-white fs-5">
@@ -112,17 +115,6 @@
               >
             </div>
           </div>
-
-          <!-- <div class="d-grid d-lg-block">
-            <button
-              *ngIf="usuariosActivos.length"
-              type="button"
-              class="btn btn-secondary btn-sm"
-              (click)="irAVista('usuario')"
-            >
-              Ver todos los usuarios
-            </button>
-          </div> -->
         </div>
 
         <div *ngIf="item.nombre === 'Noticias'">
@@ -175,7 +167,8 @@
           <div class="text-center col-12 mb-3" *ngIf="!auxMeses.length">
             <span>Sin puntos</span>
           </div>
-          <div *ngIf="auxMeses.length">
+
+          <div *ngIf="auxMeses.length" class="card p-0 border border-0">
             <canvas #canvas>{{ chart }}</canvas>
           </div>
         </div>

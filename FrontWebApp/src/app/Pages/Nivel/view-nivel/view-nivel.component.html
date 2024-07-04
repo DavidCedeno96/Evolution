@@ -87,6 +87,7 @@
                 #valueArchivo
                 accept=".xlsx"
                 (change)="onFileSelected($event)"
+                (click)="limpiarArchivo(false)"
               />
               <div class="invalid-feedback">{{ infoArchivo }}</div>
             </div>
@@ -210,6 +211,13 @@
                         "
                         ><i class="fa-regular fa-pen-to-square me-2"></i
                         >Editar</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item pointer"
+                        (click)="changeRoute('/user-nivel', {})"
+                        ><i class="fa-solid fa-expand me-2"></i>Vista previa</a
                       >
                     </li>
                     <li>

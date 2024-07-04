@@ -61,10 +61,13 @@ import { ValidacionesComponent } from './Pages/Reto/validaciones/validaciones.co
 import { ValidacionesUsersComponent } from './Pages/Reto/validaciones-users/validaciones-users.component';
 import { ComportamientoComponent } from './Components/comportamiento/comportamiento.component';
 import { PageNotFoundComponent } from './Pages/page-not-found/page-not-found.component';
+import { CorreoMasivoComponent } from './Pages/Config/correo-masivo/correo-masivo.component';
+import { RecoverPasswordComponent } from './Pages/recover-password/recover-password.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'recover-password', component: RecoverPasswordComponent },
   {
     path: 'home',
     component: HomeComponent,
@@ -343,6 +346,11 @@ const routes: Routes = [
   {
     path: 'config/registro',
     component: RegistroComponent,
+    canActivate: [authGuardAdmin],
+  },
+  {
+    path: 'config/correo-masivo',
+    component: CorreoMasivoComponent,
     canActivate: [authGuardAdmin],
   },
   {

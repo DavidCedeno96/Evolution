@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Reto } from 'src/app/Models/Reto';
 import { FormatTiempo, GetTypeTime } from 'src/app/Utils/Constants';
 

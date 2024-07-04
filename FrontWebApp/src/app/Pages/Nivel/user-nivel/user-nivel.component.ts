@@ -7,8 +7,6 @@ import {
   DateCompare,
   GetImage,
   Loading,
-  MsgError,
-  TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { NivelService } from 'src/app/services/nivel.service';

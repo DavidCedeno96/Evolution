@@ -19,7 +19,7 @@
         <div class="card bg-light">
           <div class="card-body">
             <label for="items-recog" class="form-label"
-              >Items recogiodos: {{ previewFiles.length }}</label
+              >Items recogidos: {{ previewFiles.length }}</label
             >
             <input
               type="file"
@@ -31,21 +31,6 @@
               #fileInput
               multiple
             />
-
-            <!-- <div>
-              <input
-                type="file"
-                class="form-control"
-                (change)="onFileSelected($event)"
-                (click)="limpiarInput()"
-                #fileInput
-                multiple
-              />
-
-              <button type="button" (click)="enviarAbunny()">
-                guardar video
-              </button>
-            </div> -->
 
             <!-- <form
               class="d-md-flex w-100"
@@ -91,7 +76,7 @@
                 </div>
               </div>
               <div class="d-grid">
-                <button type="submit" class="btn btn-secondary">Agregar</button>
+                <button type="button" class="btn btn-secondary">Agregar</button>
               </div>
             </form> -->
             <small class="d-block">{{ sugerenciaArchivo }} </small>

@@ -69,6 +69,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     apellido: '',
     correo: '',
     id: '',
+    paisCode: '',
+    paisIso2: '',
     celular: '',
     foto: '',
     idRol: '',
@@ -247,7 +249,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
                 <small>Si no recibiste el correo revisa el correo no deseado</small>
               </div>`
             );
-            this.router.navigate(['/']);
+            this.router.navigate(['/login']);
           } else if (error === 1) {
             this.modalCodigo = false;
             this.alertError(TitleErrorForm, info);

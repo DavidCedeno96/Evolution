@@ -92,8 +92,9 @@
                       {{ medalla.condicion }}
                     </span>
                   </div>
+
                   <div>
-                    <strong>Número de condición:</strong>
+                    <strong>Cantidad de condición:</strong>
                     <span class="">
                       {{ medalla.numCondicion }}
                     </span>
@@ -131,6 +132,13 @@
                         "
                         ><i class="fa-regular fa-pen-to-square me-2"></i
                         >Editar</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item pointer"
+                        (click)="changeRoute('/user-medalla', {})"
+                        ><i class="fa-solid fa-expand me-2"></i>Vista previa</a
                       >
                     </li>
                     <li>

@@ -139,6 +139,17 @@
                     <li>
                       <a
                         class="dropdown-item pointer"
+                        (click)="
+                          changeRoute('/user-noticia', {
+                            noticia: noticia.idNoticia
+                          })
+                        "
+                        ><i class="fa-solid fa-expand me-2"></i>Vista previa</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item pointer"
                         (click)="confirmEliminar(noticia.idNoticia)"
                         ><i class="fa-solid fa-trash-can me-2"></i>Eliminar</a
                       >

@@ -16,7 +16,6 @@ import {
   Loading,
   MsgEliminar,
   MsgElimindo,
-  MsgError,
   MsgErrorArchivo,
   MsgFormatoDescargado,
   MsgOk,
@@ -192,6 +191,12 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
               this.importNameRoute = 'seguimiento_evaluacion';
               break;
             }
+            case 'Comportamiento': {
+              this.exportNameArchive =
+                'FormatoPreguntasRetoComportamiento.xlsx';
+              this.importNameRoute = 'comportamiento';
+              break;
+            }
           }
         } else {
           this.alertError(TitleErrorForm, info);
@@ -258,7 +263,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
             this.infoArchivo = info;
             if (error === 0) {
               this.errorArchivo = false;
-              this.limpiarArchivo();
+              this.limpiarArchivo(true);
               this.cargarData();
               this.messageService.add({
                 severity: 'success',
@@ -271,7 +276,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
             this.loading(false, false);
           },
           error: (e) => {
-            this.limpiarArchivo();
+            this.limpiarArchivo(true);
             console.error(e);
             if (e.status === 401 || e.status === 403) {
               this.router.navigate(['/']);
@@ -305,6 +310,7 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
       },
       error: (e) => {
         console.error(e);
+        this.closeModal.nativeElement.click();
         this.changeRoute('/404', {});
       },
     });
@@ -418,8 +424,10 @@ export class ViewPreguntaComponent implements OnInit, AfterViewInit {
     return list.slice(startIndex, endIndex);
   }
 
-  limpiarArchivo() {
-    this.closeModal.nativeElement.click();
+  limpiarArchivo(closeModal: boolean) {
+    if (closeModal) {
+      this.closeModal.nativeElement.click();
+    }
     this.selectedFile = null;
     this.valueArchivo.nativeElement.value = '';
   }

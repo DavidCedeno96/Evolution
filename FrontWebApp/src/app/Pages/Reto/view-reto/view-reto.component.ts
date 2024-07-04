@@ -5,6 +5,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Reto } from 'src/app/Models/Reto';
 import {
   AlertError,
+  AlertWarning,
   ChangeRoute,
   DateCompare,
   FormatTiempo,
@@ -15,7 +16,6 @@ import {
   MsgDesactivado,
   MsgEliminar,
   MsgElimindo,
-  MsgError,
   MsgOk,
   SetUpsert,
   SinRegistros,
@@ -26,6 +26,7 @@ import {
   UpsertMsg,
 } from 'src/app/Utils/Constants';
 import { RetoService } from 'src/app/services/reto.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-view-reto',
@@ -35,6 +36,7 @@ import { RetoService } from 'src/app/services/reto.service';
 })
 export class ViewRetoComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
+  alertWarning = AlertWarning();
   loading = Loading();
   setUpsert = SetUpsert();
   changeRoute = ChangeRoute();
@@ -86,6 +88,7 @@ export class ViewRetoComponent implements OnInit, AfterViewInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private retoServicio: RetoService,
+    private userService: UsuarioService,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
@@ -167,6 +170,27 @@ export class ViewRetoComponent implements OnInit, AfterViewInit {
         }
       },
     });
+  }
+
+  clonar(reto: Reto) {
+    console.log('Cloanando...', reto);
+  }
+
+  vistaPrevia(reto: Reto) {
+    if (reto.estado === 1) {
+      if (reto.tipoReto !== 'Comportamiento') {
+        this.changeRoute('/juego-reto', { reto: reto.idReto });
+        /* this.changeRoute('/validar-comportamiento', {
+          reto: reto.idReto,
+          user: this.userService.getIdUsuario(),
+        }); */
+      }
+    } else {
+      this.alertWarning(
+        'Reto Desactivado',
+        'Para ver el reto se requiere que actives el reto'
+      );
+    }
   }
 
   setEstado(reto: Reto, estado: number) {

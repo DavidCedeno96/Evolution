@@ -48,7 +48,9 @@
       <div class="card-body">
         <h5 class="card-title">
           <i
-            class="fa-regular fa-thumbs-up me-2 fs-5 pointer"
+            class="fa-{{
+              item.userLiked ? 'solid' : 'regular'
+            }} fa-thumbs-up me-2 fs-5 pointer"
             type="button"
             (click)="addReaccion('like', item)"
           ></i>
@@ -78,8 +80,8 @@
             formControlName="comentario"
             placeholder="Escribe tu comentario"
           />
-          <button type="submit" class="btn link-primary text-decoration-none">
-            comentar
+          <button type="submit" class="btn btn-tertiary ms-2 ms-md-0">
+            Comentar
           </button>
         </form>
         <div

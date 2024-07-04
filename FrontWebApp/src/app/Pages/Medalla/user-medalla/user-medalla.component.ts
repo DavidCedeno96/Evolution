@@ -4,6 +4,7 @@ import { Medalla } from 'src/app/Models/Medalla';
 import {
   AlertError,
   ChangeRoute,
+  DateCompare,
   GetImage,
   Loading,
   TitleErrorForm,
@@ -19,6 +20,7 @@ export class UserMedallaComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   alertError = AlertError();
   loading = Loading();
+  dateCompare = DateCompare();
   changeRoute = ChangeRoute();
 
   medallas: Medalla[] = [];
@@ -56,5 +58,14 @@ export class UserMedallaComponent implements OnInit, AfterViewInit {
         }
       },
     });
+  }
+
+  getMotivo(item: Medalla): string {
+    if (item.condicion.includes('puntos')) {
+      return `Por conseguir ${item.numCondicion} puntos`;
+    } else if (item.condicion.includes('retos')) {
+      return `Por completar ${item.numCondicion} retos`;
+    }
+    return '';
   }
 }

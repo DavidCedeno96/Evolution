@@ -175,5 +175,15 @@ export class IconModule {
         'assets/icons/reloj-de-arena.svg'
       )
     );
+    this._matIconRegistry.addSvgIcon(
+      'puntos',
+      this._domZanitizer.bypassSecurityTrustResourceUrl('assets/icons/pula.svg')
+    );
+    this._matIconRegistry.addSvgIcon(
+      'creditos',
+      this._domZanitizer.bypassSecurityTrustResourceUrl(
+        'assets/icons/moneda.svg'
+      )
+    );
   }
 }

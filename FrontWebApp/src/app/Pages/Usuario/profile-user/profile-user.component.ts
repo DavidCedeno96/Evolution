@@ -41,6 +41,8 @@ export class ProfileUserComponent implements OnInit, AfterViewInit {
     apellido: '',
     correo: '',
     id: '',
+    paisCode: '',
+    paisIso2: '',
     celular: '',
     foto: '',
     idRol: '',

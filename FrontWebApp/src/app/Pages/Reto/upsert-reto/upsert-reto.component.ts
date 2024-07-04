@@ -84,6 +84,9 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
 
   verErrorsInputs: boolean = false;
 
+  ttTipoReto: string = '';
+  inst: string = '';
+
   selectedImage!: File;
   previewImage: string = '';
   errorArchivo: boolean = false;
@@ -368,7 +371,7 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
   }
 
   getUserBuscado(texto: string) {
-    this.usuarioServicio.getBuscarList(texto).subscribe({
+    this.usuarioServicio.getBuscarList(texto, 1).subscribe({
       next: (data: any) => {
         let { error, info, lista } = data.response;
         this.info = info;
@@ -589,6 +592,10 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
           idTipoValidador: '7c8c2672-2233-486a-a184-f0b51eb4a331',
           correosValid: 'usuario@default.com',
         });
+
+        this.ttTipoReto =
+          'El reto Trivia tiene preguntas de opción múltiple con tiempo y vidas';
+        this.inst = this.InstTrivia();
         break;
       }
       case 'Encuesta': {
@@ -608,6 +615,10 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
           idTipoValidador: '7c8c2672-2233-486a-a184-f0b51eb4a331',
           correosValid: 'usuario@default.com',
         });
+
+        this.ttTipoReto =
+          'El reto Encuesta recopila información para conocer opiniones u otras cuestiones que les afectan';
+        this.inst = this.InstEncuesta_seguimiento();
         break;
       }
       case 'Seguimiento o Evaluación': {
@@ -627,6 +638,10 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
           idTipoValidador: '7c8c2672-2233-486a-a184-f0b51eb4a331',
           correosValid: 'usuario@default.com',
         });
+
+        this.ttTipoReto =
+          'El reto Seguimiento o Evaluación tiene preguntas en las que el usuario puede escribir una respuesta de tipo fecha, hora o texto';
+        this.inst = this.InstEncuesta_seguimiento();
         break;
       }
       case 'Recolección': {
@@ -645,6 +660,10 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
           tiempo_ms: 300000,
           criterioMinimo: 1,
         });
+
+        this.ttTipoReto =
+          'El reto Recolección premite guardar archivos de acuerto al tipo de archivo seleccionado';
+        this.inst = this.InstRecoleccion();
         break;
       }
       case 'Comportamiento': {
@@ -664,6 +683,11 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
           tiempo_ms: 300000,
           criterioMinimo: 1,
         });
+
+        this.ttTipoReto =
+          'El reto Comportamiento premite calificar la conducta de los usuarios asignados al reto';
+
+        this.inst = '';
         break;
       }
     }
@@ -905,5 +929,17 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
     this.correosValidadores = [];
     this.usuarios = [];
     this.verErrorsInputs = false;
+  }
+
+  InstTrivia(): string {
+    return 'Contesta correctamente las preguntas para ganar puntos y avanza rápido para estar primero en el ranking.';
+  }
+
+  InstEncuesta_seguimiento(): string {
+    return 'Lee bien las preguntas y contesta todas de acuerdo a tu criterio ¡Diviértete!';
+  }
+
+  InstRecoleccion(): string {
+    return 'Recoge todos los items para competar el reto, recuerda que debes subir archivos de acuerdo al tipo de archivo seleccionado ¡Diviértete!';
   }
 }

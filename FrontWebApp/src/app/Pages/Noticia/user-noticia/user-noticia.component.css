@@ -2,3 +2,40 @@
   max-height: 150px;
   overflow: auto;
 }
+
+/* .img {
+  max-width: 300px;
+} */
+
+.texto {
+  width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  max-height: 4.5em;
+  line-height: 1.5em;
+}
+
+.no-truncate::after {
+  content: "Ver menos";
+  bottom: 0;
+  right: 0;
+  color: #a3a3a3;
+  padding-left: 2px;
+  cursor: pointer;
+  background: linear-gradient(to right, transparent, rgb(255, 255, 255) 23%);
+}
+
+.texto.truncated::after {
+  content: "... Ver más";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: #a3a3a3;
+  padding-left: 23px;
+  cursor: pointer;
+  background: linear-gradient(to right, transparent, rgb(255, 255, 255) 23%);
+}

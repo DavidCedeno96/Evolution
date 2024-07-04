@@ -8,10 +8,8 @@ import {
   ChangeRoute,
   DateCompare,
   Loading,
-  MsgError,
   ReproducirSonido,
   SoundQuizVictory,
-  TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { exp_invalidos } from 'src/app/Utils/RegularExpressions';
@@ -19,6 +17,7 @@ import { PreguntaService } from 'src/app/services/pregunta.service';
 import { RetoService } from 'src/app/services/reto.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-seguimiento-evaluacion',
@@ -31,6 +30,8 @@ export class SeguimientoEvaluacionComponent implements OnInit, AfterViewInit {
   alertError = AlertError();
   reproducirSonido = ReproducirSonido();
   changeRoute = ChangeRoute();
+
+  idRol: string = '';
 
   first: number = 0;
   rows: number = 5; // items por página
@@ -139,6 +140,7 @@ export class SeguimientoEvaluacionComponent implements OnInit, AfterViewInit {
     private router: Router,
     private preguntaServicio: PreguntaService,
     private retoService: RetoService, //private usuarioService: UsuarioService
+    private userService: UsuarioService,
     private translateService: TranslateService,
     private config: PrimeNGConfig,
     private formBuilder: FormBuilder
@@ -167,6 +169,7 @@ export class SeguimientoEvaluacionComponent implements OnInit, AfterViewInit {
       if (this.idReto === '' || !params['reto']) {
         this.changeRoute('/404', {});
       }
+      this.idRol = this.userService.getRol();
     });
   }
 
@@ -181,25 +184,29 @@ export class SeguimientoEvaluacionComponent implements OnInit, AfterViewInit {
           let fechaHoy = new Date();
           fechaHoy.setHours(0, 0, 0, 0);
 
-          if (
-            new Date(ur.reto.fechaApertura) >= fechaHoy &&
-            this.dateCompare(ur.reto.fechaApertura) !== 'N/A'
-          ) {
-            estado = 0;
-          }
-          if (
-            new Date(ur.reto.fechaCierre) < fechaHoy &&
-            this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
-          ) {
-            estado = 0;
-          }
+          if (this.idRol === 'jug') {
+            if (
+              new Date(ur.reto.fechaApertura) >= fechaHoy &&
+              this.dateCompare(ur.reto.fechaApertura) !== 'N/A'
+            ) {
+              estado = 0;
+            }
+            if (
+              new Date(ur.reto.fechaCierre) < fechaHoy &&
+              this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
+            ) {
+              estado = 0;
+            }
 
-          if (
-            estado === 0 ||
-            ur.reto.totalPreguntas < 1 ||
-            ur.reto.completado === 1
-          ) {
-            this.router.navigate(['/user-reto']);
+            if (
+              estado === 0 ||
+              ur.reto.totalPreguntas < 1 ||
+              ur.reto.completado === 1
+            ) {
+              this.router.navigate(['/user-reto']);
+            } else {
+              this.cargarPreguntas();
+            }
           } else {
             this.cargarPreguntas();
           }
@@ -258,29 +265,33 @@ export class SeguimientoEvaluacionComponent implements OnInit, AfterViewInit {
     if (this.formulario.valid || this.reto.opsRequeridas === 0) {
       this.verErrorsInputs = false;
 
-      this.retoService
-        .updateUsuario_retoSeg_evaluacion(this.setData())
-        .subscribe({
-          next: (data: any) => {
-            let { error, info } = data.response;
-            if (error === 0) {
-              this.reproducirSonido(SoundQuizVictory);
+      if (this.idRol === 'jug') {
+        this.retoService
+          .updateUsuario_retoSeg_evaluacion(this.setData())
+          .subscribe({
+            next: (data: any) => {
+              let { error, info } = data.response;
+              if (error === 0) {
+                this.reproducirSonido(SoundQuizVictory);
 
-              this.changeRoute('/fin-reto', { reto: this.idReto });
-            } else {
-              this.alertError(TitleErrorForm, info); //MsgErrorForm
-            }
-            this.load(false, false);
-          },
-          error: (e) => {
-            console.error(e);
-            if (e.status === 401 || e.status === 403) {
-              this.router.navigate(['/']);
-            } else {
-              this.changeRoute('/404', {});
-            }
-          },
-        });
+                this.changeRoute('/fin-reto', { reto: this.idReto });
+              } else {
+                this.alertError(TitleErrorForm, info); //MsgErrorForm
+              }
+              this.load(false, false);
+            },
+            error: (e) => {
+              console.error(e);
+              if (e.status === 401 || e.status === 403) {
+                this.router.navigate(['/']);
+              } else {
+                this.changeRoute('/404', {});
+              }
+            },
+          });
+      } else {
+        this.changeRoute('/view-reto', {});
+      }
     } else {
       this.verErrorsInputs = true;
       this.modal = true;

@@ -66,6 +66,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
     apellido: '',
     correo: '',
     id: '',
+    paisCode: '',
+    paisIso2: '',
     celular: '',
     foto: '',
     idRol: '',
@@ -220,7 +222,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       },
       error: (e) => {
         console.error(e);
-        this.alertError(TitleError, MsgErrorConexion);
+        this.changeRoute('/404', {});
       },
     });
   }

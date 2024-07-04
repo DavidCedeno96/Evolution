@@ -186,11 +186,15 @@ export const GetColor = () => {
 export const ChangeRoute = () => {
   const router = inject(Router);
   return (ruta: string, params: object, refreshPage: boolean = false) => {
-    router.navigate([ruta], { queryParams: params }).then(() => {
-      if (refreshPage) {
-        window.location.reload();
-      }
-    });
+    if (ruta === '/404') {
+      router.navigate(['/page_not_found'], { replaceUrl: true });
+    } else {
+      router.navigate([ruta], { queryParams: params }).then(() => {
+        if (refreshPage) {
+          window.location.reload();
+        }
+      });
+    }
   };
 };
 

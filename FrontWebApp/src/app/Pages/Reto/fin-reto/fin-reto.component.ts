@@ -29,6 +29,8 @@ export class FinRetoComponent implements OnInit, AfterViewInit {
     idUsuario: '',
     nombre: '',
     apellido: '',
+    paisCode: '',
+    paisIso2: '',
     correo: '',
     id: '',
     celular: '',

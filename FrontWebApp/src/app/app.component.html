@@ -1,7 +1,7 @@
 <div
   class="bg-superior"
   style="height: 10px"
-  *ngIf="!url.includes('/login')"
+  *ngIf="!url.includes('/login') && !url.includes('/recover-password')"
 ></div>
 <!-- NavBar Register -->
 <nav
@@ -25,7 +25,8 @@
 <nav class="navbar navbar-expand-lg sticky-top bg-header" *ngIf="showNavbar">
   <div class="container">
     <button
-      class="btn"
+      class="btn txt text-secondary"
+      type="button"
       data-bs-toggle="offcanvas"
       href="#offcanvasExample"
       aria-controls="offcanvasExample"
@@ -33,24 +34,7 @@
     >
       <i class="fa-solid fa-bars"></i>
     </button>
-    <ul class="navbar-nav ms-3 mb-0">
-      <li class="nav-item">
-        <a
-          class="nav-link active pointer badge-icon"
-          data-bs-toggle="modal"
-          data-bs-target="#notificaciones"
-        >
-          <i class="fa-regular fa-bell"></i>
-          <span class="badge x1 bg bg-tertiary" *ngIf="novedades.length > 99"
-            >99+</span
-          >
-          <span class="badge bg bg-tertiary" *ngIf="novedades.length < 100">{{
-            cantNovedades
-          }}</span>
-        </a>
-      </li>
-    </ul>
-    <a class="navbar-nav ms-auto mb-0" routerLink="/home">
+    <a class="navbar-brand ms-md-3" routerLink="/home">
       <img
         [src]="getImage(imgHeader, 'config', 'default-logoDM.png')"
         class="img-fluid"
@@ -58,6 +42,112 @@
         alt="Logo"
       />
     </a>
+    <a
+      class="txt text-secondary p-0 me-4 d-block d-lg-none"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <!-- <i class="fa-solid fa-sort-down fs-3"></i> -->
+      <i class="fa-solid fa-caret-down fs-3"></i>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto mb-0">
+        <li class="nav-item me-3">
+          <a
+            class="nav-link active pointer badge-icon d-none d-lg-block"
+            data-bs-toggle="modal"
+            data-bs-target="#notificaciones"
+            matTooltip="Notificaciones"
+          >
+            <i
+              class="fa-regular fa-bell {{
+                cantNovedades > 0 ? 'fa-shake' : ''
+              }}"
+            ></i>
+            <span class="badge x1 bg bg-primary" *ngIf="cantNovedades > 99"
+              >99+</span
+            >
+            <span
+              class="badge bg {{
+                cantNovedades ? 'bg-primary' : 'bg-tertiary'
+              }}"
+              *ngIf="cantNovedades < 100"
+              >{{ cantNovedades }}</span
+            >
+          </a>
+
+          <a
+            class="nav-link active pointer d-block d-lg-none"
+            data-bs-toggle="modal"
+            data-bs-target="#notificaciones"
+          >
+            Notificaciones
+            <span class="badge x1 bg bg-primary" *ngIf="cantNovedades > 99"
+              >99+</span
+            >
+            <span
+              class="badge bg {{
+                cantNovedades ? 'bg-primary' : 'bg-tertiary'
+              }}"
+              *ngIf="cantNovedades < 100"
+              >{{ cantNovedades }}</span
+            >
+          </a>
+        </li>
+        <li class="nav-item me-3">
+          <a
+            class="nav-link active badge-icon d-none d-lg-block"
+            matTooltip="Puntos"
+          >
+            <i class="fa-solid fa-p"></i>
+            <span class="badge x1 bg bg-primary" *ngIf="pts > 99">99+</span>
+            <span
+              class="badge bg {{ pts ? 'bg-primary' : 'bg-tertiary' }}"
+              *ngIf="pts < 100"
+              >{{ pts }}</span
+            >
+          </a>
+
+          <a class="nav-link active d-block d-lg-none">
+            Puntos
+            <span class="badge x1 bg bg-primary" *ngIf="pts > 99">99+</span>
+            <span
+              class="badge bg {{ pts ? 'bg-primary' : 'bg-tertiary' }}"
+              *ngIf="pts < 100"
+              >{{ pts }}</span
+            >
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link active badge-icon d-none d-lg-block"
+            matTooltip="Créditos"
+          >
+            <i class="fa-regular fa-star"></i>
+            <span class="badge x1 bg bg-primary" *ngIf="crts > 99">99+</span>
+            <span
+              class="badge bg {{ crts ? 'bg-primary' : 'bg-tertiary' }}"
+              *ngIf="crts < 100"
+              >{{ crts }}</span
+            >
+          </a>
+
+          <a class="nav-link active d-block d-lg-none">
+            Créditos
+            <span class="badge x1 bg bg-primary" *ngIf="crts > 99">99+</span>
+            <span
+              class="badge bg {{ crts ? 'bg-primary' : 'bg-tertiary' }}"
+              *ngIf="crts < 100"
+              >{{ crts }}</span
+            >
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
 <!-- End NavBar -->
@@ -179,7 +269,7 @@
         /> -->
       </div>
       <div class="col-auto">
-        <a class="text-dark" data-bs-dismiss="offcanvas"
+        <a class="txt text-secondary" data-bs-dismiss="offcanvas"
           ><i class="fa-solid fa-chevron-right"></i
         ></a>
       </div>
@@ -321,13 +411,24 @@
       </div>
     </a>
   </div>
+
+  <div class="offcanvas-footer">
+    <span class="fw-light"
+      >Desarrollado con
+      <i class="fa-solid fa-heart fa-beat align-middle text-danger"></i> por
+      Digimentore</span
+    >
+  </div>
 </div>
 <!-- Fin Menu -->
 
 <!-- Main -->
 <div role="main" [ngClass]="showNavbar == true ? 'container mt-4' : ''">
   <router-outlet></router-outlet>
-  <div class="blank-space" *ngIf="!url.includes('/login')"></div>
+  <div
+    class="blank-space"
+    *ngIf="!url.includes('/login') && !url.includes('/recover-password')"
+  ></div>
 </div>
 <!-- End Main -->
 
@@ -346,7 +447,7 @@
 </footer>
 <!-- End Footer -->
 
-<!-- Modal -->
+<!-- Modal Novedades -->
 <div
   class="modal fade"
   id="notificaciones"
@@ -361,7 +462,7 @@
     ></app-novedades>
   </div>
 </div>
-<!-- End Modal -->
+<!-- End Modal Novedades -->
 
 <!-- Este no se que sera -->
 <!-- <div [ngSwitch]="selection.value">

@@ -100,7 +100,10 @@
       </div>
     </form>
 
-    <div class="flex justify-content-center">
+    <div
+      class="flex justify-content-center"
+      *ngIf="paginatedItems().length > 5"
+    >
       <p-paginator
         (onPageChange)="onPageChange($event)"
         [first]="first"

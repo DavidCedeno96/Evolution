@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   Noticia_Reaccion,
   Reaccion,
@@ -11,8 +11,6 @@ import {
   ChangeRoute,
   GetImage,
   Loading,
-  MsgError,
-  TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { exp_invalidos } from 'src/app/Utils/RegularExpressions';
@@ -30,13 +28,18 @@ export class UserNoticiaComponent implements OnInit, AfterViewInit {
   getImage = GetImage();
   changeRoute = ChangeRoute();
 
+  noticia: string = '';
+
   idUsuario: string = '';
   verErrorsInputs: boolean = false;
+
+  textTruncated: boolean[] = [];
 
   formulario!: FormGroup;
   noticia_reaccion: Noticia_Reaccion[] = [];
 
   constructor(
+    private route: ActivatedRoute,
     private noticiaService: NoticiaService,
     private usuarioService: UsuarioService,
     private router: Router,
@@ -57,23 +60,29 @@ export class UserNoticiaComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.loading(true, false);
     this.idUsuario = this.usuarioService.getIdUsuario();
+    this.getRouteParams();
   }
 
   ngAfterViewInit(): void {
     this.cargarData();
   }
 
+  getRouteParams() {
+    this.route.queryParams.subscribe((params) => {
+      let idNoticia = params['noticia'];
+      if (idNoticia !== '' && params['noticia']) {
+        this.noticia = `?idNoticia=${idNoticia}`;
+      }
+    });
+  }
+
   cargarData() {
-    this.noticiaService.getListAndComents(-1).subscribe({
+    this.noticiaService.getListAndComents(-1, this.noticia).subscribe({
       next: (data: any) => {
         let { error, info, lista } = data.response;
         if (error === 0) {
-          /* lista.forEach((element: Noticia_Reaccion) => {
-            element.comentarioList = element.comentarioList.filter((item) =>
-              item.comentario.trim()
-            );
-          }); */
           this.noticia_reaccion = lista;
+          this.textTruncated = new Array(lista.length).fill(true);
         } else {
           this.alertError(TitleErrorForm, info);
         }
@@ -93,10 +102,14 @@ export class UserNoticiaComponent implements OnInit, AfterViewInit {
   addReaccion(tipo: string, noticia: Noticia_Reaccion) {
     if (tipo === 'comentario') {
       if (this.formulario.valid) {
+        this.loading(true, false);
         this.verErrorsInputs = false;
         //console.log('GUARDANDO ......');
         let comentario = this.formulario.get(['comentario'])?.value;
         this.guardarReaccion(0, comentario, noticia.noticia.idNoticia);
+        this.formulario.patchValue({
+          comentario: '',
+        });
       } else {
         this.verErrorsInputs = true;
       }
@@ -159,6 +172,12 @@ export class UserNoticiaComponent implements OnInit, AfterViewInit {
       window.open(url, '_blank');
     } else {
       window.open(protocolo + url, '_blank');
+    }
+  }
+
+  truncate(text: string, index: number) {
+    if (text.length > 180) {
+      this.textTruncated[index] = !this.textTruncated[index];
     }
   }
 }

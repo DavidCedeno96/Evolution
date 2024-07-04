@@ -108,10 +108,14 @@ export class RedSocialComponent implements OnInit {
         this.verErrorsInputs = false;
         let comentario = this.formulario.get(['comentario'])?.value;
         this.guardarReaccion(0, comentario, redSocial.redSocial.idRed);
+        this.formulario.patchValue({
+          comentario: '',
+        });
       } else {
         this.verErrorsInputs = true;
       }
     } else if (tipo == 'like') {
+      this.loading(true, false);
       let dioLike = false;
       redSocial.comentarioList.forEach((item) => {
         if (item.idUsuario == this.idUsuario && item.likes > 0) {

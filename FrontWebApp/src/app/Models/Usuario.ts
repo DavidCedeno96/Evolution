@@ -4,6 +4,8 @@ export interface Usuario {
   apellido: string;
   correo: string;
   id: string; // es la cedula, pasaporte, etc etc.
+  paisCode: string;
+  paisIso2: string;
   celular: string;
   foto: string;
   idRol: string;

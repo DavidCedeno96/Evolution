@@ -33,6 +33,8 @@ import { HomeService } from 'src/app/services/home.service';
 import { NivelService } from 'src/app/services/nivel.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
+declare var $: any;
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -60,6 +62,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     apellido: '',
     correo: '',
     id: '',
+    paisCode: '',
+    paisIso2: '',
     celular: '',
     foto: '',
     idRol: '',
@@ -155,20 +159,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
           },
           error: (e) => {
             console.error(e);
-            this.loading(false, false);
-            this.alertError(TitleError, MsgError);
+            if (e.status === 401 || e.status === 403) {
+              this.router.navigate(['/']);
+            } else {
+              this.loading(false, false);
+              this.alertError(TitleError, MsgError);
+            }
           },
         });
       } else {
         this.loading(false, false);
       }
-    }, 400);
+
+      this.initMasonry();
+    }, 300);
   }
 
   cargarData() {
     this.homeService.getUserList().subscribe({
       next: (data: any) => {
-        //console.log(data);
         let { error, info, lista } = data.response;
         if (error === 0) {
           let datasetList: any[] = [];
@@ -210,7 +219,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         } else {
           this.alertError(TitleErrorForm, info);
         }
-        //this.loading(false, false);
       },
       error: (e) => {
         console.error(e);
@@ -218,6 +226,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.router.navigate(['/']);
         } else {
           this.alertError(TitleError, MsgError);
+          this.changeRoute('/404', {});
         }
       },
     });
@@ -351,5 +360,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.customOuterStrokeColor = window
       .getComputedStyle(this.el.nativeElement)
       .getPropertyValue('--Primario');
+  }
+
+  private initMasonry() {
+    $('.masonry-grid').masonry({
+      itemSelector: '.masonry-grid-item',
+      columnWidth: '.masonry-grid-item',
+      percentPosition: true,
+    });
   }
 }

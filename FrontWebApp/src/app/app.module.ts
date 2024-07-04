@@ -112,6 +112,8 @@ import { InstruccionesRetoComponent } from './Components/instrucciones-reto/inst
 import { VideoPlayerComponent } from './Components/video-player/video-player.component';
 import { PageNotFoundComponent } from './Pages/page-not-found/page-not-found.component';
 import { NovedadesComponent } from './Components/novedades/novedades.component';
+import { CorreoMasivoComponent } from './Pages/Config/correo-masivo/correo-masivo.component';
+import { RecoverPasswordComponent } from './Pages/recover-password/recover-password.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -189,6 +191,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SafeResourceUrlPipe,
     PageNotFoundComponent,
     NovedadesComponent,
+    CorreoMasivoComponent,
+    RecoverPasswordComponent,
   ],
   imports: [
     BrowserModule,

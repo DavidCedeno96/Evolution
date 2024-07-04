@@ -21,6 +21,7 @@ export interface Reaccion {
 
 export interface RedSocial_Reaccion {
   redSocial: RedSocial;
+  userLiked: number;
   comentarioList: Reaccion[];
 }
 

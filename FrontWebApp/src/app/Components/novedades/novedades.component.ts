@@ -38,28 +38,6 @@ export class NovedadesComponent {
 
   constructor(private router: Router, private novedadService: NovedadService) {}
 
-  /* cargarNovedad() {
-    this.novedadService.getList().subscribe({
-      next: (data: any) => {
-        console.log(data);
-        let { error, info, lista } = data.response;
-        if (error === 0) {
-          this.novedades = lista;
-        } else {
-          this.alertError(TitleErrorForm, info);
-        }
-      },
-      error: (e) => {
-        console.error(e);
-        if (e.status === 401 || e.status === 403) {
-          this.router.navigate(['/']);
-        } else {
-          this.changeRoute('/404', {});
-        }
-      },
-    });
-  } */
-
   marcar(item: Novedad, estado: number) {
     const obj = this.novedades.find((ob) => ob === item);
 
@@ -68,8 +46,6 @@ export class NovedadesComponent {
       this.load(true, false);
       this.novedadService.updateEstado(obj).subscribe({
         next: (data: any) => {
-          console.log(data);
-
           let { error, info } = data.response;
           if (error === 0) {
             if (estado) {
@@ -87,6 +63,8 @@ export class NovedadesComponent {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
+            this.load(false, false);
+            this.closeModal.nativeElement.click();
             this.changeRoute('/404', {});
           }
         },
@@ -98,6 +76,10 @@ export class NovedadesComponent {
     this.closeModal.nativeElement.click();
     let currentPath = this.router.url.split('?')[0];
 
+    if (item.estado > 0) {
+      this.marcar(item, 0);
+    }
+
     setTimeout(() => {
       if (item.ruta.includes('?')) {
         let ruta = item.ruta.split('?');
@@ -107,6 +89,13 @@ export class NovedadesComponent {
         currentPath === path
           ? this.changeRoute(path, params, true)
           : this.changeRoute(path, params);
+      } else if (item.ruta.includes('#')) {
+        let ruta = item.ruta.split('#');
+        let path = `/${ruta[0]}`;
+
+        currentPath === path
+          ? this.changeRoute(path, {}, true)
+          : this.changeRoute(path, {});
       } else {
         this.changeRoute(item.ruta, {});
       }
@@ -121,8 +110,6 @@ export class NovedadesComponent {
 
       this.novedadService.delete(item.idNovedad).subscribe({
         next: (data: any) => {
-          console.log(data);
-
           let { error, info } = data.response;
           if (error === 0) {
             this.novedades.splice(index, 1);
@@ -137,6 +124,8 @@ export class NovedadesComponent {
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
           } else {
+            this.load(false, false);
+            this.closeModal.nativeElement.click();
             this.changeRoute('/404', {});
           }
         },
@@ -148,8 +137,6 @@ export class NovedadesComponent {
     this.load(true, false);
     this.novedadService.deleteByUsuario().subscribe({
       next: (data: any) => {
-        console.log(data);
-
         let { error, info } = data.response;
         if (error === 0) {
           this.novedades = [];
@@ -164,6 +151,8 @@ export class NovedadesComponent {
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
+          this.load(false, false);
+          this.closeModal.nativeElement.click();
           this.changeRoute('/404', {});
         }
       },

@@ -21,6 +21,7 @@ export interface Reaccion {
 
 export interface Noticia_Reaccion {
   noticia: Noticia;
+  userLiked: number;
   comentarioList: Reaccion[];
 }
 

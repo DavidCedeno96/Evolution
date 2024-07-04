@@ -42,9 +42,15 @@
                 item.nombre
               }}</span>
             </div>
-            <small class="text-black-50 fw-semibold d-block">{{
-              item.fechaCreacion
-            }}</small>
+            <div>
+              <small>
+                {{ getMotivo(item) }}
+              </small>
+            </div>
+            <small class="text-black-50 fw-semibold d-block">
+              <strong>Conseguido el: </strong>
+              {{ dateCompare(item.fechaCreacion) }}
+            </small>
           </div>
         </div>
       </div>

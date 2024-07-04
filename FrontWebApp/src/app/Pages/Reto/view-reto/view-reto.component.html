@@ -197,6 +197,18 @@
                         >Editar</a
                       >
                     </li>
+                    <li>
+                      <a class="dropdown-item pointer" (click)="clonar(reto)"
+                        ><i class="fa-regular fa-clone me-2"></i>Clonar</a
+                      >
+                    </li>
+                    <li *ngIf="reto.tipoReto !== 'Comportamiento'">
+                      <a
+                        class="dropdown-item pointer"
+                        (click)="vistaPrevia(reto)"
+                        ><i class="fa-solid fa-expand me-2"></i>Vista previa</a
+                      >
+                    </li>
                     <li *ngIf="!reto.enEquipo">
                       <a
                         class="dropdown-item pointer"

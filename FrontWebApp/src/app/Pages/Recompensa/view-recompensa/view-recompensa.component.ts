@@ -175,7 +175,7 @@ export class ViewRecompensaComponent implements OnInit, AfterViewInit {
           this.infoArchivo = info;
           if (error === 0) {
             this.errorArchivo = false;
-            this.limpiarArchivo();
+            this.limpiarArchivo(true);
             this.cargarData();
             this.messageService.add({
               severity: 'success',
@@ -188,7 +188,7 @@ export class ViewRecompensaComponent implements OnInit, AfterViewInit {
           this.loading(false, false);
         },
         error: (e) => {
-          this.limpiarArchivo();
+          this.limpiarArchivo(true);
           console.error(e);
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
@@ -221,7 +221,7 @@ export class ViewRecompensaComponent implements OnInit, AfterViewInit {
         });
       },
       error: (e) => {
-        console.log(e);
+        console.error(e);
         if (e.status === 401 || e.status === 403) {
           this.router.navigate(['/']);
         } else {
@@ -284,7 +284,6 @@ export class ViewRecompensaComponent implements OnInit, AfterViewInit {
   onFileSelected(event: Event) {
     this.selectedFile = (event.target as HTMLInputElement).files![0];
     this.errorArchivo = false;
-    console.log(this.selectedFile.name);
   }
 
   setEstado(idRecompensa: string, estado: number) {
@@ -361,8 +360,10 @@ export class ViewRecompensaComponent implements OnInit, AfterViewInit {
     }
   }
 
-  limpiarArchivo() {
-    this.closeModal.nativeElement.click();
+  limpiarArchivo(closeModal: boolean) {
+    if (closeModal) {
+      this.closeModal.nativeElement.click();
+    }
     this.selectedFile = null;
     this.valueArchivo.nativeElement.value = '';
   }

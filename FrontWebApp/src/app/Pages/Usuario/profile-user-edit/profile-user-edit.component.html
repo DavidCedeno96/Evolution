@@ -118,25 +118,38 @@
           </div>
           <div class="col-12 col-md-6">
             <label for="celular" class="form-label">Celular</label>
-            <input
-              type="text"
-              class="form-control {{
-                formulario.get('celular')?.errors && verErrorsInputs
-                  ? 'is-invalid'
-                  : ''
-              }}"
-              formControlName="celular"
-              id="celular"
-            />
-            <div class="invalid-feedback">
-              <span *ngIf="formulario.get('celular')?.hasError('maxlength')"
-                >Máximo 15 caracteres</span
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="tel-input-container me-2">
+                <input type="tel" id="phone-code" />
+              </div>
+              <input
+                type="text"
+                class="form-control {{
+                  formulario.get('celular')?.errors && verErrorsInputs
+                    ? 'is-invalid'
+                    : ''
+                }}"
+                formControlName="celular"
+              />
+            </div>
+            <div
+              class="text-danger"
+              *ngIf="formulario.get('celular')?.errors && verErrorsInputs"
+            >
+              <small
+                class="d-block"
+                *ngIf="formulario.get('celular')?.hasError('maxlength')"
+                >Máximo 15 caracteres</small
               >
-              <span *ngIf="formulario.get('celular')?.hasError('minlength')"
-                >Minimo 10 caracteres</span
+              <small
+                class="d-block"
+                *ngIf="formulario.get('celular')?.hasError('minlength')"
+                >Minimo 9 caracteres</small
               >
-              <span *ngIf="formulario.get('celular')?.hasError('pattern')"
-                >Solo se permiten números</span
+              <small
+                class="d-block"
+                *ngIf="formulario.get('celular')?.hasError('pattern')"
+                >Solo se permiten números</small
               >
             </div>
           </div>
@@ -185,6 +198,7 @@
                 type="{{ verPassword ? 'text' : 'password' }}"
                 formControlName="contrasena"
                 id="contrasena"
+                placeholder="*******"
               />
               <span
                 class="toggle-icon {{

@@ -9,64 +9,70 @@
       #closeModal
     ></button>
   </div>
-  <div class="modal-body py-0">
+  <div class="modal-body p-0">
     <div class="text-center my-3" *ngIf="!novedades.length">
       No hay ninguna novedad
     </div>
     <div *ngIf="novedades.length">
-      <div class="pe-2" style="max-height: 50dvh; overflow-y: auto">
+      <div style="max-height: 51dvh; overflow-y: auto">
         <div
           *ngFor="let item of novedades; index as i"
           class="{{
-            i === 0
+            i === 0 && novedades.length > 1
               ? 'border-bottom'
               : novedades.length !== i + 1
               ? 'border-bottom'
               : ''
-          }} px-1 py-2"
+          }} {{ item.estado > 0 ? 'bg-light' : '' }} px-1 py-2"
         >
-          <small class="d-block text-end txt text-primary">{{
-            dateCompare(item.fechaCreacion)
-          }}</small>
-          <p class="fs-5 fw-normal">
-            {{ item.mensaje }}
-          </p>
-          <div class="row g-2">
-            <div class="col-4 col-md-auto d-grid d-md-block">
-              <button
-                class="btn btn-tertiary btn-sm normal"
-                pTooltip="Marcar como no leído"
-                *ngIf="!item.estado"
-                (click)="marcar(item, 1)"
+          <div class="p-2 px-3">
+            <small class="d-block text-end txt text-primary">{{
+              dateCompare(item.fechaCreacion)
+            }}</small>
+            <p class="fs-5 fw-normal">
+              {{ item.mensaje
+              }}<span *ngIf="item.auxMsg">, {{ item.auxMsg }}</span>
+            </p>
+            <div class="row g-2">
+              <div class="col-4 col-md-auto d-grid d-md-block">
+                <button
+                  class="btn btn-tertiary btn-sm normal"
+                  pTooltip="Marcar como no leído"
+                  *ngIf="!item.estado"
+                  (click)="marcar(item, 1)"
+                >
+                  <i class="fa-solid fa-check"></i>
+                </button>
+                <button
+                  class="btn btn-primary btn-sm normal"
+                  pTooltip="Marcar como leído"
+                  *ngIf="item.estado"
+                  (click)="marcar(item, 0)"
+                >
+                  <i class="fa-solid fa-check-double"></i>
+                </button>
+              </div>
+              <div
+                class="col-4 col-md-auto d-grid d-md-block"
+                *ngIf="item.ruta"
               >
-                <i class="fa-solid fa-check"></i>
-              </button>
-              <button
-                class="btn btn-primary btn-sm normal"
-                pTooltip="Marcar como leído"
-                *ngIf="item.estado"
-                (click)="marcar(item, 0)"
-              >
-                <i class="fa-solid fa-check-double"></i>
-              </button>
-            </div>
-            <div class="col-4 col-md-auto d-grid d-md-block">
-              <button
-                class="btn btn-primary btn-sm normal"
-                pTooltip="Acceder"
-                (click)="acceder(item)"
-              >
-                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-              </button>
-            </div>
-            <div class="col-4 col-md-auto d-grid d-md-block">
-              <button
-                class="btn btn-primary btn-sm normal"
-                pTooltip="Eliminar"
-                (click)="eliminar(item)"
-              >
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
+                <button
+                  class="btn btn-primary btn-sm normal"
+                  pTooltip="Acceder"
+                  (click)="acceder(item)"
+                >
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </button>
+              </div>
+              <div class="col-4 col-md-auto d-grid d-md-block">
+                <button
+                  class="btn btn-primary btn-sm normal"
+                  pTooltip="Eliminar"
+                  (click)="eliminar(item)"
+                >
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -74,7 +80,11 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-secondary btn-sm" (click)="borrarTodo()">
+    <button
+      class="btn btn-secondary btn-sm"
+      (click)="borrarTodo()"
+      *ngIf="novedades.length"
+    >
       <i class="fa-solid fa-trash-can me-1"></i> Borrar todas
     </button>
     <button

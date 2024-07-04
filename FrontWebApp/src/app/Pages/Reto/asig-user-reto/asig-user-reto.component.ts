@@ -141,7 +141,7 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
   }
 
   getUserBuscado(texto: string) {
-    this.usuarioServicio.getBuscarList(texto).subscribe({
+    this.usuarioServicio.getBuscarList(texto, 0).subscribe({
       next: (data: any) => {
         let { error, info, lista } = data.response;
         this.info = info;
@@ -253,6 +253,8 @@ export class AsigUserRetoComponent implements OnInit, AfterViewInit {
       apellido: '',
       correo: this.formulario.get(['correo'])?.value,
       id: '',
+      paisCode: '',
+      paisIso2: '',
       celular: '',
       foto: '',
       idRol: '',

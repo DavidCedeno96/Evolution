@@ -107,6 +107,7 @@
                 class="form-control {{ errorArchivo ? 'is-invalid' : '' }}"
                 id="archivoExcel-pre"
                 (change)="onFileSelected($event)"
+                (click)="limpiarArchivo(false)"
                 #valueArchivo
                 accept=".xlsx"
               />
@@ -188,14 +189,14 @@
                           }}"
                           >{{ op.nombre }}</span
                         >
-                        <div
+                        <!-- <div
                           class="d-inline ms-2"
                           *ngIf="reto.tipoEncuesta === 'Satisfacción'"
                         >
                           <span class="text-black-50"
                             >escala: {{ op.valor }}</span
                           >
-                        </div>
+                        </div> -->
                         <!-- <div
                           class="d-inline ms-2"
                           *ngIf="op.tipoEntrada !== 'Otro'"

@@ -72,6 +72,18 @@
   transform: scale(0.7);
 }
 
+.offcanvas-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 15px;
+}
+
+.nav-icon mat-icon {
+  font-size: 1px;
+  transform: scale(1);
+}
+
 /****** BADGE ICON ******/
 .badge-icon {
   position: relative;
@@ -138,6 +150,37 @@
 }
 .hidden {
   display: none;
+}
+
+/* ** Input Code Phone Country **  */
+:host ::ng-deep .tel-input-container {
+  position: relative;
+  display: inline-block;
+}
+
+:host ::ng-deep .tel-input-container input[type="tel"] {
+  position: absolute;
+  display: none;
+}
+
+:host ::ng-deep .iti__flag-container {
+  position: relative;
+  height: 38px;
+  margin: 0;
+  z-index: 10;
+  border: 1px solid #cecece;
+  padding: 0;
+  border-radius: 10px;
+}
+
+:host ::ng-deep .iti__selected-flag {
+  border-radius: 8px;
+}
+
+/* este es para el hover */
+:host ::ng-deep .tel-input-container:hover .iti__flag-container,
+:host ::ng-deep .tel-input-container:hover .iti__selected-flag {
+  border-color: var(--form-items-border);
 }
 
 /******** ESPACIO EN BLANCO ********/

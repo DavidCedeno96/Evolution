@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Reto } from 'src/app/Models/Reto';
 import { ChangeRoute, DateCompare, Loading } from 'src/app/Utils/Constants';
 import { RetoService } from 'src/app/services/reto.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-juego-reto',
@@ -15,6 +16,7 @@ export class JuegoRetoComponent implements OnInit, AfterViewInit {
   changeRoute = ChangeRoute();
 
   id: string = '';
+  idRol: string = '';
 
   reto: Reto = {
     idReto: '',
@@ -52,6 +54,7 @@ export class JuegoRetoComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute, // private router: Router,
     private retoService: RetoService,
+    private userService: UsuarioService,
     private router: Router
   ) {}
 
@@ -71,6 +74,7 @@ export class JuegoRetoComponent implements OnInit, AfterViewInit {
         this.changeRoute('/404', {});
       }
       this.id = idReto;
+      this.idRol = this.userService.getRol();
     });
   }
 
@@ -85,25 +89,27 @@ export class JuegoRetoComponent implements OnInit, AfterViewInit {
           let fechaHoy = new Date();
           fechaHoy.setHours(0, 0, 0, 0);
 
-          if (
-            new Date(ur.reto.fechaApertura) >= fechaHoy &&
-            this.dateCompare(ur.reto.fechaApertura) !== 'N/A'
-          ) {
-            estado = 0;
-          }
-          if (
-            new Date(ur.reto.fechaCierre) < fechaHoy &&
-            this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
-          ) {
-            estado = 0;
-          }
+          if (this.idRol === 'jug') {
+            if (
+              new Date(ur.reto.fechaApertura) >= fechaHoy &&
+              this.dateCompare(ur.reto.fechaApertura) !== 'N/A'
+            ) {
+              estado = 0;
+            }
+            if (
+              new Date(ur.reto.fechaCierre) < fechaHoy &&
+              this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
+            ) {
+              estado = 0;
+            }
 
-          if (
-            estado === 0 ||
-            ur.reto.completado === 1 ||
-            (ur.reto.totalPreguntas < 1 && ur.reto.tipoReto !== 'Recolección')
-          ) {
-            this.router.navigate(['/user-reto']);
+            if (
+              estado === 0 ||
+              ur.reto.completado === 1 ||
+              (ur.reto.totalPreguntas < 1 && ur.reto.tipoReto !== 'Recolección')
+            ) {
+              this.router.navigate(['/user-reto']);
+            }
           }
         } else {
           this.router.navigate(['/user-reto']);

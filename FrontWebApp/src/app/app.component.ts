@@ -1,10 +1,4 @@
-import {
-  AfterContentInit,
-  Component,
-  ElementRef,
-  OnInit,
-  Renderer2,
-} from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { UsuarioService } from './services/usuario.service';
@@ -17,7 +11,6 @@ import {
   ImgSizeMax,
   ImgWidthMax,
   MsgError,
-  MsgErrorConexion,
   TitleError,
   TitleErrorForm,
 } from './Utils/Constants';
@@ -59,6 +52,8 @@ export class AppComponent implements OnInit {
 
   novedades: Novedad[] = [];
   cantNovedades: number = 0;
+  pts: number = 0;
+  crts: number = 0;
 
   constructor(
     private router: Router,
@@ -83,6 +78,7 @@ export class AppComponent implements OnInit {
           if (
             this.url.includes('/login') ||
             this.url.includes('/register') ||
+            this.url.includes('/recover-password') ||
             this.url.includes('/activate-user')
           ) {
             this.showNavbar = false;
@@ -171,13 +167,18 @@ export class AppComponent implements OnInit {
   cargarNovedad() {
     this.novedadService.getList().subscribe({
       next: (data: any) => {
-        console.log(data);
         let { error, info, lista } = data.response;
         if (error === 0) {
           this.novedades = lista;
           this.cantNovedades = Number(info.split(':')[1]);
         } else {
           this.alertError(TitleErrorForm, info);
+        }
+
+        if (data.userPtsCrts.error === 0) {
+          let ptsCrts: string = data.userPtsCrts.info.split(':')[1];
+          this.pts = Number(ptsCrts.split('y')[0]);
+          this.crts = Number(ptsCrts.split('y')[1]);
         }
       },
       error: (e) => {
@@ -341,7 +342,7 @@ export class AppComponent implements OnInit {
 
   cerrarSesion() {
     this.load = true;
-    console.log('cerrando session...');
+    //console.log('cerrando session...');
     this.usuarioServicio.logout();
   }
 }

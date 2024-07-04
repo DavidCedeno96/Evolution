@@ -6,21 +6,16 @@ import {
   ChangeRoute,
   DateCompare,
   FileSizeMax,
-  ImgHeightMax,
   ImgSizeMax,
-  ImgWidthMax,
   Loading,
-  MsgError,
   ReproducirSonido,
   SoundQuizVictory,
-  TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { RetoService } from 'src/app/services/reto.service';
 import { Response } from 'src/app/Models/Response';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { exp_invalidos } from 'src/app/Utils/RegularExpressions';
 import { BunnyCdnService } from 'src/app/services/bunny-cdn.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-recoleccion',
@@ -35,6 +30,8 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
   changeRoute = ChangeRoute();
 
   @ViewChild('fileInput') fileInput: any;
+
+  idRol: string = '';
 
   headerDialog: string = 'Archivos';
   sugerenciaArchivo: string = '';
@@ -94,6 +91,7 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private retoService: RetoService,
+    private userService: UsuarioService,
     private bunnyCdnService: BunnyCdnService //private formBuilder: FormBuilder
   ) {
     /* this.formulario = this.formBuilder.group({
@@ -124,6 +122,7 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
       if (this.idReto === '' || !params['reto']) {
         this.changeRoute('/404', {});
       }
+      this.idRol = this.userService.getRol();
     });
   }
 
@@ -139,21 +138,23 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
           fechaHoy.setHours(0, 0, 0, 0);
           this.setFileType(this.reto.tipoArchivo);
 
-          if (
-            new Date(ur.reto.fechaApertura) >= fechaHoy &&
-            this.dateCompare(ur.reto.fechaApertura) !== 'N/A'
-          ) {
-            estado = 0;
-          }
-          if (
-            new Date(ur.reto.fechaCierre) < fechaHoy &&
-            this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
-          ) {
-            estado = 0;
-          }
+          if (this.idRol === 'jug') {
+            if (
+              new Date(ur.reto.fechaApertura) >= fechaHoy &&
+              this.dateCompare(ur.reto.fechaApertura) !== 'N/A'
+            ) {
+              estado = 0;
+            }
+            if (
+              new Date(ur.reto.fechaCierre) < fechaHoy &&
+              this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
+            ) {
+              estado = 0;
+            }
 
-          if (estado === 0 || ur.reto.completado === 1) {
-            this.router.navigate(['/user-reto']);
+            if (estado === 0 || ur.reto.completado === 1) {
+              this.router.navigate(['/user-reto']);
+            }
           }
         } else {
           this.router.navigate(['/user-reto']);
@@ -174,9 +175,13 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
   finalizar() {
     this.load(true, false);
     if (this.files.length === this.reto.items) {
-      this.reto.tipoArchivo === 'Video'
-        ? this.enviarAbunny()
-        : this.saveRecoleccion();
+      if (this.idRol === 'jug') {
+        this.reto.tipoArchivo === 'Video'
+          ? this.enviarAbunny()
+          : this.saveRecoleccion();
+      } else {
+        this.changeRoute('/view-reto', {});
+      }
     } else {
       this.load(false, false);
       this.alertError(
@@ -454,8 +459,5 @@ export class RecoleccionComponent implements OnInit, AfterViewInit {
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
-    /* this.formulario.patchValue({
-      url: '',
-    }); */
   }
 }

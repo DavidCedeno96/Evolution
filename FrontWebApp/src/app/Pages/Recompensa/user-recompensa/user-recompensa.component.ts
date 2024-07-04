@@ -17,13 +17,11 @@ import {
   ChangeRoute,
   GetImage,
   Loading,
-  MsgError,
-  MsgOk,
-  TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { AdicionalService } from 'src/app/services/adicional.service';
 import { RecompensaService } from 'src/app/services/recompensa.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-user-recompensa',
@@ -39,6 +37,8 @@ export class UserRecompensaComponent implements OnInit, AfterViewInit {
   loading = Loading();
 
   @ViewChild('closeModal') closeModal!: ElementRef;
+
+  idRol: string = '';
 
   first: number = 0;
   rows: number = 6; // items por página
@@ -70,6 +70,8 @@ export class UserRecompensaComponent implements OnInit, AfterViewInit {
     apellido: '',
     correo: '',
     id: '',
+    paisCode: '',
+    paisIso2: '',
     celular: '',
     foto: '',
     idRol: '',
@@ -92,8 +94,8 @@ export class UserRecompensaComponent implements OnInit, AfterViewInit {
 
   constructor(
     private recompensaService: RecompensaService,
+    private userService: UsuarioService,
     private router: Router,
-    private messageService: MessageService,
     private adicionalServicio: AdicionalService,
     private formBuilder: FormBuilder
   ) {
@@ -105,6 +107,7 @@ export class UserRecompensaComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loading(true, false);
+    this.idRol = this.userService.getRol();
   }
 
   ngAfterViewInit(): void {
@@ -174,56 +177,68 @@ export class UserRecompensaComponent implements OnInit, AfterViewInit {
         idRecompensa: item.idRecompensa,
         idUsuario: this.usuario.idUsuario,
       };
-      this.recompensaService.cajearRecompensa(usuario_recompensa).subscribe({
-        next: (data: any) => {
-          let { error, info } = data.response;
-          if (error === 0) {
-            this.usuario.creditos -= item.cantCanje;
-            this.recomensas.forEach((element) => {
-              if (element.idRecompensa === item.idRecompensa) {
-                element.cantDisponible -= 1;
-              }
-            });
+      if (this.idRol === 'jug') {
+        this.recompensaService.cajearRecompensa(usuario_recompensa).subscribe({
+          next: (data: any) => {
+            let { error, info } = data.response;
+            if (error === 0) {
+              this.usuario.creditos -= item.cantCanje;
+              this.recomensas.forEach((element) => {
+                if (element.idRecompensa === item.idRecompensa) {
+                  element.cantDisponible -= 1;
+                }
+              });
 
-            this.closeModal.nativeElement.click();
+              this.closeModal.nativeElement.click();
 
-            this.alertSuccess(
-              'Recompensa Canjeada',
-              `<div>
-                <h6>
+              this.alertSuccess(
+                'Recompensa Canjeada',
+                `<div>
+                  <h6>
+                    ${
+                      info.includes('correo')
+                        ? 'Has Canjeado correctamente la recompensa, hemos enviado a tu correo las instrucciones para que puedas reclamar tu recompensa'
+                        : 'Has Canjeado correctamente la recompensa!'
+                    }                  
+                  </h6>                                
                   ${
                     info.includes('correo')
-                      ? 'Has Canjeado correctamente la recompensa, hemos enviado a tu correo las instrucciones para que puedas reclamar tu recompensa'
-                      : 'Has Canjeado correctamente la recompensa!'
-                  }                  
-                </h6>                                
-                ${
-                  info.includes('correo')
-                    ? '<small>Si no recibiste el correo revisa el correo no deseado</small>'
-                    : ''
-                }
-              </div>`
-            );
+                      ? '<small>Si no recibiste el correo revisa el correo no deseado</small>'
+                      : ''
+                  }
+                </div>`
+              );
 
-            /* this.messageService.add({
-              severity: 'success',
-              summary: MsgOk,
-              detail: 'Recopmansa Reclamada',
-            }); */
-          } else {
-            this.alertError(TitleErrorForm, info);
-          }
-          this.loading(false, false);
-        },
-        error: (e) => {
-          console.error(e);
-          if (e.status === 401 || e.status === 403) {
-            this.router.navigate(['/']);
-          } else {
-            this.changeRoute('/404', {});
-          }
-        },
-      });
+              /* this.messageService.add({
+                severity: 'success',
+                summary: MsgOk,
+                detail: 'Recopmansa Reclamada',
+              }); */
+            } else {
+              this.alertError(TitleErrorForm, info);
+            }
+            this.loading(false, false);
+          },
+          error: (e) => {
+            console.error(e);
+            if (e.status === 401 || e.status === 403) {
+              this.router.navigate(['/']);
+            } else {
+              this.changeRoute('/404', {});
+            }
+          },
+        });
+      } else {
+        this.closeModal.nativeElement.click();
+        this.alertSuccess(
+          'Recompensa Canjeada',
+          `<div>
+            <h6>
+              Has Canjeado correctamente la recompensa.
+            </h6>                                            
+          </div>`
+        );
+      }
     }
   }
 

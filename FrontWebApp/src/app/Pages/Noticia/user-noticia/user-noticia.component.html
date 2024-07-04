@@ -1,17 +1,32 @@
-<div class="col-12 col-md-8 col-lg-5 col-xl-4 mx-md-auto">
+<div class="col-12 col-md-8 col-lg-5 col-xl-4 mx-auto">
   <div
-    class="shadow-lg p-3 mb-5 bg-body rounded"
-    *ngFor="let item of noticia_reaccion"
+    class="h-100 shadow-lg p-3 mb-5 bg-body rounded"
+    *ngFor="let item of noticia_reaccion; index as i"
   >
     <h5 class="txt text-secondary">{{ item.noticia.titular }}</h5>
     <div class="card">
-      <img
-        [src]="getImage(item.noticia.imagen, 'noticia', 'default-noticia.jpg')"
-        class="card-img-top"
-        alt="noticia"
-      />
+      <div class="text-center pt-3 px-3">
+        <img
+          [src]="
+            getImage(item.noticia.imagen, 'noticia', 'default-noticia.jpg')
+          "
+          class="img-fluid"
+          alt="noticia"
+        />
+      </div>
       <div class="px-3 mt-2">
-        {{ item.noticia.descripcion }}
+        <span
+          class="{{
+            item.noticia.descripcion.length > 180 && textTruncated[i]
+              ? 'texto truncated'
+              : item.noticia.descripcion.length > 180
+              ? 'no-truncate'
+              : ''
+          }}"
+          (click)="truncate(item.noticia.descripcion, i)"
+        >
+          {{ item.noticia.descripcion }}
+        </span>
         <div class="text-truncate" *ngIf="item.noticia.url">
           <a
             class="link-opacity-100 pointer"
@@ -25,7 +40,9 @@
       <div class="card-body">
         <h5 class="card-title">
           <i
-            class="fa-regular fa-thumbs-up me-2 fs-5 pointer"
+            class="fa-{{
+              item.userLiked ? 'solid' : 'regular'
+            }} fa-thumbs-up me-2 fs-5 pointer"
             type="button"
             (click)="addReaccion('like', item)"
           ></i>
@@ -54,9 +71,10 @@
             }}"
             formControlName="comentario"
             placeholder="Escribe tu comentario"
+            (focus)="verErrorsInputs = false"
           />
           <button type="submit" class="btn btn-tertiary ms-2 ms-md-0">
-            comentar
+            Comentar
           </button>
         </form>
         <div
@@ -79,10 +97,10 @@
         <div class="box-comentarios" *ngIf="getComentarios(item).length">
           <div class="mb-3" *ngFor="let ob of getComentarios(item)">
             <!-- <img
-              src="assets/img/default/default-user.jpg"
-              class="imgRedonda me-2"
-              alt="user"
-            /> -->
+                src="assets/img/default/default-user.jpg"
+                class="imgRedonda me-2"
+                alt="user"
+              /> -->
             <span>{{ ob.usuario }}</span>
             <small class="d-block">{{ ob.comentario }}</small>
           </div>

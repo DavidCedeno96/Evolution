@@ -1,0 +1,174 @@
+<div class="shadow-lg bg-white px-4 py-2 pt-4 pt-lg-5 px-lg-5 rounded">
+  <h5 class="my-5 text-center txt text-primary text-uppercase">
+    Correo de Envio
+  </h5>
+  <form class="row g-3 mb-4" [formGroup]="formulario" (ngSubmit)="upsert()">
+    <div class="col-12 col-md-6">
+      <label for="c_e" class="form-label">Correo electrónico*</label>
+      <input
+        type="text"
+        class="form-control {{
+          formulario.get('correo')?.errors && verErrorsInputs
+            ? 'is-invalid'
+            : ''
+        }}"
+        id="c_e"
+        formControlName="correo"
+      />
+      <div class="invalid-feedback">
+        <span
+          class="d-block"
+          *ngIf="formulario.get('correo')?.hasError('maxlength')"
+        >
+          Máximo 60 caracteres
+        </span>
+        <span
+          class="d-block"
+          *ngIf="formulario.get('correo')?.hasError('required')"
+        >
+          Campo obligatorio
+        </span>
+        <span
+          class="d-block"
+          *ngIf="formulario.get('correo')?.hasError('email')"
+        >
+          Correo incorrecto
+        </span>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="c_nom" class="form-label">Nombre</label>
+      <input
+        type="text"
+        class="form-control {{
+          formulario.get('nombre')?.errors && verErrorsInputs
+            ? 'is-invalid'
+            : ''
+        }}"
+        id="c_nom"
+        formControlName="nombre"
+      />
+      <div class="invalid-feedback">
+        <span
+          class="d-block"
+          *ngIf="formulario.get('nombre')?.hasError('maxlength')"
+        >
+          Máximo 60 caracteres
+        </span>
+        <span
+          class="d-block"
+          *ngIf="formulario.get('nombre')?.hasError('pattern')"
+        >
+          Contiene caracteres inválidos
+        </span>
+      </div>
+    </div>
+    <div class="col-12 col-md-5">
+      <label for="password" class="form-label">Contraseña</label>
+      <div class="input-group">
+        <input
+          class="form-control {{
+            formulario.get('password')?.errors && verErrorsInputs
+              ? 'is-invalid'
+              : ''
+          }}"
+          type="{{ verPassword ? 'text' : 'password' }}"
+          formControlName="password"
+          id="password"
+          placeholder="*******"
+        />
+        <span
+          class="toggle-icon {{
+            (formulario.get('password')?.errors && numClicksSave > 0) ||
+            (error && campo === 'clave')
+              ? 'error'
+              : ''
+          }}"
+          (click)="togglePassword()"
+        >
+          <i class="fas fa-eye" *ngIf="!verPassword"></i>
+          <i class="fas fa-eye-slash" *ngIf="verPassword"></i>
+        </span>
+        <div class="invalid-feedback">
+          <span *ngIf="formulario.get('password')?.hasError('maxlength')"
+            >Máximo 100 caracteres</span
+          >
+          <span
+            class="d-block"
+            *ngIf="formulario.get('password')?.hasError('pattern')"
+          >
+            Contiene caracteres inválidos
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-2">
+      <label for="puer" class="form-label">Puerto*</label>
+      <input
+        type="text"
+        class="form-control {{
+          formulario.get('puerto')?.errors && verErrorsInputs
+            ? 'is-invalid'
+            : ''
+        }}"
+        id="puer"
+        formControlName="puerto"
+      />
+      <div class="invalid-feedback">
+        <span
+          class="d-block"
+          *ngIf="formulario.get('puerto')?.hasError('required')"
+        >
+          Campo obligatorio
+        </span>
+        <span
+          class="d-block"
+          *ngIf="formulario.get('puerto')?.hasError('maxlength')"
+          >Máximo 5 caracteres</span
+        >
+        <span
+          class="d-block"
+          *ngIf="formulario.get('puerto')?.hasError('pattern')"
+        >
+          Solo se permiten números
+        </span>
+      </div>
+    </div>
+    <div class="col-12 col-md-5">
+      <label for="hos" class="form-label">Host*</label>
+      <input
+        type="text"
+        class="form-control {{
+          formulario.get('host')?.errors && verErrorsInputs ? 'is-invalid' : ''
+        }}"
+        id="hos"
+        formControlName="host"
+      />
+      <div class="invalid-feedback">
+        <span
+          class="d-block"
+          *ngIf="formulario.get('host')?.hasError('required')"
+        >
+          Campo obligatorio
+        </span>
+        <span *ngIf="formulario.get('host')?.hasError('maxlength')"
+          >Máximo 60 caracteres</span
+        >
+        <span
+          class="d-block"
+          *ngIf="formulario.get('host')?.hasError('pattern')"
+        >
+          Contiene caracteres inválidos
+        </span>
+      </div>
+    </div>
+
+    <div class="d-grid d-md-block text-md-end">
+      <button type="submit" class="btn btn-primary">
+        Guardar<i class="fa-regular fa-floppy-disk ms-2"></i>
+      </button>
+    </div>
+  </form>
+</div>
+
+<p-toast [styleClass]="'col-10 col-md-6 col-lg-3'"></p-toast>

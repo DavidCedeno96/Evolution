@@ -9,9 +9,7 @@ import {
   DateCompare,
   GetImage,
   Loading,
-  MsgError,
   SetUpsert,
-  TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { exp_invalidos } from 'src/app/Utils/RegularExpressions';
@@ -48,6 +46,8 @@ export class ComportamientoComponent implements OnInit, AfterViewInit {
     apellido: '',
     correo: '',
     id: '',
+    paisCode: '',
+    paisIso2: '',
     celular: '',
     foto: '',
     idRol: '',

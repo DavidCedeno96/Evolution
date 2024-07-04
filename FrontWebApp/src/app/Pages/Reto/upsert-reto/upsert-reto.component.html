@@ -90,6 +90,12 @@
       </div>
       <div class="col-12 col-md-4" *ngIf="type === 'crear'">
         <label for="ret-tipret" class="form-label">Tipo de Reto*</label>
+        <i
+          *ngIf="ttTipoReto"
+          class="fa-regular fa-circle-question ms-1"
+          [matTooltip]="ttTipoReto"
+          [matTooltipPosition]="'right'"
+        ></i>
         <select
           class="form-select {{
             formulario.get('idTipoReto')?.errors && verErrorsInputs
@@ -692,7 +698,11 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-6 col-lg-4">
+      <div
+        class="col-12 col-md-6 col-lg-4 {{
+          reto.tipoReto === 'Comportamiento' ? 'd-none' : 'd-block'
+        }}"
+      >
         <label for="ret-inst" class="form-label">Instrucciones</label>
         <textarea
           class="form-control {{
@@ -704,6 +714,7 @@
           rows="3"
           id="ret-inst"
           formControlName="instrucciones"
+          [placeholder]="inst"
         ></textarea>
         <div class="invalid-feedback">
           <span
@@ -962,7 +973,7 @@
   aria-labelledby="modalQuienferificaLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-fullscreen-sm-down">
+  <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-sm-down">
     <form
       class="modal-content"
       [formGroup]="frmUsuario"

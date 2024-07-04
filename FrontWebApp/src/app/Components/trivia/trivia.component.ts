@@ -10,12 +10,10 @@ import {
   DateCompare,
   FormatTiempo,
   Loading,
-  MsgError,
   ReproducirSonido,
   SoundQuizCorrect,
   SoundQuizIncorrect,
   SoundQuizVictory,
-  TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import { PreguntaService } from 'src/app/services/pregunta.service';
@@ -35,6 +33,8 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
   formatTiempo = FormatTiempo();
   reproducirSonido = ReproducirSonido();
   changeRoute = ChangeRoute();
+
+  idRol: string = '';
 
   preguntaActual: number = 0;
   nextText: string = 'Siguiente';
@@ -177,6 +177,7 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.idReto === '' || !params['reto']) {
         this.changeRoute('/404', {});
       }
+      this.idRol = this.usuarioService.getRol();
     });
   }
 
@@ -191,31 +192,35 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
           let fechaHoy = new Date();
           fechaHoy.setHours(0, 0, 0, 0);
 
-          if (
-            new Date(ur.reto.fechaApertura) >= fechaHoy &&
-            this.dateCompare(ur.reto.fechaApertura) !== 'N/A'
-          ) {
-            estado = 0;
-          }
-          if (
-            new Date(ur.reto.fechaCierre) < fechaHoy &&
-            this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
-          ) {
-            estado = 0;
-          }
-
-          if (
-            estado === 0 ||
-            ur.reto.totalPreguntas < 1 ||
-            ur.reto.completado === 1
-          ) {
-            this.router.navigate(['/user-reto']);
-          } else {
-            if (ur.reto.vidas > 0) {
-              this.retoConVidas = true;
-              this.vidas = Array(ur.reto.vidas).fill(1);
+          if (this.idRol === 'jug') {
+            if (
+              new Date(ur.reto.fechaApertura) >= fechaHoy &&
+              this.dateCompare(ur.reto.fechaApertura) !== 'N/A'
+            ) {
+              estado = 0;
+            }
+            if (
+              new Date(ur.reto.fechaCierre) < fechaHoy &&
+              this.dateCompare(ur.reto.fechaCierre) !== 'N/A'
+            ) {
+              estado = 0;
             }
 
+            if (
+              estado === 0 ||
+              ur.reto.totalPreguntas < 1 ||
+              ur.reto.completado === 1
+            ) {
+              this.router.navigate(['/user-reto']);
+            } else {
+              if (ur.reto.vidas > 0) {
+                this.retoConVidas = true;
+                this.vidas = Array(ur.reto.vidas).fill(1);
+              }
+
+              this.cargarPreguntas();
+            }
+          } else {
             this.cargarPreguntas();
           }
         } else {
@@ -388,50 +393,31 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
     clearInterval(this.contador); // detiene el contador
 
     //console.log('FINALIZANDO TRIVIA');
-    this.retoService.updateUsuario_retoTrivia(this.setData()).subscribe({
-      next: (data: any) => {
-        let { error, info } = data.response;
-        if (error === 0) {
-          this.reproducirSonido(SoundQuizVictory);
+    if (this.idRol === 'jug') {
+      this.retoService.updateUsuario_retoTrivia(this.setData()).subscribe({
+        next: (data: any) => {
+          let { error, info } = data.response;
+          if (error === 0) {
+            this.reproducirSonido(SoundQuizVictory);
 
-          /* let msjPuntosCreditos = `<span class="d-block">Puntos Obtenidos: ${
-            this.porcentajeTotal >= this.reto.criterioMinimo
-              ? this.reto.puntosRecompensa
-              : 0
-          }</span>
-          <span class="d-block">Créditos Obtenidos: ${
-            this.porcentajeTotal >= this.reto.criterioMinimo
-              ? this.reto.creditosObtenidos
-              : 0
-          }</span>
-          `;
-
-          let msjPuntos = `<span class="d-block">Puntos Obtenidos: ${
-            this.porcentajeTotal >= this.reto.criterioMinimo
-              ? this.reto.puntosRecompensa
-              : 0
-          }</span>`;
-
-          this.alertSuccess(
-            'Reto Terminado',
-            this.reto.creditosObtenidos ? msjPuntosCreditos : msjPuntos
-          ); */
-
-          this.changeRoute('/fin-reto', { reto: this.idReto });
-        } else {
-          this.alertError(TitleErrorForm, info); //MsgErrorForm
-        }
-        this.load(false, false);
-      },
-      error: (e) => {
-        console.error(e);
-        if (e.status === 401 || e.status === 403) {
-          this.router.navigate(['/']);
-        } else {
-          this.changeRoute('/404', {});
-        }
-      },
-    });
+            this.changeRoute('/fin-reto', { reto: this.idReto });
+          } else {
+            this.alertError(TitleErrorForm, info); //MsgErrorForm
+          }
+          this.load(false, false);
+        },
+        error: (e) => {
+          console.error(e);
+          if (e.status === 401 || e.status === 403) {
+            this.router.navigate(['/']);
+          } else {
+            this.changeRoute('/404', {});
+          }
+        },
+      });
+    } else {
+      this.changeRoute('/view-reto', {});
+    }
   }
 
   setData(): Usuario_Reto {
@@ -445,6 +431,8 @@ export class TriviaComponent implements OnInit, AfterViewInit, OnDestroy {
       apellido: '',
       correo: '',
       id: '',
+      paisCode: '',
+      paisIso2: '',
       celular: '',
       foto: '',
       idRol: '',

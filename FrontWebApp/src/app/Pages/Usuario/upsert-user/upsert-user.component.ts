@@ -8,10 +8,8 @@ import {
   GetImage,
   ImgSizeMax,
   Loading,
-  MsgError,
   MsgErrorForm,
   SetUpsert,
-  TitleError,
   TitleErrorForm,
   SugerenciaImagen,
   ImgWidthMax,
@@ -27,6 +25,7 @@ import {
 } from 'src/app/Utils/RegularExpressions';
 import { AdicionalService } from 'src/app/services/adicional.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import * as intlTelInput from 'intl-tel-input';
 
 @Component({
   selector: 'app-upsert-user',
@@ -64,6 +63,8 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
     apellido: '',
     correo: '',
     id: '',
+    paisCode: '',
+    paisIso2: 'ec',
     celular: '',
     foto: '',
     idRol: '',
@@ -88,6 +89,8 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
   empresa: Empresa[] = [];
   area: Area[] = [];
   auxArea: Area[] = [];
+
+  iti: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -135,7 +138,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
         this.usuario.celular,
         [
           Validators.maxLength(15),
-          Validators.minLength(10),
+          Validators.minLength(9),
           Validators.pattern(exp_numeros),
         ],
       ],
@@ -158,6 +161,8 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
     if (this.type === 'editar') {
       this.loading(true, false);
       this.cargarData(this.id);
+    } else {
+      this.setInputCodesPhone();
     }
   }
 
@@ -195,6 +200,7 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
           this.usuario = usuario;
           this.formulario.patchValue(usuario);
 
+          this.setInputCodesPhone();
           this.auxCiudad = this.ciudadList(usuario.idPais);
           this.auxArea = this.areaList(usuario.idEmpresa);
         } else {
@@ -322,6 +328,8 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
     formData.append('apellido', this.usuario.apellido.trim());
     formData.append('correo', this.usuario.correo.trim());
     formData.append('id', this.usuario.id.trim());
+    formData.append('paisCode', this.iti.selectedCountryData.dialCode);
+    formData.append('paisIso2', this.iti.defaultCountry);
     formData.append('celular', this.usuario.celular.trim());
     formData.append('idRol', this.usuario.idRol);
     formData.append('idCiudad', this.usuario.idCiudad);
@@ -393,5 +401,18 @@ export class UpsertUserComponent implements OnInit, AfterViewInit {
 
   togglePassword() {
     this.verPassword = !this.verPassword;
+  }
+
+  setInputCodesPhone() {
+    let phoneCode = document.getElementById('phone-code');
+    if (phoneCode) {
+      this.iti = intlTelInput(phoneCode, {
+        initialCountry: this.usuario.paisIso2,
+        preferredCountries: ['us', 'ec'],
+        separateDialCode: true,
+        //utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/23.1.0/js/utils.js', // Necesario para algunas funcionalidades de formato y validación
+        //utilsScript: 'assets/utils.js',
+      });
+    }
   }
 }

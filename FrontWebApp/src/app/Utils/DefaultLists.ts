@@ -989,6 +989,27 @@ export const GetBreadcrumb = () => {
         ];
         break;
       }
+
+      case '/config/correo-masivo': {
+        lista = [
+          {
+            url: '/home',
+            nombre: 'Inicio',
+            estado: 1,
+          },
+          {
+            url: '/config/inicio',
+            nombre: 'Configuración',
+            estado: -1,
+          },
+          {
+            url: '/config/correo-masivo',
+            nombre: 'Correo',
+            estado: 1,
+          },
+        ];
+        break;
+      }
     }
 
     if (auxUrlType.includes('crear')) {
@@ -1013,6 +1034,7 @@ export const GetNavItemPills = () => {
       case '/config/marca':
       case '/config/upsert-notificacion':
       case '/config/notification':
+      case '/config/correo-masivo':
       case '/config/inicio': {
         lista = [
           {
@@ -1038,6 +1060,11 @@ export const GetNavItemPills = () => {
           {
             url: '/config/notification',
             nombre: 'Notificaciones',
+            estado: 1,
+          },
+          {
+            url: '/config/correo-masivo',
+            nombre: 'Correo',
             estado: 1,
           },
         ];

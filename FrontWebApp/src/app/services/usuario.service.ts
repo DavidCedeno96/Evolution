@@ -42,13 +42,16 @@ export class UsuarioService {
     });
   }
 
-  getBuscarList(texto: string): Observable<Usuario[]> {
+  getBuscarList(texto: string, incluirAdmins: number): Observable<Usuario[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.getToken()}`,
     });
-    return this.http.get<Usuario[]>(`${this.apiURL}/buscar?texto=${texto}`, {
-      headers: headers,
-    });
+    return this.http.get<Usuario[]>(
+      `${this.apiURL}/buscar?texto=${texto}&incluirAdmins=${incluirAdmins}`,
+      {
+        headers: headers,
+      }
+    );
   }
 
   getItem(estado: number, id: string): Observable<Usuario> {

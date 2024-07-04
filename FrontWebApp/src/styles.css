@@ -201,7 +201,7 @@ body {
   right: 10px;
   transform: translateY(-50%);
   cursor: pointer;
-  z-index: 10;
+  z-index: 5;
   color: var(--form-items-border);
 }
 

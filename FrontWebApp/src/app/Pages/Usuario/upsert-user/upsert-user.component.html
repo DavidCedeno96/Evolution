@@ -4,7 +4,7 @@
   </h5>
   <form class="mb-3" [formGroup]="formulario" (ngSubmit)="upsert()">
     <div class="row g-3">
-      <div class="col-12 col-md-3">
+      <div class="col-12 col-md-6 col-lg-3">
         <label for="nombre" class="form-label">Nombre*</label>
         <input
           type="text"
@@ -37,7 +37,7 @@
           </span>
         </div>
       </div>
-      <div class="col-12 col-md-3">
+      <div class="col-12 col-md-6 col-lg-3">
         <label for="apellido" class="form-label">Apellido*</label>
         <input
           type="text"
@@ -70,7 +70,7 @@
           </span>
         </div>
       </div>
-      <div class="col-12 col-md-3">
+      <div class="col-12 col-md-6 col-lg-3">
         <label for="idU" class="form-label">Id único*</label
         ><i
           class="fa-regular fa-circle-question ms-1"
@@ -112,27 +112,40 @@
           </span>
         </div>
       </div>
-      <div class="col-12 col-md-3">
-        <label for="celular" class="form-label">Celular</label>
-        <input
-          type="text"
-          class="form-control {{
-            formulario.get('celular')?.errors && verErrorsInputs
-              ? 'is-invalid'
-              : ''
-          }}"
-          formControlName="celular"
-          id="celular"
-        />
-        <div class="invalid-feedback">
-          <span *ngIf="formulario.get('celular')?.hasError('maxlength')"
-            >Máximo 15 caracteres</span
+      <div class="col-12 col-md-6 col-lg-3">
+        <label for="phone-code" class="form-label">Celular</label>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="tel-input-container me-2">
+            <input type="tel" id="phone-code" />
+          </div>
+          <input
+            type="text"
+            class="form-control {{
+              formulario.get('celular')?.errors && verErrorsInputs
+                ? 'is-invalid'
+                : ''
+            }}"
+            formControlName="celular"
+          />
+        </div>
+        <div
+          class="text-danger"
+          *ngIf="formulario.get('celular')?.errors && verErrorsInputs"
+        >
+          <small
+            class="d-block"
+            *ngIf="formulario.get('celular')?.hasError('maxlength')"
+            >Máximo 15 caracteres</small
           >
-          <span *ngIf="formulario.get('celular')?.hasError('minlength')"
-            >Minimo 10 caracteres</span
+          <small
+            class="d-block"
+            *ngIf="formulario.get('celular')?.hasError('minlength')"
+            >Minimo 9 caracteres</small
           >
-          <span *ngIf="formulario.get('celular')?.hasError('pattern')"
-            >Solo se permiten números</span
+          <small
+            class="d-block"
+            *ngIf="formulario.get('celular')?.hasError('pattern')"
+            >Solo se permiten números</small
           >
         </div>
       </div>
@@ -181,6 +194,7 @@
             type="{{ verPassword ? 'text' : 'password' }}"
             formControlName="contrasena"
             id="contrasena"
+            [placeholder]="type === 'editar' ? '*******' : ''"
           />
           <span
             class="toggle-icon {{

@@ -108,6 +108,7 @@
                 #valueArchivo
                 accept=".xlsx"
                 (change)="onFileSelected($event)"
+                (click)="limpiarArchivo(false)"
               />
               <div class="invalid-feedback">{{ infoArchivo }}</div>
             </div>

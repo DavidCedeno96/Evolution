@@ -173,7 +173,7 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
           this.infoArchivo = info;
           if (error === 0) {
             this.errorArchivo = false;
-            this.limpiarArchivo();
+            this.limpiarArchivo(true);
             this.cargarData();
             this.messageService.add({
               severity: 'success',
@@ -186,7 +186,7 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
           this.loading(false, false);
         },
         error: (e) => {
-          this.limpiarArchivo();
+          this.limpiarArchivo(true);
           console.error(e);
           if (e.status === 401 || e.status === 403) {
             this.router.navigate(['/']);
@@ -278,7 +278,6 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
   onFileSelected(event: Event) {
     this.selectedFile = (event.target as HTMLInputElement).files![0];
     this.errorArchivo = false;
-    console.log(this.selectedFile.name);
   }
 
   confirmEliminar(id: string) {
@@ -324,8 +323,10 @@ export class ViewNivelComponent implements OnInit, AfterViewInit {
     }
   }
 
-  limpiarArchivo() {
-    this.closeModal.nativeElement.click();
+  limpiarArchivo(closeModal: boolean) {
+    if (closeModal) {
+      this.closeModal.nativeElement.click();
+    }
     this.selectedFile = null;
     this.valueArchivo.nativeElement.value = '';
   }

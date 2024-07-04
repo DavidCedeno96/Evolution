@@ -25,12 +25,15 @@ export class NoticiaService {
     });
   }
 
-  getListAndComents(estado: number): Observable<Noticia_Reaccion[]> {
+  getListAndComents(
+    estado: number,
+    noticia: string
+  ): Observable<Noticia_Reaccion[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
     });
     return this.http.get<Noticia_Reaccion[]>(
-      `${this.apiURL}/listByComents/${estado}`,
+      `${this.apiURL}/listByComents/${estado}${noticia}`,
       {
         headers: headers,
       }

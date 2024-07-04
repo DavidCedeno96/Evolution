@@ -14,7 +14,7 @@ export class PageNotFoundComponent implements AfterViewInit {
   constructor(private usuarioServicio: UsuarioService) {}
 
   ngAfterViewInit(): void {
-    this.loading(false, false);
+    this.loading(false, false, 200);
     this.usuarioServicio.startWatching();
   }
 

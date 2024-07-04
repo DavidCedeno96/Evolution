@@ -11,11 +11,9 @@ import {
   ImgSizeMax,
   ImgWidthMax,
   Loading,
-  MsgError,
   MsgErrorForm,
   SetUpsert,
   SugerenciaImagen,
-  TitleError,
   TitleErrorForm,
 } from 'src/app/Utils/Constants';
 import {
@@ -26,6 +24,7 @@ import {
 } from 'src/app/Utils/RegularExpressions';
 import { AdicionalService } from 'src/app/services/adicional.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import * as intlTelInput from 'intl-tel-input';
 
 @Component({
   selector: 'app-profile-user-edit',
@@ -60,6 +59,8 @@ export class ProfileUserEditComponent implements OnInit, AfterViewInit {
     apellido: '',
     correo: '',
     id: '',
+    paisCode: '',
+    paisIso2: '',
     celular: '',
     foto: '',
     idRol: '',
@@ -84,6 +85,8 @@ export class ProfileUserEditComponent implements OnInit, AfterViewInit {
   empresa: Empresa[] = [];
   area: Area[] = [];
   auxArea: Area[] = [];
+
+  iti: any;
 
   constructor(
     private router: Router,
@@ -130,7 +133,7 @@ export class ProfileUserEditComponent implements OnInit, AfterViewInit {
         this.usuario.celular,
         [
           Validators.maxLength(15),
-          Validators.minLength(10),
+          Validators.minLength(9),
           Validators.pattern(exp_numeros),
         ],
       ],
@@ -162,6 +165,7 @@ export class ProfileUserEditComponent implements OnInit, AfterViewInit {
           this.usuario = usuario;
           this.formulario.patchValue(usuario);
 
+          this.setInputCodesPhone();
           this.auxCiudad = this.ciudadList(usuario.idPais);
           this.auxArea = this.areaList(usuario.idEmpresa);
         } else {
@@ -258,6 +262,8 @@ export class ProfileUserEditComponent implements OnInit, AfterViewInit {
     formData.append('correo', this.usuario.correo.trim());
     formData.append('id', this.usuario.id.trim());
     formData.append('idRol', 'jug');
+    formData.append('paisCode', this.iti.selectedCountryData.dialCode);
+    formData.append('paisIso2', this.iti.defaultCountry);
     formData.append('celular', this.usuario.celular.trim());
     formData.append('idCiudad', this.usuario.idCiudad);
     formData.append('idArea', this.usuario.idArea);
@@ -326,5 +332,18 @@ export class ProfileUserEditComponent implements OnInit, AfterViewInit {
 
   togglePassword() {
     this.verPassword = !this.verPassword;
+  }
+
+  setInputCodesPhone() {
+    let phoneCode = document.getElementById('phone-code');
+    if (phoneCode) {
+      this.iti = intlTelInput(phoneCode, {
+        initialCountry: this.usuario.paisIso2,
+        preferredCountries: ['us', 'ec'],
+        separateDialCode: true,
+        //utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/23.1.0/js/utils.js', // Necesario para algunas funcionalidades de formato y validación
+        //utilsScript: 'assets/utils.js',
+      });
+    }
   }
 }
