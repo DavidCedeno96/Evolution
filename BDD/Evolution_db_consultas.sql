@@ -16,48 +16,50 @@ SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES
 SELECT
     tr.name AS TriggerName,
     tr.object_id AS TriggerObjectId,
+	te.type,
 	te.type_desc,
     tr.parent_id AS TableObjectId,
     OBJECT_NAME(tr.parent_id) AS 'TableName'
 FROM sys.triggers tr 
 INNER JOIN sys.trigger_events te ON tr.object_id = te.object_id
 INNER JOIN sys.objects o ON tr.parent_id = o.object_id
---WHERE te.type = 1;
+--WHERE te.type = 2;
 
 --- RESTRICCIONES: FK, PK, Unique
 SELECT 
-	tc.CONSTRAINT_TYPE,
     tc.CONSTRAINT_NAME,
+	tc.CONSTRAINT_TYPE,
 	tc.TABLE_NAME,
     kcu.COLUMN_NAME	
 FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
 JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
     ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME
 WHERE 
-    tc.TABLE_NAME = 'UsuarioxArchivo' AND 
+    tc.TABLE_NAME = 'area' AND 
     tc.CONSTRAINT_TYPE = 'UNIQUE' OR   
 	tc.CONSTRAINT_TYPE = 'CHECK';
 
 ---- RESTRICCIONES: Predeterminadas
 SELECT 
-	so.name, 
-	so.xtype, 	
-	so.crdate, 
-	sc.name, 
-	sc.isnullable, 
-	sob.name
-FROM SYSOBJECTS so 
-    INNER JOIN SYSCOLUMNS sc ON sc.cdefault = so.id
-	INNER JOIN SYSOBJECTS sob ON sob.id = sc.id
-WHERE
-	sob.name = 'Reto' AND 
-	sc.name = 'cantComport'	
+    dc.name AS constraint_name, 
+    o.name AS table_name, 
+	dc.create_date,
+    c.name AS column_name, 
+    c.is_nullable, 
+	dc.type_desc,
+    dc.definition AS default_value
+FROM 
+    sys.default_constraints dc
+    INNER JOIN sys.columns c ON dc.parent_object_id = c.object_id AND dc.parent_column_id = c.column_id
+    INNER JOIN sys.objects o ON dc.parent_object_id = o.object_id
+WHERE 
+    o.name = 'Novedad';
 
 
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'Novedad';
+WHERE tc.TABLE_NAME = 'area';
 
 ---
 SELECT @@VERSION;
@@ -148,7 +150,7 @@ exec sp_D_InicioByNoIds
 -- update Usuario set correo = 'user@correo.com' where idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41'
 -- update Usuario set estado = 1
 
-select * from Usuario
+select * from Usuario where idUsuario = '6d81e350-a4f4-4042-a3e9-ef97d985bc2a'
 --AB37197C-BF33-44B8-BA5D-E246FA250B41
 exec sp_B_Usuario
 @estado = -1,
@@ -157,8 +159,8 @@ exec sp_B_Usuario
 @id = ''
 
 exec sp_B_UsuarioById	
-@idUsuario = '015E40DD-58CE-401E-A0A9-075874BC0B68',	
-@estado = -1,
+@idUsuario = '6d81e350-a4f4-4042-a3e9-ef97d985bc2a',	
+@estado = 1,
 @error = '',
 @info = '',
 @id = ''
@@ -177,8 +179,15 @@ exec sp_B_UsuarioByRegister
 @info = '',
 @id = ''
 
-exec sp_B_UsuarioByAll		
+exec sp_B_UsuarioByAll
 @buscar = 'admin',
+@incluirAdmins = 1,
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_UsuarioPuntosCreditos		
+@idUsuario = '015E40DD-58CE-401E-A0A9-075874BC0B68',
 @error = '',
 @info = '',
 @id = ''
@@ -197,6 +206,8 @@ exec sp_C_Usuario
 @correo = 'dani@gmail.com',
 @idU  = '',
 @clave = @auxClave,
+@paisIso2 = 'ec',
+@paisCode = '593',
 @celular = '0998467221',
 @foto = '',
 @idRol = 'jug',
@@ -214,6 +225,8 @@ exec sp_U_Usuario
 @correo = 'elver.ga.larga@gmail.com',
 @idU = '',
 @clave = @auxClave,
+@paisIso2 = 'ec',
+@paisCode = '593',
 @celular = '1234567891',
 @foto = 'models.png',
 @idRol = 'jug',
@@ -692,6 +705,8 @@ exec sp_U_CategoriaNoticia
 -- Noticias
 exec sp_B_Noticia
 @estado = -1,
+@idUsuario = '015E40DD-58CE-401E-A0A9-075874BC0B68',
+--@idNoticia = '7CF3F854-ABE0-4033-BD63-4A94DC7DAF11', -- este es opcional
 @error = '',
 @info = '',
 @id = ''
@@ -765,6 +780,7 @@ exec sp_C_Usuario_Noticia
 select * from RedSocial
 
 exec sp_B_RedSocial		
+@idUsuario = 'DAD5FFE9-A8CE-4D00-BF12-9FAF4F30204f',
 @error = '',
 @info = '',
 @id = ''
@@ -954,7 +970,7 @@ select * from Opcion where idPregunta = '00046450-01F9-4F73-B3F3-C5A00D11446C'
 
 exec sp_B_PreguntaByIdReto		
 @estado = -1,
-@idReto = '0B3439F9-F94D-4E28-B758-89668B4D020F',
+@idReto = '354e8be8-3d2d-4e42-90b6-8935f7e56ef4',
 @error = '',
 @info = '',
 @id = ''
@@ -1403,7 +1419,7 @@ select * from Notificacion
 -- update Novedad set fechaCreacion = '2024-01-20 16:08:24.113' where idNovedad = '48B47339-53B9-40E2-8A04-33732B9C2814'
 
 exec sp_B_NovedadByIdUsuario		
-@idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
+@idUsuario = '6D81E350-A4F4-4042-A3E9-EF97D985BC2A',
 @error = '',
 @info = '',
 @id = ''
@@ -1432,7 +1448,7 @@ exec sp_D_NovedadByIdUsuario
 
 
 -- Notificación ------------------------------------------------------------------------
-exec sp_B_Notificacion		
+exec sp_B_Notificacion
 @estado = -1,
 @error = '',
 @info = '',
@@ -1468,14 +1484,28 @@ exec sp_U_NotificacionByEstado
 
 -- Correo ------------------------------------------------------------------------
 select * from CorreoEnvio
+
 exec sp_B_CorreoEnvio
 @error = '',
 @info = '',
 @id = ''
 
 declare @auxClaveCorreo varbinary(max) = CAST('Aqui poner el texto encripado' AS VARBINARY(MAX))
-insert into CorreoEnvio (correo, clave, puerto, host) values
-('bcedeno@digimentore.com.ec', @auxClaveCorreo, 587, 'smtp.office365.com')
+
+exec sp_U_CorreoEnvio
+@idCorreo = '45333B41-0022-42E3-8F26-164F5D157EB1',
+@nombre = 'prueba Nombre',
+@correo = '06f1835853c3bb',
+@clave = @auxClaveCorreo,
+@puerto = 2525,
+@host = 'sandbox.smtp.mailtrap.io',
+@error = '',
+@info = '',
+@id = ''
+
+
+--insert into CorreoEnvio (correo, clave, puerto, host) values
+--('bcedeno@digimentore.com.ec', @auxClaveCorreo, 587, 'smtp.office365.com')
 
 ------------------------------------------------------------------------------------------------------------------------------------
 --Insert Into Notificacion (nombre) values

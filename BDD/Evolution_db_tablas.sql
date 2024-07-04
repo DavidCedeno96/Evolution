@@ -32,6 +32,7 @@ create table Notificacion(
 
 create table CorreoEnvio(	
 	idCorreo uniqueidentifier primary key default newid(),	
+	nombre varchar(60),
 	correo varchar(60) unique not null,
 	clave varbinary(MAX) not null,
 	puerto int default 587 not null,
@@ -117,6 +118,8 @@ create table Usuario(
 	puntos int not null default 0,
 	creditos int not null default 0,
 	id varchar(20) unique not null,
+	paisIso2 varchar(4),
+	paisCode varchar(5),
 	fechaCreacion datetime default getdate(),
 	fechaModificacion datetime default getdate(),
 );
