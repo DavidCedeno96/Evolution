@@ -56,7 +56,7 @@
     </a>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto mb-0">
-        <li class="nav-item me-3">
+        <li class="nav-item me-4">
           <a
             class="nav-link active pointer badge-icon d-none d-lg-block"
             data-bs-toggle="modal"
@@ -98,18 +98,21 @@
             >
           </a>
         </li>
-        <li class="nav-item me-3">
-          <a
-            class="nav-link active badge-icon d-none d-lg-block"
-            matTooltip="Puntos"
-          >
-            <i class="fa-solid fa-p"></i>
+        <li class="nav-item">
+          <a class="nav-link active d-none d-lg-block" matTooltip="Puntos">
+            <span class="badge bg {{ pts ? 'bg-primary' : 'bg-tertiary' }}">
+              <i class="fa-solid fa-p me-3"></i>
+              <span *ngIf="pts > 99">99+</span>
+              <span *ngIf="pts < 100">{{ pts }}</span>
+            </span>
+
+            <!-- <i class="fa-solid fa-p"></i>
             <span class="badge x1 bg bg-primary" *ngIf="pts > 99">99+</span>
             <span
               class="badge bg {{ pts ? 'bg-primary' : 'bg-tertiary' }}"
               *ngIf="pts < 100"
               >{{ pts }}</span
-            >
+            > -->
           </a>
 
           <a class="nav-link active d-block d-lg-none">
@@ -123,17 +126,20 @@
           </a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link active badge-icon d-none d-lg-block"
-            matTooltip="Créditos"
-          >
-            <i class="fa-regular fa-star"></i>
+          <a class="nav-link active d-none d-lg-block" matTooltip="Créditos">
+            <span class="badge bg {{ crts ? 'bg-primary' : 'bg-tertiary' }}">
+              <i class="fa-regular fa-star me-3"></i>
+              <span *ngIf="crts > 99">99+</span>
+              <span *ngIf="crts < 100">{{ crts }}</span>
+            </span>
+
+            <!-- <i class="fa-regular fa-star"></i>
             <span class="badge x1 bg bg-primary" *ngIf="crts > 99">99+</span>
             <span
               class="badge bg {{ crts ? 'bg-primary' : 'bg-tertiary' }}"
               *ngIf="crts < 100"
               >{{ crts }}</span
-            >
+            > -->
           </a>
 
           <a class="nav-link active d-block d-lg-none">
@@ -276,7 +282,7 @@
     </div>
   </div>
   <hr class="hr-text" data-content="O" />
-  <div class="menu">
+  <div class="menu mb-5">
     <a
       [class]="setItemActive('/home')"
       data-bs-dismiss="offcanvas"

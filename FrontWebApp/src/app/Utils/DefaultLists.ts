@@ -1062,11 +1062,11 @@ export const GetNavItemPills = () => {
             nombre: 'Notificaciones',
             estado: 1,
           },
-          {
+          /* {
             url: '/config/correo-masivo',
             nombre: 'Correo',
             estado: 1,
-          },
+          }, */
         ];
         break;
       }

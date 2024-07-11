@@ -843,6 +843,11 @@
     <div class="row g-3" *ngIf="sectionIndex === 2">
       <div class="col-12 col-md-6 col-lg-4">
         <label for="ret-prec" class="form-label">Puntos*</label>
+        <i
+          class="fa-regular fa-circle-question ms-1"
+          matTooltip="Sirve para avanzar de nivel"
+          [matTooltipPosition]="'right'"
+        ></i>
         <input
           type="text"
           class="form-control {{
@@ -882,6 +887,11 @@
       </div>
       <div class="col-12 col-md-6 col-lg-4">
         <label for="ret-credOb" class="form-label">Créditos</label>
+        <i
+          class="fa-regular fa-circle-question ms-1"
+          matTooltip="Sirve para canjear recompensas. Solo se obtiene si la forma de participación del reto es individual"
+          [matTooltipPosition]="'right'"
+        ></i>
         <input
           type="text"
           class="form-control {{

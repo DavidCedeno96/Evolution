@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
           this.pillsList = this.getNavItemPills(this.url);
 
           if (this.url === '/') {
-            this.router.navigate(['/login']);
+            usuarioServicio.logout();
           }
 
           if (

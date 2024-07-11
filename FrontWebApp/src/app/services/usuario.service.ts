@@ -81,6 +81,28 @@ export class UsuarioService {
     });
   }
 
+  cambiarPassEnviarCorreo(formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+    return this.http.post<FormData>(
+      `${this.apiURL}/cambiarPass/enviarCorreo`,
+      formData,
+      {
+        headers: headers,
+      }
+    );
+  }
+
+  cambiarPass(token: string, formData: FormData): Observable<FormData> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post<FormData>(`${this.apiURL}/cambiarPass`, formData, {
+      headers: headers,
+    });
+  }
+
   update(formData: FormData): Observable<FormData> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.getToken()}`,

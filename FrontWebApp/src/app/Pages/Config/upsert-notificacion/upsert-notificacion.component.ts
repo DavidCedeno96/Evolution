@@ -71,7 +71,7 @@ export class UpsertNotificacionComponent implements OnInit, AfterViewInit {
         [
           Validators.required,
           Validators.min(this.minNumDesc),
-          Validators.max(400),
+          Validators.max(300),
           Validators.pattern(exp_numeros),
         ],
       ],

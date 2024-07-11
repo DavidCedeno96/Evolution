@@ -90,8 +90,6 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
   cargarData(idReto: string) {
     this.retoService.getUsuario_RetoByIdUsuarioYIdReto(idReto).subscribe({
       next: (data: any) => {
-        //console.log(data);
-
         let { error, ur } = data.response;
         if (error === 0) {
           this.reto = ur.reto;
@@ -112,8 +110,8 @@ export class EntradaRetoComponent implements OnInit, AfterViewInit {
           ) {
             estado = 0;
           }
-          if (ur.reto.completado === 1) {
-            estado = 0;
+          if (ur.completado > 0) {
+            this.changeRoute('fin-reto', { reto: ur.reto.idReto });
           }
 
           if (estado === 0) {

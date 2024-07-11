@@ -226,6 +226,15 @@ export class RetoService {
     });
   }
 
+  clonar(reto: Reto): Observable<Reto> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.usuarioServicio.getToken()}`,
+    });
+    return this.http.post<Reto>(`${this.apiURL}/clonar`, reto, {
+      headers: headers,
+    });
+  }
+
   update(formData: FormData): Observable<FormData> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.usuarioServicio.getToken()}`,

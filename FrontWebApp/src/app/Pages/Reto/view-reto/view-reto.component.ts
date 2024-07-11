@@ -13,6 +13,7 @@ import {
   GetTypeTime,
   Loading,
   MsgActivado,
+  MsgClonado,
   MsgDesactivado,
   MsgEliminar,
   MsgElimindo,
@@ -173,7 +174,33 @@ export class ViewRetoComponent implements OnInit, AfterViewInit {
   }
 
   clonar(reto: Reto) {
-    console.log('Cloanando...', reto);
+    this.loading(true, false);
+    this.retoServicio.clonar(reto).subscribe({
+      next: (data: any) => {
+        let { error, info } = data.response;
+        if (error === 0) {
+          this.cargarData();
+          setTimeout(() => {
+            this.messageService.add({
+              severity: 'success',
+              summary: MsgOk,
+              detail: MsgClonado,
+            });
+          }, 510);
+        } else {
+          this.alertError(TitleErrorForm, info);
+          this.loading(false, false);
+        }
+      },
+      error: (e) => {
+        console.error(e);
+        if (e.status === 401 || e.status === 403) {
+          this.router.navigate(['/']);
+        } else {
+          this.changeRoute('/404', {});
+        }
+      },
+    });
   }
 
   vistaPrevia(reto: Reto) {

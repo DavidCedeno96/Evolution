@@ -725,7 +725,8 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
       case 0: {
         this.formulario.get('nombre')?.errors ||
         this.formulario.get('idTipoReto')?.errors ||
-        this.formulario.get('enEquipo')?.errors
+        this.formulario.get('enEquipo')?.errors ||
+        this.errorArchivo
           ? (valid = true)
           : (valid = false);
         break;
@@ -755,6 +756,7 @@ export class UpsertRetoComponent implements OnInit, AfterViewInit {
         this.formulario.get('nombre')?.errors ||
         this.formulario.get('idTipoReto')?.errors ||
         this.formulario.get('enEquipo')?.errors ||
+        this.errorArchivo ||
         this.formulario.get('idComportamiento')?.errors ||
         this.formulario.get('idTipoEncuesta')?.errors ||
         this.formulario.get('criterioMinimo')?.errors ||
