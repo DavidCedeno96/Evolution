@@ -12,6 +12,12 @@ SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES
    WHERE ROUTINE_TYPE = 'PROCEDURE'
    ORDER BY ROUTINE_NAME 
 
+-- SPs dentro de otros SPs
+SELECT p.name AS Procedimiento_Almacenado, OBJECT_DEFINITION(p.object_id) AS Definición
+FROM sys.procedures p JOIN sys.sql_modules m ON p.object_id = m.object_id
+WHERE m.definition LIKE '%EXEC %%' OR m.definition LIKE '%EXECUTE %%'
+ORDER BY p.name;
+
 --- TRIGGERS
 SELECT
     tr.name AS TriggerName,
@@ -35,7 +41,7 @@ FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
 JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
     ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME
 WHERE 
-    tc.TABLE_NAME = 'area' AND 
+    tc.TABLE_NAME = 'usuario' AND 
     tc.CONSTRAINT_TYPE = 'UNIQUE' OR   
 	tc.CONSTRAINT_TYPE = 'CHECK';
 
@@ -59,7 +65,7 @@ WHERE
 --- INFO DE LA TABLA
 SELECT tc.COLUMN_NAME, tc.DATA_TYPE, tc.CHARACTER_MAXIMUM_LENGTH, tc.IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS tc
-WHERE tc.TABLE_NAME = 'area';
+WHERE tc.TABLE_NAME = 'CategoriaRecompensa';
 
 ---
 SELECT @@VERSION;
@@ -84,7 +90,7 @@ SELECT @@VERSION;
 -- ('General','Es para las noticias en general')
 
 --Notificacion
---Configuracion
+--Configuracion => cambiar el valor el de tipo url
 --Inicio
 --CorreoEnvio
 --TipoReto
@@ -147,7 +153,7 @@ exec sp_D_InicioByNoIds
 -- USUARIO --------------------------------------------------------
 -- delete from Usuario where idUsuario = 'D33AEE6A-F632-4476-9C9D-7A1D6DB5093B'
 -- delete from Usuario where fechaCreacion > '2024-02-20'
--- update Usuario set correo = 'user@correo.com' where idUsuario = 'AB37197C-BF33-44B8-BA5D-E246FA250B41'
+-- update Usuario set correo = 'davidcedeno1996@gmail.com' where idUsuario = 'DE95894E-8253-410E-90A7-79458BEA72A7'
 -- update Usuario set estado = 1
 
 select * from Usuario where idUsuario = '6d81e350-a4f4-4042-a3e9-ef97d985bc2a'
@@ -167,6 +173,7 @@ exec sp_B_UsuarioById
 
 exec sp_B_UsuarioByCorreo
 @correo = 'elver.galarga@gmail.com',
+@login = 0, -- opcional
 @error = '',
 @info = '',
 @id = ''
@@ -258,6 +265,15 @@ exec sp_U_UsuarioByFoto
 @error = '',
 @info = '',
 @id = ''
+
+
+exec sp_U_UsuarioByClave
+@correo = '',
+@clave = '',
+@error = '',
+@info = '',
+@id = ''
+
 
 -- Area --------------------------------------------------------
 select * from Empresa
@@ -1011,7 +1027,7 @@ exec sp_D_Pregunta
 @id = ''
 
 -- Reto ------------------------------------------------------------------------
--- select * from reto
+-- select * from reto where imagen is not null
 -- select * from usuario
 
 -- mi encuesta 1
@@ -1071,6 +1087,13 @@ exec sp_C_Reto
 @info = '',
 @id = ''
 
+exec sp_C_RetoClonar			
+@idReto = '0039af84-1d83-47cf-94f4-ac5b7268aa97',
+--@Clr_imagen = '', -- opcional
+@error = '',
+@info = '',
+@id = ''
+
 exec sp_U_Reto		
 @idReto = '81642C08-9711-469B-B831-18C682B5122A',
 @nombre = 'mi segundo reto editado',
@@ -1124,8 +1147,8 @@ exec sp_B_Usuario_RetoByIdReto
 @id = ''
 
 exec sp_B_Usuario_RetoByIdUsuarioYIdReto		
-@idUsuario = '91DB7BAE-7D2F-423D-B595-D227C63CA0A6',
-@idReto = '0b3439f9-f94d-4e28-b758-89668b4d020f',			
+@idUsuario = '96A49AC1-C9C4-4BC1-8D3C-548F37F34828',
+@idReto = '39D09CA3-DDBC-4EA2-A21E-7B982D3B7628',			
 @completado = -1,
 @error = '',
 @info = '',
@@ -1163,6 +1186,12 @@ exec sp_B_Usuario_RetoxValidarByValidador
 exec sp_B_Usuario_RetoxValidarByReto
 @idReto = '0b3439f9-f94d-4e28-b758-89668b4d020f',
 @idUserValidador = 'AB37197C-BF33-44B8-BA5D-E246FA250B41',
+@error = '',
+@info = '',
+@id = ''
+
+exec sp_B_Usuario_RetoFechaCierre
+@setNovedad = 0,
 @error = '',
 @info = '',
 @id = ''
@@ -1417,6 +1446,17 @@ select * from Usuario
 select * from Notificacion
 
 -- update Novedad set fechaCreacion = '2024-01-20 16:08:24.113' where idNovedad = '48B47339-53B9-40E2-8A04-33732B9C2814'
+
+exec sp_C_Novedad		
+@mensaje = 'prueba',
+@auxMsg = 'aux preuba',
+@idUsuario = '939C9C6D-9DCF-4B7E-BEA6-5C26169FA066',
+@idTabla = 'EF9C1644-F977-43E0-B47C-06699FC22D5D',
+@tabla = 'Reto',
+@ruta = 'preuab',
+@error = '',
+@info = '',
+@id = ''
 
 exec sp_B_NovedadByIdUsuario		
 @idUsuario = '6D81E350-A4F4-4042-A3E9-EF97D985BC2A',
