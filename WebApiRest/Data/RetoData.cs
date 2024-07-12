@@ -309,7 +309,7 @@ namespace WebApiRest.Data
                             IdTipoArchivo = new Guid(dr["idTipoArchivo"].ToString()),
                             TipoArchivo = dr["tipoArchivo"].ToString(),
                             OpsRequeridas = Convert.ToInt32(dr["opsRequeridas"].ToString()),
-                            CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),
+                            CriterioMinimo = Convert.ToInt32(dr["criterioMinimo"].ToString()),                            
                             Estado = Convert.ToInt32(dr["estado"].ToString()),
                             TotalPreguntas = Convert.ToInt32(dr["totalPreguntas"].ToString()),                            
                             EnEquipo = Convert.ToInt32(dr["enEquipo"].ToString()),
@@ -318,7 +318,7 @@ namespace WebApiRest.Data
                         Usuario = new Usuario()
                         {
                             IdUsuario = new Guid(dr["idUsuario"].ToString()),
-                        },
+                        },                        
                         TotalOpsValidaciones = Convert.ToInt32(dr["totalOpsValidaciones"].ToString()),
                         Completado = Convert.ToInt32(dr["completado"].ToString()),
                         Puntos = Convert.ToInt32(dr["puntos"].ToString()),
@@ -604,6 +604,68 @@ namespace WebApiRest.Data
 
                 list.Info = WC.GetSatisfactorio();
                 list.Error = 0;
+            }
+            catch (Exception ex)
+            {
+                list.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                list.Error = 1;
+                list.Lista = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return list;
+        }
+
+        public async Task<Usuario_RetoList> GetUsuarioRetoList(int setNovedad)
+        {
+            Usuario_RetoList list = new()
+            {
+                Lista = new()
+            };
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+
+            SqlCommand cmd = new("sp_B_Usuario_RetoFechaCierre", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@setNovedad", setNovedad);
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                SqlDataReader dr = await cmd.ExecuteReaderAsync();
+                while (await dr.ReadAsync())
+                {
+                    list.Lista.Add(new Usuario_Reto()
+                    {
+                        Usuario = new Usuario()
+                        {
+                            IdUsuario = new Guid(dr["idUsuario"].ToString()),                            
+                            Nombre = dr["userNombre"].ToString(),
+                            Apellido = dr["userApellido"].ToString(),
+                            Correo = dr["correo"].ToString(),                            
+                        },
+                        Reto = new Reto()
+                        {
+                            IdReto = new Guid(dr["idReto"].ToString()),
+                            Nombre = dr["retoNombre"].ToString(),
+                            FechaCierre = Convert.ToDateTime(dr["fechaCierre"].ToString()),                            
+                        },                        
+                    });
+                }
+                await dr.NextResultAsync();
+
+                list.Info = cmd.Parameters["@info"].Value.ToString();                
+                list.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
             }
             catch (Exception ex)
             {
@@ -1037,6 +1099,48 @@ namespace WebApiRest.Data
                 response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
                 response.Error = 1;
                 response.Id = "0";
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+        }
+
+        public async Task<Response> ClonarReto(Reto reto)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_C_RetoClonar", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@idReto", reto.IdReto);
+            if (!string.IsNullOrEmpty(reto.Imagen))
+            {
+                cmd.Parameters.AddWithValue("@Clr_imagen", reto.Imagen.Trim());
+            }
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());                
+
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;                
             }
             finally
             {

@@ -8,6 +8,8 @@ using WebApiRest.Utilities;
 using System.IO;
 using System.IO.Compression;
 using MathNet.Numerics.Distributions;
+using NPOI.HPSF;
+using SixLabors.ImageSharp;
 
 namespace WebApiRest.Controllers
 {
@@ -235,7 +237,39 @@ namespace WebApiRest.Controllers
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
-        }        
+        }
+
+        [HttpPost]
+        [Route("clonar")]
+        [Authorize(Roles = "adm,sadm")]
+        public async Task<IActionResult> Clonar([FromBody] Reto reto)
+        {            
+            string rutaArchivo = WC.GetRutaImagen(_env, reto.Imagen, nombreCarpeta);
+            string copyRutaArchivo = "";
+
+            if (System.IO.File.Exists(rutaArchivo))
+            {                    
+                Guid newId = Guid.NewGuid();                    
+                string copyFileName = $"ret_copy_{newId}{Path.GetExtension(reto.Imagen).ToLower()}";
+
+                copyRutaArchivo = WC.GetRutaImagen(_env, copyFileName, nombreCarpeta);
+
+                reto.Imagen = copyFileName;                
+            }
+            else
+            {
+                reto.Imagen = null;
+            }
+
+            Response response = await data.ClonarReto(reto);
+
+            if(response.Error == 0 && !copyRutaArchivo.Equals(""))
+            {
+                System.IO.File.Copy(rutaArchivo, copyRutaArchivo);
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
 
         [HttpPost]
         [Route("createUsuarioReto")]

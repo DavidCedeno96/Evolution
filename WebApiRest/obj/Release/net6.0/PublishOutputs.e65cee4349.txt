@@ -24,9 +24,14 @@ C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiR
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\NPOI.OOXML.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\NPOI.OpenXml4Net.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\NPOI.OpenXmlFormats.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\Quartz.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\Quartz.Extensions.DependencyInjection.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\Quartz.Extensions.Hosting.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\SendGrid.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\ICSharpCode.SharpZipLib.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\SixLabors.Fonts.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\SixLabors.ImageSharp.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\StarkbankEcdsa.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll

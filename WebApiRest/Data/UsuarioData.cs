@@ -220,7 +220,7 @@ namespace WebApiRest.Data
             return list;
         }
 
-        public async Task<UsuarioItem> GetUsuario(string correo)
+        public async Task<UsuarioItem> GetUsuario(string correo, int login)
         {
             UsuarioItem item = new();
 
@@ -231,6 +231,7 @@ namespace WebApiRest.Data
                 CommandType = CommandType.StoredProcedure
             };
             cmd.Parameters.AddWithValue("@correo", correo);
+            cmd.Parameters.AddWithValue("@login", login);
 
             cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
@@ -657,6 +658,53 @@ namespace WebApiRest.Data
                 response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
                 response.Error = 1;
                 response.Id = null;
+            }
+            finally
+            {
+                await sqlConnection.CloseAsync();
+            }
+
+            return response;
+
+        }
+
+        public async Task<Response> UpdateUsuarioClave(Usuario usuario)
+        {
+            Response response = new();
+
+            SqlConnection sqlConnection = new(conexion.GetConnectionSqlServer());
+            SqlCommand cmd = new("sp_U_UsuarioByClave", sqlConnection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+                       
+            cmd.Parameters.AddWithValue("@correo", WC.GetTrim(usuario.Correo));
+            if (WC.GetTrim(usuario.Contrasena).Equals(""))
+            {
+                cmd.Parameters.AddWithValue("@clave", Array.Empty<byte>());
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@clave", WC.GetBytes(await Hasher.Encrypt(WC.GetTrim(usuario.Contrasena))));
+            }
+
+            cmd.Parameters.Add("@error", SqlDbType.Int).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@info", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@id", SqlDbType.VarChar, int.MaxValue).Direction = ParameterDirection.Output;
+
+            try
+            {
+                await sqlConnection.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+
+                response.Info = cmd.Parameters["@info"].Value.ToString();
+                response.Error = Convert.ToInt32(cmd.Parameters["@error"].Value.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                response.Info = conexion.GetSettings().Production ? WC.GetError() : ex.Message;
+                response.Error = 1;
             }
             finally
             {

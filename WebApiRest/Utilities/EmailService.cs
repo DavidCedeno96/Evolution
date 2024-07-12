@@ -6,13 +6,14 @@ using WebApiRest.Models;
 
 namespace WebApiRest.Utilities
 {
+    // Esta clase envia correos por SMTP
     public class EmailService
     {
         private readonly CorreoEnvio _smtpConfig;
         private readonly int _batchSize = 50;
         private readonly SmtpClient _smtpClient;
 
-        private int connectionTimeout = 10000;
+        private readonly int connectionTimeout = 10000;
 
         public EmailService(CorreoEnvio smtpConfig)
         {

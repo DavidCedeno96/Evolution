@@ -8,9 +8,11 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using WebApiRest.Data;
+using WebApiRest.Interfaz;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
 
@@ -35,14 +37,15 @@ namespace WebApiRest.Controllers
 
         readonly Settings settings = new();
 
-        private EmailService emailService;
-        private readonly IWebHostEnvironment _env;
         private readonly string nombreCarpeta = "Usuario";
+        private readonly IEmailService _emailService;
+        private readonly IWebHostEnvironment _env;
 
-        public UsuarioController(IConfiguration configuration, IWebHostEnvironment env)
+        public UsuarioController(IConfiguration configuration, IWebHostEnvironment env, IEmailService emailService)
         {
             settings = configuration.GetSection("settings").Get<Settings>();
             _env = env;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -308,7 +311,7 @@ namespace WebApiRest.Controllers
         [Route("auth")]
         public async Task<IActionResult> Login([FromBody] Usuario usuario)
         {
-            UsuarioItem response = await data.GetUsuario(usuario.Correo);                        
+            UsuarioItem response = await data.GetUsuario(usuario.Correo, 1);                        
 
             if (response.Error == 0)
             {                                
@@ -354,6 +357,8 @@ namespace WebApiRest.Controllers
         public async Task<IActionResult> Create([FromForm] IFormFile archivo, [FromForm] Usuario usuario)
         {
             Response response = VF.ValidarUsuario(usuario);
+            CorreoEnvioItem responseCorreoEnvio = await dataCorreoEnvio.GetCorreoEnvio(true);
+            NotificacionItem resNotificacion = await dataNotificacion.GetNotificacion("Notificar a los usuarios cuando el administrador crea un nuevo usuario");
             string rutaArchivo = "";
 
             if (archivo != null && response.Error == 0)
@@ -384,7 +389,42 @@ namespace WebApiRest.Controllers
                     await archivo.CopyToAsync(fileStream);
                     await fileStream.DisposeAsync();
                 }
-            }            
+            }    
+            
+            if(response.Error == 0 && responseCorreoEnvio.Error == 0 && resNotificacion.Error == 0)
+            {
+                if(resNotificacion.Notificacion.Estado == 1)
+                {
+
+                    string imgaen = responseCorreoEnvio.CorreoEnvio.Imagen;
+                    string url = responseCorreoEnvio.CorreoEnvio.Url;
+                    string colorPri = responseCorreoEnvio.CorreoEnvio.ColorPrimario;
+                    string colorSec = responseCorreoEnvio.CorreoEnvio.ColorSecundario;
+                    string colorTer = responseCorreoEnvio.CorreoEnvio.ColorTerciario;
+                    string urlLogo;
+
+                    if (!imgaen.Equals("N/A"))
+                    {
+                        urlLogo = $"{url}/Content/Images/Config/{imgaen}";
+                    }
+                    else
+                    {
+                        urlLogo = $"{url}/Content/Images/Default/default-logoDM.png";
+                    }
+
+                    List<EmailMessage> emailMessages = new()
+                    {
+                        new EmailMessage
+                        {
+                            Email = usuario.Correo,
+                            Subject = "Bienvenido a Play Move!",
+                            Body = Html.GetCreateUser(urlLogo, colorPri, colorSec, colorTer, $"{url}/login", usuario.Correo, usuario.Contrasena, resNotificacion.Notificacion.MsgPersonalizado)
+                        }
+                    };
+
+                    await _emailService.SendEmailsInParallelAsync(responseCorreoEnvio.CorreoEnvio, emailMessages);
+                }
+            }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
         }               
@@ -464,15 +504,7 @@ namespace WebApiRest.Controllers
                     }                    
                 };
 
-                emailService = new(responseCorreoEnvio.CorreoEnvio);
-                await emailService.SendEmailsInBatches(emailMessages);
-
-                //response = await WC.EnviarMail(responseCorreoEnvio.CorreoEnvio, usuario.Correo, "Bienvenido a Play Move", Html.GetRegisterUser(url, colorPri, colorSec, colorTer, urlActivacion, usuario.Correo, usuario.Contrasena));
-
-                //if(response.Error > 0)
-                //{
-                //    response.Info = "El correo electrónico de envio del administrador esta incorrecto, contactate con el administrador";
-                //}
+                await _emailService.SendEmailsInParallelAsync(responseCorreoEnvio.CorreoEnvio, emailMessages);                
             }
 
             return StatusCode(StatusCodes.Status200OK, new { response });
@@ -494,6 +526,102 @@ namespace WebApiRest.Controllers
             {
                 response = await data.CreateUsuario(usuario);
             }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpPost]
+        [Route("cambiarPass/enviarCorreo")]
+        [Authorize]
+        public async Task<IActionResult> CambiarPassCorreo([FromForm] Usuario usuario, [FromForm] string urlVistaCambiarPass)
+        {
+            UsuarioItem responseUser = await data.GetUsuario(usuario.Correo, 1);
+            CorreoEnvioItem responseCorreoEnvio = await dataCorreoEnvio.GetCorreoEnvio(true);
+            Response response = VF.ValidarUsuario(usuario);
+
+            if(responseUser.Error > 0)
+            {
+                response.Error = 1;
+                response.Info = responseUser.Info;
+            }
+
+            if (responseCorreoEnvio.Error > 0)
+            {
+                response.Info = responseCorreoEnvio.Info;
+                response.Error = 1;
+                response.Campo = "correo de envio (admin)";
+            }
+
+            if (response.Error == 0)
+            {
+                string jsonUser = JsonConvert.SerializeObject(usuario);
+
+                string date = DateTime.Now.ToString();
+
+                var keyBytes = Encoding.ASCII.GetBytes(settings.SecretKey);
+                var claims = new ClaimsIdentity();
+                claims.AddClaim(new Claim("exp_date", date));
+                claims.AddClaim(new Claim("userData", jsonUser));
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = claims,
+                    Expires = DateTime.UtcNow.AddMinutes(5), //Tiempo de expiracion del token en minutos
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
+                };
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenConfig = tokenHandler.CreateToken(tokenDescriptor);
+                string tokenCreado = tokenHandler.WriteToken(tokenConfig);
+
+                string imgaen = responseCorreoEnvio.CorreoEnvio.Imagen;
+                string url = responseCorreoEnvio.CorreoEnvio.Url;
+                string colorPri = responseCorreoEnvio.CorreoEnvio.ColorPrimario;
+                string colorSec = responseCorreoEnvio.CorreoEnvio.ColorSecundario;
+                string colorTer = responseCorreoEnvio.CorreoEnvio.ColorTerciario;
+
+                if (!imgaen.Equals("N/A"))
+                {
+                    url += $"/Content/Images/Config/{imgaen}";
+                }
+                else
+                {
+                    url += "/Content/Images/Default/default-logoDM.png";
+                }
+
+                string urlCambiarPass = urlVistaCambiarPass + tokenCreado;
+
+                List<EmailMessage> emailMessages = new()
+                {
+                    new EmailMessage
+                    {
+                        Email = usuario.Correo,
+                        Subject = "Cambiar Contraseña",
+                        Body = Html.GetCambiarPassword(url, colorPri, colorSec, colorTer, urlCambiarPass)
+                    }
+                };
+
+                //emailService = new(responseCorreoEnvio.CorreoEnvio);
+                //List<Response> responses = await emailService.SendEmailsInBatches(emailMessages);
+
+                List<Response> responses = await _emailService.SendEmailsInParallelAsync(responseCorreoEnvio.CorreoEnvio, emailMessages);
+
+                response = responses[0];
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new { response });
+        }
+
+        [HttpPost]
+        [Route("cambiarPass")]
+        [Authorize]
+        public async Task<IActionResult> CambiarPass([FromForm] string clave)
+        {
+            string userData = User.FindFirst("userData").Value;
+
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(userData);
+            usuario.Contrasena = clave;
+
+            Response response = await data.UpdateUsuarioClave(usuario);
 
             return StatusCode(StatusCodes.Status200OK, new { response });
         }
@@ -855,9 +983,8 @@ namespace WebApiRest.Controllers
                         if (resNotificacion.Error == 0 && responseCorreoEnvio.Error == 0)
                         {
                             if (resNotificacion.Notificacion.Estado == 1)
-                            {
-                                emailService = new(responseCorreoEnvio.CorreoEnvio);
-                                await emailService.SendEmailsInBatches(emailMessages);
+                            {                                
+                                await _emailService.SendEmailsInParallelAsync(responseCorreoEnvio.CorreoEnvio, emailMessages);
                             }
                         }
                     }

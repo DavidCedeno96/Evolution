@@ -7,7 +7,7 @@ namespace WebApiRest.Data
 {
     public class NovedadData
     {
-        private readonly Conexion conexion = new();
+        private readonly Conexion conexion = new();        
 
         public async Task<NovedadList> GetNovedadList(Guid idUsuario)
         {

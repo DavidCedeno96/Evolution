@@ -1,4 +1,7 @@
-﻿namespace WebApiRest.Utilities
+﻿using NPOI.XWPF.UserModel;
+using WebApiRest.Models;
+
+namespace WebApiRest.Utilities
 {
     public static class Html
     {        
@@ -37,7 +40,31 @@
 
         public static string GetRecompensaCanjeada(string urlImagen, string colorPrimario, string colorSecundario, string colorTerciario, string recompensa, string urlImgRecompensa, string msgNotificacion)
         {
-            string body = "<body\r\n    style=\"\r\n      font-family: Arial, sans-serif;\r\n      background-color: #f0f0f0;\r\n      padding: 3%;\r\n    \"\r\n  >\r\n    <div\r\n      style=\"\r\n        width: 85%;\r\n        max-width: 400px;\r\n        margin: 0px auto;\r\n        padding: 20px;\r\n        border-radius: 10px;\r\n        background-color: #fff;\r\n        box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);\r\n      \"\r\n    >\r\n      <div style=\"text-align: center\">\r\n        <img\r\n          src=\""+urlImagen+ "\"\r\n          alt=\"Logo\"\r\n          style=\"\r\n            display: block;\r\n            margin: 5% auto;\r\n            border-radius: 10px;\r\n            max-width: 80%;\r\n            height: auto;\r\n            object-fit: cover;\r\n          \"\r\n        />\r\n      </div>\r\n      <div style=\"text-align: center; margin-top: 20px\">\r\n        <h3 style=\"color: " + colorPrimario+ "\"\">Recompensa Canjeada!</h3>\r\n        <div style=\"text-align: center\">\r\n          <span style=\"color: "+ colorSecundario+"; word-wrap: break-word\"\r\n            >"+recompensa+"</span\r\n          >\r\n          <img\r\n            src=\""+ urlImgRecompensa + "\"\r\n            alt=\"Recompensa\"\r\n            style=\"\r\n              display: block;\r\n              margin: 5% auto;\r\n              border-radius: 10px;\r\n              max-width: 50%;\r\n              height: auto;\r\n              object-fit: cover;\r\n            \"\r\n          />\r\n        </div>\r\n        <p style=\"margin: 30px 0px; color: "+ colorTerciario + "\">\r\n         "+ msgNotificacion + "\r\n        </p>\r\n      </div>\r\n    </div>\r\n  </body>";
+            string body = "<body\r\n    style=\"\r\n      font-family: Arial, sans-serif;\r\n      background-color: #f0f0f0;\r\n      padding: 3%;\r\n    \"\r\n  >\r\n    <div\r\n      style=\"\r\n        width: 85%;\r\n        max-width: 400px;\r\n        margin: 0px auto;\r\n        padding: 20px;\r\n        border-radius: 10px;\r\n        background-color: #fff;\r\n        box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);\r\n      \"\r\n    >\r\n      <div style=\"text-align: center\">\r\n        <img\r\n          src=\""+urlImagen+ "\"\r\n          alt=\"Logo\"\r\n          style=\"\r\n            display: block;\r\n            margin: 5% auto;\r\n            border-radius: 10px;\r\n            max-width: 80%;\r\n            height: auto;\r\n            object-fit: cover;\r\n          \"\r\n        />\r\n      </div>\r\n      <div style=\"text-align: center; margin-top: 20px\">\r\n        <h3 style=\"color: " + colorPrimario+ "\">Recompensa Canjeada!</h3>\r\n        <div style=\"text-align: center\">\r\n          <span style=\"color: "+ colorSecundario+"; word-wrap: break-word\"\r\n            >"+recompensa+"</span\r\n          >\r\n          <img\r\n            src=\""+ urlImgRecompensa + "\"\r\n            alt=\"Recompensa\"\r\n            style=\"\r\n              display: block;\r\n              margin: 5% auto;\r\n              border-radius: 10px;\r\n              max-width: 50%;\r\n              height: auto;\r\n              object-fit: cover;\r\n            \"\r\n          />\r\n        </div>\r\n        <p style=\"margin: 30px 0px; color: "+ colorTerciario + "\">\r\n         "+ msgNotificacion + "\r\n        </p>\r\n      </div>\r\n    </div>\r\n  </body>";
+
+            return GetHeader() + body + GetFooter();
+        }
+
+        public  static string GetCambiarPassword(string urlImagen, string colorPrimario, string colorSecundario, string colorTerciario, string urlCambiarPass)
+        {
+            string body = "<body\r\n    style=\"\r\n      font-family: Arial, sans-serif;\r\n      background-color: #f0f0f0;\r\n      padding: 3%;\r\n    \"\r\n  >\r\n    <div\r\n      style=\"\r\n        width: 85%;\r\n        max-width: 400px;\r\n        margin: 0px auto;\r\n        padding: 20px;\r\n        border-radius: 10px;\r\n        background-color: #fff;\r\n        box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);\r\n      \"\r\n    >\r\n      <div style=\"text-align: center\">\r\n        <img\r\n          src=\""+urlImagen+ "\"\r\n          alt=\"Logo\"\r\n          style=\"\r\n            display: block;\r\n            margin: 5% auto;\r\n            border-radius: 10px;\r\n            max-width: 80%;\r\n            height: auto;\r\n            object-fit: cover;\r\n          \"\r\n        />\r\n      </div>\r\n      <div style=\"text-align: center; margin-top: 20px\">\r\n        <h2 style=\"color: " + colorPrimario+ "\">Cambiar Contraseña!</h2>\r\n        <p style=\"margin: 30px 0px; color: " + colorSecundario+ "\">\r\n          Haga clic en el botón de abajo para cambiar la contraseña\r\n        </p>\r\n        <p>\r\n          <a\r\n            href=\""+urlCambiarPass+ "\"\r\n            style=\"\r\n              width: fit-content;\r\n              padding: 10px 20px;\r\n              border-radius: 20px;\r\n              background-color: "+colorTerciario+";\r\n              color: #fff;\r\n              cursor: pointer;\r\n              text-decoration: none;\r\n            \"\r\n            >Cambiar Contraseña</a\r\n          >\r\n        </p>\r\n      </div>\r\n    </div>\r\n  </body>";
+
+            return GetHeader() + body + GetFooter();
+        }
+
+        public static string GetRetosPorCerrarse(string urlImagen, string colorPrimario, string colorSecundario, string colorTerciario, string urlFrontEnd, int diasRestantes, string retoNombre)
+        {
+            string msgDiasFaltantes;
+            if (diasRestantes > 1)
+            {
+                msgDiasFaltantes = $"{diasRestantes} días";
+            }
+            else
+            {
+                msgDiasFaltantes = "un día";
+            } 
+
+            string body = $"<body\r\n   style=\"\r\n      font-family: Arial, sans-serif;\r\n      background-color: #f0f0f0;\r\n      padding: 3%;\r\n    \"\r\n  >\r\n    <div\r\n      style=\"\r\n        width: 85%;\r\n        max-width: 400px;\r\n        margin: 0px auto;\r\n        padding: 20px;\r\n        border-radius: 10px;\r\n        background-color: #fff;\r\n        box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);\r\n      \"\r\n    >\r\n      <div style=\"text-align: center\">\r\n        <img\r\n          src=\"{urlImagen}\"\r\n          alt=\"Logo\"\r\n          style=\"\r\n            display: block;\r\n            margin: 5% auto;\r\n            border-radius: 10px;\r\n            max-width: 80%;\r\n            height: auto;\r\n            object-fit: cover;\r\n          \"\r\n        />\r\n      </div>\r\n      <div style=\"text-align: center; margin-top: 20px\">\r\n        <h2 style=\"color: {colorPrimario}\">Reto por cerrarse!</h2>\r\n        <p style=\"margin: 30px 0px; color: {colorSecundario}\">\r\n          Faltan {msgDiasFaltantes} para que se cierre el reto: {retoNombre}\r\n        </p>\r\n        <p>\r\n          <a\r\n            href=\"{urlFrontEnd}/login\"\r\n            style=\"\r\n              width: fit-content;\r\n              padding: 10px 20px;\r\n              border-radius: 20px;\r\n              background-color: {colorTerciario};\r\n              color: #fff;\r\n              cursor: pointer;\r\n              text-decoration: none;\r\n            \"\r\n            >Iniciar Sesión</a\r\n          >\r\n        </p>\r\n      </div>\r\n    </div>\r\n  </body>";
 
             return GetHeader() + body + GetFooter();
         }

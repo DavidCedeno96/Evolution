@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Quartz;
+using SendGrid;
 using System.Text;
+using WebApiRest.Interfaz;
 using WebApiRest.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +37,28 @@ builder.Services.AddAuthentication(config =>
         ValidateAudience = false
     };
 });
+
+//QUARTZ
+builder.Services.AddQuartz(config =>
+{
+    var jobKey = JobKey.Create(nameof(BackgroundJob));
+
+    config.AddJob<BackgroundJob>(op => op.WithIdentity(jobKey))
+            .AddTrigger(tr => tr.ForJob(jobKey)
+            .WithSimpleSchedule(sch => sch.WithIntervalInMinutes(settings.TimeQuartzMin).RepeatForever()));
+});
+
+builder.Services.AddQuartzHostedService(config =>
+{
+    config.WaitForJobsToComplete = true;
+});
+
+
+//SENDGRID
+builder.Services.AddTransient<ISendGridClient>(s =>
+    new SendGridClient(builder.Configuration["SendGrid:ApiKey"]));
+
+builder.Services.AddTransient<IEmailService, EmailSender>();
 
 // Add services to the container.
 builder.Services.AddControllers();

@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.HSSF.UserModel;
-using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Data;
-using System.Net.Mail;
 using System.Security.Claims;
 using WebApiRest.Data;
+using WebApiRest.Interfaz;
 using WebApiRest.Models;
 using WebApiRest.Utilities;
 
@@ -21,14 +20,15 @@ namespace WebApiRest.Controllers
         readonly UsuarioData dataUser = new();
         readonly CorreoEnvioData dataCorreoEnvio = new();
         readonly NotificacionData dataNotificacion = new();
-
-        private EmailService emailService;
+        
+        private readonly IEmailService _emailService;
         private readonly IWebHostEnvironment _env;
         private readonly string nombreCarpeta = "Recompensa";
 
-        public RecompensaController(IWebHostEnvironment env)
+        public RecompensaController(IWebHostEnvironment env, IEmailService emailService)
         {
             _env = env;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -72,7 +72,6 @@ namespace WebApiRest.Controllers
             //string hora = WC.GetHoraActual(DateTime.Now);
             //string nombreArchivo = $"Recompensas{hora}.xls";
             //string rutaArchivo = WC.GetRutaArchivo(_env, nombreArchivo, nombreCarpeta);
-
             //WC.EliminarArchivosAntiguos(_env, nombreCarpeta, "Recompensas");
 
             dt.Columns.Add("NOMBRE", typeof(string));
@@ -342,8 +341,8 @@ namespace WebApiRest.Controllers
                                 }
                             };
 
-                            emailService = new(responseCorreoEnvio.CorreoEnvio);
-                            await emailService.SendEmailsInBatches(emailMessages);
+                            
+                            await _emailService.SendEmailsInParallelAsync(responseCorreoEnvio.CorreoEnvio, emailMessages);
                         }
                     }
                 }
@@ -362,8 +361,12 @@ namespace WebApiRest.Controllers
         //    List<Response> responses = new();
         //    if (responseCorreoEnvio.Error == 0)
         //    {
-        //        emailService = new(responseCorreoEnvio.CorreoEnvio);
-        //        responses = await emailService.SendEmailsInBatches(emailMessages);
+        //        // ESTE ES CON smtp
+        //        //emailService = new(responseCorreoEnvio.CorreoEnvio);
+        //        //responses = await emailService.SendEmailsInBatches(emailMessages);
+
+        //        // ESTE ES CON API KEY
+        //        //responses = await _emailService.SendEmailsInParallelAsync(responseCorreoEnvio.CorreoEnvio, emailMessages);
         //    }
         //    return StatusCode(StatusCodes.Status200OK, new { responses });
         //}

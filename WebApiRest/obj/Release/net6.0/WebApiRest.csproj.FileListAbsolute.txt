@@ -70,8 +70,6 @@ C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiR
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.csproj.AssemblyReference.cache
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.AssemblyInfoInputs.cache
-C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.AssemblyInfo.cs
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.csproj.CoreCompileInputs.cache
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.MvcApplicationPartsAssemblyInfo.cache
@@ -90,3 +88,8 @@ C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiR
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.pdb
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\WebApiRest.genruntimeconfig.cache
 C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\obj\Release\net6.0\ref\WebApiRest.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\Quartz.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\Quartz.Extensions.DependencyInjection.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\Quartz.Extensions.Hosting.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\SendGrid.dll
+C:\Users\Alejandro\OneDrive - Digimentore SA\Escritorio\GitHub\Evolution\WebApiRest\bin\Release\net6.0\StarkbankEcdsa.dll
