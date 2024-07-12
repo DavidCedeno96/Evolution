@@ -2,16 +2,17 @@ import { DatePipe } from '@angular/common';
 import { inject } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ConfigAppService } from '../services/config-app.service';
+import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
-const config = new ConfigAppService();
+//import { ConfigAppService } from '../services/config-app.service';
+//const config = new ConfigAppService();
 
 /* CONSTANTES */
 
-export const API_URL = config.restUrl;
-export const PLAY_MOVE = config.playMove;
-export const API_URL_BUNNY_CDN = config.bunny;
+export const API_URL = environment.apiUrl;
+export const PLAY_MOVE = environment.playMove;
+export const API_URL_BUNNY_CDN = environment.bunny;
 
 export const ImgSizeMax: number = 200 * 1024;
 export const FileSizeMax: number = 150 * 1024;

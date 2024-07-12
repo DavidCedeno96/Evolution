@@ -16,7 +16,7 @@ export class ConfigAppService {
     return this.config.playMove;
   }
 
-  get bunny(): string {
+  /* get bunny(): string {
     return this.config.bunny;
-  }
+  } */
 }
