@@ -6,7 +6,12 @@ import { AppComponent } from './app.component';
 
 import { CommonModule } from '@angular/common';
 
+//Shared
 import { SafeResourceUrlPipe } from './shared/securityTrustHtml/safe-url.pipe';
+import { SharedModule } from './shared/shared.module';
+
+//Material
+import { MatIconModule } from '@angular/material/icon';
 
 // tooltip
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -44,8 +49,6 @@ import { MenuModule } from 'primeng/menu';
 import { LoginComponent } from './Pages/login/login.component';
 import { RegisterComponent } from './Pages/register/register.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SharedModule } from './shared/shared.module';
-import { MatIconModule } from '@angular/material/icon';
 import { ConfiguracionComponent } from './Pages/configuracion/configuracion.component';
 import { ViewUserComponent } from './Pages/Usuario/view-user/view-user.component';
 import { UpsertUserComponent } from './Pages/Usuario/upsert-user/upsert-user.component';
